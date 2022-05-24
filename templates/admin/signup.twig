@@ -1,0 +1,23 @@
+{% extends "index.twig" %}
+
+{% block bodyNavigation %}{% endblock %}
+
+{% block content %}
+<div class="uk-height-1-1 uk-background-cover uk-overflow-hidden uk-flex"
+     style="min-height: 500px; height: 100%">
+    <div class="uk-width-1-2@m uk-text-center uk-margin-auto uk-margin-auto-vertical uk-overlay uk-overlay-default">
+        {{ block("messages_queue", "message_queue.twig") }}
+        <h1>Create Account</h1>
+        <form action="{{ route() }}index.php/dashboard?task=signup" method="post">
+            <input name="name" class="uk-input uk-width-1-2" type="text" placeholder="Name">
+            <input name="username" class="uk-input uk-width-1-2" type="text" placeholder="Username">
+            <input name="email" class="uk-input uk-width-1-2" type="text" placeholder="Email">
+            <input name="password" class="uk-input uk-width-1-2" type="password" placeholder="password">
+            <input name="password2" class="uk-input uk-width-1-2" type="password" placeholder="confirm password">
+            <input type="hidden" name="{{ token() }}" value="1">
+            <input type="submit" class="uk-button uk-button-primary uk-width-1-2" value="Create Account"/>
+        </form>
+        <a class="uk-button uk-width-1-2" href="{{ route() }}index.php">Login</a>
+    </div>
+</div>
+{% endblock %}

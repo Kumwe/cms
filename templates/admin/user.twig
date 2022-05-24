@@ -1,0 +1,116 @@
+{% extends "index.twig" %}
+
+{% block title %}{% if form.id == 0 %}Create{% else %}Edit{% endif %} User {{ form.name|default('') }}{% endblock %}
+
+{% block content %}
+ <div class="uk-container uk-margin">
+     {{ block("messages_queue", "message_queue.twig") }}
+     {% if form.id == 0 %}
+         <h3><span uk-icon="icon: user; ratio: 1"></span> Create User</h3>
+     {% else %}
+         <h3><span uk-icon="icon: user; ratio: 1"></span> Edit User {{ form.name|default('') }}</h3>
+     {% endif %}
+    <form class="uk-form-stacked" action="{{ route() }}index.php/user{{ form.post_key|default('') }}" method="post">
+        {% if user('access.user.update', false) %}
+            <div class="uk-button-group uk-width-1-1 uk-margin">
+                <input type="submit" class="uk-button uk-button-primary uk-width-1-2" value="Save"/>
+                <a href="{{ route() }}index.php/users" type="button" class="uk-button uk-button-danger uk-width-1-2">Close</a>
+            </div>
+        {% else %}
+            <a href="{{ route() }}index.php/users" type="button" class="uk-button uk-button-danger uk-width-1-1">Close</a>
+        {% endif %}
+        <div>
+            <label class="uk-form-label">Name</label>
+            <div class="uk-form-controls">
+                <input name="name" class="uk-input uk-width-1-1" type="text" placeholder="User Full Name" value="{{ form.name|default('') }}">
+            </div>
+        </div>
+        <ul class="uk-flex-center"  uk-switcher="connect: .switcher-container; animation: uk-animation-slide-left-medium, uk-animation-slide-right-medium" uk-tab>
+            <li class="uk-active"><a href="#">Details</a></li>
+            <li><a href="#">Access</a></li>
+        </ul>
+        <ul class="uk-switcher switcher-container uk-margin">
+            <li>
+                <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label">Email</label>
+                        <div class="uk-form-controls">
+                            <input name="email" class="uk-input uk-width-1-1" type="email" placeholder="User Email"  value="{{ form.email|default('') }}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Username</label>
+                        <div class="uk-form-controls">
+                            <input name="username" class="uk-input uk-width-1-1" type="text" placeholder="User Username" value="{{ form.username|default('') }}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Password</label>
+                        <div class="uk-form-controls">
+                            <input name="password" class="uk-input uk-width-1-1" type="password" placeholder="User password" value="{{ form.password|default('xxxxxxxxxx') }}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Confirm Password</label>
+                        <div class="uk-form-controls">
+                            <input name="password2" class="uk-input uk-width-1-1" type="password" placeholder="User confirm password" value="{{ form.password2|default('xxxxxxxxxx') }}"/>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label">Activation of User Access to System</label>
+                        <div class="uk-form-controls">
+                            <select name="block" class="uk-select">
+                                <option value="1">Blocked</option>
+                                <option value="0" {% if form.block == 0 %}selected{% endif %}>Active</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Select the Access Groups</label>
+                        <div class="uk-form-controls">
+                            {% if groups %}
+                                {% for group in groups %}
+                                <label><input class="uk-checkbox" name="groups[]" value="{{ group.id }}" type="checkbox" {% if group.id in form.groups %}checked{% endif %}>
+                                    <a href="#modal-{{ item.id }}-{{ group.title|spaceless }}" uk-toggle>{{ group.title|escape('html') }}</a></label><br />
+                                    <div id="modal-{{ item.id }}-{{ group.title|spaceless }}" uk-modal>
+                                        <div class="uk-modal-dialog uk-modal-body">
+                                            <button class="uk-modal-close-default" type="button" uk-close></button>
+                                            <div class="uk-modal-header">
+                                                <h2 class="uk-modal-title">{{ group.title|escape('html') }} Group</h2>
+                                            </div>
+                                            <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                                                <div>
+                                                    <b>Area access of this group</b>
+                                                    <ul class="uk-list uk-list-striped">
+                                                        <li>{{ group.params|map( param => "<b>#{param.area|upper}</b>: #{param.access|default('N')}" )|join('</li><li>')|raw }}</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <b>Access key map</b>
+                                                    <ul class="uk-list">
+                                                        <li>C = Create</li>
+                                                        <li>R = Read</li>
+                                                        <li>U = Update</li>
+                                                        <li>D = Delete</li>
+                                                        <li>N = No-Access</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <input type="hidden" name="user_id" value="{{ form.id|default(0) }}">
+        <input type="hidden" name="{{ token() }}" value="1">
+    </form>
+</div>
+{% endblock %}

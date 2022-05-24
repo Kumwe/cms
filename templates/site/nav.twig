@@ -1,0 +1,258 @@
+{% block bodyNavigation %}
+{% set center = false %}
+{% set right = false %}
+{% if menus %}
+    {% for menu in menus %}
+        {% if menu.parent == 0 and menu.position == 'center' %}
+            {% set center = true %}
+        {% elseif menu.parent == 0 and menu.position == 'right' %}
+            {% set right = true %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% if center and right %}
+<div class="uk-position-relative">
+{% endif %}
+<nav class="uk-navbar-container" uk-navbar{% if center and right %}="dropbar: true"{% endif %}>
+    <div class="uk-navbar-center">
+        <ul class="uk-navbar-nav">
+            <li{% if home %} class="uk-active"{% endif %}><a href="{{ route() }}">{{ home_menu_title|default('Home') }}</a></li>
+            {% if center %}
+                {% for menu in menus %}
+                    {% if menu.parent == 0 and menu.position == 'center' %}
+                        <li{% if menu_active == menu.id %} class="uk-active"{% endif %}>
+                            <a href="{{ route() }}{{ menu.path }}">{{ menu.title|escape('html') }}</a>
+                            {% set load_menu_one = false %}
+                            {% for menu_one in menus %}
+                                {% if menu_one.parent == menu.id %}
+                                    {% set load_menu_one = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if load_menu_one %}
+                                <div class="uk-navbar-dropdown">
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        {% for menu_one in menus %}
+                                            {% if menu_one.parent == menu.id %}
+                                                <li{% if menu_active == menu_one.id %} class="uk-active"{% endif %}>
+                                                    <a href="{{ route() }}{{ menu_one.path }}">{{ menu_one.title|escape('html') }}</a>
+                                                    {% set load_menu_two = false %}
+                                                    {% for menu_two in menus %}
+                                                        {% if menu_two.parent == menu_one.id %}
+                                                            {% set load_menu_two = true %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if load_menu_two %}
+                                                        <ul class="uk-nav-sub">
+                                                            {% for menu_two in menus %}
+                                                                {% if menu_two.parent == menu_one.id %}
+                                                                    <li{% if menu_active == menu_two.id %} class="uk-active"{% endif %}>
+                                                                        <a href="{{ route() }}{{ menu_two.path }}">{{ menu_two.title|escape('html') }}</a>
+                                                                        {% set load_menu_three = false %}
+                                                                        {% for menu_three in menus %}
+                                                                            {% if menu_three.parent == menu_two.id %}
+                                                                                {% set load_menu_three = true %}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        {% if load_menu_three %}
+                                                                            <ul class="uk-nav-sub">
+                                                                                {% for menu_three in menus %}
+                                                                                    {% if menu_three.parent == menu_two.id %}
+                                                                                        <li{% if menu_active == menu_three.id %} class="uk-active"{% endif %}>
+                                                                                            <a href="{{ route() }}{{ menu_three.path }}">{{ menu_three.title|escape('html') }}</a>
+                                                                                            {% set load_menu_four = false %}
+                                                                                            {% for menu_four in menus %}
+                                                                                                {% if menu_four.parent == menu_three.id %}
+                                                                                                    {% set load_menu_four = true %}
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                            {% if load_menu_four %}
+                                                                                                <ul class="uk-nav-sub">
+                                                                                                    {% for menu_four in menus %}
+                                                                                                        {% if menu_four.parent == menu_three.id %}
+                                                                                                            <li{% if menu_active == menu_four.id %} class="uk-active"{% endif %}>
+                                                                                                                <a href="{{ route() }}{{ menu_four.path }}">{{ menu_four.title|escape('html') }}</a>
+                                                                                                                {% set load_menu_five = false %}
+                                                                                                                {% for menu_five in menus %}
+                                                                                                                    {% if menu_five.parent == menu_four.id %}
+                                                                                                                        {% set load_menu_five = true %}
+                                                                                                                    {% endif %}
+                                                                                                                {% endfor %}
+                                                                                                                {% if load_menu_five %}
+                                                                                                                    <ul class="uk-nav-sub">
+                                                                                                                        {% for menu_five in menus %}
+                                                                                                                            {% if menu_five.parent == menu_four.id %}
+                                                                                                                                <li{% if menu_active == menu_five.id %} class="uk-active"{% endif %}>
+                                                                                                                                    <a href="{{ route() }}{{ menu_five.path }}">{{ menu_five.title|escape('html') }}</a>
+                                                                                                                                    {% set load_menu_six = false %}
+                                                                                                                                    {% for menu_six in menus %}
+                                                                                                                                        {% if menu_six.parent == menu_five.id %}
+                                                                                                                                            {% set load_menu_six = true %}
+                                                                                                                                        {% endif %}
+                                                                                                                                    {% endfor %}
+                                                                                                                                    {% if load_menu_six %}
+                                                                                                                                        <ul class="uk-nav-sub">
+                                                                                                                                            {% for menu_six in menus %}
+                                                                                                                                                {% if menu_six.parent == menu_five.id %}
+                                                                                                                                                    <li{% if menu_active == menu_six.id %} class="uk-active"{% endif %}>
+                                                                                                                                                        <a href="{{ route() }}{{ menu_six.path }}">{{ menu_six.title|escape('html') }}</a>
+                                                                                                                                                    </li>
+                                                                                                                                                {% endif %}
+                                                                                                                                            {% endfor %}
+                                                                                                                                        </ul>
+                                                                                                                                    {% endif %}
+                                                                                                                                </li>
+                                                                                                                            {% endif %}
+                                                                                                                        {% endfor %}
+                                                                                                                    </ul>
+                                                                                                                {% endif %}
+                                                                                                            </li>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </ul>
+                                                                                            {% endif %}
+                                                                                        </li>
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        {% endif %}
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    {% if right %}
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav">
+            {% if right %}
+                {% for menu in menus %}
+                    {% if menu.parent == 0 and menu.position == 'right' %}
+                        <li{% if menu_active == menu.id %} class="uk-active"{% endif %}>
+                            <a href="{{ route() }}{{ menu.path }}">{{ menu.title|escape('html') }}</a>
+                            {% set load_menu_one = false %}
+                            {% for menu_one in menus %}
+                                {% if menu_one.parent == menu.id %}
+                                    {% set load_menu_one = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if load_menu_one %}
+                                <div class="uk-navbar-dropdown">
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        {% for menu_one in menus %}
+                                            {% if menu_one.parent == menu.id %}
+                                                <li{% if menu_active == menu_one.id %} class="uk-active"{% endif %}>
+                                                    <a href="{{ route() }}{{ menu_one.path }}">{{ menu_one.title|escape('html') }}</a>
+                                                    {% set load_menu_two = false %}
+                                                    {% for menu_two in menus %}
+                                                        {% if menu_two.parent == menu_one.id %}
+                                                            {% set load_menu_two = true %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if load_menu_two %}
+                                                        <ul class="uk-nav-sub">
+                                                            {% for menu_two in menus %}
+                                                                {% if menu_two.parent == menu_one.id %}
+                                                                    <li{% if menu_active == menu_two.id %} class="uk-active"{% endif %}>
+                                                                        <a href="{{ route() }}{{ menu_two.path }}">{{ menu_two.title|escape('html') }}</a>
+                                                                        {% set load_menu_three = false %}
+                                                                        {% for menu_three in menus %}
+                                                                            {% if menu_three.parent == menu_two.id %}
+                                                                                {% set load_menu_three = true %}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        {% if load_menu_three %}
+                                                                            <ul class="uk-nav-sub">
+                                                                                {% for menu_three in menus %}
+                                                                                    {% if menu_three.parent == menu_two.id %}
+                                                                                        <li{% if menu_active == menu_three.id %} class="uk-active"{% endif %}>
+                                                                                            <a href="{{ route() }}{{ menu_three.path }}">{{ menu_three.title|escape('html') }}</a>
+                                                                                            {% set load_menu_four = false %}
+                                                                                            {% for menu_four in menus %}
+                                                                                                {% if menu_four.parent == menu_three.id %}
+                                                                                                    {% set load_menu_four = true %}
+                                                                                                {% endif %}
+                                                                                            {% endfor %}
+                                                                                            {% if load_menu_four %}
+                                                                                                <ul class="uk-nav-sub">
+                                                                                                    {% for menu_four in menus %}
+                                                                                                        {% if menu_four.parent == menu_three.id %}
+                                                                                                            <li{% if menu_active == menu_four.id %} class="uk-active"{% endif %}>
+                                                                                                                <a href="{{ route() }}{{ menu_four.path }}">{{ menu_four.title|escape('html') }}</a>
+                                                                                                                {% set load_menu_five = false %}
+                                                                                                                {% for menu_five in menus %}
+                                                                                                                    {% if menu_five.parent == menu_four.id %}
+                                                                                                                        {% set load_menu_five = true %}
+                                                                                                                    {% endif %}
+                                                                                                                {% endfor %}
+                                                                                                                {% if load_menu_five %}
+                                                                                                                    <ul class="uk-nav-sub">
+                                                                                                                        {% for menu_five in menus %}
+                                                                                                                            {% if menu_five.parent == menu_four.id %}
+                                                                                                                                <li{% if menu_active == menu_five.id %} class="uk-active"{% endif %}>
+                                                                                                                                    <a href="{{ route() }}{{ menu_five.path }}">{{ menu_five.title|escape('html') }}</a>
+                                                                                                                                    {% set load_menu_six = false %}
+                                                                                                                                    {% for menu_six in menus %}
+                                                                                                                                        {% if menu_six.parent == menu_five.id %}
+                                                                                                                                            {% set load_menu_six = true %}
+                                                                                                                                        {% endif %}
+                                                                                                                                    {% endfor %}
+                                                                                                                                    {% if load_menu_six %}
+                                                                                                                                        <ul class="uk-nav-sub">
+                                                                                                                                            {% for menu_six in menus %}
+                                                                                                                                                {% if menu_six.parent == menu_five.id %}
+                                                                                                                                                    <li{% if menu_active == menu_six.id %} class="uk-active"{% endif %}>
+                                                                                                                                                        <a href="{{ route() }}{{ menu_six.path }}">{{ menu_six.title|escape('html') }}</a>
+                                                                                                                                                    </li>
+                                                                                                                                                {% endif %}
+                                                                                                                                            {% endfor %}
+                                                                                                                                        </ul>
+                                                                                                                                    {% endif %}
+                                                                                                                                </li>
+                                                                                                                            {% endif %}
+                                                                                                                        {% endfor %}
+                                                                                                                    </ul>
+                                                                                                                {% endif %}
+                                                                                                            </li>
+                                                                                                        {% endif %}
+                                                                                                    {% endfor %}
+                                                                                                </ul>
+                                                                                            {% endif %}
+                                                                                        </li>
+                                                                                    {% endif %}
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        {% endif %}
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+</nav>
+{% if center and right %}
+</div>
+{% endif %}
+{% endblock %}

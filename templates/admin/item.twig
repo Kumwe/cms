@@ -1,0 +1,120 @@
+{% extends "index.twig" %}
+
+{% block title %}{% if form.id == 0 %}Create{% else %}Edit{% endif %} Item {{ form.title|default('') }}{% endblock %}
+
+{% block headJavaScriptLinks %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+{% endblock %}
+
+{% block content %}
+ <div class="uk-container uk-margin">
+    {{ block("messages_queue", "message_queue.twig") }}
+     {% if form.id == 0 %}
+         <h3><span uk-icon="icon: pencil; ratio: 1"></span> Create Item</h3>
+     {% else %}
+         <h3><span uk-icon="icon: pencil; ratio: 1"></span> Edit Item {{ form.title|default('') }}</h3>
+     {% endif %}
+    <form class="uk-form-stacked" action="{{ route() }}index.php/item{{ form.post_key|default('') }}" method="post">
+        {% if user('access.item.update', false) %}
+            <div class="uk-button-group uk-width-1-1 uk-margin">
+                <input type="submit" class="uk-button uk-button-primary uk-width-1-2" value="Save"/>
+                <a href="{{ route() }}index.php/items" type="button" class="uk-button uk-button-danger uk-width-1-2">Close</a>
+            </div>
+        {% else %}
+            <a href="{{ route() }}index.php/items" type="button" class="uk-button uk-button-danger uk-width-1-1">Close</a>
+        {% endif %}
+        <div>
+            <label class="uk-form-label">Title</label>
+            <div class="uk-form-controls">
+                <input name="title" class="uk-input uk-width-1-1" type="text" placeholder="Add the item title here..." value="{{ form.title|default('') }}">
+            </div>
+        </div>
+        <ul class="uk-flex-center"  uk-switcher="connect: .switcher-container; animation: uk-animation-slide-left-medium, uk-animation-slide-right-medium" uk-tab>
+            <li class="uk-active"><a href="#">Details</a></li>
+            <li><a href="#">Meta Details</a></li>
+            <li><a href="#">Publish</a></li>
+        </ul>
+        <ul class="uk-switcher switcher-container uk-margin">
+            <li>
+                <div class="uk-margin">
+                    <label class="uk-form-label">Content</label>
+                    <div class="uk-form-controls">
+                        <textarea id="item-text" name="fulltext" class="uk-textarea" type="text" placeholder="Enter your item details here..." >{{ form.fulltext|default('') }}</textarea>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label">Metakey</label>
+                        <div class="uk-form-controls">
+                            <input name="metakey" class="uk-input uk-width-1-1" type="text" value="{{ form.metakey|default('') }}">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Metadesc</label>
+                        <div class="uk-form-controls">
+                            <input name="metadesc" class="uk-input uk-width-1-1" type="text" value="{{ form.metadesc|default('') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label">metadata</label>
+                    <div class="uk-form-controls">
+                        <textarea name="metadata" class="uk-textarea" type="text" rows="10">{{ form.metadata|default('') }}</textarea>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label">Created by Alias</label>
+                        <div class="uk-form-controls">
+                            <input name="created_by_alias" class="uk-input uk-width-1-1" type="text" value="{{ form.created_by_alias|default('') }}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Status</label>
+                        <div class="uk-form-controls">
+                            <select name="state" class="uk-select">
+                                <option value="1">Published</option>
+                                <option value="2" {% if form.state == 2 %}selected{% endif %}>Archived</option>
+                                <option value="-1" {% if form.state == -1 %}selected{% endif %}>Trashed</option>
+                                <option value="" {% if form.state == 0 %}selected{% endif %}>Unpublished</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Published Up</label>
+                        <div class="uk-form-controls">
+                            <input name="publish_up" class="uk-input uk-width-1-1" type="datetime-local"
+                                   value="{{ form.publish_up|default(form.today_date|default('')) }}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Published Down</label>
+                        <div class="uk-form-controls">
+                            <input name="publish_down" class="uk-input uk-width-1-1" type="datetime-local"
+                                   value="{{ form.publish_down|default('') }}"/>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <input type="hidden" name="item_id" value="{{ form.id|default(0) }}">
+        <input type="hidden" name="{{ token() }}" value="1">
+    </form>
+</div>
+<script>
+    ClassicEditor.create(document.querySelector(`#item-text`), {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+            ]
+        }
+    }).catch(error => { console.error(error);});
+</script>
+{% endblock %}

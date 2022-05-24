@@ -1,0 +1,52 @@
+###########################################
+# ======= Enable the Rewrite Engine =======
+
+RewriteEngine On
+
+###########################################
+
+
+###########################################
+# ======= No directory listings =======
+
+IndexIgnore *
+Options +FollowSymLinks
+Options -Indexes
+
+###########################################
+
+
+###########################################
+# ======== Remove multiple slashes ========
+
+RewriteCond %{HTTP_HOST} !=""
+RewriteCond %{THE_REQUEST} ^[A-Z]+\s//+(.*)\sHTTP/[0-9.]+$ [OR]
+RewriteCond %{THE_REQUEST} ^[A-Z]+\s(.*/)/+\sHTTP/[0-9.]+$
+RewriteRule .* http://%{HTTP_HOST}/%1 [R=301,L]
+
+###########################################
+
+
+###########################################
+# ======== Remove trailing slashes ========
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+###########################################
+
+
+###########################################
+# ======== SEF URL Routing ========
+
+# If the request is not for a static asset
+RewriteCond %{REQUEST_URI} !^/media/
+
+# Or for a file that exists in the web directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite the request to run the application
+RewriteRule (.*) index.php
+
+###########################################

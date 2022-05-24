@@ -1,0 +1,20 @@
+{% block messages_queue %}
+{% set message_queue = message_queue() %}
+{% if message_queue|length > 0 %}
+    {% for messages in message_queue|sort %}
+        {% if messages.type == 'error' %}
+            {% set messages_type = 'uk-alert-danger' %}
+        {% elseif messages.type == 'success' %}
+            {% set messages_type = 'uk-alert-success' %}
+        {% elseif messages.type == 'warning' %}
+            {% set messages_type = 'uk-alert-warning' %}
+        {% else %}
+            {% set messages_type = 'uk-alert-primary' %}
+        {% endif %}
+        <div class="{{ messages_type }}" uk-alert>
+            <a class="uk-alert-close" uk-close></a>
+            <p>{{ messages.message }}</p>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

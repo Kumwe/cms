@@ -1,0 +1,82 @@
+{% extends "index.twig" %}
+
+{% block title %}User Groups{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin">
+    <h1 class="uk-article-title"><span uk-icon="icon: users; ratio: 2"></span> User Groups</h1>
+    {{ block("messages_queue", "message_queue.twig") }}
+    {% if user('access.usergroup.create', false) %}
+        <a class="uk-button uk-button-default" href="{{ route() }}index.php/usergroup?task=create">Create</a>
+    {% endif %}
+    {% if list %}
+        <table class="uk-table uk-table-justify uk-table-divider">
+            <thead>
+            <tr>
+                <th class="uk-width-small">Action</th>
+                <th>Group Name</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in list %}
+                <tr>
+                    <td>
+                        <div class="uk-button-group uk-width-1-1">
+                            {% if user('access.usergroup.update', false) %}
+                                <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/usergroup?id={{ item.id }}&task=edit">{% if item.id == 1 %}Read{% else %}Edit{% endif %}</a>
+                            {% else %}
+                                <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/usergroup?id={{ item.id }}&task=edit">Read</a>
+                            {% endif %}
+                            {% if user('access.usergroup.delete', false) %}
+                                {% if item.id != 1 %}
+                                    <button class="uk-button uk-button-default uk-button-small" onclick="confirmDeletion('{{ item.title|escape('js') }}', {{ item.id }});">Delete</button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        {% if item.params %}
+                            <ul uk-accordion>
+                                <li>
+                                    <a class="uk-accordion-title" href="#">{{ item.title|escape('html') }}</a>
+                                    <div class="uk-accordion-content">
+                                        <ul class="uk-list">
+                                            {% for areas in item.params %}
+                                                <li><span uk-icon="icon: chevron-double-right"></span> {{ areas.area|upper }}: <b>{{ areas.access|default('N') }}</b></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        {% else %}
+                            {{ item.title|escape('html') }}
+                        {% endif %}
+                    </td>
+                    <td>{{ item.id }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="uk-alert-primary" uk-alert>
+            {% if user('access.usergroup.create', false) %}
+                <p>There has no user groups been found, click create to add some.</p>
+            {% else %}
+                <p>There has no user groups been found.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% if user('access.usergroup.delete', false) %}
+<script>
+    function confirmDeletion(name, id){
+        UIkit.modal.confirm('You are about to permanently delete <b>' + name + '</b>?').then(function () {
+            window.open("{{ route() }}index.php/usergroup?id=" + id + "&task=delete", "_self")
+        }, function () {
+            // we do nothing ;)
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

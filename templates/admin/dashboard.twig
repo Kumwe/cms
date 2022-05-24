@@ -1,0 +1,57 @@
+{% extends "index.twig" %}
+
+{% block title %}Kumwe Dashboard{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin">
+    <h1 class="uk-article-title">Kumwe CMS Dashboard</h1>
+    {{ block("messages_queue", "message_queue.twig") }}
+    <div class="uk-grid-small uk-child-width-expand@s uk-text-center" uk-grid>
+        {% set no_access = true %}
+        {% if user('access.user.read', false) %}
+            {% set no_access = false %}
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <a href="{{ route() }}index.php/users" uk-icon="icon: user; ratio: 7"></a><br />
+                    <a href="{{ route() }}index.php/users">Users</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if user('access.usergroup.read', false) %}
+            {% set no_access = false %}
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <a href="{{ route() }}index.php/usergroups" uk-icon="icon: users; ratio: 7"></a><br />
+                    <a href="{{ route() }}index.php/usergroups">User Groups</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if user('access.menu.read', false) %}
+            {% set no_access = false %}
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <a href="{{ route() }}index.php/menus" uk-icon="icon: menu; ratio: 7"></a><br />
+                    <a href="{{ route() }}index.php/menus">Menus</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if user('access.item.read', false) %}
+            {% set no_access = false %}
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <a href="{{ route() }}index.php/items" uk-icon="icon: pencil; ratio: 7"></a><br />
+                    <a href="{{ route() }}index.php/items">Items</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if no_access %}
+            <div>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <span uk-icon="icon: ban; ratio: 7"></span><br />
+                    No access found to any area, please contact your system administrator!
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

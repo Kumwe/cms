@@ -1,0 +1,90 @@
+{% extends "index.twig" %}
+
+{% block title %}Menus{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin">
+    <h1 class="uk-article-title"><span uk-icon="icon: menu; ratio: 2"></span> Menus</h1>
+    {{ block("messages_queue", "message_queue.twig") }}
+    {% if user('access.menu.create', false) %}
+        <a class="uk-button uk-button-default" href="{{ route() }}index.php/menu?task=create">Create</a>
+    {% endif %}
+    {% if list %}
+        <table class="uk-table uk-table-justify uk-table-divider">
+            <thead>
+            <tr>
+                <th class="uk-width-small">Action</th>
+                <th class="uk-width-small">Title</th>
+                <th>Item</th>
+                <th>Path</th>
+                <th class="uk-width-small">State</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in list %}
+                <tr>
+                    <td>
+                        <div class="uk-button-group uk-width-1-1">
+                            {% if user('access.menu.update', false) %}
+                                <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/menu?id={{ item.id }}&task=edit">Edit</a>
+                            {% else %}
+                                <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/menu?id={{ item.id }}&task=edit">Read</a>
+                            {% endif %}
+                            {% if user('access.menu.delete', false) %}
+                                <button class="uk-button uk-button-default uk-button-small" onclick="confirmDeletion('{{ item.title|escape('js') }}', {{ item.id }});">Delete</button>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>{% if item.home == 1 %}<span uk-icon="icon: home"></span> {% endif %}{{ item.title|escape('html') }}</td>
+                    <td>
+                        {% if user('access.item.update', user('access.item.read', false)) %}
+                            <a class="uk-button uk-button-default uk-button-small uk-width-1-1" href="{{ route() }}index.php/item?id={{ item.item_id }}&task=edit">
+                                {{ shorten_string(item.item_title, 10) }}
+                            </a>
+                        {% else %}
+                            {{ shorten_string(item.item_title, 10) }}
+                        {% endif %}
+                    </td>
+                    <td>{{ item.path|escape('html') }}</td>
+                    <td>
+                        {% if item.published == 1 %}
+                            <button class="uk-button uk-button-primary uk-button-small uk-width-1-1">Published</button>
+                        {% elseif item.published == 2 %}
+                            <button class="uk-button uk-button-small  uk-width-1-1" disabled>Archived</button>
+                        {% elseif item.published == -1 %}
+                            <button class="uk-button uk-button-danger uk-button-small  uk-width-1-1">Trashed</button>
+                        {% elseif item.published == 0 %}
+                            <button class="uk-button uk-button-default uk-button-small  uk-width-1-1">Unpublished</button>
+                        {% else %}
+                            Error
+                        {% endif %}
+                    </td>
+                    <td>{{ item.id }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="uk-alert-primary" uk-alert>
+            {% if user('access.menu.create', false) %}
+                <p>There has no menus been found, click create to add some.</p>
+            {% else %}
+                <p>There has no menus been found.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% if user('access.menu.delete', false) %}
+<script>
+    function confirmDeletion(title, id){
+        console.log(title);
+        UIkit.modal.confirm('You are about to permanently delete <b>' + title + '</b>?').then(function () {
+            window.open("{{ route() }}index.php/menu?id=" + id + "&task=delete", "_self")
+        }, function () {
+            // we do nothing ;)
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

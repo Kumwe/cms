@@ -1,0 +1,13 @@
+{% extends "header.twig" %}
+{% set user = user_array() %}
+{% block body %}
+<body id="go">
+{% block bodyNavigation %}{{ block("bodyNavigation", "nav.twig") }}{% endblock %}
+<main>
+    {% block content %}{% endblock %}
+</main>
+{% block footerContent %}{% import 'footer.twig' as macros  %}{{ macros.load_footer() }}{% endblock %}
+{% block bodyJavaScript %}{% endblock %}
+{{ url }}
+</body>
+{% endblock %}

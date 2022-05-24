@@ -1,0 +1,21 @@
+{% extends "index.twig" %}
+
+{% block title %}{{ title|escape('html') }}{% endblock %}
+
+{% block metaDescription %}{% if metadesc == '' %}The Kumwe! Framework provides a structurally sound foundation on which to build applications in PHP, which is easy to adapt and extend. Let's find out more!{% else %}{{ metadesc|escape('html') }}{% endif %}{% endblock %}
+
+{% block content %}
+{% if fulltext == '' %}
+<div class="uk-container uk-margin">
+    <h2>We Couldn't Find It</h2>
+    <p class="lead">Sorry, we couldn't find the page matching your request. Try using the navigation to find what you were looking for?</p>
+</div>
+{% else %}
+<div class="uk-margin-remove-top uk-background-cover uk-flex" style="background-image: url('https://source.unsplash.com/random/1920x500/?yachts');">
+    <div class="uk-width-1-2@m uk-text-center uk-margin-auto uk-margin-auto-vertical uk-overlay uk-overlay-default">
+        <h1>{{ title|escape('html') }}</h1>
+        {{ fulltext|raw }}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

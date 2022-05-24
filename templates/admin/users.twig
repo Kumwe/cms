@@ -1,0 +1,112 @@
+{% extends "index.twig" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin">
+    <h1 class="uk-article-title"><span uk-icon="icon: user; ratio: 2"></span> Users</h1>
+    {{ block("messages_queue", "message_queue.twig") }}
+    {% if user('access.user.create', false) %}
+        <a class="uk-button uk-button-default" href="{{ route() }}index.php/user?task=create">Create</a>
+    {% endif %}
+    {% if list %}
+        <table class="uk-table uk-table-justify uk-table-divider">
+            <thead>
+            <tr>
+                <th class="uk-width-small">Action</th>
+                <th>Name</th>
+                <th class="uk-width-small">Email</th>
+                <th>Groups</th>
+                <th class="uk-width-small">State</th>
+                <th>ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in list %}
+                <tr>
+                    <td>
+                        <div class="uk-button-group uk-width-1-1">
+                            {% if user('access.user.update', false) %}
+                                <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/user?id={{ item.id }}&task=edit">Edit</a>
+                            {% else %}
+                                <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/user?id={{ item.id }}&task=edit">Read</a>
+                            {% endif %}
+                            {% if user('access.user.delete', false) %}
+                                <button class="uk-button uk-button-default uk-button-small" onclick="confirmDeletion('{{ item.name|escape('js') }}', {{ item.id }});">Delete</button>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>{{ item.name|escape('html') }}<br /><small>username: {{ item.username|escape('html') }}</small></td>
+                    <td>{{ item.email|escape('html') }}</td>
+                    <td>{% if item.groups %}
+                        <ul class="uk-list uk-list-collapse">
+                            {% for group in item.groups %}
+                            <li>
+                            <a href="#modal-{{ item.id }}-{{ group.title|spaceless }}" uk-toggle>{{ group.title|escape('html') }}</a>
+                            <div id="modal-{{ item.id }}-{{ group.title|spaceless }}" uk-modal>
+                                <div class="uk-modal-dialog uk-modal-body">
+                                    <button class="uk-modal-close-default" type="button" uk-close></button>
+                                    <div class="uk-modal-header">
+                                        <h2 class="uk-modal-title">{{ group.title|escape('html') }} Group</h2>
+                                    </div>
+                                    <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                                        <div>
+                                            <b>Area access of this group</b>
+                                            <ul class="uk-list uk-list-striped">
+                                                <li>{{ group.params|map( param => "<b>#{param.area|upper}</b>: #{param.access|default('N')}" )|join('</li><li>')|raw }}</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <b>Access key map</b>
+                                            <ul class="uk-list">
+                                                <li>C = Create</li>
+                                                <li>R = Read</li>
+                                                <li>U = Update</li>
+                                                <li>D = Delete</li>
+                                                <li>N = No-Access</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            None set
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.block == 0 %}
+                            <button class="uk-button uk-button-primary uk-button-small uk-width-1-1">Active</button>
+                        {% else %}
+                            <button class="uk-button uk-button-danger uk-button-small uk-width-1-1">Blocked</button>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.id }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="uk-alert-primary" uk-alert>
+            {% if user('access.user.create', false) %}
+                <p>There has no users been found, click create to add some. (this should never happen!!!)</p>
+            {% else %}
+                <p>There has no users been found. (this should never happen!!!)</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% if user('access.user.delete', false) %}
+<script>
+    function confirmDeletion(name, id){
+        UIkit.modal.confirm('You are about to permanently delete <b>' + name + '</b>?').then(function () {
+            window.open("{{ route() }}index.php/user?id=" + id + "&task=delete", "_self")
+        }, function () {
+            // we do nothing ;)
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

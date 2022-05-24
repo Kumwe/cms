@@ -1,0 +1,95 @@
+<?php
+/**
+ * @package    Kumwe CMS
+ *
+ * @created    9th April 2022
+ * @author     Llewellyn van der Merwe <https://git.vdm.dev/Llewellyn>
+ * @git        Kumwe CMS <https://git.vdm.dev/Kumwe/cms>
+ * @license    GNU General Public License version 2; see LICENSE.txt
+ * -------------------------------------------------------------------------
+ * THIS SHOULD ONLY BE USED AS A LAST RESORT WHEN THE WEB INSTALLER FAILS
+ *
+ * If you are installing Kumwe! manually ie not using the web browser installer
+ * then rename this file to config.php eg
+ *
+ * UNIX -> mv config.php.example config.php
+ * Windows -> rename config.php.example config.php
+ *
+ * Now edit this file and configure the parameters for your site and
+ * database.
+ *
+ * Finally move this file to the root folder of your Kumwe installation eg
+ *
+ * UNIX -> mv config.php ../
+ * Windows -> copy config.php ../
+ *
+ * SOURCE: https://github.com/joomla/joomla-cms/blob/4.1-dev/installation/configuration.php-dist
+ *
+ */
+class LConfig
+{
+	public $sitename = 'Kumwe!';            // Name of Kumwe site
+
+	/* Database Settings */
+	public $dbtype = 'mysqli';               // Normally mysqli
+	public $host = 'localhost';              // This is normally set to localhost
+	public $user = '';                       // Database username
+	public $password = '';                   // Database password
+	public $db = '';                         // Database name
+	public $dbprefix = 'kumwe_';         // LEAVE THIS UNCHANGED FOR NOW
+	public $dbencryption = 0;
+	public $dbsslverifyservercert = false;
+	public $dbsslkey = '';
+	public $dbsslcert = '';
+	public $dbsslca = '';
+	public $dbsslcipher = '';
+
+	/* Server Settings */
+	public $secret = 'EiT9pmiqMycmQ6xx';     // Use something very secure. For example on linux the following command `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w ${1:-16} | head -n 1`
+	public $helpurl = 'https://help.kumwe.net/proxy?keyref=Help{major}{minor}:{keyref}&lang={langcode}';
+	public $tmp_path = '/tmp';                // This path needs to be writable by Kumwe!
+
+	/* Locale Settings */
+	public $offset = 'UTC';
+
+	/* Session settings */
+	public $lifetime = 15;                    // Session time
+	public $session_handler = 'database';
+	public $session_filesystem_path = '';
+	public $session_memcached_server_host = 'localhost';
+	public $session_memcached_server_port = 11211;
+	public $session_metadata = true;
+	public $session_redis_persist = 1;
+	public $session_redis_server_auth = '';
+	public $session_redis_server_db = 0;
+	public $session_redis_server_host = 'localhost';
+	public $session_redis_server_port = 6379;
+
+	/* Mail Settings */
+	public $mailonline  = true;
+	public $mailer      = 'mail';
+	public $mailfrom    = '';
+	public $fromname    = '';
+	public $massmailoff = false;
+	public $replyto     = '';
+	public $replytoname = '';
+	public $sendmail    = '/usr/sbin/sendmail';
+	public $smtpauth    = false;
+	public $smtpuser    = '';
+	public $smtppass    = '';
+	public $smtphost    = 'localhost';
+	public $smtpsecure  = 'none';
+	public $smtpport    = 25;
+
+	/* Meta Settings */
+	public $MetaDesc = 'Kumwe! - the dynamic portal engine and content management system';
+	public $MetaAuthor = true;
+	public $MetaVersion = false;
+	public $MetaRights = '';
+	public $robots = '';
+	public $sitename_pagetitles = 0;
+
+	/* Cookie Settings */
+	public $cookie_domain = '';
+	public $cookie_path = '';
+}

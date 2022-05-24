@@ -1,0 +1,30 @@
+{% block bodyNavigation %}
+<nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+            <li><a href="{{ route() }}index.php/dashboard">Dashboard</a></li>
+            {% if user('access.user.read', false) %}
+                <li><a href="{{ route() }}index.php/users">Users</a></li>
+            {% endif %}
+            {% if user('access.usergroup.read', false) %}
+                <li><a href="{{ route() }}index.php/usergroups">User Groups</a></li>
+            {% endif %}
+            {% if user('access.menu.read', false) %}
+                <li><a href="{{ route() }}index.php/menus">Menus</a></li>
+            {% endif %}
+            {% if user('access.item.read', false) %}
+                <li><a href="{{ route() }}index.php/items">Items</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav">
+            {% if user.id %}
+            <li class="uk-active"><a href="{{ route() }}index.php/user?id={{ user.id }}">{{ user.name }}</a></li>
+            {% endif %}
+            <li class="uk-active"><a href="{{ route() }}index.php/dashboard?task=logout">Logout</a></li>
+            <li class="uk-active"><a href="/">Site</a></li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}

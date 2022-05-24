@@ -1,0 +1,46 @@
+{% extends "index.twig" %}
+
+{% block title %}{% if form.id == 0 %}Create{% else %}Edit {% endif %}{{ form.title|default('') }} User Group{% endblock %}
+
+{% block content %}
+ <div class="uk-container uk-margin">
+    {{ block("messages_queue", "message_queue.twig") }}
+     {% if form.id == 0 %}
+         <h3><span uk-icon="icon: users; ratio: 1"></span> Create User Group</h3>
+     {% else %}
+         <h3><span uk-icon="icon: users; ratio: 1"></span> Edit {{ form.title|default('') }} User Group</h3>
+     {% endif %}
+    <form class="uk-form-stacked" action="{{ route() }}index.php/usergroup{{ form.post_key|default('') }}" method="post">
+        {% if user('access.usergroup.update', false) %}
+            <div class="uk-button-group uk-width-1-1 uk-margin">
+                <input type="submit" class="uk-button uk-button-primary uk-width-1-2" value="Save"/>
+                <a href="{{ route() }}index.php/usergroups" type="button" class="uk-button uk-button-danger uk-width-1-2">Close</a>
+            </div>
+        {% else %}
+            <a href="{{ route() }}index.php/usergroups" type="button" class="uk-button uk-button-danger uk-width-1-1">Close</a>
+        {% endif %}
+        <div>
+            <label class="uk-form-label">User Group Name</label>
+            <div class="uk-form-controls">
+                <input name="title" class="uk-input uk-width-1-1" type="text" placeholder="Add Group Name" value="{{ form.title|default('') }}">
+            </div>
+        </div>
+        <h3>C = Create | R = Read | U = Update | D = Delete</h3>
+        <small>Use these keys in this order, or <b>empty</b> for no access, or <b>CRUD</b> for full access, or <b>C</b> for just create, or <b>RU</b> for just read and update. Select any pre/area, have fun!</small>
+        <div class="uk-child-width-1-2 uk-margin" uk-grid>
+        {% if form.params %}
+        {%  for params in form.params %}
+        <div>
+            <label class="uk-form-label">{{ params.area|escape('html')|upper }} AREA</label>
+            <div class="uk-form-controls">
+                <input name="params[{{ params.area }}]" class="uk-input uk-width-1-1" type="text" placeholder="CRUD" value="{{ params.access|default('')|upper }}">
+            </div>
+        </div>
+        {% endfor %}
+        {%  endif %}
+        </div>
+        <input type="hidden" name="usergroup_id" value="{{ form.id|default(0) }}">
+        <input type="hidden" name="{{ token() }}" value="1">
+    </form>
+</div>
+{% endblock %}

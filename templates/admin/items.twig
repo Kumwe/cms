@@ -1,0 +1,79 @@
+{% extends "index.twig" %}
+
+{% block title %}Items{% endblock %}
+
+{% block content %}
+<div class="uk-container uk-margin">
+    <h1 class="uk-article-title"><span uk-icon="icon: pencil; ratio: 2"></span> Items</h1>
+    {{ block("messages_queue", "message_queue.twig") }}
+    {% if user('access.item.create', false) %}
+        <a class="uk-button uk-button-default" href="{{ route() }}index.php/item?task=create">Create</a>
+    {% endif %}
+    {% if list %}
+    <table class="uk-table uk-table-justify uk-table-divider">
+        <thead>
+        <tr>
+            <th class="uk-width-small">Action</th>
+            <th class="uk-width-small">Title</th>
+            <th>Content</th>
+            <th class="uk-width-small">State</th>
+            <th>ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in list %}
+        <tr>
+            <td>
+                <div class="uk-button-group uk-width-1-1">
+                    {% if user('access.item.update', false) %}
+                        <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/item?id={{ item.id }}&task=edit">Edit</a>
+                    {% else %}
+                        <a class="uk-button uk-button-default uk-button-small" href="{{ route() }}index.php/item?id={{ item.id }}&task=edit">Read</a>
+                    {% endif %}
+                    {% if user('access.item.delete', false) %}
+                        <button class="uk-button uk-button-default uk-button-small" onclick="confirmDeletion('{{ item.title|escape('js') }}', {{ item.id }});">Delete</button>
+                    {% endif %}
+                </div>
+            </td>
+            <td>{{ item.title|escape('html') }}</td>
+            <td>{% if item.introtext %}{{ shorten_string(item.introtext|striptags) }} {% endif %}{{ shorten_string(item.fulltext|striptags) }}</td>
+            <td>
+            {% if item.state == 1 %}
+                <button class="uk-button uk-button-primary uk-button-small uk-width-1-1">Published</button>
+            {% elseif item.state == 2 %}
+                <button class="uk-button uk-button-small uk-width-1-1" disabled>Archived</button>
+            {% elseif item.state == -1 %}
+                <button class="uk-button uk-button-danger uk-button-small uk-width-1-1">Trashed</button>
+            {% elseif item.state == 0 %}
+                <button class="uk-button uk-button-default uk-button-small uk-width-1-1">Unpublished</button>
+            {% else %}
+                Error
+            {% endif %}
+            </td>
+            <td>{{ item.id }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="uk-alert-primary" uk-alert>
+            {% if user('access.item.create', false) %}
+                <p>There has no items been found, click create to add some.</p>
+            {% else %}
+                <p>There has no items been found.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% if user('access.item.delete', false) %}
+<script>
+    function confirmDeletion(title, id){
+        UIkit.modal.confirm('You are about to permanently delete <b>' + title + '</b>?').then(function () {
+            window.open("{{ route() }}index.php/item?id=" + id + "&task=delete", "_self")
+        }, function () {
+            // we do nothing ;)
+        });
+    }
+</script>
+{% endif %}
+{% endblock %}

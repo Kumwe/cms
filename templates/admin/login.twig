@@ -1,0 +1,20 @@
+{% extends "index.twig" %}
+
+{% block bodyNavigation %}{% endblock %}
+
+{% block content %}
+<div class="uk-height-1-1 uk-background-cover uk-overflow-hidden uk-flex"
+     style="background-color: #fff; background-image: url('https://source.unsplash.com/random/1920x800/?yachts'); min-height: 500px; height: 100%">
+    <div class="uk-width-1-2@m uk-text-center uk-margin-auto uk-margin-auto-vertical uk-overlay uk-overlay-default">
+        {{ block("messages_queue", "message_queue.twig") }}
+        <h1>Login Here</h1>
+        <form action="{{ route() }}index.php/dashboard?task=access" method="post">
+            <input name="username" class="uk-input uk-width-1-2" type="text" placeholder="Username">
+            <input name="password" class="uk-input uk-width-1-2" type="password" placeholder="*************">
+            <input type="submit" class="uk-button uk-button-primary uk-width-1-2" value="Login"/>
+            <input type="hidden" name="{{ token() }}" value="1">
+        </form>
+        <a class="uk-button uk-width-1-2" href="{{ route() }}index.php?account=signup">Create Account</a>
+    </div>
+</div>
+{% endblock %}

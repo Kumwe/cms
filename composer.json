@@ -1,0 +1,72 @@
+{
+  "name": "kumwe/cms",
+  "type": "project",
+  "description": "Kumwe CMS",
+  "keywords": [
+    "kumwe",
+    "cms"
+  ],
+  "homepage": "https://github.com/Kumwe/cms",
+  "license": "GPL-2.0",
+  "config": {
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "7.2.5"
+    },
+    "vendor-dir": "libraries/vendor",
+    "github-protocols": ["https"],
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Kumwe\\CMS\\": "libraries/src/"
+    }
+  },
+  "require": {
+    "php": "^7.2.5",
+    "ext-json": "*",
+    "joomla/application": "~2.0",
+    "joomla/archive": "~2.0",
+    "joomla/authentication": "~2.0",
+    "joomla/console": "~2.0",
+    "joomla/controller": "~2.0",
+    "joomla/crypt": "~2.0",
+    "joomla/data": "~2.0",
+    "joomla/database": "~2.0",
+    "joomla/di": "~2.0",
+    "joomla/event": "~2.0",
+    "joomla/filter": "~2.0",
+    "joomla/filesystem": "~2.0",
+    "joomla/http": "~2.0",
+    "joomla/input": "~2.0",
+    "joomla/model": "~2.0",
+    "joomla/preload": "~2.0",
+    "joomla/ldap": "~2.0",
+    "joomla/oauth1": "~2.0",
+    "joomla/oauth2": "~2.0",
+    "joomla/registry": "~2.0",
+    "joomla/renderer": "~2.0",
+    "joomla/router": "~2.0",
+    "joomla/session": "~2.0",
+    "joomla/string": "~2.0",
+    "joomla/uri": "~2.0",
+    "joomla/utilities": "~2.0",
+    "algo26-matthias/idna-convert": "~3.0",
+    "joomla/view": "~2.0",
+    "laminas/laminas-diactoros": "^2.3",
+    "monolog/monolog": "^2.1",
+    "psr/link": "^1.0",
+    "ramsey/uuid": "^4.0.1",
+    "robmorgan/phinx": "^0.12.3",
+    "defuse/php-encryption": "^2.0",
+    "symfony/asset": "^5.1.2",
+    "symfony/process": "^5.1.2",
+    "symfony/web-link": "^5.1.2",
+    "symfony/yaml": "^5.1.2",
+    "theiconic/php-ga-measurement-protocol": "^2.7.2",
+    "twig/twig": "^2.13",
+    "phpmailer/phpmailer": "~6.0"
+  }
+}

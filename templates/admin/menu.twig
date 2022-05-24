@@ -1,0 +1,154 @@
+{% extends "index.twig" %}
+
+{% block title %}{% if form.id == 0 %}Create{% else %}Edit{% endif %} Menu {{ form.title|default('') }}{% endblock %}
+
+{% block content %}
+ <div class="uk-container uk-margin">
+    {{ block("messages_queue", "message_queue.twig") }}
+     {% if form.id == 0 %}
+         <h3><span uk-icon="icon: menu; ratio: 1"></span> Create Menu</h3>
+     {% else %}
+         <h3><span uk-icon="icon: menu; ratio: 1"></span> Edit Menu {{ form.title|default('') }}</h3>
+     {% endif %}
+    {% if items %}
+    <form id="menu-admin" class="uk-form-stacked" action="{{ route() }}index.php/menu{{ form.post_key|default('') }}" method="post">
+        {% if user('access.menu.update', false) %}
+            <div class="uk-button-group uk-width-1-1 uk-margin">
+                <input type="submit" class="uk-button uk-button-primary uk-width-1-2" value="Save"/>
+                <a href="{{ route() }}index.php/menus" type="button" class="uk-button uk-button-danger uk-width-1-2">Close</a>
+            </div>
+        {% else %}
+            <a href="{{ route() }}index.php/menus" type="button" class="uk-button uk-button-danger uk-width-1-1">Close</a>
+        {% endif %}
+        <div class="uk-child-width-1-2 uk-margin" uk-grid>
+            <div>
+                <label class="uk-form-label">Name (title)</label>
+                <div class="uk-form-controls">
+                    <input name="title" class="uk-input uk-width-1-1" type="text" placeholder="Add the menu title here..." value="{{ form.title|default('') }}">
+                </div>
+            </div>
+            <div>
+                <label class="uk-form-label">The computed path of the menu item based on the alias field.</label>
+                <div class="uk-form-controls">
+                    <input name="path" class="uk-input uk-width-1-1" type="text" readonly value="{{ form.path|default('') }}">
+                </div>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <label class="uk-form-label">Alias</label>
+            <div class="uk-form-controls">
+                <input name="alias" class="uk-input uk-width-1-1" type="text" placeholder="The alias computed from the title if not set" value="{{ form.alias|default('') }}">
+            </div>
+        </div>
+        <ul class="uk-flex-center"  uk-switcher="connect: .switcher-container; animation: uk-animation-slide-left-medium, uk-animation-slide-right-medium" uk-tab>
+            <li class="uk-active"><a href="#">Details</a></li>
+            <li><a href="#">Publish</a></li>
+        </ul>
+        <ul class="uk-switcher switcher-container uk-margin">
+            <li>
+                <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label">Item</label>
+                        <div class="uk-form-controls">
+                            <select name="item_id" class="uk-select">
+                                {% for item in items %}
+                                    <option value="{{ item.id }}" {% if item.id == form.item_id|default(0) %}selected{% endif %}>{{ item.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <a class="uk-button uk-button-default uk-width-1-1" href="{{ route() }}index.php/item?task=create">Create More Items</a>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Parent</label>
+                        <div class="uk-form-controls">
+                            <select id="parent_id" name="parent_id" class="uk-select" onchange="updatePosition();">
+                                <option value="0" {% if form.parent_id == 0 %}selected{% endif %}>Root</option>
+                                {% if menus %}
+                                    {% for menu in menus %}
+                                        <option value="{{ menu.id }}" {% if menu.id == form.parent_id|default(0) %}selected{% endif %}>{{ menu.title }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div id="home-block">
+                        <label class="uk-form-label">Is this your home page menu item?</label>
+                        <div class="uk-form-controls">
+                            <select id="home" name="home" class="uk-select" onchange="updatePosition();">
+                                <option value="1">Yes</option>
+                                <option value="0" {% if form.home == 0 %}selected{% endif %}>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="position-block">
+                        <label class="uk-form-label">Position of this menu item?</label>
+                        <div class="uk-form-controls">
+                            <select name="position" class="uk-select">
+                                <option value="center" {% if form.params.position == 'center' %}selected{% endif %}>Center</option>
+                                <option value="right" {% if form.params.position == 'right' %}selected{% endif %}>Right</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="uk-child-width-1-2 uk-margin" uk-grid>
+                    <div>
+                        <label class="uk-form-label">Published Up</label>
+                        <div class="uk-form-controls">
+                            <input name="publish_up" class="uk-input uk-width-1-1" type="datetime-local"
+                                   value="{{ form.publish_up|default(form.today_date|default('')) }}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="uk-form-label">Published Down</label>
+                        <div class="uk-form-controls">
+                            <input name="publish_down" class="uk-input uk-width-1-1" type="datetime-local"
+                                   value="{{ form.publish_down|default('') }}"/>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="uk-form-label">Status</label>
+                    <div class="uk-form-controls">
+                        <select name="published" class="uk-select">
+                            <option value="1">Published</option>
+                            <option value="2" {% if form.published == 2 %}selected{% endif %}>Archived</option>
+                            <option value="-1" {% if form.published == -1 %}selected{% endif %}>Trashed</option>
+                            <option value="" {% if form.published == 0 %}selected{% endif %}>Unpublished</option>
+                        </select>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <input type="hidden" name="menu_id" value="{{ form.id|default(0) }}">
+        <input type="hidden" name="{{ token() }}" value="1">
+    </form>
+    <script type="text/javascript">
+        function updatePosition(){
+            // based on the parent selection we hide the position and home option
+            let parent = document.getElementById('parent_id').value;
+            if (parent > 0) {
+                document.getElementById('position-block').style.visibility = 'hidden';
+                document.getElementById('home-block').style.visibility = 'hidden';
+                document.getElementById('home').value = 0;
+            } else {
+                document.getElementById('position-block').style.visibility = 'visible';
+                document.getElementById('home-block').style.visibility = 'visible';
+                // based on the home selection we hide the position
+                let home = document.getElementById('home').value;
+                if (home == 1) {
+                    document.getElementById('position-block').style.visibility = 'hidden';
+                }
+            }
+        }
+        updatePosition();
+    </script>
+    {% else %}
+        <a class="uk-button uk-button-default" href="{{ route() }}index.php/item?task=create">Create</a>
+        <div class="uk-alert-primary" uk-alert>
+            <p>There has no items been found, click create to add items.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

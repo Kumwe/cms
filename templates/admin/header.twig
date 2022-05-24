@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <!-- For Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.13.7/dist/css/uikit.min.css" />
+    {% block headCSSLinks %}{% endblock %}
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.13.7/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.13.7/dist/js/uikit-icons.min.js"></script>
+    {% block headJavaScriptLinks %}{% endblock %}
+    <!-- End for Responsive -->
+
+    <!-- For SEO -->
+    <title>{% block title %}Kumwe! Framework, a framework for developing PHP applications{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="description" content="{% block metaDescription %}The Kumwe! Framework provides a structurally sound foundation on which to build applications in PHP, which is easy to adapt and extend. Let's find out more!{% endblock %}">
+    <meta name="generator" content="Kumwe! Framework" />
+    <meta property="og:description" content="{{ block('metaDescription') }}" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Kumwe! Framework" />
+    <meta property="og:title" content="{{ block('title') }}" />
+    <meta property="og:type" content="{% block metaOgType %}website{% endblock %}" />
+    <meta property="og:url" content="{{ request_uri() }}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@Kumwe" />
+    <meta name="twitter:description" content="{{ block('metaDescription') }}" />
+    <meta name="twitter:title" content="{{ block('title') }}" />
+    {% block metadata %}{% endblock %}
+    <!-- End for SEO -->
+
+    <!-- For Misc -->
+    <link href="{{ route() }}favicon.ico" rel="shortcut icon" />
+    <!-- End for misc -->
+
+    {% block headCSS %}{% endblock %}
+    {% block headJavaScript %}{% endblock %}
+</head>
+{% block body %}{% endblock %}
+</html>
