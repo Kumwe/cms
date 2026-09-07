@@ -1,0 +1,43 @@
+﻿2026-09-07T11:21:21.0008129Z Current runner version: '2.337.0'
+2026-09-07T11:21:21.0032247Z ##[group]Runner Image Provisioner
+2026-09-07T11:21:21.0033271Z Hosted Compute Agent
+2026-09-07T11:21:21.0033881Z Version: 20260828.587
+2026-09-07T11:21:21.0034578Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-07T11:21:21.0035387Z Build Date: 2026-08-28T16:44:25Z
+2026-09-07T11:21:21.0036094Z Worker ID: {a0603879-aee4-4d5b-a4dc-89b59d7d8462}
+2026-09-07T11:21:21.0036862Z Azure Region: westus2
+2026-09-07T11:21:21.0037435Z ##[endgroup]
+2026-09-07T11:21:21.0039003Z ##[group]Operating System
+2026-09-07T11:21:21.0039804Z Ubuntu
+2026-09-07T11:21:21.0040385Z 24.04.4
+2026-09-07T11:21:21.0040957Z LTS
+2026-09-07T11:21:21.0041544Z ##[endgroup]
+2026-09-07T11:21:21.0042310Z ##[group]Runner Image
+2026-09-07T11:21:21.0043063Z Image: ubuntu-24.04
+2026-09-07T11:21:21.0043645Z Version: 20260831.293.1
+2026-09-07T11:21:21.0045015Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260831.293/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-07T11:21:21.0046579Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260831.293
+2026-09-07T11:21:21.0047725Z ##[endgroup]
+2026-09-07T11:21:21.0048838Z ##[group]GITHUB_TOKEN Permissions
+2026-09-07T11:21:21.0050761Z Contents: write
+2026-09-07T11:21:21.0051390Z Metadata: read
+2026-09-07T11:21:21.0052285Z ##[endgroup]
+2026-09-07T11:21:21.0054324Z Secret source: Actions
+2026-09-07T11:21:21.0055485Z Prepare workflow directory
+2026-09-07T11:21:21.0387420Z Prepare all required actions
+2026-09-07T11:21:21.0436263Z Getting action download info
+2026-09-07T11:21:21.3957355Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-07T11:21:21.5949398Z Complete job name: Release the recorded version
+2026-09-07T11:21:21.6653036Z ##[group]Run set -euo pipefail
+2026-09-07T11:21:21.6653708Z [36;1mset -euo pipefail[0m
+2026-09-07T11:21:21.6654293Z [36;1mif [ "$REF_PROTECTED" != true ]; then[0m
+2026-09-07T11:21:21.6655188Z [36;1m  echo "::error::A maintainer must protect main before release publication."[0m
+2026-09-07T11:21:21.6656016Z [36;1m  exit 1[0m
+2026-09-07T11:21:21.6656509Z [36;1mfi[0m
+2026-09-07T11:21:21.6696647Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-09-07T11:21:21.6697598Z env:
+2026-09-07T11:21:21.6698038Z   REF_PROTECTED: false
+2026-09-07T11:21:21.6698517Z ##[endgroup]
+2026-09-07T11:21:21.6857339Z ##[error]A maintainer must protect main before release publication.
+2026-09-07T11:21:21.6869951Z ##[error]Process completed with exit code 1.
+2026-09-07T11:21:21.7078661Z Cleaning up orphan processes

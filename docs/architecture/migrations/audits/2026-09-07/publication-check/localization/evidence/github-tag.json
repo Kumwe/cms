@@ -1,0 +1,23 @@
+{
+  "data": {
+    "content": [
+      {
+        "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}",
+        "type": "text"
+      }
+    ],
+    "isError": true,
+    "structuredContent": {
+      "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}",
+      "error_code": "NOT_FOUND",
+      "error_data": {
+        "documentation_url": "https://docs.github.com/rest/git/refs#get-a-reference",
+        "message": "Not Found",
+        "status": "404"
+      }
+    }
+  },
+  "observed_at": "2026-09-07T11:30:35.381Z",
+  "url": "https://api.github.com/repos/kumwe/localization/git/ref/tags/v0.1.1"
+}
+

@@ -1,0 +1,358 @@
+{
+  "schema": "kumwe-extraction-repository-observation/v1",
+  "observed_date": "2026-09-07",
+  "scope": "38 accessible kumwe repositories; default-branch code inventory, not release verification",
+  "repositories": [
+    {
+      "repository": "kumwe/app",
+      "default_branch": "master",
+      "classification": "application"
+    },
+    {
+      "repository": "kumwe/record-query",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/business-policy",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/extension-sdk",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/access-context",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/content-model",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/business-definition",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/contribution",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/localization",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/producer",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/conversion-extension",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/automation",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/navigation",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/engine",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/integration",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/access-control",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/computation",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/business-surface-contract",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/administrator-contract",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/studio",
+      "default_branch": "main",
+      "classification": "implemented-other-language-package"
+    },
+    {
+      "repository": "kumwe/transaction",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/idempotency",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/dart-sdk",
+      "default_branch": "main",
+      "classification": "implemented-other-language-package"
+    },
+    {
+      "repository": "kumwe/interface-standard",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/kumwe-engine",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/portal-contract",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/website",
+      "default_branch": "main",
+      "classification": "application"
+    },
+    {
+      "repository": "kumwe/client",
+      "default_branch": "main",
+      "classification": "documentation-only"
+    },
+    {
+      "repository": "kumwe/business-schema",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/record-model",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/audit",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/secret-envelope",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/sequence",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/record-values",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/reporting",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/approval",
+      "default_branch": "main",
+      "classification": "planned-package-default-branch"
+    },
+    {
+      "repository": "kumwe/conversion",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    },
+    {
+      "repository": "kumwe/canonical-json",
+      "default_branch": "main",
+      "classification": "implemented-php-package"
+    }
+  ],
+  "planned_default_branch_roots": [
+    {
+      "name": "record-query",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "business-policy",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "content-model",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "business-definition",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "conversion-extension",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "automation",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "navigation",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "engine",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "integration",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "access-control",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "business-surface-contract",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "administrator-contract",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "idempotency",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "interface-standard",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "kumwe-engine",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "portal-contract",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "business-schema",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "record-model",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "audit",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "record-values",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "reporting",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    },
+    {
+      "name": "approval",
+      "paths": [
+        "LICENSE",
+        "README.md"
+      ]
+    }
+  ],
+  "active_extraction_prs": [
+    "https://github.com/kumwe/access-control/pull/1",
+    "https://github.com/kumwe/business-definition/pull/1",
+    "https://github.com/kumwe/engine/pull/1"
+  ]
+}

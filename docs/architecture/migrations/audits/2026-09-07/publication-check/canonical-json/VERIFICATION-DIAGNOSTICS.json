@@ -1,0 +1,76 @@
+{
+  "record_kind": "post-publication-verification-diagnostic",
+  "repository": "https://github.com/kumwe/canonical-json",
+  "artifact_identity": "kumwe/canonical-json",
+  "candidate_version": "0.1.0",
+  "migration_id": "KUMWE-MIG-2026-007",
+  "change_set": "KUMWE-CS-2026-007",
+  "observed_at": "2026-09-07T11:31:44.032Z",
+  "observed_by": "independent release verification agent /root/release_verify_current/canonical_computation",
+  "status": "blocked",
+  "publication_observed": false,
+  "default_branch": "main",
+  "default_branch_protected": false,
+  "main_commit": "d96697a6372890d6d67ca65ffdf2bd203f685cbb",
+  "pull_request": {
+    "url": "https://github.com/kumwe/canonical-json/pull/1",
+    "merged": true,
+    "merged_at": "2026-09-07T11:20:50Z",
+    "merged_by": "Llewellynvdm",
+    "merge_commit": "d96697a6372890d6d67ca65ffdf2bd203f685cbb"
+  },
+  "release_workflow": {
+    "url": "https://github.com/kumwe/canonical-json/actions/runs/34116151642",
+    "run_id": 34116151642,
+    "status": "completed",
+    "conclusion": "failure",
+    "head_sha": "d96697a6372890d6d67ca65ffdf2bd203f685cbb",
+    "failed_job_id": 101723435399,
+    "failed_step": "Require protected main before release mutations"
+  },
+  "candidate_tag_probe": {
+    "url": "https://api.github.com/repos/kumwe/canonical-json/git/ref/tags/v0.1.0",
+    "http_status": 404,
+    "observed_tag": null
+  },
+  "release_probe": {
+    "url": "https://api.github.com/repos/kumwe/canonical-json/releases/tags/v0.1.0",
+    "http_status": 404,
+    "release_collection_count": 0
+  },
+  "packagist": {
+    "url": "https://repo.packagist.org/p2/kumwe/canonical-json.json",
+    "status": 200,
+    "response": {
+      "minified": "composer/2.0",
+      "packages": {
+        "kumwe/canonical-json": []
+      },
+      "security-advisories": []
+    }
+  },
+  "clean_consumer": {
+    "status": "not_run",
+    "reason": "No published immutable tag, release or Packagist version exists. Source checkout CI is observed evidence only and cannot substitute for post-publication archive verification."
+  },
+  "published_handoff": {
+    "status": "unavailable",
+    "reason": "No published artifact exists. Merged-source handoff retained as diagnostic input only."
+  },
+  "known_gaps": [
+    "Release workflow failed at the protected-main prerequisite. Live branch metadata confirms protected=false.",
+    "Candidate tag v0.1.0 and GitHub release both return 404; release collection is empty.",
+    "Packagist package metadata returns an empty version list; 0.1.0 is unavailable.",
+    "No release source archive, dist artifact, published handoff, archive/license inventory, manifest/corpus digests, source/tag ancestry, immutable flag, SBOM/provenance or independent no-dev consumer result can be verified for the candidate.",
+    "Downstream semantic adoption/native work/publication and Computation Phase 1B/Phase 2 remain blocked as applicable."
+  ],
+  "schema_limitation": {
+    "schema_path": "repos/app/docs/architecture/governance/schemas/release-attestation.v2.schema.json",
+    "decision": "D-GOV-4 requires a failed attestation using the release-attestation schema, but that schema unconditionally requires an observed non-empty tag plus source_archive.url and a 64-character SHA-256 digest. None is available for this unpublished candidate. A schema-valid failed attestation cannot truthfully be emitted; this separate diagnostic does not claim that schema.",
+    "fabricated_fields": false,
+    "release_attestation_emitted": false,
+    "failed_schema_record_emitted": false
+  },
+  "source_mutations": false,
+  "downstream_permitted": false
+}

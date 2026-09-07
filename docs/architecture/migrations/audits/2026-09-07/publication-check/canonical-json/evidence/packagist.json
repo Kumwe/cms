@@ -1,0 +1,11 @@
+{
+  "url": "https://repo.packagist.org/p2/kumwe/canonical-json.json",
+  "status": 200,
+  "response": {
+    "minified": "composer/2.0",
+    "packages": {
+      "kumwe/canonical-json": []
+    },
+    "security-advisories": []
+  }
+}

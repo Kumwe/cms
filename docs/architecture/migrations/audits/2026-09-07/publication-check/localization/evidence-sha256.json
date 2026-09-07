@@ -1,0 +1,13 @@
+{
+  "evidence/github-jobs.json": "846a10ab1c14858debf14c5289e34954fc612dbcb517213666354fcad4e07be3",
+  "evidence/github-main.json": "8c6f4e64a8d128e92e71c20aa558157a2bfb4124a4f255c2a464b28fe213110e",
+  "evidence/github-pulls.json": "b135f32668d546614e753dadc94df3170ce11333dc0d4968ec4f3a01faf58c78",
+  "evidence/github-release-log.json": "9a2e17b0dcd2772703bbaef76685ec41eec9b2f618b584c7ff83025852c2661b",
+  "evidence/github-releases.json": "3a7f93dd854c183bff0fb1954bd778427e30abc28fa84720877c38b594644263",
+  "evidence/github-repository.json": "a964d827dab9ec44f647aae69fca7e002a193ab604be4fa9afa0b76515fa28f9",
+  "evidence/github-rulesets.json": "4ec1566fa6c978b6c326a08c16107197c7e46064caf37a52f2a90a98fccf6df3",
+  "evidence/github-runs.json": "e83ee8bbbfcff4b1879229edd7aaa4420c02864efb08161655c7f97968074d29",
+  "evidence/github-tag.json": "47131034b87df5c9be103d55f484dd2ed1f3c49157c13fbb0a7d2137e9e49815",
+  "evidence/packagist-observation.json": "a732fb8cc152ab50971482ab0a91259280cce7a108c74cb0c757fc0e94568d2e",
+  "evidence/packagist.json": "b006afcfb00185f638bb9128229892f7eb1813b3204742e8c5b7cd13b05fdf73"
+}

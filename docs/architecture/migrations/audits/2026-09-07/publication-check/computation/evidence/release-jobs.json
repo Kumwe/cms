@@ -1,0 +1,130 @@
+[
+  {
+    "conclusion": "success",
+    "id": 101723078815,
+    "logs_url": null,
+    "name": "PHP 8.5",
+    "run_id": 34116072487,
+    "status": "completed",
+    "steps": [
+      {
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Check out the pushed commit",
+        "number": 2,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Set up PHP",
+        "number": 3,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Install the validated package toolchain",
+        "number": 4,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run the complete package gate",
+        "number": 5,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Verify the no-dev installed-package autoloader and the shipped example",
+        "number": 6,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Post Check out the pushed commit",
+        "number": 12,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 13,
+        "status": "completed"
+      }
+    ]
+  },
+  {
+    "conclusion": "failure",
+    "id": 101723185445,
+    "logs_url": null,
+    "name": "Release the recorded version",
+    "run_id": 34116072487,
+    "status": "completed",
+    "steps": [
+      {
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Check out the pushed commit",
+        "number": 2,
+        "status": "completed"
+      },
+      {
+        "conclusion": "failure",
+        "name": "Require maintainer-protected main before publication",
+        "number": 3,
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Read the newest recorded version",
+        "number": 4,
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Check whether the GitHub release exists",
+        "number": 5,
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Create the version tag when it is missing",
+        "number": 6,
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Publish the GitHub release when it is missing",
+        "number": 7,
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Verify the published release is immutable",
+        "number": 8,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Post Check out the pushed commit",
+        "number": 16,
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 17,
+        "status": "completed"
+      }
+    ]
+  }
+]

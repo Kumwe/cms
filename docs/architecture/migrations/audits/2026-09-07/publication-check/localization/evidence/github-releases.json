@@ -1,0 +1,49 @@
+{
+  "data": [
+    {
+      "assets": [],
+      "assets_url": "https://api.github.com/repos/kumwe/localization/releases/384013579/assets",
+      "author": {
+        "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+        "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/apps/github-actions",
+        "id": 41898282,
+        "login": "github-actions[bot]",
+        "node_id": "MDM6Qm90NDE4OTgyODI=",
+        "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+        "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+        "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+        "type": "Bot",
+        "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+        "user_view_type": "public"
+      },
+      "body": "Portable localization and ICU formatting. Changelog: CHANGELOG.md section 0.1.0.",
+      "created_at": "2026-09-07T10:42:45Z",
+      "draft": false,
+      "html_url": "https://github.com/kumwe/localization/releases/tag/v0.1.0",
+      "id": 384013579,
+      "immutable": false,
+      "name": "v0.1.0",
+      "node_id": "RE_kwDOUIsHHc4W45UL",
+      "prerelease": false,
+      "published_at": "2026-09-07T10:43:25Z",
+      "tag_name": "v0.1.0",
+      "tarball_url": "https://api.github.com/repos/kumwe/localization/tarball/v0.1.0",
+      "target_commitish": "main",
+      "updated_at": "2026-09-07T10:43:25Z",
+      "upload_url": "https://uploads.github.com/repos/kumwe/localization/releases/384013579/assets{?name,label}",
+      "url": "https://api.github.com/repos/kumwe/localization/releases/384013579",
+      "zipball_url": "https://api.github.com/repos/kumwe/localization/zipball/v0.1.0"
+    }
+  ],
+  "observed_at": "2026-09-07T11:30:35.384Z",
+  "url": "https://api.github.com/repos/kumwe/localization/releases"
+}
+

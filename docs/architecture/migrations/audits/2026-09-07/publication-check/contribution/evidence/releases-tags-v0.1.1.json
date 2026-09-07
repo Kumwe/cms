@@ -1,0 +1,18 @@
+{
+  "content": [
+    {
+      "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/releases/releases#get-a-release-by-tag-name\",\"status\":\"404\"}",
+      "type": "text"
+    }
+  ],
+  "isError": true,
+  "structuredContent": {
+    "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/releases/releases#get-a-release-by-tag-name\",\"status\":\"404\"}",
+    "error_code": "NOT_FOUND",
+    "error_data": {
+      "documentation_url": "https://docs.github.com/rest/releases/releases#get-a-release-by-tag-name",
+      "message": "Not Found",
+      "status": "404"
+    }
+  }
+}

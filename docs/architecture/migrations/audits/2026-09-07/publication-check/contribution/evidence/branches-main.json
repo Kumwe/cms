@@ -1,0 +1,99 @@
+{
+  "_links": {
+    "html": "https://github.com/kumwe/contribution/tree/main",
+    "self": "https://api.github.com/repos/kumwe/contribution/branches/main"
+  },
+  "commit": {
+    "author": {
+      "avatar_url": "https://avatars.githubusercontent.com/u/5607939?v=4",
+      "events_url": "https://api.github.com/users/Llewellynvdm/events{/privacy}",
+      "followers_url": "https://api.github.com/users/Llewellynvdm/followers",
+      "following_url": "https://api.github.com/users/Llewellynvdm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Llewellynvdm/gists{/gist_id}",
+      "gravatar_id": "",
+      "html_url": "https://github.com/Llewellynvdm",
+      "id": 5607939,
+      "login": "Llewellynvdm",
+      "node_id": "MDQ6VXNlcjU2MDc5Mzk=",
+      "organizations_url": "https://api.github.com/users/Llewellynvdm/orgs",
+      "received_events_url": "https://api.github.com/users/Llewellynvdm/received_events",
+      "repos_url": "https://api.github.com/users/Llewellynvdm/repos",
+      "site_admin": false,
+      "starred_url": "https://api.github.com/users/Llewellynvdm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Llewellynvdm/subscriptions",
+      "type": "User",
+      "url": "https://api.github.com/users/Llewellynvdm",
+      "user_view_type": "public"
+    },
+    "comments_url": "https://api.github.com/repos/kumwe/contribution/commits/8155757141699d7cd1da8499644662846d66be95/comments",
+    "commit": {
+      "author": {
+        "date": "2026-09-07T11:13:52Z",
+        "email": "5607939+Llewellynvdm@users.noreply.github.com",
+        "name": "eWɘyn"
+      },
+      "comment_count": 0,
+      "committer": {
+        "date": "2026-09-07T11:21:51Z",
+        "email": "5607939+Llewellynvdm@users.noreply.github.com",
+        "name": "eWɘyn"
+      },
+      "message": "Record 0.1.1 successor metadata and final release-integrity gates",
+      "tree": {
+        "sha": "359f30d2335df354adc396dbe80ac971d60c3c2f",
+        "url": "https://api.github.com/repos/kumwe/contribution/git/trees/359f30d2335df354adc396dbe80ac971d60c3c2f"
+      },
+      "url": "https://api.github.com/repos/kumwe/contribution/git/commits/8155757141699d7cd1da8499644662846d66be95",
+      "verification": {
+        "payload": null,
+        "reason": "unsigned",
+        "signature": null,
+        "verified": false,
+        "verified_at": null
+      }
+    },
+    "committer": {
+      "avatar_url": "https://avatars.githubusercontent.com/u/5607939?v=4",
+      "events_url": "https://api.github.com/users/Llewellynvdm/events{/privacy}",
+      "followers_url": "https://api.github.com/users/Llewellynvdm/followers",
+      "following_url": "https://api.github.com/users/Llewellynvdm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Llewellynvdm/gists{/gist_id}",
+      "gravatar_id": "",
+      "html_url": "https://github.com/Llewellynvdm",
+      "id": 5607939,
+      "login": "Llewellynvdm",
+      "node_id": "MDQ6VXNlcjU2MDc5Mzk=",
+      "organizations_url": "https://api.github.com/users/Llewellynvdm/orgs",
+      "received_events_url": "https://api.github.com/users/Llewellynvdm/received_events",
+      "repos_url": "https://api.github.com/users/Llewellynvdm/repos",
+      "site_admin": false,
+      "starred_url": "https://api.github.com/users/Llewellynvdm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Llewellynvdm/subscriptions",
+      "type": "User",
+      "url": "https://api.github.com/users/Llewellynvdm",
+      "user_view_type": "public"
+    },
+    "html_url": "https://github.com/kumwe/contribution/commit/8155757141699d7cd1da8499644662846d66be95",
+    "node_id": "C_kwDOUIBid9oAKDgxNTU3NTcxNDE2OTlkN2NkMWRhODQ5OTY0NDY2Mjg0NmQ2NmJlOTU",
+    "parents": [
+      {
+        "html_url": "https://github.com/kumwe/contribution/commit/5be8f6d85f35fc0ec93884721baf9edcf87c7d97",
+        "sha": "5be8f6d85f35fc0ec93884721baf9edcf87c7d97",
+        "url": "https://api.github.com/repos/kumwe/contribution/commits/5be8f6d85f35fc0ec93884721baf9edcf87c7d97"
+      }
+    ],
+    "sha": "8155757141699d7cd1da8499644662846d66be95",
+    "url": "https://api.github.com/repos/kumwe/contribution/commits/8155757141699d7cd1da8499644662846d66be95"
+  },
+  "name": "main",
+  "protected": false,
+  "protection": {
+    "enabled": false,
+    "required_status_checks": {
+      "checks": [],
+      "contexts": [],
+      "enforcement_level": "off"
+    }
+  },
+  "protection_url": "https://api.github.com/repos/kumwe/contribution/branches/main/protection"
+}

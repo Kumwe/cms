@@ -1,7 +1,9 @@
 # Extraction audit and next batch — 2026-09-07
 
 The first batch completed **Localization and Contribution** and corrected the four started packages.
-After their human merges, **Canonical JSON and Computation Phase 1A** are the current independent batch.
+The maintainer has also merged **Canonical JSON and Computation Phase 1A**. Current development PRs extract
+**Access Control and Business Definition** and implement the first **C++20 Engine decimal** slice. All
+eleven implemented PHP packages are receiving explicit test ownership gates and any missing boundary tests.
 See the [published release review and next boundaries](release-review.md) for the upstream verification
 gaps that must be resolved before dependent extraction. App has already merged the governance bootstrap in
 [#130](https://github.com/kumwe/app/pull/130) and [#131](https://github.com/kumwe/app/pull/131).
@@ -9,7 +11,7 @@ Recreating that bootstrap or installing unpublished package branches would delay
 
 This report is a source and requirements audit, not App adoption or ERP gate acceptance. The App baseline
 examined is `960ce8ec00cf724a7cae03e5ba09c4852c9ab54e`. Its lock still consumes only Conversion `0.1.2`,
-Extension SDK `0.2.4` and Producer `0.2.0` from Kumwe. None of the four new leaf packages is installed.
+Extension SDK `0.2.4` and Producer `0.2.0` from Kumwe. The new extraction packages are not installed in App.
 
 ## Document coverage
 
@@ -24,6 +26,9 @@ were reviewed, together with the twelve current App governance rulings. The ZIP 
 - [Per-file document coverage digests](document-coverage.sha256)
 - [Package and App test ownership, including the first adoption batch](test-ownership.md)
 - [Published releases, verification results and the following extraction batch](release-review.md)
+- [All-package test ownership audit and current implementation PRs](all-package-test-audit.md)
+- [Complete repository inventory](repository-inventory.json)
+- [Fresh publication checks after the latest merges](publication-check/README.md)
 
 ## State observed before corrections
 

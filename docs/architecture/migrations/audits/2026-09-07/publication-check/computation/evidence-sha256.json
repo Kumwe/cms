@@ -1,0 +1,8 @@
+{
+  "evidence/github-observations.json": "0fdaf059634a3eef979c8a216ffe4bb1c73953536fab610dd2c7bc1d61b038dd",
+  "evidence/merged-source-CHANGELOG.md": "c5b4e2936b2587efe3fc1ff4da4ca59a5e8c317a56cf0c9304ff7cb8ee6489d6",
+  "evidence/merged-source-MIGRATION-HANDOFF.md": "3f7494f27bb24c8e5016c2399761a2f35ff4c6850d622b42add74a4f5a36d99a",
+  "evidence/packagist.json": "a7da369d12a4c626268e6fa4d21fb0a8283f64322ced8425314751ccfc8f67b1",
+  "evidence/release-job.log": "c9a3e73930f1f592c1759e2ceeba8dc4c5b9896893467eea05cee227b1fe45e7",
+  "evidence/release-jobs.json": "46a6d1408de58352fad5ccaeac23bf2ed378e804ab7f46fb4b69c7263d11c8d1"
+}

@@ -1,0 +1,11 @@
+{
+  "url": "https://repo.packagist.org/p2/kumwe/computation.json",
+  "status": 200,
+  "response": {
+    "minified": "composer/2.0",
+    "packages": {
+      "kumwe/computation": []
+    },
+    "security-advisories": []
+  }
+}
