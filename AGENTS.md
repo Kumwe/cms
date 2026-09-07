@@ -167,6 +167,9 @@ Pick one. Do every box. Then the hand-back commands.
 ### Add a unit / integration / functional / architecture test
 
 ```
+[ ] Portable package behavior, boundary and conformance assertions live in the owning package's suite,
+    including legacy packages. App keeps host composition, authority, persistence and delivery tests.
+    Follow docs/architecture/governance/README.md section 6 for extraction/adoption test ownership.
 [ ] Class and every test method have a documentation block: what behaviour is pinned,
     @return void, @since 2.0.0. 120-column limit. New tests are not debt; they are not
     added to test-docblock-baseline.json.

@@ -20,6 +20,16 @@
 
 A reviewer must be able to reproduce the decision from this section alone, without access to any chat history.
 
+## Package test ownership
+
+<!-- Required for every package extraction/adoption, including legacy and native packages. -->
+
+- [ ] Package CI owns portable behavior, boundary/refusal, and applicable semantic conformance tests; link its exact head and test-ownership inventory.
+- [ ] Every public type or native ABI capability maps to runnable tests in its owning repository; new exports and stale test references fail the package gate.
+- [ ] App test transfers are listed by exact file/method. Mixed suites preserve host authorization, composition, persistence, lifecycle and recovery assertions.
+- [ ] Adoption removes duplicate implementation tests with their old classes; `removed_tests` paths are absent and `retained_tests` paths exist in the migration ledger.
+- [ ] App neither executes a dependency's unit suite nor attributes vendor classes as App coverage. Cross-layer tests assert the host/binding contract.
+
 ## Records moved
 
 <!-- Tick each record this PR regenerated or edited; every one of them is checked by a gate. -->

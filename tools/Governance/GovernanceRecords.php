@@ -246,6 +246,7 @@ final readonly class GovernanceRecords
     ): void {
         $path = $entry['path'];
         $record = $entry['record'];
+        self::assertMigrationTestOwnership($root, $path, $record);
         $package = self::string($record['package']);
         $locked = $lock->package($package);
         if ($locked === null) {
@@ -399,6 +400,67 @@ final readonly class GovernanceRecords
                 ),
                 'record the attested digest',
             );
+        }
+    }
+
+    /**
+     * Verify that adoption really removes duplicate tests and preserves the named host test files.
+     *
+     * This checks App's own tree only. Package behavior and conformance suites execute in their owner's CI.
+     * A retained test renamed later must be updated in the ledger in the same change.
+     *
+     * @param   string                $root    Repository root.
+     * @param   string                $path    Ledger display path.
+     * @param   array<string, mixed>  $record  Schema-validated migration record.
+     *
+     * @return  void
+     *
+     * @throws  GovernanceViolation  When a removal is false or a retained test is absent.
+     *
+     * @since   2.0.0
+     */
+    private static function assertMigrationTestOwnership(string $root, string $path, array $record): void
+    {
+        $seen = [];
+        foreach (['removed_tests', 'retained_tests'] as $field) {
+            /** @var list<string> $tests */
+            $tests = $record[$field];
+            foreach ($tests as $test) {
+                if (
+                    !str_starts_with($test, 'tests/')
+                    || !str_ends_with($test, '.php')
+                    || preg_match('~[\\\\\x00-\x20\x7f]|(?:^|/)\.{1,2}(?:/|$)|//~', $test) === 1
+                ) {
+                    throw GovernanceViolation::at(
+                        $path,
+                        sprintf('%s names a non-canonical App test path %s', $field, $test),
+                        'name an exact repository-relative PHP file under tests/',
+                    );
+                }
+                if (isset($seen[$test])) {
+                    throw GovernanceViolation::at(
+                        $path,
+                        sprintf('test %s is listed more than once or as both removed and retained', $test),
+                        'record each test once with its actual ownership',
+                    );
+                }
+                $seen[$test] = true;
+                $absolute = $root . '/' . $test;
+                if ($field === 'removed_tests' && (file_exists($absolute) || is_link($absolute))) {
+                    throw GovernanceViolation::at(
+                        $path,
+                        sprintf('removed test %s still exists in App', $test),
+                        'move its portable behavior tests to the package and delete the duplicate at adoption',
+                    );
+                }
+                if ($field === 'retained_tests' && (!is_file($absolute) || is_link($absolute))) {
+                    throw GovernanceViolation::at(
+                        $path,
+                        sprintf('retained host test %s is missing or is a symlink', $test),
+                        'restore the host test or update its reviewed replacement path in this ledger',
+                    );
+                }
+            }
         }
     }
 

@@ -417,6 +417,28 @@ The governance records enter App with the Phase 2 PR; Phase 1 leaves App unchang
 allocated at Phase 1 start against the App `master` directories and cited in the handoff and package PR.
 The bootstrap PR (`NRM-2026-001`) must be merged before any Phase 2 begins (Kumwe-v2-10).
 
+### Test ownership applies to every package
+
+Existing, legacy and future packages own their portable behavior, boundary/refusal and applicable semantic
+conformance tests. Their CI maintains a test-ownership inventory linking each public type (or native ABI
+capability) to tests discovered by its real runner. Newly exported types and stale references fail that
+package's gate. A semantic owner ships versioned language-neutral corpora; a contract without executable
+semantics records why an additional corpus is inapplicable. An inventory proves accountable test ownership,
+not branch coverage or the completeness of assertions; reviewers still inspect behavior and hostile cases.
+
+App runs its own composition, authorization, persistence, lifecycle, recovery and delivery tests. It does
+not run dependency unit suites or credit vendor classes as App coverage. Binding conformance remains with
+the binding; App conformance proves its composed contract. These are distinct subjects even when they use
+the same upstream vectors.
+
+At adoption, classify each source test as a complete transfer, a mixed-suite split or retained host evidence.
+Delete transferred implementation tests with the corresponding old classes. For mixed suites, list the
+exact moved methods and retained assertions in the handoff. The governance gates now check ledger
+`removed_tests` paths are absent and `retained_tests` paths are actual PHP files under `tests/`, rejecting
+duplicates, contradictory ownership and path traversal. When a retained host test is renamed later, update
+its ledger path in the same reviewed change. This guard checks App files without installing or executing a
+package's development test dependencies.
+
 ---
 
 ## 7. Evidence paths

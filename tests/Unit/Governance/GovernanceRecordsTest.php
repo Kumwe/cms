@@ -185,6 +185,28 @@ final class GovernanceRecordsTest extends TestCase
         $attestation = 'docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/RELEASE-ATTESTATION.yaml';
         $example = self::example('core-growth-record.v1.example.md');
 
+        yield 'duplicate package test still present after adoption' => [
+            [['tests/Unit/Example/Describing/DescriberTest.php', '', "<?php\n// Restored duplicate.\n"]],
+            'still exists in App',
+        ];
+        yield 'retained host test absent' => [
+            [[$ledger, 'DescribeSubjectIntegrationTest.php', 'MissingIntegrationTest.php']],
+            'retained host test tests/Integration/Example/MissingIntegrationTest.php is missing',
+        ];
+        yield 'same test removed and retained' => [
+            [[$ledger, 'tests/Integration/Example/DescribeSubjectIntegrationTest.php',
+                'tests/Unit/Example/Describing/DescriberTest.php']],
+            'both removed and retained',
+        ];
+        yield 'test ownership path traversal' => [
+            [[$ledger, 'tests/Unit/Example/Describing/DescriberTest.php', 'tests/../outside.php']],
+            'non-canonical App test path',
+        ];
+        yield 'test ownership does not accept directory claims' => [
+            [[$ledger, 'tests/Unit/Example/Describing/DescriberTest.php', 'tests/Unit/Example/']],
+            'non-canonical App test path',
+        ];
+
         yield 'ledger id differs from file name' => [
             [[$ledger, 'migration_id: KUMWE-MIG-2026-001', 'migration_id: KUMWE-MIG-2026-002']],
             'differs from the file name',
