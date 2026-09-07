@@ -435,7 +435,9 @@ At adoption, classify each source test as a complete transfer, a mixed-suite spl
 Delete transferred implementation tests with the corresponding old classes. For mixed suites, list the
 exact moved methods and retained assertions in the handoff. The governance gates now check ledger
 `removed_tests` paths are absent and `retained_tests` paths are actual PHP files under `tests/`, rejecting
-duplicates, contradictory ownership and path traversal. When a retained host test is renamed later, update
+duplicates, contradictory ownership, path traversal and symlinked evidence. Exact App test-file removals
+named by the released handoff must also appear in the ledger; emptying the list cannot bypass removal.
+Handoff prose describing method-level splits still requires review. When a retained host test is renamed later, update
 its ledger path in the same reviewed change. This guard checks App files without installing or executing a
 package's development test dependencies.
 
