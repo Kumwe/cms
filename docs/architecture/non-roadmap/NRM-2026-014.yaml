@@ -1,0 +1,27 @@
+schema: kumwe-non-roadmap-record/v1
+id: NRM-2026-014
+nrm_ref: NRM-2026-014
+roadmap_impact: None
+rationale: "Enforce the user's package test ownership requirement at the App adoption boundary."
+repositories:
+  - kumwe/app
+behavior_before: "Migration records could claim removed and retained tests without checking the actual App files."
+behavior_after: "Governance gates reject remaining duplicates, missing host tests and contradictory test inventories."
+public_api_impact: None
+dependency_impact: None
+compatibility: unchanged
+data_migration: None
+security_impact: "Retained host authorization and integration test files cannot silently disappear from adoption evidence."
+performance:
+  claim: None
+  evidence: []
+operations_deployment: None
+recovery_rollback: "Revert the governance change; no runtime or persisted data changes."
+artifacts_evidence:
+  - tools/Governance/GovernanceRecords.php
+  - tests/Unit/Governance/GovernanceRecordsTest.php
+  - docs/architecture/governance/README.md
+known_gaps:
+  - "File ownership checks do not prove test assertions are complete; package CI and review own that evidence."
+owner: Codex
+status: delivered
