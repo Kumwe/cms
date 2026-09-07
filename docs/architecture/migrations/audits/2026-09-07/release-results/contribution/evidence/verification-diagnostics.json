@@ -1,0 +1,317 @@
+{
+  "package": "kumwe/contribution",
+  "version": "0.1.0",
+  "status": "failed",
+  "observed_at": "2026-09-07T11:00:29Z",
+  "independent_verification": {
+    "phase_1_chat_history_read": false,
+    "source_edits": false,
+    "remote_mutations": false,
+    "downstream_implementation_or_adoption": false
+  },
+  "controls": [
+    "Kumwe-v2-03",
+    "Kumwe-v2-05",
+    "Kumwe-v2-07",
+    "Kumwe-v2-08",
+    "Kumwe-v2-11",
+    "repository 00-Implementation-Brief-v2.md",
+    "D-GOV-4",
+    "D-GOV-11"
+  ],
+  "source_identity": {
+    "merge_commit": "0504e87c836ca61edadc92df4203d6ccba8f0eca",
+    "tree": "203fbe66fd2ea77e257e40f46fddf44ec6e75505",
+    "parents": [
+      "46fe5d4c45caf28e654dd26dfcf0202c38c437e5"
+    ],
+    "git_fsck_full_exit_code": 0,
+    "git_merge_base_is_ancestor_tag_head_exit_code": 0,
+    "exact_tag_equals_observed_main": true,
+    "clean_detached_checkout": "/workspace/scratch/dad0c5ae0881/release-verification/contribution/source",
+    "tracked_source_unchanged": true,
+    "commit_signature_verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "human_merge": {
+    "url": "https://github.com/kumwe/contribution/pull/1",
+    "merged_at": "2026-09-07T10:44:18Z",
+    "merged_by": "Llewellynvdm",
+    "merge_commit_sha": "0504e87c836ca61edadc92df4203d6ccba8f0eca",
+    "base": "main"
+  },
+  "publication": {
+    "release_url": "https://github.com/kumwe/contribution/releases/tag/v0.1.0",
+    "release_id": 384014386,
+    "publisher": "github-actions[bot]",
+    "published_at": "2026-09-07T10:44:48Z",
+    "immutable": false,
+    "assets": [],
+    "effective_rulesets": [],
+    "current_main_protected": false,
+    "historical_protection_unknown": true,
+    "workflow": {
+      "url": "https://github.com/kumwe/contribution/actions/runs/34113003675",
+      "id": 34113003675,
+      "head_sha": "0504e87c836ca61edadc92df4203d6ccba8f0eca",
+      "event": "push",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 101713292781,
+          "name": "PHP 8.5",
+          "conclusion": "success"
+        },
+        {
+          "id": 101713387573,
+          "name": "Release the recorded version",
+          "conclusion": "success"
+        }
+      ],
+      "artifacts": {
+        "total_count": 0,
+        "artifacts": []
+      }
+    }
+  },
+  "source_archive_and_registry_dist": {
+    "url": "https://api.github.com/repos/kumwe/contribution/zipball/0504e87c836ca61edadc92df4203d6ccba8f0eca",
+    "sha256": "ed0166aefbac1b0497e9ddec180dedffd19397f6456d65e5da4b7a7f6fb1fac7",
+    "bytes": 41145,
+    "file_count": 24,
+    "every_file_matches_exact_release_source": true,
+    "archive_allowlist_passed": true,
+    "license": "Apache-2.0",
+    "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "composer_metadata_sha256": "86c52b2103d569062ea3668a4f91467cee440e8d8adda34d995e27c7d4a64b76",
+    "published_registry_shasum": ""
+  },
+  "handoff": {
+    "migration_id": "KUMWE-MIG-2026-006",
+    "change_set": "KUMWE-CS-2026-006",
+    "sha256": "c0fc528ba76532acca0158ce59ab6ac4c44e1e405f52e8c2e13638616000c169",
+    "artifact_kind": "framework_php",
+    "target": {
+      "repository": "https://github.com/kumwe/contribution",
+      "artifact_identity": "kumwe/contribution",
+      "canonical_namespace_or_abi": "Kumwe\\Contribution",
+      "branch": "agent/extract-contribution-primitives-v2",
+      "pull_request": "https://github.com/kumwe/contribution/pull/1"
+    },
+    "responsibility": "Neutral owners, explicit surface policies and deterministic owner-scoped data registries.",
+    "semantic_inputs": [],
+    "runtime_dependency_ceiling_satisfied": true,
+    "manifest_digests_match": true,
+    "app_strict_package_manifests_reader_passed": true,
+    "next_task": "Verify release; separate SDK adoption and successor release; then separate App adoption",
+    "next_consumer": "https://github.com/kumwe/extension-sdk"
+  },
+  "manifests_and_corpora": [
+    {
+      "path": "resources/public-api/v1.json",
+      "sha256": "799d99af60e98f8e109a3ed9a3b47eb5f2f9b0e7d88688bd9b71246ed78b116f"
+    },
+    {
+      "path": "resources/capabilities/v1.json",
+      "sha256": "1c93955f9eef692deade3a07a8ea7a05436f9515dcdf280c4a6e497948b14841"
+    },
+    {
+      "path": "resources/service-map/v1.json",
+      "sha256": "705a8744ffde741395d2fdd1efc8d632f3fc34458eecc4baa4b56197b8f96bfb"
+    },
+    {
+      "path": "MIGRATION-HANDOFF.md",
+      "sha256": "c0fc528ba76532acca0158ce59ab6ac4c44e1e405f52e8c2e13638616000c169"
+    },
+    {
+      "path": "tests/Case/ContributionTest.php",
+      "sha256": "c304be410e7cf8f735affdcebcb38fee56ab70ef190f583e788296f3ea56e85d"
+    }
+  ],
+  "registry": {
+    "url": "https://repo.packagist.org/p2/kumwe/contribution.json",
+    "metadata_sha256": "0b4012381f07f5449b57e6b0ef9d08a9ae9f1407e4fff4d5049b39cc5900f6e7",
+    "version_record": {
+      "name": "kumwe/contribution",
+      "description": "Neutral contribution owners, explicit surface policies and bounded deterministic data registries.",
+      "keywords": [],
+      "homepage": "https://github.com/kumwe/contribution",
+      "version": "v0.1.0",
+      "version_normalized": "0.1.0.0",
+      "license": [
+        "Apache-2.0"
+      ],
+      "authors": [],
+      "source": {
+        "url": "https://github.com/kumwe/contribution.git",
+        "type": "git",
+        "reference": "0504e87c836ca61edadc92df4203d6ccba8f0eca"
+      },
+      "dist": {
+        "url": "https://api.github.com/repos/kumwe/contribution/zipball/0504e87c836ca61edadc92df4203d6ccba8f0eca",
+        "type": "zip",
+        "shasum": "",
+        "reference": "0504e87c836ca61edadc92df4203d6ccba8f0eca"
+      },
+      "type": "library",
+      "support": {
+        "issues": "https://github.com/kumwe/contribution/issues",
+        "source": "https://github.com/kumwe/contribution"
+      },
+      "funding": [],
+      "time": "2026-09-07T10:44:17+00:00",
+      "published-time": "2026-09-07T10:44:48+00:00",
+      "autoload": {
+        "psr-4": {
+          "Kumwe\\Contribution\\": "src/"
+        }
+      },
+      "require": {
+        "php": "^8.5"
+      },
+      "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "squizlabs/php_codesniffer": "^4.0"
+      }
+    },
+    "consumer_lock_source_and_dist_equal_registry": true
+  },
+  "clean_consumer": {
+    "platform": {
+      "php": "8.5.10",
+      "composer": "2.10.3",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "thread_mode": "NTS",
+      "icu": null
+    },
+    "install_exit_code": 0,
+    "flags": [
+      "--no-dev",
+      "--no-interaction",
+      "--no-progress",
+      "--no-plugins",
+      "--no-scripts",
+      "--classmap-authoritative",
+      "--prefer-dist"
+    ],
+    "network_constraint": "COMPOSER_DISABLE_NETWORK=1; cached registry dist artifacts; fresh consumer vendor; no scripts or plugins; kernel network namespace not available",
+    "packages_dev": [],
+    "root_require": {
+      "kumwe/contribution": "0.1.0"
+    },
+    "tuple": [
+      {
+        "name": "kumwe/contribution",
+        "version": "v0.1.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/kumwe/contribution.git",
+          "reference": "0504e87c836ca61edadc92df4203d6ccba8f0eca"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/kumwe/contribution/zipball/0504e87c836ca61edadc92df4203d6ccba8f0eca",
+          "reference": "0504e87c836ca61edadc92df4203d6ccba8f0eca",
+          "shasum": ""
+        },
+        "license": [
+          "Apache-2.0"
+        ]
+      }
+    ],
+    "lock_sha256": "8a1df855426d2a79fdf80c6f041f36d4be7cf2b89146921d853d6a75de8afa03",
+    "classmap_no_app_or_test_symbols": true,
+    "installed_files_match_downloaded_archive": true,
+    "checks": [
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/source/tools/verify-archive.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/offline-consumer/vendor/kumwe/contribution"
+        ],
+        "exit_code": 0,
+        "output": "Archive verified: 24 files, 6 public symbols, no development path shipped.\n"
+      },
+      {
+        "command": [
+          "composer",
+          "check-platform-reqs",
+          "--no-dev"
+        ],
+        "exit_code": 0,
+        "output": "Composer could not detect the root package (kumwe-verification/contribution-consumer) version, defaulting to '1.0.0'. See https://getcomposer.org/root-version\nChecking non-dev platform requirements for packages in the vendor dir\nphp 8.5.10   success \n"
+      },
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/offline-consumer/vendor/kumwe/contribution/resources/toolchain/autoload-smoke.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/offline-consumer/vendor/autoload.php"
+        ],
+        "exit_code": 0,
+        "output": "Composer autoload smoke passed: 6 public symbols loaded (classmap-authoritative autoloader).\n"
+      },
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/offline-consumer/vendor/kumwe/contribution/examples/typed-consumer.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/offline-consumer/vendor/autoload.php"
+        ],
+        "exit_code": 0,
+        "output": "Contribution consumer: registration, exact-owner lookup and removal passed.\n"
+      },
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/contribution/source/tests/run.php"
+        ],
+        "exit_code": 0,
+        "output": "ContributionTest.php                           7 tests\n\nContribution suite passed: 7 tests, 95 assertions.\n"
+      }
+    ]
+  },
+  "security": {
+    "release_job_composer_audit_success": true,
+    "exact_release_job_id": 101713292781,
+    "publisher_sbom": null,
+    "publisher_signed_provenance": null,
+    "current_audit_status": "passed; no advisories or abandoned packages"
+  },
+  "known_gaps": [
+    "BLOCKING: The immutable version-to-source binding required by Kumwe-v2-07 release protocol steps 4-6 and Kumwe-v2-11 is not established. GitHub release immutable=false and the public effective repository rulesets response is empty. The full source SHA and the downloaded archive SHA-256 verify observed content; they do not prove that the v0.1.0 tag or future registry version mapping cannot be changed. No tag movement was observed.",
+    "BLOCKING: Kumwe-v2-07 release protocol step 2 requires a human merge to protected main. PR 1 was merged by Llewellynvdm, but the current main branch API reports protected=false and no historical protection evidence was supplied. This records a missing required proof and does not assert what the settings were at merge time.",
+    "No publisher SBOM or cryptographically signed provenance was found in release assets (empty) or release workflow artifacts (zero); the merge commit is unsigned. Applicability of signed provenance/SBOM under Kumwe-v2-07 where-applicable wording remains unresolved. These null fields are observed absence, not a successful supply-chain gate."
+  ],
+  "downstream_tasks_blocked": true,
+  "evidence_files": {
+    "evidence/app-manifest-reader.log": "45e2754d787fac288b38482fd870ae070b88aa290c4630db5c8411478bdcb2e5",
+    "evidence/consumer-security-audit.json": "3d68c4566587606c21e4bcd82b55d322ddb79158f657d9fb90bf0d24ab5bccdf",
+    "evidence/consumer-security-audit.stderr": "4e7143479208eb0706c71f71494b938cb0e28d3f3348eb6e3db52598927cbf2d",
+    "evidence/dist-download.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/github-artifacts.json": "f7417e1fb877d3f5934f143cc38ad9e2905476e8f5ac6776507d09441efcd6f6",
+    "evidence/github-branch.json": "a57bbd3ff1162c17597d457871b5a84b7c1576880baba427ddbe8c9a9d8d877f",
+    "evidence/github-commit.json": "e538e7c50e1d32350af39a2304a27f2ac5fa3fcd1d8668515e7a71122d8ef8c1",
+    "evidence/github-jobs.json": "bff15031291abd690956821d4c8d933e5f2db4adb463b91e27b0fd50067feb40",
+    "evidence/github-pr.json": "91417e304b4bd0ae369f6cf412d2bf0be086a7550d9587110672c20375025d29",
+    "evidence/github-prs.json": "63328414aaf820999f2ecb849915d6365013d6aed40bb9d8b2c766d9bd4c8c03",
+    "evidence/github-release.json": "7f24310ab879a1853d07ab714d5abdeb06d016135501f6053271f4564da9864d",
+    "evidence/github-rulesets.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "evidence/github-runs.json": "c41fe63f572ab5d8fb150b619ccdcfd86fe62e9b7a52944758320ddda2bcd216",
+    "evidence/github-tag.json": "26db55e3cf96b3a54b33ff81057c20c3fcf9ebf2642f3a300433e280fb0eeead",
+    "evidence/github-tree.json": "bf71fd3007e3f426af666bc59c2ecda05a98e29e1e595d9734df25f123633cbe",
+    "evidence/independent-consumer-checks.json": "24cff6f90db9849a18c9e9ff3dac687b6c61b0ce1cfc54f2733e5792e2d8ccf6",
+    "evidence/independent-source-checks.log": "f14b841bcbb799b4d88b0469b0cda896be206ad61e48f676a63f5512f953e9d8",
+    "evidence/job-101713292781.log": "cc85e3e335d86aa69a8c41a966f2136e8aabc2dc86b95197de5918775e195370",
+    "evidence/job-101713387573.log": "99f48d644555bdd90aa1a8b269b423436b934ac3d86aeade601446f8b570b354",
+    "evidence/offline-consumer-install.log": "912dd6796deef960d27745f79c0e61d3d3fa1465c803986c90e5d36c086270ca",
+    "evidence/published-dist-inventory.json": "d46ca4694202745759ca2deed69b38d934897232fdf715b5b0c6ecb768f616fc",
+    "evidence/registry-consumer-install.log": "f888189b0faff3578cc85696fcf60db03a33253ec13fe6d719f9c63c4770ee9d"
+  }
+}

@@ -1,0 +1,388 @@
+{
+  "schema": "kumwe-release-attestation/v2",
+  "artifact_kind": "framework_php",
+  "migration_id": "KUMWE-MIG-2026-004",
+  "change_set": "KUMWE-CS-2026-004",
+  "repository": "https://github.com/kumwe/access-context",
+  "merge_commit": "34241cbd0cc67934536d2921eca14b063be6fb81",
+  "version": "0.1.0",
+  "tag": "v0.1.0",
+  "source_archive": {
+    "url": "https://api.github.com/repos/kumwe/access-context/zipball/34241cbd0cc67934536d2921eca14b063be6fb81",
+    "sha256": "d8003945f4beb65ed3d989d593f018507c361a08c5191f50405abb7316bc902b"
+  },
+  "artifacts": [
+    {
+      "identity": "kumwe/access-context 0.1.0 Composer source ZIP",
+      "url": "https://api.github.com/repos/kumwe/access-context/zipball/34241cbd0cc67934536d2921eca14b063be6fb81",
+      "sha256": "d8003945f4beb65ed3d989d593f018507c361a08c5191f50405abb7316bc902b",
+      "evidence_path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/access-context-34241cbd.zip"
+    }
+  ],
+  "manifests_and_corpora": [
+    {
+      "path": "resources/public-api/v1.json",
+      "sha256": "c750b339b2065be303e424dc604cee8dc58d2292addb8c8125fa73c41042bebd",
+      "observed_sha256": "c750b339b2065be303e424dc604cee8dc58d2292addb8c8125fa73c41042bebd",
+      "matches_released_handoff": true
+    },
+    {
+      "path": "resources/capabilities/v1.json",
+      "sha256": "def178c5ad983111016fb27be610c57e6719a86f52502dbf2e679afa7244de5b",
+      "observed_sha256": "def178c5ad983111016fb27be610c57e6719a86f52502dbf2e679afa7244de5b",
+      "matches_released_handoff": true
+    },
+    {
+      "path": "resources/service-map/v1.json",
+      "sha256": "dd976feb7033d566773a730dcb5e3ac1f78bf68027204b48bf91f99138a041bb",
+      "observed_sha256": "dd976feb7033d566773a730dcb5e3ac1f78bf68027204b48bf91f99138a041bb",
+      "matches_released_handoff": true
+    },
+    {
+      "identity": "tests/Case/*.php context/freshness/fingerprint/hostile-input vectors",
+      "source_commit": "34241cbd0cc67934536d2921eca14b063be6fb81",
+      "inventory_path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/corpus-file-digests.json",
+      "inventory_sha256": "4002a9c07cf61049ef3fbf628c6c40b79227c87f639a7c9bdfbd91ee7e166686",
+      "published_composer_archive_inclusion": false,
+      "note": "Source tests are intentionally export-ignored; current released commit suite was rerun independently."
+    }
+  ],
+  "abi_and_capabilities": null,
+  "sbom": {
+    "url": null,
+    "sha256": null
+  },
+  "provenance": null,
+  "release_workflow": {
+    "url": "https://github.com/kumwe/access-context/actions/runs/34112933696",
+    "id": 34112933696,
+    "head_sha": "34241cbd0cc67934536d2921eca14b063be6fb81",
+    "result": "success",
+    "php_job": 101713070558,
+    "publication_job": 101713191934,
+    "log_evidence": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/release-php85.log"
+  },
+  "registry_or_pie_verification": [
+    {
+      "registry_url": "https://repo.packagist.org/p2/kumwe/access-context.json",
+      "evidence_path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/packagist.json",
+      "sha256": "d0beab88b4f8cee05e3cac62b9e80c2dba7190d20df5f47c005186b0faf981bd",
+      "version": "v0.1.0",
+      "version_normalized": "0.1.0.0",
+      "source_reference": "34241cbd0cc67934536d2921eca14b063be6fb81",
+      "dist_reference": "34241cbd0cc67934536d2921eca14b063be6fb81",
+      "dist_url": "https://api.github.com/repos/kumwe/access-context/zipball/34241cbd0cc67934536d2921eca14b063be6fb81",
+      "dist_shasum": "",
+      "composer_name_autoload_require_license_match": true
+    }
+  ],
+  "clean_consumer_or_build_verification": [
+    {
+      "status": "passed",
+      "artifact": "Downloaded Packagist dist ZIP; not a locally rebuilt replacement",
+      "workspace": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/consumer",
+      "command": "composer install --no-dev --classmap-authoritative --no-plugins --no-scripts --no-interaction --no-progress",
+      "network_constraints": {
+        "packagist_disabled_in_consumer_repositories": true,
+        "COMPOSER_DISABLE_NETWORK": "1",
+        "isolated_composer_home_and_cache": true,
+        "dist_url": "file:///workspace/scratch/dad0c5ae0881/release-verification/access-context/access-context-34241cbd.zip",
+        "os_network_namespace_disabled": false
+      },
+      "php": "8.5.10 NTS",
+      "installed_dependencies": {
+        "kumwe/access-context": "v0.1.0"
+      },
+      "runtime_requirement": {
+        "php": "^8.5"
+      },
+      "development_dependencies_installed": false,
+      "authoritative_loader": true,
+      "archive_files": 30,
+      "public_symbols_loaded": 11,
+      "examples_executed": 3,
+      "config_provider": null,
+      "provider_absence_reason": "Only values, enums, contracts and an exception; host adapters supply context explicitly.",
+      "archive_bytes_match_source_and_installed_package": true,
+      "evidence": [
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-install.log",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-checks.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-isolation-corrected.log"
+      ]
+    }
+  ],
+  "verified_at": "2026-09-07T10:55:36.687664+00:00",
+  "verified_by": "Independent Codex post-publication verifier session; no Phase 1 chat history read",
+  "status": "failed",
+  "known_gaps": [
+    {
+      "id": "release-version-immutability-not-established",
+      "blocking": true,
+      "observed_facts": {
+        "github_release_id": 384013889,
+        "github_release_immutable": false,
+        "tag_type": "lightweight commit reference",
+        "applicable_repository_rulesets": [],
+        "source_sha_content_addressed": true,
+        "source_archive_bytes_downloaded_and_sha256_recorded": true
+      },
+      "assessment": "The observed full Git commit and downloaded archive digest identify exact content. They do not establish immutability of the published 0.1.0 version-to-source binding: GitHub reports the release mutable and exposes no protecting tag ruleset. No alternative enforced immutable release/version binding was observed. This result does not assert that the tag moved or the exact Git object changed.",
+      "requirement": "Kumwe-v2-11: stop on a mutable coordinate; v2-05: exact-pinned verified immutable pre-1.0 releases; v2-07 release protocol steps 4-6.",
+      "evidence": [
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/release.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/tag.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/final-tag.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/rulesets.json"
+      ]
+    },
+    {
+      "id": "protected-main-release-path-not-established",
+      "blocking": true,
+      "observed_facts": {
+        "branch": "main",
+        "protected": false,
+        "merge_actor": "Llewellynvdm",
+        "merged_at": "2026-09-07T10:43:28Z"
+      },
+      "assessment": "Human merge is observed, but the repository main branch currently reports protected:false and no rulesets. The required protected-main release path cannot be attested from this evidence. This does not claim knowledge of historical branch protection settings.",
+      "requirement": "Kumwe-v2-07 release protocol step 2: human maintainer merges to protected main.",
+      "evidence": [
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/main-branch.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/rulesets.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/pr-2.json"
+      ]
+    },
+    {
+      "id": "published-sbom-and-signed-provenance-absent",
+      "blocking": "unresolved applicability; not the sole failure basis",
+      "observed_facts": {
+        "github_release_assets": [],
+        "release_workflow_retained_artifacts": 0,
+        "source_commit_signature_verified": false,
+        "source_commit_signature_reason": "unsigned",
+        "published_sbom_found": false,
+        "published_signed_provenance_found": false
+      },
+      "assessment": "No published SBOM or signed provenance was located in the released source, release assets or workflow artifact listing. Runtime dependency/license inventory and GitHub source/merge/run traceability are recorded, but are not described as a publisher-signed attestation. v2-07 qualifies signed provenance/SBOM with where applicable; no package-specific applicability determination was present.",
+      "evidence": [
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/release.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/artifacts.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/commit.json",
+        "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-4.log"
+      ]
+    }
+  ],
+  "observed_successes": {
+    "handoff": {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/published/kumwe-access-context-34241cb/MIGRATION-HANDOFF.md",
+      "sha256": "adcf6727874c926974b0958b277a1784721b1e99a48428e44aa06bb125f6b1c9",
+      "schema": "kumwe-migration-handoff/v2",
+      "framework_identity_and_ownership_match": true,
+      "semantic_inputs": [],
+      "next_task": "Independent release verification, then App Phase 2 adoption.",
+      "public_manifests_match": true
+    },
+    "source_merge_tag_registry_agree": true,
+    "source_proof": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/source-proof.json",
+    "fresh_local_source_tests": {
+      "tests": 63,
+      "assertions": 914,
+      "release_parser_cases": 12,
+      "public_api_symbols": 11,
+      "capabilities": 6,
+      "architecture": "passed"
+    },
+    "supported_platform_evidence": {
+      "merged_release_workflow": "PHP 8.5.10 on Ubuntu 24.04.4",
+      "fresh_local_consumer": "PHP 8.5.10 NTS",
+      "additional_versions_or_platforms_tested": []
+    },
+    "security": {
+      "merged_workflow_composer_audit": "No security vulnerability advisories found; audit --abandoned=fail completed successfully",
+      "fresh_consumer_audit_exit": 0,
+      "fresh_consumer_audit_path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-audit.json",
+      "fresh_consumer_audit_limitation": "Consumer repositories disable Packagist; not claimed as independent online advisory retrieval. Fresh Packagist metadata separately reports no security advisories."
+    },
+    "license": {
+      "spdx": "Apache-2.0",
+      "file": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "runtime_dependency_count": 0
+    }
+  },
+  "downstream_permitted": false,
+  "required_next_action": "Maintainer must resolve the immutable publication/protected-main evidence gaps under governing release policy; any source/workflow corrections require a separately reviewed successor release. This verification performed no source changes, merges, tags, publication or consumer implementation.",
+  "verification_harness_note": "The first auxiliary isolation assertion incorrectly expected Composer InstalledVersions to omit its root package; corrected assertion excludes the documented root entry and passes. The package consumer install and shipped checks did not fail.",
+  "controls": [
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/extraction-docs/deliverables-v2/Kumwe-v2-03-Package-Engineering-and-DI-Standard.md",
+      "sha256": "318fc88d39a157d654564d2207221b15a1ede2d9f940e4080d6ee67881c21572"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/extraction-docs/deliverables-v2/Kumwe-v2-05-Repository-Namespace-and-Dependency-Catalog.md",
+      "sha256": "abee276d67be3b2dbe7770608f0830e9e4516bf11c15b217befe3707c477f44a"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/extraction-docs/deliverables-v2/Kumwe-v2-07-Roadmap-Evidence-and-Release-Protocol.md",
+      "sha256": "532680c44a001c47a3d09018a78453fd500d6ba2efd99d61986d39864f6d645b"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/extraction-docs/deliverables-v2/Kumwe-v2-08-Migration-Handoff-Schema.md",
+      "sha256": "248b3559fcd4e842885c706244f3f5b32fc9c4c6c37e8e472b8a5845b78c78ab"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/extraction-docs/deliverables-v2/Kumwe-v2-11-Release-Verification-and-Attestation-Prompt.md",
+      "sha256": "350f87e5e1492c99ee30cc716e7681535b69d8b0da08384e3570ec91c1cfb8f6"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/extraction-docs/deliverables-v2/repositories/access-context/00-Implementation-Brief-v2.md",
+      "sha256": "94ac303810f1f32d645b8b462d8b85e4f548e9ba59aabe3f973c8ca4f702ab51"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/repos/app/docs/architecture/governance/decisions.md",
+      "sha256": "71469cc18422c4fa24fccc0434595797bc5dbec3574c6de9391e65912854a485"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/archive-inventory.json",
+      "sha256": "c4bdab548682bf18a3b419f74cdd36ee7ad57a594bc6937c83cb145ca35cc5ed"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/artifacts.json",
+      "sha256": "d3ad979d01443a9d7342e7fbe39064b41ebdb340029293f1b099bcfb6c493c42"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/ci-jobs.json",
+      "sha256": "0bc4028342dcc44041b18bcc7a2cf63543b4d9ff63705c09d6bc31253d104f80"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/commit.json",
+      "sha256": "e93c648a818afd90c07b6f8eb9ebd8fea29571aa8ae8616f41a2cfb761cf9636"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-audit-stderr.log",
+      "sha256": "41df53cf0983385b7b004a75e25b1acbeec92edf122ab9d358aebe976a4d9e13"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-audit.json",
+      "sha256": "3d68c4566587606c21e4bcd82b55d322ddb79158f657d9fb90bf0d24ab5bccdf"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-0.log",
+      "sha256": "e7cabc8bea25cdd58097320fef45251320f850904cccfd58a9111ff9bdc520c5"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-1.log",
+      "sha256": "f155525bb6247fee873fa884c05c361899749b8549535b3a52d1b349d8ab55c7"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-2.log",
+      "sha256": "d817701e8ea5e65f42f3819436df416615bb4b3cbf0fde7e5ef8e4523fe2238c"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-3.log",
+      "sha256": "4cb38a0c0e2c5b471b231beec403643ff1515f63de1e909a4213936e37447ced"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-4.log",
+      "sha256": "3ccbf0337b60e0e640b34fb509ef139bb5758538e92663bd0efcd514839987ef"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-check-5.log",
+      "sha256": "90089d83e3310f835bfffd1845d08c47c0f758f9070987d6cc9ebd02429b9107"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-checks.json",
+      "sha256": "3539f1bc7e95d31f528b23d4871efdbf4d6cf4bd8773399aeb39c4940c374866"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-install.log",
+      "sha256": "58dee52198e3da3d8fe7212b9c0f8525b2fdaaec41e82a97a36bb5549fab2531"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-isolation-corrected.log",
+      "sha256": "feb1aaecd88b1074f57073e455c5fa43c485126f0df985f97300d74862dc7555"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/consumer-isolation.log",
+      "sha256": "d58be4f9fd89a93e47cd814f81e5c2dea28e95c2c98a606a4de9ac08f1ef8ac3"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/corpus-file-digests.json",
+      "sha256": "4002a9c07cf61049ef3fbf628c6c40b79227c87f639a7c9bdfbd91ee7e166686"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/dist-headers.txt",
+      "sha256": "d67f7f1966588718cafdc6a956ca3ceb302e28c0d6e4bbd888e877607a684ad6"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/final-tag.json",
+      "sha256": "425e9c166130441f0633b5d8c5d14559e23785a0eefd1278b7098099759c37ab"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/local-run.log",
+      "sha256": "e4c658c689a0401255555bd00312beb871d2508a0ea0bbc8de26c01935c6ef84"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/local-test-release-record.log",
+      "sha256": "07a10ba12e2c08963e6b31c9426e257a0bdf650be2246c0ff55742764066d43c"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/local-verify-architecture.log",
+      "sha256": "c6b31ebfe547285486745b685fb5db065794d11362900ef76aee8048901cdbc4"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/local-verify-manifests.log",
+      "sha256": "ac00dd4c5db8e02193fa2ce2b7f0c7d28a3082fbefa4c42bd20bcea0996239f6"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/local-verify-public-api.log",
+      "sha256": "d3fa2c0a6250a8ccd0fd9f8bca43e8513a6fd7a60d96a79eeeed8dd49f2433b3"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/main-branch.json",
+      "sha256": "6b89b93f71b5c61d62e41b13688f3b63e9f19a7e5bfd59ed4d1fbcfdba28bc2d"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/packagist.json",
+      "sha256": "d0beab88b4f8cee05e3cac62b9e80c2dba7190d20df5f47c005186b0faf981bd"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/pr-2.json",
+      "sha256": "e8bc9b560808f2436408eb3d0ca3f7327752228c00de55d84ee14c03e9b90462"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/pulls.json",
+      "sha256": "a29dde1b0161d9809e1ce000a53b92df48e6c2f3b64870eb24cb7204a01bac75"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/release-jobs.json",
+      "sha256": "aa32c90c07a863e11d2698efcaa534638b30a53c51a51b3ba23e567f145c8b89"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/release-php85.log",
+      "sha256": "4360ee07c6cdbf67f506686c402a45e95b6950eff6290fded7697f8f850804fc"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/release.json",
+      "sha256": "a8393313424cca0c0a859bbac773f0a9c591eaa82d870c0ec630211ee898861b"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/rulesets.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/runs.json",
+      "sha256": "eab49e9b664c47b3dc93e558b4c16c864b95777d08aff6603ccd52376dad9fb6"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/source-proof.json",
+      "sha256": "07a7f947bc769010b9456b6981874a7e86c32ec6cf6218f3397aedf68e247196"
+    },
+    {
+      "path": "/workspace/scratch/dad0c5ae0881/release-verification/access-context/evidence/tag.json",
+      "sha256": "425e9c166130441f0633b5d8c5d14559e23785a0eefd1278b7098099759c37ab"
+    }
+  ]
+}

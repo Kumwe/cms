@@ -1,0 +1,417 @@
+{
+  "package": "kumwe/localization",
+  "version": "0.1.0",
+  "status": "failed",
+  "observed_at": "2026-09-07T11:00:29Z",
+  "independent_verification": {
+    "phase_1_chat_history_read": false,
+    "source_edits": false,
+    "remote_mutations": false,
+    "downstream_implementation_or_adoption": false
+  },
+  "controls": [
+    "Kumwe-v2-03",
+    "Kumwe-v2-05",
+    "Kumwe-v2-07",
+    "Kumwe-v2-08",
+    "Kumwe-v2-11",
+    "repository 00-Implementation-Brief-v2.md",
+    "D-GOV-4",
+    "D-GOV-11"
+  ],
+  "source_identity": {
+    "merge_commit": "672e330e2cae89dc71769d647f6d01fd2c1dea08",
+    "tree": "d5737a58e47b2e332dbd2c60626058c735dd15a3",
+    "parents": [
+      "4c27595628718e4ba280ce3ef074a1bc31e95bd2"
+    ],
+    "git_fsck_full_exit_code": 0,
+    "git_merge_base_is_ancestor_tag_head_exit_code": 0,
+    "exact_tag_equals_observed_main": true,
+    "clean_detached_checkout": "/workspace/scratch/dad0c5ae0881/release-verification/localization/source",
+    "tracked_source_unchanged": true,
+    "commit_signature_verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "human_merge": {
+    "url": "https://github.com/kumwe/localization/pull/1",
+    "merged_at": "2026-09-07T10:42:45Z",
+    "merged_by": "Llewellynvdm",
+    "merge_commit_sha": "672e330e2cae89dc71769d647f6d01fd2c1dea08",
+    "base": "main"
+  },
+  "publication": {
+    "release_url": "https://github.com/kumwe/localization/releases/tag/v0.1.0",
+    "release_id": 384013579,
+    "publisher": "github-actions[bot]",
+    "published_at": "2026-09-07T10:43:25Z",
+    "immutable": false,
+    "assets": [],
+    "effective_rulesets": [],
+    "current_main_protected": false,
+    "historical_protection_unknown": true,
+    "workflow": {
+      "url": "https://github.com/kumwe/localization/actions/runs/34112876295",
+      "id": 34112876295,
+      "head_sha": "672e330e2cae89dc71769d647f6d01fd2c1dea08",
+      "event": "push",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 101712893512,
+          "name": "PHP 8.5",
+          "conclusion": "success"
+        },
+        {
+          "id": 101713017397,
+          "name": "Release the recorded version",
+          "conclusion": "success"
+        }
+      ],
+      "artifacts": {
+        "total_count": 0,
+        "artifacts": []
+      }
+    }
+  },
+  "source_archive_and_registry_dist": {
+    "url": "https://api.github.com/repos/kumwe/localization/zipball/672e330e2cae89dc71769d647f6d01fd2c1dea08",
+    "sha256": "e5d2ec43be42de636d8316a886d8c20740cb9ce1b9f4a083570c59714212d16e",
+    "bytes": 87965,
+    "file_count": 46,
+    "every_file_matches_exact_release_source": true,
+    "archive_allowlist_passed": true,
+    "license": "Apache-2.0",
+    "license_file_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "composer_metadata_sha256": "7239c6310e2c041025eb3e3963cde0248542b4fa38f4ab8fd47ca8c98554c48e",
+    "published_registry_shasum": ""
+  },
+  "handoff": {
+    "migration_id": "KUMWE-MIG-2026-005",
+    "change_set": "KUMWE-CS-2026-005",
+    "sha256": "0f8f71ecf3f7f82118c76cbe0a6acf65ff742efbe06bbf5c169bc3777475d8cc",
+    "artifact_kind": "framework_php",
+    "target": {
+      "repository": "https://github.com/kumwe/localization",
+      "artifact_identity": "kumwe/localization",
+      "canonical_namespace_or_abi": "Kumwe\\Localization",
+      "branch": "agent/extract-localization-phase1",
+      "pull_request": "https://github.com/kumwe/localization/pull/1"
+    },
+    "responsibility": "Portable locale, catalogue, translation, formatting and negotiation behavior.",
+    "semantic_inputs": [],
+    "runtime_dependency_ceiling_satisfied": true,
+    "manifest_digests_match": true,
+    "app_strict_package_manifests_reader_passed": true,
+    "next_task": "Localization Phase 2 App adoption",
+    "next_consumer": "https://github.com/kumwe/app"
+  },
+  "manifests_and_corpora": [
+    {
+      "path": "resources/public-api/v1.json",
+      "sha256": "230b80e1bef2040817736c52aa4ddfa7fa1e1636997477a0166d983451779dc8"
+    },
+    {
+      "path": "resources/capabilities/v1.json",
+      "sha256": "6a0f0a21832e5513ac7cdb29c876211d61ffc4737f6b215a3307fb81f7a42ace"
+    },
+    {
+      "path": "resources/service-map/v1.json",
+      "sha256": "d7f344dac4ff949c5a16b5a923b214a0aeb0802f390d118b45b560099129d2a5"
+    },
+    {
+      "path": "MIGRATION-HANDOFF.md",
+      "sha256": "0f8f71ecf3f7f82118c76cbe0a6acf65ff742efbe06bbf5c169bc3777475d8cc"
+    },
+    {
+      "path": "resources/extraction/v1.json",
+      "sha256": "679e8c61b0439837350df5e07dc04adc70ca24f9d67dc7acc45be7a6c74f2f8c"
+    }
+  ],
+  "registry": {
+    "url": "https://repo.packagist.org/p2/kumwe/localization.json",
+    "metadata_sha256": "b006afcfb00185f638bb9128229892f7eb1813b3204742e8c5b7cd13b05fdf73",
+    "version_record": {
+      "name": "kumwe/localization",
+      "description": "Portable locale negotiation, layered message catalogues and ICU formatting.",
+      "keywords": [],
+      "homepage": "https://github.com/kumwe/localization",
+      "version": "v0.1.0",
+      "version_normalized": "0.1.0.0",
+      "license": [
+        "Apache-2.0"
+      ],
+      "authors": [],
+      "source": {
+        "url": "https://github.com/kumwe/localization.git",
+        "type": "git",
+        "reference": "672e330e2cae89dc71769d647f6d01fd2c1dea08"
+      },
+      "dist": {
+        "url": "https://api.github.com/repos/kumwe/localization/zipball/672e330e2cae89dc71769d647f6d01fd2c1dea08",
+        "type": "zip",
+        "shasum": "",
+        "reference": "672e330e2cae89dc71769d647f6d01fd2c1dea08"
+      },
+      "type": "library",
+      "support": {
+        "issues": "https://github.com/kumwe/localization/issues",
+        "source": "https://github.com/kumwe/localization"
+      },
+      "funding": [],
+      "time": "2026-09-07T10:42:45+00:00",
+      "published-time": "2026-09-07T10:43:28+00:00",
+      "autoload": {
+        "psr-4": {
+          "Kumwe\\Localization\\": "src/"
+        }
+      },
+      "require": {
+        "php": "^8.5",
+        "ext-intl": "*",
+        "psr/container": "^2.0"
+      },
+      "require-dev": {
+        "ext-zip": "*",
+        "laminas/laminas-servicemanager": "^4.0",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^12.0",
+        "squizlabs/php_codesniffer": "^4.0"
+      }
+    },
+    "consumer_lock_source_and_dist_equal_registry": true
+  },
+  "clean_consumer": {
+    "platform": {
+      "php": "8.5.10",
+      "composer": "2.10.3",
+      "os": "Linux",
+      "architecture": "x86_64",
+      "thread_mode": "NTS",
+      "icu": "74.2"
+    },
+    "install_exit_code": 0,
+    "flags": [
+      "--no-dev",
+      "--no-interaction",
+      "--no-progress",
+      "--no-plugins",
+      "--no-scripts",
+      "--classmap-authoritative",
+      "--prefer-dist"
+    ],
+    "network_constraint": "COMPOSER_DISABLE_NETWORK=1; cached registry dist artifacts; fresh consumer vendor; no scripts or plugins; kernel network namespace not available",
+    "packages_dev": [],
+    "root_require": {
+      "kumwe/localization": "0.1.0",
+      "laminas/laminas-servicemanager": "4.5.1"
+    },
+    "tuple": [
+      {
+        "name": "brick/varexporter",
+        "version": "0.6.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/brick/varexporter.git",
+          "reference": "af98bfc2b702a312abbcaff37656dbe419cec5bc"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/brick/varexporter/zipball/af98bfc2b702a312abbcaff37656dbe419cec5bc",
+          "reference": "af98bfc2b702a312abbcaff37656dbe419cec5bc",
+          "shasum": ""
+        },
+        "license": [
+          "MIT"
+        ]
+      },
+      {
+        "name": "kumwe/localization",
+        "version": "v0.1.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/kumwe/localization.git",
+          "reference": "672e330e2cae89dc71769d647f6d01fd2c1dea08"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/kumwe/localization/zipball/672e330e2cae89dc71769d647f6d01fd2c1dea08",
+          "reference": "672e330e2cae89dc71769d647f6d01fd2c1dea08",
+          "shasum": ""
+        },
+        "license": [
+          "Apache-2.0"
+        ]
+      },
+      {
+        "name": "laminas/laminas-servicemanager",
+        "version": "4.5.1",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/laminas/laminas-servicemanager.git",
+          "reference": "11192d588876ad04ba2988984c77b4ecb5c771c2"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/11192d588876ad04ba2988984c77b4ecb5c771c2",
+          "reference": "11192d588876ad04ba2988984c77b4ecb5c771c2",
+          "shasum": ""
+        },
+        "license": [
+          "BSD-3-Clause"
+        ]
+      },
+      {
+        "name": "laminas/laminas-stdlib",
+        "version": "3.21.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/laminas/laminas-stdlib.git",
+          "reference": "b1c81514cfe158aadf724c42b34d3d0a8164c096"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/b1c81514cfe158aadf724c42b34d3d0a8164c096",
+          "reference": "b1c81514cfe158aadf724c42b34d3d0a8164c096",
+          "shasum": ""
+        },
+        "license": [
+          "BSD-3-Clause"
+        ]
+      },
+      {
+        "name": "nikic/php-parser",
+        "version": "v5.8.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/nikic/PHP-Parser.git",
+          "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
+          "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
+          "shasum": ""
+        },
+        "license": [
+          "BSD-3-Clause"
+        ]
+      },
+      {
+        "name": "psr/container",
+        "version": "2.0.2",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/php-fig/container.git",
+          "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/php-fig/container/zipball/c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+          "reference": "c71ecc56dfe541dbd90c5360474fbc405f8d5963",
+          "shasum": ""
+        },
+        "license": [
+          "MIT"
+        ]
+      }
+    ],
+    "lock_sha256": "458007d56a52a7f647a6fc393420984578a04ca965905acdde5d773338b0a4d5",
+    "classmap_no_app_or_test_symbols": true,
+    "installed_files_match_downloaded_archive": true,
+    "checks": [
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/source/tools/verify-archive.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/kumwe/localization"
+        ],
+        "exit_code": 0,
+        "output": "Archive verified: 46 files, 27 public symbols, no development path shipped.\n"
+      },
+      {
+        "command": [
+          "composer",
+          "check-platform-reqs",
+          "--no-dev"
+        ],
+        "exit_code": 0,
+        "output": "Composer could not detect the root package (kumwe-verification/localization-consumer) version, defaulting to '1.0.0'. See https://getcomposer.org/root-version\nChecking non-dev platform requirements for packages in the vendor dir\next-intl      8.5.10   success \next-json      8.5.10   success \next-tokenizer 8.5.10   success \nphp           8.5.10   success \n"
+      },
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/kumwe/localization/resources/toolchain/autoload-smoke.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/autoload.php"
+        ],
+        "exit_code": 0,
+        "output": "Composer autoload smoke passed: 27 public symbols loaded (classmap-authoritative autoloader).\n"
+      },
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/kumwe/localization/examples/translate.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/autoload.php"
+        ],
+        "exit_code": 0,
+        "output": "Hello, Kumwe!\n"
+      },
+      {
+        "command": [
+          "php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/kumwe/localization/examples/container.php",
+          "/workspace/scratch/dad0c5ae0881/release-verification/localization/offline-consumer/vendor/autoload.php"
+        ],
+        "exit_code": 0,
+        "output": "Hello, Kumwe!\nServiceManager factories, alias and operation lifetimes verified.\n"
+      }
+    ]
+  },
+  "security": {
+    "release_job_composer_audit_success": true,
+    "exact_release_job_id": 101712893512,
+    "publisher_sbom": null,
+    "publisher_signed_provenance": null,
+    "current_audit_status": "timeout; exact-merge CI audit succeeded"
+  },
+  "known_gaps": [
+    "BLOCKING: The immutable version-to-source binding required by Kumwe-v2-07 release protocol steps 4-6 and Kumwe-v2-11 is not established. GitHub release immutable=false and the public effective repository rulesets response is empty. The full source SHA and the downloaded archive SHA-256 verify observed content; they do not prove that the v0.1.0 tag or future registry version mapping cannot be changed. No tag movement was observed.",
+    "BLOCKING: Kumwe-v2-07 release protocol step 2 requires a human merge to protected main. PR 1 was merged by Llewellynvdm, but the current main branch API reports protected=false and no historical protection evidence was supplied. This records a missing required proof and does not assert what the settings were at merge time.",
+    "No publisher SBOM or cryptographically signed provenance was found in release assets (empty) or release workflow artifacts (zero); the merge commit is unsigned. Applicability of signed provenance/SBOM under Kumwe-v2-07 where-applicable wording remains unresolved. These null fields are observed absence, not a successful supply-chain gate.",
+    "The independent current consumer advisory refresh timed out; exact-merge release job 101712893512 records successful composer audit --abandoned=fail and no vulnerability advisories. No current refresh success is claimed."
+  ],
+  "downstream_tasks_blocked": true,
+  "evidence_files": {
+    "evidence/app-manifest-reader.log": "753676d843839bf197317d49157660d28c3ce2c22552d39e31b6986e8df9ad1a",
+    "evidence/consumer-security-audit-retry.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/consumer-security-audit-retry.stderr": "98fa13e71613f65a03914449268f5481b976b701e34d2ae39a69c24871d03105",
+    "evidence/consumer-security-audit.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/consumer-security-audit.stderr": "686e34de69a851431476cd65517f40fe6897abe634f09832ef1de9af2c89b747",
+    "evidence/dist-download.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/github-artifacts.json": "f7417e1fb877d3f5934f143cc38ad9e2905476e8f5ac6776507d09441efcd6f6",
+    "evidence/github-branch.json": "9fe4d8d3a25a75b3eea759b17ac804af375fcdcf6643aee9bb9109a5209394d2",
+    "evidence/github-commit.json": "79102f9569702c52ae393b1d2b44eda9d238589c8f911c0792b0b180048b8073",
+    "evidence/github-jobs.json": "0192b146c9b5465ba6e69f5b3382a7fd3cd62df962faf477629ec9e42bcff8bd",
+    "evidence/github-pr.json": "8bf690196917cb46fcb9f2457467741d36d428213900ebbbcf4fefa6bd95546d",
+    "evidence/github-prs.json": "69519b613faf8a31c4f72f051f63e604bf2e8b97ec01066f3a53fe8d7c49d32e",
+    "evidence/github-release.json": "01b8cd72e957afe3653bec9811daae1409cbe3197e5495113cd5c0ee5cc1be34",
+    "evidence/github-rulesets.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "evidence/github-runs.json": "a765e01aac48d8b1b5ff2cec7a55704a94324dd809d7c340aca37197f04aaefe",
+    "evidence/github-tag.json": "623cc0523e8d3379a4a627a4b97edfb18ec43126e8171f1b0d8d2a0907b4b36d",
+    "evidence/github-tree.json": "004d3099f3f24eb8e16daf190ba5cb3f31a2be0d243a3cf19b0cd7272eebcf4f",
+    "evidence/independent-consumer-checks.json": "67e5060f81fd60ccac1fbfc2122e1ea2db604f7ba6c659c897dd8b28a99496f1",
+    "evidence/independent-source-checks.log": "f6336e82261fb66fef61233a2cc2c3c3a45e1e0d4361e65629b8e48442b44b48",
+    "evidence/job-101712893512.log": "4587cc9e169cafa1ce353368e42605f4ef48b1bf8c5cf5aa50788bb6048b6dc1",
+    "evidence/job-101713017397.log": "a55551d1b6f46c0aad63862c7100f1d22b6be4cd967ce4d4ea89ab3d0e3665a9",
+    "evidence/offline-consumer-install.log": "a04e051dab7d6007a2e63a0bd9d290f67c9ea32ffa97648bc583b9d795717d11",
+    "evidence/published-dist-inventory.json": "8d92ee49532cc6a9c46a566a2c0321454775e067ba4f304e238d386489432950",
+    "evidence/registry-consumer-install.log": "30451413846c85bce6802b4220597d7951c12541fdd64a4f74e02abcd3bc8a78"
+  }
+}
