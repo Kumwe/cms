@@ -1,0 +1,33 @@
+schema: kumwe-non-roadmap-record/v1
+id: NRM-2026-008
+nrm_ref: NRM-2026-008
+roadmap_impact: None
+rationale: "Review all extraction requirements and live package gaps before the next independent batch."
+repositories:
+  - kumwe/app
+  - kumwe/transaction
+  - kumwe/sequence
+  - kumwe/secret-envelope
+  - kumwe/access-context
+  - kumwe/localization
+  - kumwe/contribution
+behavior_before: "Four leaf packages have started extraction; only Transaction and Sequence have published releases."
+behavior_after: "App runtime is unchanged. The audit identifies corrections, ownership boundaries and the next batch."
+public_api_impact: None
+dependency_impact: None
+compatibility: unchanged
+data_migration: None
+security_impact: "Audit evidence records package boundary and validation gaps; fixes live in separate package PRs."
+performance:
+  claim: None
+  evidence: []
+operations_deployment: None
+recovery_rollback: "Revert the documentation PR; no runtime, dependency or data state changes."
+artifacts_evidence:
+  - docs/architecture/migrations/audits/2026-09-07/README.md
+  - docs/architecture/migrations/audits/2026-09-07/document-coverage.sha256
+  - "https://github.com/kumwe/app/pull/135"
+known_gaps:
+  - "Package release verification and App adoption require their separate phase gates."
+owner: "Codex"
+status: delivered

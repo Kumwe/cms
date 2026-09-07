@@ -9,8 +9,8 @@ This is a requirements and dependency review. Repository implementation findings
 - Uploaded ERP roadmap SHA-256: `a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8`, matching the exact digest in v2 governance. Full roadmap read, including all seven sessions, operating protocol and final 16 checks.
 - Current App governance rulings D-GOV-1 through D-GOV-12 read from `docs/architecture/governance/decisions.md` at App `960ce8ec00cf724a7cae03e5ba09c4852c9ab54e`. These govern where the older ZIP wording differs.
 - Lead document reviewer read the 12 shared controls and all 45 files for Access Context, Access Control, Approval, Audit, Business Policy, Canonical JSON, Contribution, Conversion Extension, Idempotency, Interface Standard, Localization, Record Values, Secret Envelope, Sequence and Transaction. Identical repeated paragraphs were compared across files and read once; every distinct paragraph was reviewed.
-- Native reader read all 11 Engine/Kumwe Engine/Computation files (1,263 lines), summarized in `native-document-review.md`.
-- Downstream reader assigned all 36 Business Definition/Schema, Record Query/Model, Reporting, Content, Navigation, Administrator/Portal/Business Surface, Automation and Integration documents; completion recorded in `downstream-document-review.md`.
+- Native reader read all 11 Engine/Kumwe Engine/Computation files (1,263 lines), summarized in `native-requirements.md`.
+- Downstream reader read all 36 Business Definition/Schema, Record Query/Model, Reporting, Content, Navigation, Administrator/Portal/Business Surface, Automation and Integration documents; completion recorded in `downstream-requirements.md`.
 
 ## Governing decisions that materially affect execution
 

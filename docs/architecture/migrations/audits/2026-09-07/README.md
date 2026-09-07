@@ -31,8 +31,18 @@ were reviewed, together with the twelve current App governance rulings. The ZIP 
 | `kumwe/access-context` | Source/tools/manifests committed; no release | Null coalescing in verification rejects intentionally null manifest fields. Required charter, documentation, handoff and workflow are missing. Repair verification and finish release/consumer evidence. |
 
 These are findings against the repositories as observed. Publication alone does not establish independent
-release verification. The correction PRs and their final validation evidence are recorded below as they
-complete; their releases remain maintainer-controlled.
+release verification. Corrections are isolated in [Transaction #2](https://github.com/kumwe/transaction/pull/2),
+[Sequence #2](https://github.com/kumwe/sequence/pull/2),
+[Secret Envelope #2](https://github.com/kumwe/secret-envelope/pull/2) and
+[Access Context #2](https://github.com/kumwe/access-context/pull/2). Each PR carries its own final-head checks,
+successor handoff and release record. Releases remain maintainer-controlled.
+
+The Transaction production port was sound and did not drift from its extraction baseline; its correction
+is release assurance. Sequence records the reserved-key refusal as the observable pre-1.0 change `0.2.0`.
+Secret Envelope retains App-owned key-purpose labels and authenticated-data coordinates rather than
+mistaking those authority-specific wrappers for duplicate package implementation. Access Context adds
+the missing impossible-combination check for a workspace with no organization and refuses control bytes
+before scope normalization can silently erase them.
 
 ## Next batch and ownership
 
@@ -40,6 +50,20 @@ complete; their releases remain maintainer-controlled.
 | --- | --- | --- |
 | Localization | Independent leaf; unlocks Business Definition and Content. Extract locale/catalogue/translation/formatting/negotiation values and services with narrow provider ports. | Authorized override/settings services, site-default persistence, cache/storage/build adapters, middleware, Twig and delivery. A default-locale provider port replaces the direct settings-service dependency. |
 | Contribution | Neutral owner/definition/surface policy/registry contracts unlock several dependent families. The current owner and definition live in Extension SDK and must be audited there. | Trusted active registry, runtime generation, admission, manifest reconciliation, lifecycle and executable registration. Surface policies replace hard-coded Studio/graphical branches; the package cannot depend on the SDK. |
+
+Localization's package boundary contains 27 public types: 23 existing portable types, the new default-locale
+port, a ConfigProvider and two explicit factories. Translation contexts are supplied per operation; the
+translator is not a globally shared holder of an actor, site or organization. Its Phase 1 implementation
+is [Localization #1](https://github.com/kumwe/localization/pull/1).
+
+Contribution's six public types in [Contribution #1](https://github.com/kumwe/contribution/pull/1) separate
+owner identity, definition, surface, bounded identifier policy, owned data registry and typed refusal.
+The SDK owns the current owner/definition types, so a verified
+Contribution release must first be adopted and released by the SDK before App can consume the canonical
+types without aliases or incompatible parallel ownership. The new registry must also recheck duplicate
+and capacity limits after calling a definition's serialization callback, because a callback can re-enter
+the registry before the outer registration completes. The implementation and adversarial regressions
+cover both reentrant overwrite and capacity bypass.
 
 Canonical JSON is a semantic/corpus-only package, not a move of the current PHP executor. Record Values
 depends on verified Conversion input. Computation first releases its extension-free contract baseline.
@@ -60,3 +84,19 @@ semantic barrier, Engine candidate verification, extension release, provisioning
    establishes core integration; the ERP roadmap retains its separate acceptance requirements.
 
 No runtime source, Composer dependency, lockfile or service registration is changed by this audit PR.
+
+## Evidence identity and validation
+
+This audit uses `NRM-2026-008`. The existing Transaction and Sequence handoffs already reserve
+`NRM-2026-002` and `NRM-2026-003`; the concurrent Secret Envelope, Access Context, Localization and
+Contribution handoffs continue that sequence through `NRM-2026-007`. This record preserves those reserved
+identities and does not create App migration/adoption records before the release boundary.
+
+The review uses App's actual `PackageManifests` loader to validate each completed package against its
+strict YAML reader, handoff schema, source/public API inventory, capability documents and service-map
+rules. Local package checks run on PHP 8.5.10 and include archive installation as a dependency in a fresh
+no-dev authoritative Composer project. Repository Actions remain the evidence for the exact published
+PR heads, including dependency audits and supported-platform lanes. The App audit has no runtime diff;
+its unchanged capability digest is
+`87ded886f35f74878ca9eb8db4c36e23d681c4a49891f76dfc3210f385a7ce39` and its Core Growth inventory remains
+1,413 production symbols with no duplicate owners or new growth entries.
