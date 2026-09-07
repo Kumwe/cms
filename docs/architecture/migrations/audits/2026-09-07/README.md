@@ -20,6 +20,7 @@ were reviewed, together with the twelve current App governance rulings. The ZIP 
 - [Native ordering and semantic ownership](native-requirements.md)
 - [Downstream package dependency review](downstream-requirements.md)
 - [Per-file document coverage digests](document-coverage.sha256)
+- [Package and App test ownership, including the first adoption batch](test-ownership.md)
 
 ## State observed before corrections
 
