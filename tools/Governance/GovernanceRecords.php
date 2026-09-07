@@ -401,6 +401,33 @@ final readonly class GovernanceRecords
                 'record the attested digest',
             );
         }
+        $handoffBytes = is_file($root . '/' . $expectedHandoff)
+            ? file_get_contents($root . '/' . $expectedHandoff) : false;
+        if (is_string($handoffBytes)) {
+            $front = StrictYaml::parseFrontMatter($handoffBytes, $expectedHandoff)['front_matter'];
+            /** @var array<string, mixed> $next */
+            $next = $front['next_task'];
+            $consumer = rtrim(self::string($next['consumer_repository'] ?? null), '/');
+            if (in_array($consumer, ['kumwe/app', 'https://github.com/kumwe/app'], true)) {
+                /** @var list<string> $releasedRemovals */
+                $releasedRemovals = $next['tests_to_remove'];
+                /** @var list<string> $recordedRemovals */
+                $recordedRemovals = $record['removed_tests'];
+                foreach ($releasedRemovals as $test) {
+                    // Version 2 also permits prose for mixed-suite splits; only exact file removals are automatic.
+                    if (
+                        preg_match('~^tests/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\.php$~D', $test) === 1
+                        && !in_array($test, $recordedRemovals, true)
+                    ) {
+                        throw GovernanceViolation::at(
+                            $path,
+                            sprintf('released handoff test removal %s is missing from removed_tests', $test),
+                            'record every exact App test-file removal required by the released handoff',
+                        );
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -453,10 +480,13 @@ final readonly class GovernanceRecords
                         'move its portable behavior tests to the package and delete the duplicate at adoption',
                     );
                 }
-                if ($field === 'retained_tests' && (!is_file($absolute) || is_link($absolute))) {
+                if (
+                    $field === 'retained_tests'
+                    && (!is_file($absolute) || realpath($absolute) !== realpath($root) . '/' . $test)
+                ) {
                     throw GovernanceViolation::at(
                         $path,
-                        sprintf('retained host test %s is missing or is a symlink', $test),
+                        sprintf('retained host test %s is missing or resolves through a symlink', $test),
                         'restore the host test or update its reviewed replacement path in this ledger',
                     );
                 }

@@ -59,6 +59,35 @@ final class GovernanceRecordsTest extends TestCase
     }
 
     /**
+     * A retained host test cannot resolve through a symlink to evidence outside its recorded path.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testRetainedHostEvidenceCannotUseASymlinkedParent(): void
+    {
+        $root = GovernanceFixture::copy();
+        $directory = $root . '/tests/Integration/Example';
+        $moved = $root . '/tests/Relocated';
+        try {
+            self::assertTrue(rename($directory, $moved));
+            self::assertTrue(symlink($moved, $directory));
+            try {
+                self::load($root);
+                self::fail('A symlinked parent must not count as local host evidence.');
+            } catch (GovernanceViolation $violation) {
+                self::assertStringContainsString('resolves through a symlink', $violation->getMessage());
+            }
+        } finally {
+            if (is_link($directory)) {
+                unlink($directory);
+            }
+            GovernanceFixture::remove($root);
+        }
+    }
+
+    /**
      * Conflict, train, non-roadmap, legacy evidence and approved Core Growth Records load when well-formed.
      *
      * @return  void
@@ -188,6 +217,11 @@ final class GovernanceRecordsTest extends TestCase
         yield 'duplicate package test still present after adoption' => [
             [['tests/Unit/Example/Describing/DescriberTest.php', '', "<?php\n// Restored duplicate.\n"]],
             'still exists in App',
+        ];
+        yield 'released test removal cannot be omitted from the ledger' => [
+            [[$ledger, "removed_tests:\n  - tests/Unit/Example/Describing/DescriberTest.php", 'removed_tests: []'],
+                ['tests/Unit/Example/Describing/DescriberTest.php', '', "<?php\n// Restored duplicate.\n"]],
+            'released handoff test removal tests/Unit/Example/Describing/DescriberTest.php is missing',
         ];
         yield 'retained host test absent' => [
             [[$ledger, 'DescribeSubjectIntegrationTest.php', 'MissingIntegrationTest.php']],

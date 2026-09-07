@@ -1284,6 +1284,13 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Changed
 
+- **NRM-2026-014 — Package test ownership at adoption.** Migration governance now rejects duplicate
+  package tests still present in App, missing retained host test files, contradictory ownership and
+  non-canonical paths. Extraction guidance and the PR template require existing, legacy and future
+  packages to own runnable behavior, boundary/refusal and applicable conformance tests, while App keeps
+  composition, authorization, persistence, lifecycle and delivery evidence. Seven negative ownership
+  scenarios exercise the gate; production code and dependency pins are unchanged. (#136)
+
 - **2026-09-02 — `composer qa` no longer depends on the machine finishing the suite in five minutes.**
   Composer kills a script after its default `process-timeout` of 300 seconds, and the complete PHPUnit lane
   now carries 3,618 tests against a real database. The CI runners finish inside that window, so the gate
