@@ -1,0 +1,65 @@
+{
+  "record_kind": "release-verification-diagnostic",
+  "status": "unpublished",
+  "verification": "blocked",
+  "repository": "https://github.com/kumwe/localization",
+  "candidate_version": "0.1.1",
+  "migration_id": "KUMWE-MIG-2026-005",
+  "change_set": "KUMWE-CS-2026-005",
+  "observed_at": "2026-09-07T11:31:56.983604+00:00",
+  "observed_by": "independent release verification agent /root/release_verify_current/access_localization",
+  "observations": {
+    "pull_request": "https://github.com/kumwe/localization/pull/2",
+    "merged_at": "2026-09-07T11:22:49Z",
+    "merge_commit": "1dbdfcc6410d02d2561133f7c92666d2a4790d1f",
+    "default_branch": "main",
+    "main_sha": "1dbdfcc6410d02d2561133f7c92666d2a4790d1f",
+    "main_protected": false,
+    "rulesets": [],
+    "release_workflow": "https://github.com/kumwe/localization/actions/runs/34116318416",
+    "release_workflow_conclusion": "failure",
+    "failed_step": "Require protected main before release mutations",
+    "failed_job": "https://github.com/kumwe/localization/actions/runs/34116318416/job/101723994348",
+    "failure_message": "Release refused: main must be protected by an active branch rule or ruleset.",
+    "tag_probe": "v0.1.1 returns GitHub 404",
+    "github_release_present": false,
+    "packagist": {
+      "url": "https://repo.packagist.org/p2/kumwe/localization.json",
+      "status": 200,
+      "versions": [
+        "v0.1.0"
+      ],
+      "candidate_present": false,
+      "observed_at": "2026-09-07T11:31:24.604854+00:00"
+    },
+    "merged_ci": [
+      {
+        "name": "Localization CI",
+        "head_sha": "1dbdfcc6410d02d2561133f7c92666d2a4790d1f",
+        "conclusion": "success",
+        "html_url": "https://github.com/kumwe/localization/actions/runs/34116318461"
+      }
+    ]
+  },
+  "known_gaps": [
+    "Protected main requirement failed before tag/release creation.",
+    "No candidate v0.1.1 tag, GitHub release or Packagist coordinate exists.",
+    "No exact published candidate source/archive/handoff is available, so no source_archive URL/digest or candidate tag ancestry can be attested.",
+    "Published archive, clean consumer, manifests/corpora, dependency tuple, security and license inventory verification cannot begin until publication.",
+    "The release-attestation v2 schema requires an observed tag and source_archive.url/sha256 even for D-GOV-4 failures; no schema-valid attestation can truthfully represent this unpublished candidate."
+  ],
+  "attestation_emitted": false,
+  "downstream_publication_permitted": false,
+  "app_adoption_permitted": false,
+  "scope": "Post-publication read-only verification; no repository source, tag, release, PR, settings, publication or App mutation performed.",
+  "protocol_documents_read": [
+    "Kumwe-v2-11-Release-Verification-and-Attestation-Prompt.md",
+    "Kumwe-v2-03-Package-Engineering-and-DI-Standard.md",
+    "Kumwe-v2-05-Repository-Namespace-and-Dependency-Catalog.md",
+    "Kumwe-v2-07-Roadmap-Evidence-and-Release-Protocol.md",
+    "Kumwe-v2-08-Migration-Handoff-Schema.md",
+    "repositories/localization/00-Implementation-Brief-v2.md",
+    "repos/app/docs/architecture/governance/decisions.md",
+    "repos/app/docs/architecture/governance/schemas/release-attestation.v2.schema.json"
+  ]
+}

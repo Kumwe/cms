@@ -1,0 +1,62 @@
+{
+  "record_type": "unpublished-candidate-verification-diagnostic",
+  "repository": "https://github.com/kumwe/contribution",
+  "candidate_version": "0.1.1",
+  "status": "unpublished",
+  "verification_status": "blocked",
+  "observed_at": "2026-09-07T11:31:50.582Z",
+  "observed_by": "Independent post-publication verification agent /root/release_verify_current; no Phase 1 implementation history",
+  "pull_request": {
+    "url": "https://github.com/kumwe/contribution/pull/2",
+    "merged": true,
+    "merged_at": "2026-09-07T11:21:51Z",
+    "merge_commit": "8155757141699d7cd1da8499644662846d66be95"
+  },
+  "default_branch": {
+    "name": "main",
+    "commit": "8155757141699d7cd1da8499644662846d66be95",
+    "protected": false,
+    "rulesets": []
+  },
+  "release_workflow": {
+    "url": "https://github.com/kumwe/contribution/actions/runs/34116236940",
+    "conclusion": "failure",
+    "qualification_job": "success",
+    "publication_job": "failure",
+    "failed_step": "Require protected main before release mutations",
+    "failure": "Release refused: main must be protected by an active branch rule or ruleset.",
+    "release_ref_protected": false
+  },
+  "implementation_ci": {
+    "url": "https://github.com/kumwe/contribution/actions/runs/34116236861",
+    "conclusion": "success"
+  },
+  "publication": {
+    "tag_lookup": "https://api.github.com/repos/kumwe/contribution/git/ref/tags/v0.1.1",
+    "tag_http_status": 404,
+    "release_lookup": "https://api.github.com/repos/kumwe/contribution/releases/tags/v0.1.1",
+    "release_http_status": 404,
+    "existing_release": {
+      "tag": "v0.1.0",
+      "immutable": false
+    }
+  },
+  "registry_verification": {
+    "status": "not verified",
+    "reason": "Direct network request was cancelled by network approval before a response; web retrieval of the Composer metadata endpoint was refused. GitHub candidate tag and release were independently confirmed absent."
+  },
+  "source_dist_and_consumer": {
+    "status": "not run",
+    "reason": "The selected release is unpublished. No release archive, registry version, released handoff, or immutable consumer artifact exists to verify from the observed GitHub publication path."
+  },
+  "schema_result": {
+    "emitted_release_attestation": false,
+    "reason": "D-GOV-4 failure schema requires an observed release tag and source_archive URL/SHA-256. With publication absent those facts cannot be supplied truthfully. This is a separate prepublication diagnostic, not a schema-valid release attestation."
+  },
+  "next_requirements": [
+    "Maintainer must configure protected main and enable immutable releases before retrying publication.",
+    "Successful release-on-record must publish the selected version without manual tag creation or rewriting an existing coordinate.",
+    "A fresh post-publication verification must verify actual tag/source/archive/registry/manifests/consumer evidence before any dependent publication or App adoption."
+  ],
+  "downstream": "blocked"
+}

@@ -1,5 +1,18 @@
 # Published releases and the following extraction batch
 
+## Latest merge follow-up
+
+The next five package PRs are now merged, but their selected releases remain unpublished. Fresh independent
+checks confirmed that all five release workflows stopped at the protected-main precondition before tag or
+release creation. The full observation and exact workflow links are in
+[publication-check/README.md](publication-check/README.md). These are publication diagnostics, not passing
+release attestations. The earlier failed 0.1.0 evidence below remains historical evidence for those versions.
+
+Canonical JSON and Computation 0.1.0, plus Access Context, Localization and Contribution 0.1.1, still need
+protected-main publication, immutable release configuration and fresh artifact verification. Human merge
+and green implementation CI alone do not satisfy that gate. App PR #135's preceding head
+`f406b40747c4da2e6e74544809be2fa2ff79f3d1` completed CI, Compose acceptance and security successfully.
+
 The maintainer merged the six package PRs after the initial audit. Their release tags identify the
 human merge commits below, and their merged-source package CI and release-on-record workflows passed.
 Publication and successful code checks are separate from independent release verification.
@@ -93,6 +106,8 @@ not permission to delete tests before adoption.
 The exact source and test maps are retained in the [Access Control](access-control-closure.md) and
 [Business Definition](business-definition-closure.md) closure audits, with a
 [machine-readable Definition inventory](business-definition-closure.json).
-Dependent implementation begins only after its selected upstream release evidence
-passes. The existing Conversion 0.1.2 and SDK 0.2.4 transitional approvals do not substitute for verified
+The new Access Control and Business Definition PRs are development drafts against explicitly unverified
+exact dependency versions, with publication blocked. They do not authorize dependent publication or App
+adoption before the selected upstream release evidence passes. The existing Conversion 0.1.2 and SDK 0.2.4
+transitional approvals do not substitute for verified
 legacy release records where a new dependent task requires those inputs.

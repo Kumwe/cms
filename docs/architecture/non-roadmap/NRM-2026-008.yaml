@@ -13,6 +13,14 @@ repositories:
   - kumwe/contribution
   - kumwe/canonical-json
   - kumwe/computation
+  - kumwe/conversion
+  - kumwe/extension-sdk
+  - kumwe/producer
+  - kumwe/access-control
+  - kumwe/business-definition
+  - kumwe/engine
+  - kumwe/studio
+  - kumwe/dart-sdk
 behavior_before: "Four leaf packages have started extraction; only Transaction and Sequence have published releases."
 behavior_after: "App runtime is unchanged. The audit identifies corrections, ownership boundaries and the next batch."
 public_api_impact: None
@@ -30,6 +38,9 @@ artifacts_evidence:
   - docs/architecture/migrations/audits/2026-09-07/document-coverage.sha256
   - docs/architecture/migrations/audits/2026-09-07/test-ownership.md
   - docs/architecture/migrations/audits/2026-09-07/release-review.md
+  - docs/architecture/migrations/audits/2026-09-07/all-package-test-audit.md
+  - docs/architecture/migrations/audits/2026-09-07/repository-inventory.json
+  - docs/architecture/migrations/audits/2026-09-07/publication-check/README.md
   - "https://github.com/kumwe/app/pull/135"
 known_gaps:
   - "Package release verification and App adoption require their separate phase gates."

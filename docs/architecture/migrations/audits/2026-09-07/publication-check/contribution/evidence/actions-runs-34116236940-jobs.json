@@ -1,0 +1,205 @@
+{
+  "jobs": [
+    {
+      "check_run_url": "https://api.github.com/repos/kumwe/contribution/check-runs/101723608436",
+      "completed_at": "2026-09-07T11:22:16Z",
+      "conclusion": "success",
+      "created_at": "2026-09-07T11:21:55Z",
+      "head_branch": "main",
+      "head_sha": "8155757141699d7cd1da8499644662846d66be95",
+      "html_url": "https://github.com/kumwe/contribution/actions/runs/34116236940/job/101723608436",
+      "id": 101723608436,
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "name": "PHP 8.5",
+      "node_id": "CR_kwDOUIBid88AAAAXrzMVdA",
+      "run_attempt": 1,
+      "run_id": 34116236940,
+      "run_url": "https://api.github.com/repos/kumwe/contribution/actions/runs/34116236940",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions",
+      "runner_id": 1000011148,
+      "runner_name": "GitHub Actions 1000011148",
+      "started_at": "2026-09-07T11:21:57Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completed_at": "2026-09-07T11:21:59Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "started_at": "2026-09-07T11:21:58Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:00Z",
+          "conclusion": "success",
+          "name": "Check out the pushed commit",
+          "number": 2,
+          "started_at": "2026-09-07T11:21:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:04Z",
+          "conclusion": "success",
+          "name": "Set up PHP",
+          "number": 3,
+          "started_at": "2026-09-07T11:22:00Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:07Z",
+          "conclusion": "success",
+          "name": "Install the validated package toolchain",
+          "number": 4,
+          "started_at": "2026-09-07T11:22:04Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:13Z",
+          "conclusion": "success",
+          "name": "Run the complete package gate",
+          "number": 5,
+          "started_at": "2026-09-07T11:22:07Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:13Z",
+          "conclusion": "success",
+          "name": "Verify the no-dev installed-package autoloader and the shipped example",
+          "number": 6,
+          "started_at": "2026-09-07T11:22:13Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:13Z",
+          "conclusion": "success",
+          "name": "Post Check out the pushed commit",
+          "number": 12,
+          "started_at": "2026-09-07T11:22:13Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:13Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "started_at": "2026-09-07T11:22:13Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://api.github.com/repos/kumwe/contribution/actions/jobs/101723608436",
+      "workflow_name": "Release on record"
+    },
+    {
+      "check_run_url": "https://api.github.com/repos/kumwe/contribution/check-runs/101723707246",
+      "completed_at": "2026-09-07T11:22:23Z",
+      "conclusion": "failure",
+      "created_at": "2026-09-07T11:22:16Z",
+      "head_branch": "main",
+      "head_sha": "8155757141699d7cd1da8499644662846d66be95",
+      "html_url": "https://github.com/kumwe/contribution/actions/runs/34116236940/job/101723707246",
+      "id": 101723707246,
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "name": "Release the recorded version",
+      "node_id": "CR_kwDOUIBid88AAAAXrzSXbg",
+      "run_attempt": 1,
+      "run_id": 34116236940,
+      "run_url": "https://api.github.com/repos/kumwe/contribution/actions/runs/34116236940",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions",
+      "runner_id": 1000011150,
+      "runner_name": "GitHub Actions 1000011150",
+      "started_at": "2026-09-07T11:22:18Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completed_at": "2026-09-07T11:22:20Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "started_at": "2026-09-07T11:22:19Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "success",
+          "name": "Check out the pushed commit",
+          "number": 2,
+          "started_at": "2026-09-07T11:22:20Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "failure",
+          "name": "Require protected main before release mutations",
+          "number": 3,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "skipped",
+          "name": "Read the newest recorded version",
+          "number": 4,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "skipped",
+          "name": "Check whether the GitHub release exists",
+          "number": 5,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "skipped",
+          "name": "Create the version tag when it is missing",
+          "number": 6,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "skipped",
+          "name": "Publish the GitHub release when it is missing",
+          "number": 7,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "skipped",
+          "name": "Verify the published release is immutable",
+          "number": 8,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "success",
+          "name": "Post Check out the pushed commit",
+          "number": 16,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-09-07T11:22:21Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "started_at": "2026-09-07T11:22:21Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://api.github.com/repos/kumwe/contribution/actions/jobs/101723707246",
+      "workflow_name": "Release on record"
+    }
+  ],
+  "total_count": 2
+}
