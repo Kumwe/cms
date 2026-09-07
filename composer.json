@@ -43,7 +43,7 @@
     "laminas/laminas-eventmanager": "^3.15",
     "laminas/laminas-httphandlerrunner": "^2.13",
     "laminas/laminas-servicemanager": "^4.5",
-    "mcp/sdk": "^0.7.0",
+    "mcp/sdk": "^0.8.1",
     "mezzio/mezzio": "^3.28",
     "mezzio/mezzio-fastroute": "^3.14",
     "mezzio/mezzio-helpers": "^5.20",
