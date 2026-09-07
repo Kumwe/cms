@@ -33,6 +33,10 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-07 — Extraction audit and next independent batch (`NRM-2026-008`).** Reviewed all 104 Version 2
+  documents, the complete ERP roadmap and current governance rulings; recorded gaps in the four started
+  packages and the Localization/Contribution extraction boundaries. Package fixes and release verification
+  remain separate PRs and phases. App runtime, dependencies and roadmap acceptance are unchanged. (#135)
 - **2026-09-02 — The Core Growth gate completes `NRM-2026-001`: App production growth is recorded and
   duplicates no installed Kumwe package.** `composer kumwe:core-growth-check` scans every class-like under
   `src/`, classifies it through `docs/architecture/layers.json` by the same first-segment rule the dependency
