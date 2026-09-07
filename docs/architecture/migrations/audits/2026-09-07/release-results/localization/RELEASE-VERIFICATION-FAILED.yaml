@@ -1,0 +1,59 @@
+schema: "kumwe-release-attestation/v2"
+artifact_kind: "framework_php"
+migration_id: "KUMWE-MIG-2026-005"
+change_set: "KUMWE-CS-2026-005"
+repository: "https://github.com/kumwe/localization"
+merge_commit: "672e330e2cae89dc71769d647f6d01fd2c1dea08"
+version: "0.1.0"
+tag: "v0.1.0"
+source_archive:
+  url: "https://api.github.com/repos/kumwe/localization/zipball/672e330e2cae89dc71769d647f6d01fd2c1dea08"
+  sha256: "e5d2ec43be42de636d8316a886d8c20740cb9ce1b9f4a083570c59714212d16e"
+artifacts:
+  -
+    identity: "kumwe/localization 0.1.0 Composer source distribution"
+    url: "https://api.github.com/repos/kumwe/localization/zipball/672e330e2cae89dc71769d647f6d01fd2c1dea08"
+    sha256: "e5d2ec43be42de636d8316a886d8c20740cb9ce1b9f4a083570c59714212d16e"
+manifests_and_corpora:
+  -
+    path: "resources/public-api/v1.json"
+    sha256: "230b80e1bef2040817736c52aa4ddfa7fa1e1636997477a0166d983451779dc8"
+  -
+    path: "resources/capabilities/v1.json"
+    sha256: "6a0f0a21832e5513ac7cdb29c876211d61ffc4737f6b215a3307fb81f7a42ace"
+  -
+    path: "resources/service-map/v1.json"
+    sha256: "d7f344dac4ff949c5a16b5a923b214a0aeb0802f390d118b45b560099129d2a5"
+  -
+    path: "MIGRATION-HANDOFF.md"
+    sha256: "0f8f71ecf3f7f82118c76cbe0a6acf65ff742efbe06bbf5c169bc3777475d8cc"
+  -
+    path: "resources/extraction/v1.json"
+    sha256: "679e8c61b0439837350df5e07dc04adc70ca24f9d67dc7acc45be7a6c74f2f8c"
+abi_and_capabilities: null
+sbom:
+  url: null
+  sha256: null
+provenance: null
+release_workflow: "https://github.com/kumwe/localization/actions/runs/34112876295; run 34112876295; attempt 1; push to main; head 672e330e2cae89dc71769d647f6d01fd2c1dea08; completed success; complete PHP 8.5 gate and recorded-version release jobs passed."
+registry_or_pie_verification:
+  - "Observed Packagist metadata https://repo.packagist.org/p2/kumwe/localization.json identifies v0.1.0 with both source.reference and dist.reference equal to 672e330e2cae89dc71769d647f6d01fd2c1dea08. Consumer lock agrees exactly."
+  - "Downloaded the full-SHA Packagist GitHub dist URL, verified SHA-256 e5d2ec43be42de636d8316a886d8c20740cb9ce1b9f4a083570c59714212d16e, and matched all 46 archive files byte-for-byte to exact released source. Git fsck and tag ancestry checks passed."
+  - "PR https://github.com/kumwe/localization/pull/1 records merged_by Llewellynvdm at 2026-09-07T10:42:45Z. Tag, current main, release workflow head and Packagist source match the full merge SHA."
+  - "Detailed observed facts and supporting evidence digests: evidence/verification-diagnostics.json; SHA-256 91c6c43ab73e60d492fc083e3610833e6d0ed1180495cb85b22f7d4a6e1e85f6."
+clean_consumer_or_build_verification:
+  - "Fresh consumer install passed with COMPOSER_DISABLE_NETWORK=1 composer install --no-dev --no-interaction --no-progress --no-plugins --no-scripts --classmap-authoritative --prefer-dist. Used cached actual registry dist artifacts; no development packages, path repository, App symbols or test symbols. Kernel network namespace isolation was unavailable and is not claimed."
+  - "PHP 8.5.10 NTS, Linux x86_64, Composer 2.10.3, ICU 74.2. Supported release workflow PHP 8.5 Ubuntu lane passed; no broader platform support is attested."
+  - "Installed archive file inventory exactly matches the downloaded published archive. Composer platform checks, archive allowlist, all public-symbol autoload checks, source reflection/manifests, member documentation, architecture and App StrictYaml/PackageManifests checks passed."
+  - "Exact-merge release workflow ran complete composer check, including static/coding checks, security audit, behavioral tests and built-archive consumer gate. Independent verification did not infer an artifact pass from CI alone."
+  - "27 public symbols, four capabilities, ConfigProvider plus two explicit factories verified. Declared package requirements are php ^8.5, ext-intl *, psr/container ^2.0; no Kumwe dependency. No semantic upstream input."
+  - "Independent 23-original-type executable extraction parity passed. Exact-merge CI passed 38 tests and 350 assertions. Installed translate.php returned Hello, Kumwe!; container.php verified actual ServiceManager factories, Translator alias and operation lifetimes."
+  - "Consumer host explicitly required laminas/laminas-servicemanager 4.5.1 for documented DI integration. Locked tuple: kumwe/localization v0.1.0, psr/container 2.0.2, laminas/laminas-servicemanager 4.5.1, laminas/laminas-stdlib 3.21.0, nikic/php-parser v5.8.0, brick/varexporter 0.6.0. Host integration packages are not undeclared Localization runtime dependencies."
+verified_at: "2026-09-07T11:00:29Z"
+verified_by: "Codex independent post-publication verification agent; no Phase 1 chat history"
+status: "failed"
+known_gaps:
+  - "BLOCKING: The immutable version-to-source binding required by Kumwe-v2-07 release protocol steps 4-6 and Kumwe-v2-11 is not established. GitHub release immutable=false and the public effective repository rulesets response is empty. The full source SHA and the downloaded archive SHA-256 verify observed content; they do not prove that the v0.1.0 tag or future registry version mapping cannot be changed. No tag movement was observed."
+  - "BLOCKING: Kumwe-v2-07 release protocol step 2 requires a human merge to protected main. PR 1 was merged by Llewellynvdm, but the current main branch API reports protected=false and no historical protection evidence was supplied. This records a missing required proof and does not assert what the settings were at merge time."
+  - "No publisher SBOM or cryptographically signed provenance was found in release assets (empty) or release workflow artifacts (zero); the merge commit is unsigned. Applicability of signed provenance/SBOM under Kumwe-v2-07 where-applicable wording remains unresolved. These null fields are observed absence, not a successful supply-chain gate."
+  - "The independent current consumer advisory refresh timed out; exact-merge release job 101712893512 records successful composer audit --abandoned=fail and no vulnerability advisories. No current refresh success is claimed."

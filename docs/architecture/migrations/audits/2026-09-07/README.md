@@ -1,7 +1,9 @@
 # Extraction audit and next batch — 2026-09-07
 
-The next package extraction batch is **Localization and Contribution**. First finish the four started
-packages' release and verification gates. App has already merged the governance bootstrap in
+The first batch completed **Localization and Contribution** and corrected the four started packages.
+After their human merges, **Canonical JSON and Computation Phase 1A** are the current independent batch.
+See the [published release review and next boundaries](release-review.md) for the upstream verification
+gaps that must be resolved before dependent extraction. App has already merged the governance bootstrap in
 [#130](https://github.com/kumwe/app/pull/130) and [#131](https://github.com/kumwe/app/pull/131).
 Recreating that bootstrap or installing unpublished package branches would delay the existing plan.
 
@@ -21,6 +23,7 @@ were reviewed, together with the twelve current App governance rulings. The ZIP 
 - [Downstream package dependency review](downstream-requirements.md)
 - [Per-file document coverage digests](document-coverage.sha256)
 - [Package and App test ownership, including the first adoption batch](test-ownership.md)
+- [Published releases, verification results and the following extraction batch](release-review.md)
 
 ## State observed before corrections
 
