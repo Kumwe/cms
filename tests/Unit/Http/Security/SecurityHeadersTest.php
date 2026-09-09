@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Http\Security;
 
 use Kumwe\App\Http\Security\SecurityHeaders;
+use Kumwe\Producer\Deployment\DeploymentException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SecurityHeaders::class)]
@@ -19,6 +21,55 @@ final class SecurityHeadersTest extends TestCase
         self::assertSame('DENY', $headers['X-Frame-Options']);
         self::assertStringContainsString("script-src 'self' 'nonce-safe-nonce'", $headers['Content-Security-Policy']);
         self::assertArrayHasKey('Strict-Transport-Security', $headers);
+    }
+
+    /**
+     * One exact configured origin widens `script-src` alone; every other directive stays same-origin.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAnExactScriptOriginWidensOnlyTheScriptDirective(): void
+    {
+        $policy = (new SecurityHeaders(true))->values(null, ['https://cdn.jsdelivr.net'])['Content-Security-Policy'];
+
+        self::assertStringContainsString("script-src 'self' https://cdn.jsdelivr.net;", $policy);
+        self::assertStringContainsString("connect-src 'self';", $policy);
+        self::assertStringContainsString("default-src 'self';", $policy);
+        self::assertStringNotContainsString("style-src 'self' https://", $policy);
+    }
+
+    /**
+     * A wildcard, a path, plain HTTP off loopback or a scheme-only source is never admitted.
+     *
+     * @param   string  $origin  Inadmissible candidate origin.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    #[DataProvider('inadmissibleScriptOrigins')]
+    public function testInadmissibleScriptOriginsAreRefused(string $origin): void
+    {
+        $this->expectException(DeploymentException::class);
+
+        (new SecurityHeaders(true))->values(null, [$origin]);
+    }
+
+    /**
+     * Supply one inadmissible origin per closed rule.
+     *
+     * @return  iterable<string, array{string}>  Named refusals.
+     *
+     * @since   2.0.0
+     */
+    public static function inadmissibleScriptOrigins(): iterable
+    {
+        yield 'wildcard host' => ['https://*.jsdelivr.net'];
+        yield 'origin with a path' => ['https://cdn.jsdelivr.net/npm'];
+        yield 'plain HTTP off loopback' => ['http://cdn.jsdelivr.net'];
+        yield 'scheme only' => ['https:'];
     }
 
     public function testDoesNotEmitHstsForUnverifiedHttp(): void

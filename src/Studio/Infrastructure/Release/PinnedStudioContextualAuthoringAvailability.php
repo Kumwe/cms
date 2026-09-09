@@ -8,21 +8,23 @@ use JsonException;
 use Kumwe\App\Studio\Application\Authoring\StudioContextualAuthoringAvailability;
 use Kumwe\App\Studio\Application\Authoring\StudioContextualAuthoringFallbackReason;
 use Kumwe\App\Studio\Application\Authoring\StudioContextualAuthoringReadiness;
+use Kumwe\App\Studio\Application\Release\StudioCoreCatalog;
+use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
 use Kumwe\Producer\Schema\StudioContractRelease;
 use Kumwe\Producer\Schema\StudioContractResources;
 use Kumwe\Producer\Schema\StudioDocumentSchemaRegistry;
 use Kumwe\Producer\Wire\OperationRegistry;
-use ReflectionClass;
 use Throwable;
 
 /**
  * Fail-closed contextual-authoring gate over one exact App deployment.
  *
- * Producer is the sole authority for the pinned Studio schemas and host-operation registry. App
- * proves only the deployment evidence it owns: the coordinated release record, npm tarballs,
- * compiled browser entry, and an explicit host-implementation qualification. A release profile
- * claim cannot enable contextual authoring when Producer does not publish every required document
- * kind and operation.
+ * Producer is the sole authority for the pinned Studio schemas, the host-operation registry and the
+ * browser-asset manifest. App proves only the deployment evidence it owns: the coordinated release
+ * record, the registry pin of the eight npm packages, the materialized first-party catalog, the
+ * configured browser-asset origin, the compiled start module, and an explicit reviewed host
+ * qualification. A release profile claim cannot enable contextual authoring when Producer does not
+ * publish every required document kind, operation and browser asset.
  *
  * @since  2.0.0
  */
@@ -46,16 +48,28 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
     ];
 
     /**
-     * Canonical document kinds required by contextual authoring.
+     * Definition-only contextual kinds and the pinned definition each must interpret.
+     *
+     * @var    array<string, string>
+     * @since  2.0.0
+     */
+    private const array REQUIRED_DEFINITIONS = [
+        'authoring-target' => 'declaration',
+        'authoring-session' => 'snapshot',
+        'authoring-save' => 'saveResult',
+    ];
+
+    /**
+     * Whole-document contextual kinds the pinned registry must admit.
      *
      * @var    list<string>
      * @since  2.0.0
      */
     private const array REQUIRED_DOCUMENT_KINDS = [
-        'authoring-target',
-        'authoring-session',
-        'authoring-save',
         'reusable-content-type',
+        'studio-config',
+        'studio-deployment',
+        'host-capabilities',
     ];
 
     /**
@@ -75,30 +89,41 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
     ];
 
     /**
-     * Vite source key the packaged contextual browser entry must own.
+     * Browser asset roles the pinned manifest must resolve at the configured origin.
+     *
+     * @var    list<string>
+     * @since  2.0.0
+     */
+    private const array BROWSER_ASSET_ROLES = ['browser-module', 'enhancement-runtime'];
+
+    /**
+     * Vite source key of the App start module that imports the pinned browser module and mounts it.
      *
      * @var    string
      * @since  2.0.0
      */
-    private const string CONTEXTUAL_BROWSER_ENTRY = 'assets/administrator/components/studio-contextual.ts';
+    public const string LAUNCH_MODULE_ENTRY = 'assets/administrator/components/studio-launch.ts';
 
     /**
      * Point the gate at one exact App deployment.
      *
      * @param  string                                   $root           Absolute App root holding its release
-     *         pin, npm tarballs, and built assets.
+     *         pin, materialized catalog and built assets.
      * @param  ?StudioContextualAuthoringQualification  $qualification  App-owned exact host qualification.
+     * @param  ?StudioBrowserAssetLocator               $locator        Configured browser-asset origin, or null
+     *         while no origin is configured.
      *
      * @since  2.0.0
      */
     public function __construct(
         private string $root,
         private ?StudioContextualAuthoringQualification $qualification,
+        private ?StudioBrowserAssetLocator $locator = null,
     ) {
     }
 
     /**
-     * Require exact protocol, compiled browser, and PHP host evidence in that order.
+     * Require exact protocol, browser and PHP host evidence in that order.
      *
      * @return  StudioContextualAuthoringReadiness  First failed boundary, or qualified readiness.
      *
@@ -128,7 +153,7 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
     /**
      * Require App-owned qualification to match the exact deployed evidence bytes.
      *
-     * @return  bool  True only for the reviewed release, pin, browser, and host coordinates.
+     * @return  bool  True only for the reviewed release, pin, catalog and browser-module coordinates.
      *
      * @since   2.0.0
      */
@@ -148,8 +173,7 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
             [
                 $contractRoot . '/studio-release.json' => $this->qualification->releaseRecordSha256,
                 $contractRoot . '/PIN.json' => $this->qualification->pinRecordSha256,
-                $this->root . '/public/assets/build/.vite/manifest.json' =>
-                    $this->qualification->browserManifestSha256,
+                $contractRoot . '/core-catalog.json' => $this->qualification->coreCatalogSha256,
             ] as $path => $expected
         ) {
             $actual = is_file($path) ? hash_file('sha256', $path) : false;
@@ -158,11 +182,13 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
             }
         }
 
-        $browserEntry = $this->contextualBrowserPath();
-        $browserDigest = $browserEntry === null ? false : hash_file('sha256', $browserEntry);
+        try {
+            $integrity = StudioContractResources::browserAsset('browser-module')->integrity();
+        } catch (Throwable) {
+            return false;
+        }
 
-        return is_string($browserDigest)
-            && hash_equals($this->qualification->browserEntrySha256, $browserDigest);
+        return hash_equals($this->qualification->browserModuleIntegrity, $integrity);
     }
 
     /**
@@ -176,22 +202,23 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
     {
         try {
             $release = StudioContractResources::releaseRecord();
-            StudioDocumentSchemaRegistry::fromVendoredCorpus();
+            $registry = StudioDocumentSchemaRegistry::fromVendoredCorpus();
         } catch (Throwable) {
             return false;
         }
-        if (!$this->appPinMatches($release)) {
+        if (!$this->appPinMatches($release) || !$this->coreCatalogMatches($release)) {
             return false;
         }
-
-        $manifested = $this->manifestedProtocolSchemas();
-        if ($manifested === null) {
-            return false;
-        }
-        foreach (self::REQUIRED_DOCUMENT_KINDS as $kind) {
-            if (!isset($manifested[$kind . '.schema.json'])) {
-                return false;
+        try {
+            // Every contextual kind is proven reachable through the registry's own pinned interpreter.
+            foreach (self::REQUIRED_DEFINITIONS as $kind => $definition) {
+                $registry->validateDefinition($kind, $definition, null);
             }
+            foreach (self::REQUIRED_DOCUMENT_KINDS as $kind) {
+                $registry->validate($kind, null);
+            }
+        } catch (Throwable) {
+            return false;
         }
         foreach (self::REQUIRED_OPERATIONS as $capability => $route) {
             if (
@@ -207,50 +234,16 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
     }
 
     /**
-     * Read the schema inventory of Producer's digest-verified protocol corpus manifest.
+     * Bind App-owned release and registry-pin records to Producer's immutable release coordinates.
      *
-     * A successful `fromVendoredCorpus()` has already proven every manifested schema's bytes against
-     * Producer's package PIN, so membership in this inventory is Producer's publication evidence for
-     * one canonical document kind. Producer 0.2.0 keeps the contextual authoring documents in this
-     * corpus rather than in its closed runtime document-kind set.
-     *
-     * @return  array<string, true>|null  Manifested schema basenames, or null when the corpus is unreadable.
-     *
-     * @since   2.0.0
-     */
-    private function manifestedProtocolSchemas(): ?array
-    {
-        $registryFile = (new ReflectionClass(StudioDocumentSchemaRegistry::class))->getFileName();
-        if (!is_string($registryFile)) {
-            return null;
-        }
-        $manifest = $this->decode(
-            dirname($registryFile, 3) . '/resources/studio-contract/protocol/schemas/manifest.json',
-        );
-        if ($manifest === null || ($manifest['kind'] ?? null) !== 'schema-manifest') {
-            return null;
-        }
-        $entries = $manifest['schemas'] ?? null;
-        if (!is_array($entries) || !array_is_list($entries)) {
-            return null;
-        }
-        $files = [];
-        foreach ($entries as $entry) {
-            $file = is_array($entry) ? ($entry['file'] ?? null) : null;
-            if (is_string($file)) {
-                $files[$file] = true;
-            }
-        }
-
-        return $files;
-    }
-
-    /**
-     * Bind App-owned release and tarball bytes to Producer's immutable release coordinates.
+     * The pin no longer carries package bytes: it names the registry, the exact version, the official
+     * tarball URL, the tarball SHA-256 and the SHA-512 integrity of every package, and each of those
+     * must agree with the provenance Producer verified for the same release. A leftover package
+     * directory is refused so a vendored substitute can never shadow the registry resolution.
      *
      * @param   StudioContractRelease  $installed  Producer's fully verified coordinated release.
      *
-     * @return  bool  True only when App pins exactly the same release and eight package bytes.
+     * @return  bool  True only when App pins exactly the same release and eight package coordinates.
      *
      * @since   2.0.0
      */
@@ -294,12 +287,15 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
         }
 
         $releasePin = $pin['release_record'] ?? null;
+        $registry = $pin['registry'] ?? null;
         $pinned = $pin['pinned'] ?? null;
         if (
             !is_array($releasePin)
             || ($releasePin['file'] ?? null) !== 'studio-release.json'
             || ($releasePin['release'] ?? null) !== $installed->release()
             || ($releasePin['sha256'] ?? null) !== $installed->recordSha256()
+            || !is_string($registry)
+            || preg_match('#^https://[a-z0-9.-]+$#D', $registry) !== 1
             || !is_array($pinned)
             || array_is_list($pinned)
         ) {
@@ -316,69 +312,91 @@ final readonly class PinnedStudioContextualAuthoringAvailability implements Stud
             return false;
         }
 
-        $listedTarballs = [];
+        $integrities = $installed->packageIntegrities();
         foreach (self::STUDIO_PACKAGES as $package) {
             $packagePin = $pinned[$package] ?? null;
-            $file = is_array($packagePin) ? ($packagePin['file'] ?? null) : null;
+            $version = $installedPackages[$package] ?? null;
+            $tarball = is_array($packagePin) ? ($packagePin['tarball'] ?? null) : null;
             $digest = is_array($packagePin) ? ($packagePin['npm_tarball_sha256'] ?? null) : null;
+            $integrity = is_array($packagePin) ? ($packagePin['integrity'] ?? null) : null;
+            $unscoped = substr($package, strlen('@kumwe/'));
             if (
                 !is_array($packagePin)
-                || ($packagePin['version'] ?? null) !== ($installedPackages[$package] ?? null)
-                || !is_string($file)
-                || basename($file) !== $file
-                || preg_match('/^[A-Za-z0-9._-]+\.tgz$/D', $file) !== 1
-                || isset($listedTarballs[$file])
+                || !is_string($version)
+                || ($packagePin['version'] ?? null) !== $version
+                || !is_string($tarball)
+                || $tarball !== sprintf('%s/%s/-/%s-%s.tgz', $registry, $package, $unscoped, $version)
                 || !is_string($digest)
                 || preg_match('/^[0-9a-f]{64}$/D', $digest) !== 1
+                || !is_string($integrity)
+                || preg_match('#^sha512-[A-Za-z0-9+/]{86}==$#D', $integrity) !== 1
+                || !is_string($integrities[$package] ?? null)
+                || !hash_equals($integrities[$package], $integrity)
             ) {
-                return false;
-            }
-            $listedTarballs[$file] = true;
-            $actual = hash_file('sha256', $contractRoot . '/packages/' . $file);
-            if (!is_string($actual) || !hash_equals($digest, $actual)) {
                 return false;
             }
         }
 
-        $directory = is_dir($contractRoot . '/packages') ? scandir($contractRoot . '/packages') : false;
-        if (!is_array($directory)) {
+        return !file_exists($contractRoot . '/packages');
+    }
+
+    /**
+     * Require the materialized first-party catalog to belong to the installed release.
+     *
+     * @param   StudioContractRelease  $installed  Producer's fully verified coordinated release.
+     *
+     * @return  bool  True when the catalog record decodes for exactly this release.
+     *
+     * @since   2.0.0
+     */
+    private function coreCatalogMatches(StudioContractRelease $installed): bool
+    {
+        try {
+            StudioCoreCatalog::fromFile(
+                $this->root . '/resources/studio-contract/core-catalog.json',
+                $installed->release(),
+            );
+        } catch (Throwable) {
             return false;
-        }
-        foreach ($directory as $entry) {
-            if ($entry === '.' || $entry === '..') {
-                continue;
-            }
-            if (!isset($listedTarballs[$entry]) || !is_file($contractRoot . '/packages/' . $entry)) {
-                return false;
-            }
         }
 
         return true;
     }
 
     /**
-     * Verify the contextual Vite entry resolves to a packaged JavaScript file.
+     * Verify the configured origin resolves both pinned browser assets and the start module is built.
      *
-     * @return  bool  True only for a safe manifest-relative JavaScript artifact that exists.
+     * @return  bool  True only when every browser artifact the mount needs can be addressed.
      *
      * @since   2.0.0
      */
     private function browserRuntimeAvailable(): bool
     {
-        return $this->contextualBrowserPath() !== null;
+        if ($this->locator === null) {
+            return false;
+        }
+        try {
+            foreach (self::BROWSER_ASSET_ROLES as $role) {
+                $this->locator->locate($role);
+            }
+        } catch (Throwable) {
+            return false;
+        }
+
+        return $this->launchModulePath() !== null;
     }
 
     /**
-     * Resolve the packaged contextual entry without accepting an absolute or traversing path.
+     * Resolve the packaged start module without accepting an absolute or traversing path.
      *
-     * @return  ?string  Existing absolute entry path, or null when the browser evidence is unsafe.
+     * @return  ?string  Existing absolute module path, or null when the browser evidence is unsafe.
      *
      * @since   2.0.0
      */
-    private function contextualBrowserPath(): ?string
+    private function launchModulePath(): ?string
     {
         $manifest = $this->decode($this->root . '/public/assets/build/.vite/manifest.json');
-        $entry = is_array($manifest) ? ($manifest[self::CONTEXTUAL_BROWSER_ENTRY] ?? null) : null;
+        $entry = is_array($manifest) ? ($manifest[self::LAUNCH_MODULE_ENTRY] ?? null) : null;
         $file = is_array($entry) ? ($entry['file'] ?? null) : null;
         if (!is_string($file) || preg_match('#^js/[A-Za-z0-9._-]+\.js$#D', $file) !== 1) {
             return null;

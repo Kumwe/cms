@@ -189,23 +189,27 @@ final class StudioBlockRendererRuntimeTest extends TestCase
     }
 
     /**
-     * Prove the App refuses a requested Producer enhancement rather than silently discarding it.
+     * Prove the App admits only the enhancement families the pinned Studio runtime publishes.
      *
      * @return  void
      *
      * @since   2.0.0
      */
-    public function testAppRefusesAProducerEnhancementInsteadOfDiscardingIt(): void
+    public function testAppAdmitsPublishedEnhancementFamiliesAndRefusesTheRest(): void
     {
-        $result = new RenderResult(
+        StudioRenderResultAdmission::assertSupported(new RenderResult(
+            '<div>Safe baseline</div>',
+            '[data-studio-block]{display:block}',
+            [new Enhancement('tabs', 'node-one', 's6e6f64652d6f6e65')],
+        ));
+
+        $this->expectException(RenderException::class);
+        $this->expectExceptionMessage('The pinned Studio enhancement runtime does not implement motion.');
+        StudioRenderResultAdmission::assertSupported(new RenderResult(
             '<div>Safe baseline</div>',
             '[data-studio-block]{display:block}',
             [new Enhancement('motion', 'node-one', 's6e6f64652d6f6e65')],
-        );
-
-        $this->expectException(RenderException::class);
-        $this->expectExceptionMessage('The App has no canonical Producer enhancement runtime.');
-        StudioRenderResultAdmission::assertSupported($result);
+        ));
     }
 
     /**

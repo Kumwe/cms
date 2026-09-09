@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fccb96356ccdd607888610d5102f059",
+    "content-hash": "5cbf5fd26e7edf45ee23a502a8a08bbd",
     "packages": [
         {
             "name": "brick/math",
@@ -419,16 +419,16 @@
         },
         {
             "name": "kumwe/producer",
-            "version": "v0.2.0",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kumwe/producer.git",
-                "reference": "e746b9f019482c78a34df04375f00c35ad5961af"
+                "reference": "048d003e81d19f0c51a679a4252e4d342ab9d78a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kumwe/producer/zipball/e746b9f019482c78a34df04375f00c35ad5961af",
-                "reference": "e746b9f019482c78a34df04375f00c35ad5961af",
+                "url": "https://api.github.com/repos/kumwe/producer/zipball/048d003e81d19f0c51a679a4252e4d342ab9d78a",
+                "reference": "048d003e81d19f0c51a679a4252e4d342ab9d78a",
                 "shasum": ""
             },
             "require": {

@@ -1,0 +1,283 @@
+{
+  "kind": "studio-core-catalog",
+  "release": "0.1.0-beta.3",
+  "blocks": [
+    {
+      "type": "studio.core/accordion",
+      "version": "1.0.0",
+      "revision": "production-accordion-r1"
+    },
+    {
+      "type": "studio.core/accordion-item",
+      "version": "1.0.0",
+      "revision": "production-accordion-item-r1"
+    },
+    {
+      "type": "studio.core/article",
+      "version": "1.0.0",
+      "revision": "production-article-r1"
+    },
+    {
+      "type": "studio.core/attachment",
+      "version": "1.0.0",
+      "revision": "production-attachment-r1"
+    },
+    {
+      "type": "studio.core/audio",
+      "version": "1.0.0",
+      "revision": "production-audio-r1"
+    },
+    {
+      "type": "studio.core/badge",
+      "version": "1.0.0",
+      "revision": "production-badge-r1"
+    },
+    {
+      "type": "studio.core/call-to-action",
+      "version": "1.0.0",
+      "revision": "production-call-to-action-r1"
+    },
+    {
+      "type": "studio.core/callout",
+      "version": "1.0.0",
+      "revision": "production-callout-r1"
+    },
+    {
+      "type": "studio.core/card",
+      "version": "1.0.0",
+      "revision": "production-card-r1"
+    },
+    {
+      "type": "studio.core/chart",
+      "version": "1.0.0",
+      "revision": "production-chart-r1"
+    },
+    {
+      "type": "studio.core/code",
+      "version": "1.0.0",
+      "revision": "production-code-r1"
+    },
+    {
+      "type": "studio.core/columns",
+      "version": "1.0.0",
+      "revision": "layout-columns-r1"
+    },
+    {
+      "type": "studio.core/content-collection",
+      "version": "1.0.0",
+      "revision": "production-content-collection-r1"
+    },
+    {
+      "type": "studio.core/content-reference",
+      "version": "1.0.0",
+      "revision": "production-content-reference-r1"
+    },
+    {
+      "type": "studio.core/countdown",
+      "version": "1.0.0",
+      "revision": "production-countdown-r1"
+    },
+    {
+      "type": "studio.core/cover",
+      "version": "1.0.0",
+      "revision": "production-cover-r1"
+    },
+    {
+      "type": "studio.core/description-item",
+      "version": "1.0.0",
+      "revision": "production-description-item-r1"
+    },
+    {
+      "type": "studio.core/description-list",
+      "version": "1.0.0",
+      "revision": "production-description-list-r1"
+    },
+    {
+      "type": "studio.core/diagram",
+      "version": "1.0.0",
+      "revision": "production-diagram-r1"
+    },
+    {
+      "type": "studio.core/dialog",
+      "version": "1.0.0",
+      "revision": "production-dialog-r1"
+    },
+    {
+      "type": "studio.core/divider",
+      "version": "1.0.0",
+      "revision": "production-divider-r1"
+    },
+    {
+      "type": "studio.core/drawing",
+      "version": "1.0.0",
+      "revision": "production-drawing-r1"
+    },
+    {
+      "type": "studio.core/embed",
+      "version": "1.0.0",
+      "revision": "production-embed-r1"
+    },
+    {
+      "type": "studio.core/gallery",
+      "version": "1.0.0",
+      "revision": "production-gallery-r1"
+    },
+    {
+      "type": "studio.core/grid",
+      "version": "1.0.0",
+      "revision": "layout-grid-r1"
+    },
+    {
+      "type": "studio.core/heading",
+      "version": "1.0.0",
+      "revision": "production-heading-r1"
+    },
+    {
+      "type": "studio.core/icon",
+      "version": "1.0.0",
+      "revision": "production-icon-r1"
+    },
+    {
+      "type": "studio.core/image",
+      "version": "1.0.0",
+      "revision": "production-image-r1"
+    },
+    {
+      "type": "studio.core/label",
+      "version": "1.0.0",
+      "revision": "production-label-r1"
+    },
+    {
+      "type": "studio.core/math",
+      "version": "1.0.0",
+      "revision": "production-math-r1"
+    },
+    {
+      "type": "studio.core/money",
+      "version": "1.0.0",
+      "revision": "production-money-r1"
+    },
+    {
+      "type": "studio.core/navigation",
+      "version": "1.0.0",
+      "revision": "production-navigation-r1"
+    },
+    {
+      "type": "studio.core/navigation-item",
+      "version": "1.0.0",
+      "revision": "production-navigation-item-r1"
+    },
+    {
+      "type": "studio.core/notice",
+      "version": "1.0.0",
+      "revision": "production-notice-r1"
+    },
+    {
+      "type": "studio.core/popover",
+      "version": "1.0.0",
+      "revision": "production-popover-r1"
+    },
+    {
+      "type": "studio.core/progress",
+      "version": "1.0.0",
+      "revision": "production-progress-r1"
+    },
+    {
+      "type": "studio.core/rich-text",
+      "version": "1.0.0",
+      "revision": "production-rich-text-r1"
+    },
+    {
+      "type": "studio.core/search",
+      "version": "1.0.0",
+      "revision": "production-search-r1"
+    },
+    {
+      "type": "studio.core/section",
+      "version": "1.0.0",
+      "revision": "layout-section-r1"
+    },
+    {
+      "type": "studio.core/spinner",
+      "version": "1.0.0",
+      "revision": "production-spinner-r1"
+    },
+    {
+      "type": "studio.core/stack",
+      "version": "1.0.0",
+      "revision": "layout-stack-r1"
+    },
+    {
+      "type": "studio.core/tab",
+      "version": "1.0.0",
+      "revision": "production-tab-r1"
+    },
+    {
+      "type": "studio.core/table",
+      "version": "1.0.0",
+      "revision": "production-table-r1"
+    },
+    {
+      "type": "studio.core/tabs",
+      "version": "1.0.0",
+      "revision": "production-tabs-r1"
+    },
+    {
+      "type": "studio.core/video",
+      "version": "1.0.0",
+      "revision": "production-video-r1"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "studio.pattern/article",
+      "version": "1.0.0",
+      "revision": "production-pattern-article-r1"
+    },
+    {
+      "id": "studio.pattern/collection-index",
+      "version": "1.0.0",
+      "revision": "production-pattern-collection-index-r1"
+    },
+    {
+      "id": "studio.pattern/document-header",
+      "version": "1.0.0",
+      "revision": "production-pattern-document-header-r1"
+    },
+    {
+      "id": "studio.pattern/faq",
+      "version": "1.0.0",
+      "revision": "production-pattern-faq-r1"
+    },
+    {
+      "id": "studio.pattern/feature-grid",
+      "version": "1.0.0",
+      "revision": "production-pattern-feature-grid-r1"
+    },
+    {
+      "id": "studio.pattern/hero",
+      "version": "1.0.0",
+      "revision": "production-pattern-hero-r1"
+    },
+    {
+      "id": "studio.pattern/media-gallery",
+      "version": "1.0.0",
+      "revision": "production-pattern-media-gallery-r1"
+    },
+    {
+      "id": "studio.pattern/pricing",
+      "version": "1.0.0",
+      "revision": "production-pattern-pricing-r1"
+    },
+    {
+      "id": "studio.pattern/product",
+      "version": "1.0.0",
+      "revision": "production-pattern-product-r1"
+    },
+    {
+      "id": "studio.pattern/tabbed-content",
+      "version": "1.0.0",
+      "revision": "production-pattern-tabbed-content-r1"
+    }
+  ]
+}

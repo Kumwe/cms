@@ -16,20 +16,29 @@ use PHPUnit\Framework\TestCase;
 final class StudioContextualAuthoringLaunchBoundaryTest extends TestCase
 {
     /**
-     * Production supplies an unavailable configuration provider independently of runtime evidence.
+     * Production supplies the Producer-proven hosted configuration provider behind the atomic resolver.
      *
      * @return  void
      *
      * @since   2.0.0
      */
-    public function testProductionRequiresTheAtomicLaunchResolverAndUnavailableConfigurationProvider(): void
+    public function testProductionRequiresTheAtomicLaunchResolverAndHostedConfigurationProvider(): void
     {
         $container = $this->contents('src/Kernel/ContainerFactory.php');
         $handler = $this->contents('src/Administrator/Http/Handler/AdministratorContentEditorHandler.php');
 
         self::assertStringContainsString(
             'StudioContextualAuthoringConfigurationProvider::class,' . "\n"
-                . '            new UnavailableStudioContextualAuthoringConfigurationProvider(),',
+                . '            static fn (Container $container): StudioContextualAuthoringConfigurationProvider =>'
+                . "\n"
+                . '                new HostedContentStudioAuthoringConfigurationProvider(',
+            $container,
+        );
+        self::assertStringNotContainsString('UnavailableStudioContextualAuthoringConfigurationProvider', $container);
+        self::assertStringContainsString('self::studioContextualAuthoringQualification()', $container);
+        self::assertStringContainsString('StudioDeploymentEmitter::class', $container);
+        self::assertStringContainsString(
+            'StudioBrowserAssetLocator::npmPackages($configuration->studioBrowserBaseUrl)',
             $container,
         );
         self::assertStringContainsString('ContentStudioAuthoringLaunchResolver::class', $container);

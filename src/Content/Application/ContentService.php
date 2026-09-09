@@ -314,6 +314,9 @@ final readonly class ContentService
      * @param   array<array-key, mixed>  $data                   Entry body, checked against the type's schema.
      * @param   ?PublicationWindow       $window                 Visibility period, or null for an unbounded one.
      * @param   string                   $contentTypeIdentifier  UUID or handle of the type to author against.
+     * @param   ?string                  $entryId                Pre-allocated UUID for the new entry, or null to
+     *          mint one; a caller that promised an identity before persisting (the contextual Studio session)
+     *          keeps that promise here.
      *
      * @return  ContentRecord  The stored record at version one, definition versions pinned.
      *
@@ -331,6 +334,7 @@ final readonly class ContentService
         array $data,
         ?PublicationWindow $window = null,
         string $contentTypeIdentifier = self::CORE_PAGE_TYPE_ID,
+        ?string $entryId = null,
     ): ContentRecord {
         $this->authorization->assertAllowed(
             $context,
@@ -338,6 +342,9 @@ final readonly class ContentService
             AuthorizationResource::collection('content'),
         );
         $this->assertPublicSlug($slug);
+        if ($entryId !== null && !Uuid::isValid($entryId)) {
+            throw new InvalidArgumentException('A pre-allocated content entry identifier must be a UUID.');
+        }
         $type = $this->models === null ? null : $this->models->contentType($context->site(), $contentTypeIdentifier);
         if ($this->models !== null && $type === null) {
             throw new ContentModelNotFound('content type', $contentTypeIdentifier);
@@ -353,7 +360,7 @@ final readonly class ContentService
         }
         $now = $this->clock->now();
         $entry = ContentEntry::create(
-            Uuid::uuid7()->toString(),
+            $entryId ?? Uuid::uuid7()->toString(),
             $title,
             $slug,
             $data,
@@ -450,6 +457,78 @@ final readonly class ContentService
             $this->recordAudit($context->actorId(), 'content.update', $updated->entry, $now);
 
             return $updated;
+        });
+    }
+
+    /**
+     * Re-pin an entry to another published content type version without changing what it says.
+     *
+     * Studio's reusable-type outcomes create an immutable successor type version (or a new type) from
+     * the design an author composed while editing this very item; the item then adopts that exact
+     * coordinate so its values, workflow state and revision history stay intact while its validation
+     * contract moves. The stored body is validated against the adopted schema first, the workflow the
+     * entry follows must be the one the adopted version pins, and the entry's own optimistic version
+     * is left untouched because nothing the author wrote changed. The row and its audit event are
+     * committed together.
+     *
+     * @param   ExecutionContext  $context             Actor and site the adoption is performed for.
+     * @param   string            $id                  UUID of the content entry to re-pin.
+     * @param   int               $expectedVersion     Version the editor loaded and believes it is changing.
+     * @param   string            $contentTypeId       UUID of the content type to adopt.
+     * @param   int               $contentTypeVersion  Exact published version of that type to adopt.
+     *
+     * @return  ContentRecord  The stored record, pinned to the adopted type and workflow versions.
+     *
+     * @throws  \Kumwe\App\Application\Authorization\AuthorizationDenied  When `content.update` is refused.
+     * @throws  ContentNotFound  When no entry matches within reach of the context.
+     * @throws  ContentModelNotFound  When the adopted content type version is not published here.
+     * @throws  InvalidArgumentException  When the adopted version follows a different workflow.
+     * @throws  \Kumwe\App\Content\Domain\InvalidContentData  When the body does not satisfy the adopted schema.
+     * @throws  \Kumwe\App\Content\Domain\VersionConflict  When another writer moved the entry on first.
+     *
+     * @since   2.0.0
+     */
+    public function adoptContentType(
+        ExecutionContext $context,
+        string $id,
+        int $expectedVersion,
+        string $contentTypeId,
+        int $contentTypeVersion,
+    ): ContentRecord {
+        $this->authorize($context, 'content.update', $id);
+        $stored = $this->get($context, $id);
+        $type = $this->models?->contentType($context->site(), $contentTypeId, $contentTypeVersion);
+        if ($type === null) {
+            throw new ContentModelNotFound('content type', $contentTypeId, $contentTypeVersion);
+        }
+        if ($type->workflowId !== $stored->workflowId) {
+            throw new InvalidArgumentException('The adopted content type version follows a different workflow.');
+        }
+        ($this->schemas ?? new JsonSchemaValidator())->assertValid($type->schema(), $stored->entry->data());
+        (new ExpectedVersion($expectedVersion))->assertMatches($stored->entry->version());
+        $now = $this->clock->now();
+        $adopted = new ContentRecord(
+            $stored->entry,
+            $type->id,
+            $type->workflowId,
+            $stored->createdAt,
+            $now,
+            $stored->deletedAt,
+            $type->version,
+            $type->workflowVersion,
+            $stored->siteIdentifier,
+        );
+
+        return $this->transactions->transactional(function () use (
+            $adopted,
+            $expectedVersion,
+            $context,
+            $now,
+        ): ContentRecord {
+            $this->repository->update($adopted, $expectedVersion);
+            $this->recordAudit($context->actorId(), 'content.adopt_type', $adopted->entry, $now);
+
+            return $adopted;
         });
     }
 

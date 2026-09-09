@@ -132,6 +132,38 @@ final readonly class DoctrineContentStudioAuthoringContextRepository implements 
     }
 
     /**
+     * Advance the stored target of one binding in place, leaving every other column untouched.
+     *
+     * @param   ContentStudioAuthoringContextBinding  $binding  Binding carrying the successor target.
+     *
+     * @return  void
+     *
+     * @throws  \Doctrine\DBAL\Exception  When the database refuses the update.
+     * @throws  RuntimeException  When no row carries the binding's key.
+     *
+     * @since   2.0.0
+     */
+    public function advance(ContentStudioAuthoringContextBinding $binding): void
+    {
+        $updated = $this->connection->update(
+            $this->tables->raw('studio_content_authoring_contexts'),
+            [
+                'intent' => $binding->target->intent->value,
+                'model_identifier' => $binding->target->modelId,
+                'model_version' => $binding->target->modelVersion,
+                'model_revision' => $binding->target->modelRevision,
+                'entry_identifier' => $binding->target->entryId,
+                'entry_revision' => $binding->target->entryRevision,
+                'return_path' => $binding->target->returnPath,
+            ],
+            ['context_key' => $binding->contextKey],
+        );
+        if ($updated !== 1) {
+            throw new RuntimeException('The Studio Content authoring context to advance does not exist.');
+        }
+    }
+
+    /**
      * Read one required non-empty textual database column.
      *
      * @param   array<string, mixed>  $row   Fetched database row.

@@ -10,6 +10,8 @@ use Kumwe\App\BusinessRecord\Domain\BusinessRecordReplayWindow;
 use Kumwe\App\Extension\Application\Package\PackageConformanceMode;
 use Kumwe\App\Http\Security\TrustedProxyMatcher;
 use Kumwe\App\Infrastructure\Observability\ObservabilityContract;
+use Kumwe\Producer\Deployment\DeploymentException;
+use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
 
 /**
  * The complete, already-validated settings one Kumwe process runs on.
@@ -26,6 +28,14 @@ use Kumwe\App\Infrastructure\Observability\ObservabilityContract;
  */
 final readonly class ApplicationConfiguration
 {
+    /**
+     * Public npm registry CDN the pinned Studio browser assets load from unless a deployment overrides it.
+     *
+     * @var    string
+     * @since  2.0.0
+     */
+    public const string DEFAULT_STUDIO_BROWSER_BASE_URL = 'https://cdn.jsdelivr.net/npm';
+
     /**
      * Capture and validate the settings the whole process will read.
      *
@@ -87,6 +97,9 @@ final readonly class ApplicationConfiguration
      *          late repeat is refused by name rather than applied a second time.
      * @param   ?string                        $metricsToken                  Shared bearer token a non-public metrics
      *          endpoint requires; null leaves the endpoint invisible rather than open.
+     * @param   string                         $studioBrowserBaseUrl          Base every pinned Studio browser asset is
+     *          loaded from in the npm package layout `<base>/<package>@<version>/dist/browser/<path>`: the public
+     *          registry CDN by default, or a self-hosted mirror or site-absolute path that keeps the same shape.
      *
      * @throws  InvalidArgumentException  When a setting is malformed, a secret is too short or
      *          reused, an identity is not a stable identifier, or a production-only rule is violated.
@@ -123,6 +136,7 @@ final readonly class ApplicationConfiguration
         public ?bool $metricsEnabled = null,
         public ?string $metricsToken = null,
         public BusinessRecordReplayWindow $idempotencyReplay = new BusinessRecordReplayWindow(),
+        public string $studioBrowserBaseUrl = self::DEFAULT_STUDIO_BROWSER_BASE_URL,
     ) {
         if (filter_var($baseUrl, FILTER_VALIDATE_URL) === false) {
             throw new InvalidArgumentException('APP_BASE_URL must contain an absolute URL.');
@@ -209,6 +223,16 @@ final readonly class ApplicationConfiguration
         // A short shared token is a guessable one, and this endpoint answers before any rate limiter.
         if ($metricsToken !== null && strlen($metricsToken) < 32) {
             throw new InvalidArgumentException('KUMWE_METRICS_TOKEN must contain at least 32 bytes.');
+        }
+        try {
+            StudioBrowserAssetLocator::npmPackages($studioBrowserBaseUrl);
+        } catch (DeploymentException $error) {
+            throw new InvalidArgumentException(
+                'KUMWE_STUDIO_BROWSER_BASE_URL must be an absolute HTTPS URL, a loopback HTTP URL or a site-absolute '
+                . 'path without query, fragment or credentials.',
+                0,
+                $error,
+            );
         }
     }
 

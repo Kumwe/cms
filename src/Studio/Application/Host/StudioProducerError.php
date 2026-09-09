@@ -42,6 +42,8 @@ final readonly class StudioProducerError
      * @param   bool         $retryable               Whether an unavailable refusal is transient.
      * @param   int|null     $retryAfterMilliseconds  Bounded retry delay for a retryable refusal.
      * @param   string|null  $correlationId           Delivery-safe support correlation identifier.
+     * @param   list<string>  $details                 Author-facing detail lines (validation violations) carried
+     *          as additional non-blocking diagnostics; each is bounded and never echoes secrets.
      *
      * @return  HostError  Canonical error ready for Producer's responder.
      *
@@ -56,6 +58,7 @@ final readonly class StudioProducerError
         bool $retryable = false,
         ?int $retryAfterMilliseconds = null,
         ?string $correlationId = null,
+        array $details = [],
     ): HostError {
         $message = new MessageReference(self::MESSAGE_KEY, self::MESSAGE_FALLBACK);
         $diagnostics = [new Diagnostic(
@@ -63,6 +66,17 @@ final readonly class StudioProducerError
             'blocking',
             new MessageReference($diagnosticCode, self::MESSAGE_FALLBACK),
         )];
+        foreach ($details as $detail) {
+            $detail = trim($detail);
+            if ($detail === '') {
+                continue;
+            }
+            $diagnostics[] = new Diagnostic(
+                $diagnosticCode,
+                'error',
+                new MessageReference($diagnosticCode, mb_substr($detail, 0, 500)),
+            );
+        }
 
         return match ($category) {
             'invalid-request' => HostError::invalidRequest($message, $diagnostics, $correlationId),
@@ -101,6 +115,7 @@ final readonly class StudioProducerError
      * @param   bool         $retryable               Whether an unavailable refusal is transient.
      * @param   int|null     $retryAfterMilliseconds  Bounded retry delay for a retryable refusal.
      * @param   bool         $commitsState            Whether safe mutation failure state must commit and replay.
+     * @param   list<string>  $details                 Author-facing detail lines carried as additional diagnostics.
      *
      * @return  never
      *
@@ -113,9 +128,10 @@ final readonly class StudioProducerError
         bool $retryable = false,
         ?int $retryAfterMilliseconds = null,
         bool $commitsState = false,
+        array $details = [],
     ): never {
         throw new HostRefusal(
-            self::error($category, $diagnosticCode, $revision, $retryable, $retryAfterMilliseconds),
+            self::error($category, $diagnosticCode, $revision, $retryable, $retryAfterMilliseconds, null, $details),
             $commitsState,
         );
     }

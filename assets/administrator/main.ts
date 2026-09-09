@@ -137,3 +137,7 @@ setupPolicyStepFlows();
 if (document.querySelector('[data-studio-composition]') !== null) {
   void import('./components/studio-composition').then(({ setupStudioComposition }) => setupStudioComposition());
 }
+
+if (document.querySelector('[data-kumwe-studio][data-studio-module-url]') !== null) {
+  void import('./components/studio-launch').then(({ setupStudioLaunch }) => setupStudioLaunch());
+}

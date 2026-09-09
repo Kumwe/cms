@@ -1,5 +1,5 @@
 import { c as A$10, d as i$17, l as b$12, s as i$16, u as w$12 } from "./reveal-validation-g1jDnck7.js";
-import { t as __vitePreload } from "./administrator-BF4tf80K.js";
+import { t as __vitePreload } from "./administrator-CZSYedDP.js";
 //#region node_modules/@kumwe/studio-core/dist/canonical.js
 function canonicalStringify(e, t = {}) {
 	let r = t.maximumDepth ?? 64;

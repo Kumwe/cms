@@ -128,6 +128,10 @@ final class ConfigurationFactory
                 ? null
                 : $environment->boolean('KUMWE_METRICS_ENABLED'),
             metricsToken: $this->fileBackedSecret($environment, 'KUMWE_METRICS_TOKEN'),
+            studioBrowserBaseUrl: $environment->string(
+                'KUMWE_STUDIO_BROWSER_BASE_URL',
+                ApplicationConfiguration::DEFAULT_STUDIO_BROWSER_BASE_URL,
+            ),
         );
     }
 

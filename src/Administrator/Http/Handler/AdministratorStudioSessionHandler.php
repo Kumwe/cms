@@ -47,6 +47,9 @@ final readonly class AdministratorStudioSessionHandler implements RequestHandler
     /**
      * Validate the closed open request and return only the negotiated host authority projection.
      *
+     * Contextual content-authoring sessions are opened only by the server-rendered editor mount; the
+     * public open endpoint refuses that kind so a browser cannot mint an authoring session on its own.
+     *
      * @param   ServerRequestInterface  $request  Authenticated, authorized and CSRF-checked request.
      *
      * @return  ResponseInterface  No-store session projection or canonical non-disclosing host error.
@@ -73,10 +76,14 @@ final readonly class AdministratorStudioSessionHandler implements RequestHandler
         }
 
         try {
+            $kind = StudioResourceKind::from($body->resourceKind);
+            if ($kind === StudioResourceKind::ContentAuthoring) {
+                return self::response(StudioProducerError::error('invalid-request', 'studio.host/invalid-request'));
+            }
             $snapshot = $this->authority->open(
                 AdministratorRequest::context($request),
                 StudioSessionMode::from($body->mode),
-                StudioResourceKind::from($body->resourceKind),
+                $kind,
                 $body->resourceId,
             );
         } catch (StudioHostAccessRefused $refused) {
@@ -89,7 +96,7 @@ final readonly class AdministratorStudioSessionHandler implements RequestHandler
         }
 
         return new JsonResponse([
-            'hostCapabilities' => StudioHostSessionAuthority::HOST_CAPABILITIES,
+            'hostCapabilities' => StudioHostSessionAuthority::capabilities($snapshot->session->resourceKind),
             'lifecycle' => [
                 'canPublish' => $snapshot->canPublish,
                 'canUnpublish' => $snapshot->canUnpublish,

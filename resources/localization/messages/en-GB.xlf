@@ -11053,6 +11053,70 @@
         <source>The Studio page builder is not available for this content context. Use the structured editor below; Kumwe will preserve the exact content type and version when you save.</source>
       </segment>
     </unit>
+    <unit id="core.administrator.content_form.compose_this_item_visually">
+      <notes>
+        <note category="context">Heading of the contextual Studio region on templates/administrator/content-form.twig.</note>
+      </notes>
+      <segment>
+        <source>Compose this item visually</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.use_the_structured_form">
+      <notes>
+        <note category="context">Toggle label that hides Studio and shows the structured Content form.</note>
+      </notes>
+      <segment>
+        <source>Use the structured form</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.use_the_page_builder">
+      <notes>
+        <note category="context">Toggle label that hides the structured form and shows Studio again.</note>
+      </notes>
+      <segment>
+        <source>Use the page builder</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.studio_page_builder_is_loading">
+      <notes>
+        <note category="context">Initial live status of the contextual Studio region while the pinned module mounts.</note>
+      </notes>
+      <segment>
+        <source>The Studio page builder is loading.</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.studio_page_builder_is_ready">
+      <notes>
+        <note category="context">Live status after the contextual Studio session opened successfully.</note>
+      </notes>
+      <segment>
+        <source>The Studio page builder is ready.</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.studio_page_builder_could_not_start">
+      <notes>
+        <note category="context">Live status when the contextual Studio mount failed and the structured form stays in place.</note>
+      </notes>
+      <segment>
+        <source>The Studio page builder could not start; the structured form remains available.</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.studio_changes_saved">
+      <notes>
+        <note category="context">Live status after a contextual Studio save completed.</note>
+      </notes>
+      <segment>
+        <source>Studio saved this item.</source>
+      </segment>
+    </unit>
+    <unit id="core.administrator.content_form.discard_unsaved_studio_changes">
+      <notes>
+        <note category="context">Confirmation shown when the author leaves Studio with unsaved changes.</note>
+      </notes>
+      <segment>
+        <source>Discard unsaved Studio changes and return?</source>
+      </segment>
+    </unit>
     <unit id="core.administrator.content_form.content_fields">
       <notes>
         <note category="context">Record surface text on templates/administrator/content-form.twig.</note>

@@ -1,50 +1,59 @@
 {
-    "note": "Exact coordinated Studio release pin per kumwe/app#104 and D16/ADR 0007. Producer owns the PHP schema and testkit authorities; App retains this record and the eight npm tarballs its browser build consumes. A re-pin changes this record, all eight tarballs, and the Producer dependency atomically.",
+    "note": "Exact coordinated Studio release pin per kumwe/app#104 and D16/ADR 0007. Producer owns the PHP schema, browser-asset and testkit authorities and vendors nothing App consumes twice. App resolves the eight npm packages from the public npm registry at these exact versions (package.json pins them exactly; package-lock.json records the official registry tarball and its SHA-512 integrity) and loads the Studio browser module and enhancement runtime at run time from the configured npm CDN with the manifest SRI values Producer publishes. No package tarball is committed to this repository. A re-pin changes this record, package.json, package-lock.json and the Producer dependency atomically.",
     "release_record": {
         "release": "0.1.0-beta.3",
         "file": "studio-release.json",
         "sha256": "c1860c64d1a4ce1e6d9b96ea94a2d63df42e8ebaaf423ed5b4fa4dd841ed39a4"
     },
+    "registry": "https://registry.npmjs.org",
     "pinned": {
         "@kumwe/studio": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "a2dc16044e14298df593f2e202291bc6b38ee76c4cef091a80d2a76108d1d97d"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio/-/studio-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "a2dc16044e14298df593f2e202291bc6b38ee76c4cef091a80d2a76108d1d97d",
+            "integrity": "sha512-bvinm9GtES5/7AjGwXDsGy0Q32IR/Ujj+WYu8cS2ngKAwqZOhlDsUV0u4Xqii+fg18U72byfowLUUoim969N7w=="
         },
         "@kumwe/studio-core": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-core-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "6da7419abb4d6db7439f4019b9336138a0c35824cd4d0a78bffd8a1b2d4dc67b"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-core/-/studio-core-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "6da7419abb4d6db7439f4019b9336138a0c35824cd4d0a78bffd8a1b2d4dc67b",
+            "integrity": "sha512-JJK4SJVq1wFOxqygC2S+DheEt3UYyUgy+kJZTHJGLnjtKaedyaUt7qZMHTc3+etIBMMkEzPyGHxWXsfE5QKOgg=="
         },
         "@kumwe/studio-media": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-media-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "26d21e4620b8131620cee7bdf3298393958dbac5989fdc3ac743580356bfa661"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-media/-/studio-media-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "26d21e4620b8131620cee7bdf3298393958dbac5989fdc3ac743580356bfa661",
+            "integrity": "sha512-dPquYcsRe/lFSSCUI8tv6B4lz9o4gOUM82xvYTGQM1jxOe1sN7RbhF1aZVEKnw4wyxi3DedGVHlMx8WCR12WAQ=="
         },
         "@kumwe/studio-preview": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-preview-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "74b28cb48fcf15571255a2b861fd143f32221ee0f3462919771723afa51d7fde"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-preview/-/studio-preview-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "74b28cb48fcf15571255a2b861fd143f32221ee0f3462919771723afa51d7fde",
+            "integrity": "sha512-MAbsUTCpwmic7aDn97Skc340PXDhFFjJ/GNQ7tJn6PobYxEEj0Q3PhFmB1WCEILYWQ2dfGOKYRawbgjApw3BAg=="
         },
         "@kumwe/studio-protocol": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-protocol-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "dadea111ee74564e183e6bf5b49da38f2e7adef1078e0d3aa5587459e723629c"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-protocol/-/studio-protocol-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "dadea111ee74564e183e6bf5b49da38f2e7adef1078e0d3aa5587459e723629c",
+            "integrity": "sha512-Lr2cF9+WEIBGqx6SwN7NrwgA1QJaZPL3TPjOCsGmlrxOTVF7MBhL18erJbpavXo6SLaZbBem3lV9gNan/0iFMw=="
         },
         "@kumwe/studio-renderer-web": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-renderer-web-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "6e1112eb6837b3df4f91f6d8cfc9d9c85577adcea873c36fa2c972de8839f156"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-renderer-web/-/studio-renderer-web-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "6e1112eb6837b3df4f91f6d8cfc9d9c85577adcea873c36fa2c972de8839f156",
+            "integrity": "sha512-QzilpgEjQUlgmE2izEGLdUQZrXuy5hraOCKZqn8FChd1UADTm1/fZPbw/XvsVNP9TfvK/UzxAmY1o04B2X8Zig=="
         },
         "@kumwe/studio-rich-text": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-rich-text-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "f751135a4c7a748ebcb75ea6dd1fd62d4def72e54e114246ab17751f4f381c8d"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-rich-text/-/studio-rich-text-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "f751135a4c7a748ebcb75ea6dd1fd62d4def72e54e114246ab17751f4f381c8d",
+            "integrity": "sha512-a0d1PBE1bXhC/LvakDb9kaZBF4xEfP48CbedM2ZPBWhxX63pwW32KjK36GgL3Hf3GfnX1qFmU2gcdrWnstDLYg=="
         },
         "@kumwe/studio-testkit": {
             "version": "0.1.0-beta.3",
-            "file": "kumwe-studio-testkit-0.1.0-beta.3.tgz",
-            "npm_tarball_sha256": "2f37daf2e8b4bd722ce0944f1300b9ab9051fb942453862607a081187575c02a"
+            "tarball": "https://registry.npmjs.org/@kumwe/studio-testkit/-/studio-testkit-0.1.0-beta.3.tgz",
+            "npm_tarball_sha256": "2f37daf2e8b4bd722ce0944f1300b9ab9051fb942453862607a081187575c02a",
+            "integrity": "sha512-UcO242Q14/POc8t9tmTjRsm52cCrI0tftk6rQ3a3lK3Shbyl8zdXu73iJ/3Al0qwALvnsf4R+8SH5eXIVv446w=="
         }
     }
 }

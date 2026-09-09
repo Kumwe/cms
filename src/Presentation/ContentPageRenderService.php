@@ -6,6 +6,7 @@ namespace Kumwe\App\Presentation;
 
 use Kumwe\App\Presentation\Application\SitePresentation;
 use Kumwe\App\Site\Application\SiteSettings;
+use Kumwe\Producer\Deployment\StudioBrowserAssetLocation;
 
 /**
  * Canonical site-template and theme path shared by published and unpublished content rendering.
@@ -41,6 +42,8 @@ final readonly class ContentPageRenderService
      * @param   bool                        $includeThemeVariables  Whether validated CSS variables may be emitted as
      *          the existing public theme attribute; preview documents set false under their stricter CSP.
      * @param   string|null                 $studioStylesheetHref   Exact same-origin Producer stylesheet URL.
+     * @param   ?StudioBrowserAssetLocation  $studioEnhancement      Pinned enhancement runtime the rendered blocks
+     *          need, deferred with its manifest integrity, or null for a script-free page.
      *
      * @return  string  Complete themed HTML document.
      *
@@ -57,6 +60,7 @@ final readonly class ContentPageRenderService
         array $languages = [],
         bool $includeThemeVariables = true,
         ?string $studioStylesheetHref = null,
+        ?StudioBrowserAssetLocation $studioEnhancement = null,
     ): string {
         $settings = $this->settings->current();
         $presentation = SitePresentation::from(
@@ -101,6 +105,13 @@ final readonly class ContentPageRenderService
             '<link rel="stylesheet" href="%s" data-studio-composition>',
             htmlspecialchars($studioStylesheetHref, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8'),
         );
+        if ($studioEnhancement !== null) {
+            $link .= sprintf(
+                '<script defer src="%s" integrity="%s" crossorigin="anonymous" data-studio-enhancements></script>',
+                htmlspecialchars($studioEnhancement->url(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8'),
+                htmlspecialchars($studioEnhancement->integrity(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8'),
+            );
+        }
 
         return substr_replace($html, $link, $offset, 0);
     }

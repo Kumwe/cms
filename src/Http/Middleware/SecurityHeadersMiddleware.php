@@ -20,20 +20,37 @@ use Psr\Http\Server\RequestHandlerInterface;
  * TLS. `upgrade-insecure-requests` is withheld off plain HTTP alone, because a site served without TLS
  * cannot honour it: the browser would be told to fetch every subresource, and to submit every form,
  * over a scheme nothing is listening on. An `image/svg+xml` response is additionally sandboxed because
- * an SVG is an active document the browser would otherwise run with the site's own origin.
+ * an SVG is an active document the browser would otherwise run with the site's own origin. A page that
+ * mounts the pinned Studio browser module from the configured CDN asks for that one origin through
+ * `SCRIPT_ORIGIN_HEADER`; the request is honoured only when it names the configured origin exactly.
  *
  * @since  2.0.0
  */
 final readonly class SecurityHeadersMiddleware implements MiddlewareInterface
 {
     /**
-     * Record whether this build is allowed to assert HSTS.
+     * Response header a handler sets to ask for exactly one additional script origin on its own response.
      *
-     * @param  bool  $production  Whether the application runs in production, where pinning TLS is safe.
+     * The middleware honours it only when the value equals the origin the deployment configured for the
+     * pinned Studio browser assets, and always removes it before the response leaves the pipeline, so
+     * neither a handler nor an upstream body can widen the policy to an arbitrary origin.
+     *
+     * @var    string
+     * @since  2.0.0
+     */
+    public const string SCRIPT_ORIGIN_HEADER = 'X-Kumwe-Studio-Script-Origin';
+
+    /**
+     * Record whether this build is allowed to assert HSTS and which script origin a page may request.
+     *
+     * @param  bool     $production          Whether the application runs in production, where pinning TLS
+     *         is safe.
+     * @param  ?string  $studioScriptOrigin  Exact origin the pinned Studio browser assets are served from,
+     *         or null when they are same-origin and no response may widen `script-src`.
      *
      * @since  2.0.0
      */
-    public function __construct(private bool $production)
+    public function __construct(private bool $production, private ?string $studioScriptOrigin = null)
     {
     }
 
@@ -57,9 +74,16 @@ final readonly class SecurityHeadersMiddleware implements MiddlewareInterface
         $secure = $request->getUri()->getScheme() === 'https';
 
         $policy = new SecurityHeaders($this->production && $secure, $secure);
+        $requestedOrigin = $response->getHeaderLine(self::SCRIPT_ORIGIN_HEADER);
+        $response = $response->withoutHeader(self::SCRIPT_ORIGIN_HEADER);
+        $scriptOrigins = $requestedOrigin !== ''
+            && $this->studioScriptOrigin !== null
+            && hash_equals($this->studioScriptOrigin, $requestedOrigin)
+            ? [$this->studioScriptOrigin]
+            : [];
         $headers = $request->getUri()->getPath() === '/administrator/studio/preview'
             ? $policy->previewValues()
-            : $policy->values();
+            : $policy->values(null, $scriptOrigins);
         foreach ($headers as $name => $value) {
             $response = $response->withHeader($name, $value);
         }

@@ -138,6 +138,62 @@ final readonly class ContentStudioAuthoringContextAuthority
     }
 
     /**
+     * Advance one opened context to the successor target an accepted durable effect produced.
+     *
+     * The successor is reproduced from live App state before it is stored, exactly as `resolve()`
+     * would, so a caller cannot advance a context to coordinates the authenticated actor could not
+     * open; the scope, session and expiry of the binding never move.
+     *
+     * @param   ExecutionContext              $context     Current authenticated administrator request.
+     * @param   string                        $contextKey  Opaque server-issued context key.
+     * @param   ContentStudioAuthoringTarget  $successor   PHP-resolved target after the accepted effect.
+     *
+     * @return  void
+     *
+     * @throws  ContentStudioAuthoringContextRefused  When the binding is absent, foreign, expired, or the
+     *          successor cannot be reproduced from live authorized state.
+     *
+     * @since   2.0.0
+     */
+    public function advance(
+        ExecutionContext $context,
+        string $contextKey,
+        ContentStudioAuthoringTarget $successor,
+    ): void {
+        if (!self::validContextKey($contextKey)) {
+            self::refuse();
+        }
+        $binding = $this->contexts->find($contextKey);
+        if ($binding === null || !self::sameTrustedScope($context, $binding)) {
+            self::refuse();
+        }
+        if ($this->clock->now() >= $binding->expiresAt) {
+            self::refuse();
+        }
+        try {
+            $fresh = $this->revalidate($context, $successor);
+        } catch (ContentStudioAuthoringContextStale $stale) {
+            $fresh = $stale->current;
+        }
+        if ($fresh->toArray() !== $successor->toArray()) {
+            self::refuse();
+        }
+        $this->contexts->advance(new ContentStudioAuthoringContextBinding(
+            $binding->contextKey,
+            $binding->actorId,
+            $binding->siteId,
+            $binding->organizationId,
+            $binding->workspaceId,
+            $binding->surface,
+            $binding->sessionBinding,
+            $binding->authorityBinding,
+            $successor,
+            $binding->createdAt,
+            $binding->expiresAt,
+        ));
+    }
+
+    /**
      * Reconstruct one target exclusively from live authorized App state and require exact equality.
      *
      * @param   ExecutionContext              $context  Fresh authenticated administrator request.
@@ -146,6 +202,7 @@ final readonly class ContentStudioAuthoringContextAuthority
      * @return  ContentStudioAuthoringTarget  Freshly authorized target equal to the stored value.
      *
      * @throws  ContentStudioAuthoringContextRefused  On malformed, absent, denied, or changed target state.
+     * @throws  ContentStudioAuthoringContextStale  When only the entry revision moved and the caller may advance.
      *
      * @since   2.0.0
      */
