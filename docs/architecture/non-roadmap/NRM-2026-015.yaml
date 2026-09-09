@@ -1,0 +1,31 @@
+schema: kumwe-non-roadmap-record/v1
+id: NRM-2026-015
+nrm_ref: NRM-2026-015
+roadmap_impact: None
+rationale: "Adopt verified kumwe/producer 0.3.0, App's first Version 2 dependency, through the migration ledger."
+repositories:
+  - kumwe/app
+  - kumwe/producer
+behavior_before: "App pinned kumwe/producer 0.2.0 as a legacy-unmanifested entry without the Deployment layer."
+behavior_after: "App pins verified kumwe/producer 0.3.0; the index reads its manifests and the ledger records it."
+public_api_impact: "No App public API changes; the adopted Producer exports are consumed by App composition only."
+dependency_impact: "Re-pins kumwe/producer 0.2.0 to 0.3.0 exactly; extension-sdk 0.2.4 still requires ^0.2."
+compatibility: "Additive over 0.2.x: same 70-type API, wire, corpus and Studio pin plus six Deployment exports."
+data_migration: None
+security_impact: "Integrity-bound assets from one exact origin; proven, escaped deployment block; authority in App."
+performance:
+  claim: None
+  evidence: []
+operations_deployment: "KUMWE_STUDIO_BROWSER_BASE_URL selects the npm CDN or a mirror with the package layout."
+recovery_rollback: "Revert the adoption pull request; no persisted data changes."
+artifacts_evidence:
+  - docs/architecture/migrations/KUMWE-MIG-2026-032.yaml
+  - docs/architecture/migrations/change-sets/KUMWE-CS-2026-032.yaml
+  - docs/architecture/migrations/trains/KUMWE-TRAIN-2026-001.yaml
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-032/RELEASE-ATTESTATION.yaml
+  - docs/architecture/capability-index.md
+known_gaps:
+  - "No released kumwe/extension-sdk admits kumwe/producer 0.3.0 yet, so Composer cannot resolve the lock."
+  - "KUMWE-CGR-2026-001 awaits reviewer approval before the core-growth baseline is re-recorded."
+owner: "eWɘyn"
+status: in-progress

@@ -43,29 +43,6 @@
       "verified_legacy_release": null,
       "approved_by": "eWɘyn",
       "approved_on": "2026-09-02"
-    },
-    "kumwe/producer": {
-      "installed_version": "v0.2.0",
-      "reason": "Released before the Version 2 protocol; ships a schema-2 resources/public-api.json but no capabilities or service-map manifest and no MIGRATION-HANDOFF.md.",
-      "responsibility": "The PHP realization layer for Kumwe Studio: it validates what arrives on the wire, renders published compositions into semantic HTML, and generates the stylesheet a design's tokens imply, while the host application keeps every shred of authority.",
-      "non_responsibilities": [
-        "No authority: authentication, authorization, capability checks, and policy belong to the host.",
-        "No storage: the host owns persistence, encryption, redaction, protected capability handles, revisions, replay rehydration, and audit.",
-        "No Node.js: Producer is pure PHP and never compiles, bundles, or executes JavaScript or TypeScript.",
-        "No code generation at render time: rendering assembles bounded, escaped HTML and static CSS from data and never evaluates stored markup, styles, or scripts.",
-        "No floating dependency on a draft contract: the Studio pin is exact.",
-        "No runtime Composer dependencies."
-      ],
-      "canonical_namespaces": [
-        "Kumwe\\Producer\\"
-      ],
-      "retired_app_namespaces": [
-        "Kumwe\\App\\Extension\\Domain\\Internal\\StudioProfile\\",
-        "Kumwe\\App\\Studio\\Domain\\Contract\\"
-      ],
-      "verified_legacy_release": null,
-      "approved_by": "eWɘyn",
-      "approved_on": "2026-09-02"
     }
   }
 }

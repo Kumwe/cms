@@ -1,0 +1,120 @@
+schema: kumwe-change-set/v2
+change_set: KUMWE-CS-2026-032
+migration_id: KUMWE-MIG-2026-032
+roadmap_source:
+  title: Kumwe ERP-Extensibility Foundation Roadmap
+  sha256: a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8
+roadmap_refs: []
+state: release-verified
+phase_1:
+  source_repository: kumwe/app
+  source_sha: "24ecf956423c18933e824b43cea1bfb9127a79a9"
+  target_repository: kumwe/producer
+  package_pr: "https://github.com/kumwe/producer/pull/12"
+  tested_sha: "048d003e81d19f0c51a679a4252e4d342ab9d78a"
+  public_api_digest: "5fe7efb49a29799fcc3c3bbdba9ba4138d63688669ba933a2be6996f13f12cc2"
+  capability_digest: "a7e4b69f5b5612272584b187ae9ee9afe34ea85499dca91b35260ab3b66ee8a5"
+  service_map_digest: "7173160cd25ff40ff5002a8c5c63ae769ce8b8df6fcd1138f1d9e949acad7fd3"
+  handoff_digest: "2363da6372cac1166b1eeadaff79f41421ba862d31ff04b02d24b53730565b7c"
+release:
+  version: 0.3.0
+  source_sha: "65d0a10ce39954738f091ec4b5e2626768053c8d"
+  artifact_digest: "46c06bbc5f68288c2317981f4ede8199dc77d0abaadb2ab261d92d61682a53c5"
+  clean_consumer_evidence:
+    - "https://github.com/kumwe/producer/actions/runs/34357309843"
+    - "https://github.com/kumwe/producer/actions/runs/34359681189"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/137"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/producer 0.3.0"
+  composer_lock_digest: "5bc8ba3341e226baedd28f60f227fd4929832a8352a98a36973906edcc2b342e"
+  removed_app_symbols: []
+  moved_unit_tests: []
+  retained_app_tests:
+    - tests/Architecture/StudioMediaBoundaryTest.php
+    - tests/Integration/Studio/ExtensionStudioPreviewRendererIntegrationTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryPersistenceTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryProducerIntegrationTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryVectorReplayIntegrationTest.php
+    - tests/Integration/Studio/StudioPreviewDraftSourceTest.php
+    - tests/Integration/Studio/StudioPreviewPersistenceTest.php
+    - tests/Support/StudioProducerRequest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorStudioHostHandlerTest.php
+    - tests/Unit/Extension/Contribution/StudioPreviewRendererContributionTest.php
+    - tests/Unit/Http/Handler/HomePageHandlerTest.php
+    - tests/Unit/Http/Handler/PublishedContentHandlerTest.php
+    - tests/Unit/Site/Application/PublicPageLocatorTest.php
+    - tests/Unit/Studio/Application/Composition/StudioCompositionContributionCatalogTest.php
+    - tests/Unit/Studio/Application/Composition/StudioPublishedContentRendererTest.php
+    - tests/Unit/Studio/Application/Host/StudioArtifactAdmissionTest.php
+    - tests/Unit/Studio/Application/Host/StudioArtifactHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioLocalizationTelemetryHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioModelHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioPermissionHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerErrorTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerHostTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerMutationBoundaryTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerRequestAuthorityTest.php
+    - tests/Unit/Studio/Application/Host/StudioRecoveryHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioResourceHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioTelemetryHostPortTest.php
+    - tests/Unit/Studio/Application/Media/StudioMediaHostPortTest.php
+    - tests/Unit/Studio/Application/Media/StudioMediaProducerPortTest.php
+    - tests/Unit/Studio/Application/Preview/ContentStudioPreviewBindingSourceTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewBindingRendererTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewHostPortTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewProducerPortTest.php
+    - tests/Unit/Studio/Application/Projection/ContentStudioProjectorTest.php
+    - tests/Unit/Studio/Application/Projection/StudioContentProjectionServiceTest.php
+    - tests/Unit/Studio/Application/Rendering/FragmentStudioPreviewBlockRendererTest.php
+    - tests/Unit/Studio/Application/Rendering/StudioBlockRendererRuntimeTest.php
+    - tests/Unit/Studio/Application/Rendering/StudioContentFieldBlockRendererTest.php
+    - tests/Unit/Studio/Application/Rendering/StudioLayoutBlockRendererTest.php
+    - tests/Unit/Studio/Domain/Media/StudioMediaPolicyVectorTest.php
+    - tests/Unit/Studio/Domain/Preview/StudioPreviewIdentityTest.php
+    - tests/Unit/Studio/Domain/Projection/EntryCompositionOverridesTest.php
+    - tests/Unit/Studio/Infrastructure/Host/SodiumStudioMutationOutcomeCodecTest.php
+    - tests/Unit/Studio/Infrastructure/Release/PinnedStudioContextualAuthoringAvailabilityTest.php
+evidence:
+  package:
+    - "https://github.com/kumwe/producer/actions/runs/34357309843"
+    - "https://github.com/kumwe/producer/actions/runs/34359681189"
+  app_composition:
+    - tests/Integration/Studio/ContentStudioAuthoringJourneyIntegrationTest.php
+    - tests/Unit/Studio/Application/Authoring/HostedContentStudioAuthoringConfigurationProviderTest.php
+    - tests/Unit/Studio/Application/Authoring/ContentStudioAuthoringDocumentsTest.php
+    - tests/Unit/Studio/Application/Release/StudioCoreCatalogTest.php
+    - tests/Unit/Studio/Application/Rendering/StudioBlockRendererRuntimeTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerHostTest.php
+    - tests/Architecture/StudioContextualAuthoringLaunchBoundaryTest.php
+  database_matrix: []
+  concurrency: []
+  authorization_security:
+    - tests/Unit/Studio/Application/Host/StudioProducerRequestAuthorityTest.php
+    - tests/Unit/Studio/Application/Host/StudioPermissionHostPortTest.php
+    - tests/Unit/Studio/Application/Authoring/ContentStudioAuthoringContextAuthorityTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorStudioSessionHandlerTest.php
+    - tests/Unit/Http/Security/SecurityHeadersTest.php
+    - tests/Unit/Http/Middleware/SecurityMiddlewareTest.php
+  lifecycle_recovery:
+    - tests/Integration/Studio/StudioArtifactRecoveryPersistenceTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryProducerIntegrationTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryVectorReplayIntegrationTest.php
+  delivery_browser:
+    - tests/Unit/Studio/Infrastructure/Release/PinnedStudioContextualAuthoringAvailabilityTest.php
+    - tests/Unit/Studio/Application/Composition/StudioPublishedEnhancementRuntimeTest.php
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Additive over 0.2.x: same 70 types, wire, corpus and Studio pin plus six Deployment exports."
+migration_recovery: null
+security_impact: "Proven, escaped deployment block; integrity-bound assets from one origin; authority stays in App."
+performance_claim: null
+rollback: "Revert the App pull request; the lock returns to kumwe/producer 0.2.0 with its legacy registry entry."
+known_gaps:
+  - "kumwe/extension-sdk 0.2.4 requires kumwe/producer ^0.2; no released extension-sdk admits 0.3.0 yet."
+  - "Until such an extension-sdk release is pinned, Composer cannot resolve the lock that records this release."
+  - "KUMWE-CGR-2026-001 awaits reviewer approval before the core-growth baseline can be re-recorded."
+completion_claim: false
+accepted_by: null

@@ -14,9 +14,10 @@ use PHPUnit\Framework\TestCase;
  * Proves the capability index gate holds for this repository and is registered in every lane that must run it.
  *
  * The committed `docs/architecture/capability-index.md` matches what the installed Kumwe packages generate, the
- * generator is deterministic, a stale digest is refused, the three pre-Version-2 packages appear only as approved
- * legacy-unmanifested entries that cannot satisfy a release gate, and the check is wired into `composer qa`, the
- * quality contract, both CI steps and the coverage contract.
+ * generator is deterministic, a stale digest is refused, the two remaining pre-Version-2 packages appear only as
+ * approved legacy-unmanifested entries that cannot satisfy a release gate while `kumwe/producer` is indexed from its
+ * Version 2 manifests and ledger record, and the check is wired into `composer qa`, the quality contract, both CI
+ * steps and the coverage contract.
  *
  * @since  2.0.0
  */
@@ -183,13 +184,14 @@ final class CapabilityIndexGateTest extends TestCase
     }
 
     /**
-     * The three pre-Version-2 packages are legacy-unmanifested transitional entries that cannot satisfy a release gate.
+     * Two pre-Version-2 packages remain legacy-unmanifested transitional entries that cannot satisfy a release
+     * gate, while `kumwe/producer` is indexed from its Version 2 manifests and the ledger record adopting its handoff.
      *
      * @return  void
      *
      * @since   2.0.0
      */
-    public function testTheInstalledPackagesAreApprovedLegacyEntries(): void
+    public function testTheInstalledPackagesAreLegacyEntriesOrVersionTwoAdoptions(): void
     {
         $document = (new CapabilityIndexBuilder($this->root))->build();
         /** @var list<array<string, mixed>> $packages */
@@ -199,7 +201,7 @@ final class CapabilityIndexGateTest extends TestCase
             ['kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer'],
             array_column($packages, 'package'),
         );
-        foreach ($packages as $package) {
+        foreach ([$packages[0], $packages[1]] as $package) {
             self::assertSame('legacy-unmanifested', $package['manifest_status'], (string) $package['package']);
             self::assertFalse($package['release_gate_eligible'], (string) $package['package']);
             self::assertIsArray($package['legacy']);
@@ -208,11 +210,20 @@ final class CapabilityIndexGateTest extends TestCase
             self::assertNull($package['handoff']);
             self::assertNotEmpty($package['public_symbols']);
         }
+        $producer = $packages[2];
+        self::assertSame('v2-manifested', $producer['manifest_status']);
+        self::assertTrue($producer['release_gate_eligible']);
+        self::assertNull($producer['legacy']);
+        self::assertIsArray($producer['handoff']);
+        self::assertSame('KUMWE-MIG-2026-032', $producer['handoff']['migration_id']);
+        self::assertSame('KUMWE-CS-2026-032', $producer['handoff']['change_set']);
+        self::assertSame('vendor/kumwe/producer/MIGRATION-HANDOFF.md', $producer['handoff']['path']);
+        self::assertContains('Kumwe\\Producer\\Deployment\\StudioDeploymentEmitter', $producer['public_symbols']);
         $sources = array_column($packages, 'public_symbols_source', 'package');
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/conversion']);
         self::assertSame('source-scan', $sources['kumwe/extension-sdk']);
-        self::assertSame('manifest:resources/public-api.json', $sources['kumwe/producer']);
-        self::assertSame(['v0.1.2', 'v0.2.4', 'v0.2.0'], array_column($packages, 'installed_version'));
+        self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/producer']);
+        self::assertSame(['v0.1.2', 'v0.2.4', 'v0.3.0'], array_column($packages, 'installed_version'));
         self::assertSame([], $document['extracted_namespaces']);
         self::assertSame([], $document['removed_symbols']);
         self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[1]['legacy']['retired_app_namespaces']);

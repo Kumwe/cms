@@ -55,9 +55,10 @@ development programme, from the architecture decision that opened it to the curr
   lockfile, and `resources/studio-contract/core-catalog.json` materializes the first-party block and pattern
   coordinates the pinned module compiles in, proven against the installed `@kumwe/studio-core`. The
   readiness gate now binds the registry pin, that catalog, the configured asset origin, the built start
-  module and a reviewed qualification (release, record digests, browser-module integrity). Producer is
-  pinned at `0.3.0` (its exact commit ahead of the tagged release); the Version 2 adoption records follow
-  that release. Integration proves the create, save-as-new-type and save-new-type-version journeys through
+  module and a reviewed qualification (release, record digests, browser-module integrity). Producer `0.3.0` is
+  adopted as App's first Version 2 manifested dependency (`NRM-2026-015`): the migration ledger
+  `KUMWE-MIG-2026-032`, its change set, the integration train and the independent release attestation
+  record the verified `v0.3.0` release, and `kumwe/producer` leaves the legacy registry. Integration proves the create, save-as-new-type and save-new-type-version journeys through
   the real container and database. (#137)
 - **2026-09-07 — Extraction audit and next independent batch (`NRM-2026-008`).** Reviewed all 104 Version 2
   documents, the complete ERP roadmap and current governance rulings; recorded gaps in the four started
