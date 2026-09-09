@@ -21,9 +21,14 @@ consumer, never its owner: nothing App-specific may enter that repository.
 ## The pin, as delivered
 
 `composer.json` requires `kumwe/producer` at exactly `0.3.0`, beside `kumwe/extension-sdk` `0.2.4`
-and `kumwe/conversion` `0.1.2`. `composer studio:dependencies` refuses any range, branch, alias or
-foreign specifier for the three libraries or the eight `@kumwe/studio` packages, and
-`tests/Architecture/StudioDependencyPinGateTest.php` proves each refusal. Producer 0.3.0 pins
+and `kumwe/conversion` `0.1.2`. Because extension-sdk 0.2.4 constrains Producer to `^0.2` and no
+released extension-sdk admits 0.3.0, the pin is written as the exact inline alias `0.3.0 as 0.2.99`:
+Composer installs the immutable tagged release and records that one alias in the lock, and the alias
+retires when App adopts the extension-sdk release train that selects Producer 0.3.0.
+`composer studio:dependencies` admits only that two-release alias form, requires the lock to record it
+verbatim, and refuses any range, branch, mutable alias or foreign specifier for the three libraries or
+the eight `@kumwe/studio` packages; `tests/Architecture/StudioDependencyPinGateTest.php` proves each
+admission and refusal. Producer 0.3.0 pins
 Studio `0.1.0-beta.3` at protocol `0.1.0-draft.2`, so App's
 [`resources/studio-contract/PIN.json`](../../resources/studio-contract/PIN.json) moved
 deliberately from the interim `0.1.0-rc.1` snapshot to that coordinate: one chain, App → Producer

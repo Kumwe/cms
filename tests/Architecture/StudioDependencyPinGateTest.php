@@ -11,9 +11,11 @@ use PHPUnit\Framework\TestCase;
  * Holds first-party manifests and lockfiles to exact, official, immutable coordinates.
  *
  * The extracted PHP libraries and Studio packages cross a trust boundary before any of their classes run.
- * These tests exercise the dependency-free gate in both directions: the committed records pass, while
- * ranges, branches, Composer aliases, npm aliases, mutable lock references, foreign URLs, a runtime library
- * declared only under require-dev, and a lock whose dist reference diverges from its source all fail.
+ * These tests exercise the dependency-free gate in both directions: the committed records pass, including
+ * the one admitted exact Producer alias that the lock must record verbatim, while ranges, branches, mutable
+ * Composer aliases, unrecorded or divergent exact aliases, npm aliases, mutable lock references, foreign URLs,
+ * a runtime library declared only under require-dev, and a lock whose dist reference diverges from its source
+ * all fail.
  * Synthetic passing evidence supplies an aligned Producer release so a pin failure cannot be confused with
  * the separate three-way Studio alignment decision.
  *
@@ -145,6 +147,63 @@ final class StudioDependencyPinGateTest extends TestCase
 
         self::assertSame(1, $result['status']);
         self::assertStringContainsString('kumwe/producer as "dev-main as 0.1.0"', $result['output']);
+    }
+
+    /**
+     * An exact Producer alias the manifest declares must be recorded by the regenerated lock.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAnExactComposerAliasWithoutItsLockRecordFails(): void
+    {
+        $fixture = $this->fixture();
+        $fixture['composer']['require']['kumwe/producer'] = '0.3.0 as 0.2.99';
+        $fixture['composer_lock']['aliases'] = [];
+        $result = $this->executeFixture($fixture);
+
+        self::assertSame(1, $result['status']);
+        self::assertStringContainsString(
+            'composer.json declares kumwe/producer as 0.2.99 but composer.lock records no such alias',
+            $result['output'],
+        );
+    }
+
+    /**
+     * A lock alias the manifest does not declare, or one that disagrees with the pin, fails.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testALockAliasTheManifestDoesNotDeclareOrMatchFails(): void
+    {
+        $undeclared = $this->fixture();
+        $undeclared['composer']['require']['kumwe/producer'] = '0.3.0';
+        $undeclared['composer_lock']['aliases'] = [[
+            'package' => 'kumwe/producer',
+            'version' => '0.3.0.0',
+            'alias' => '0.2.99',
+            'alias_normalized' => '0.2.99.0',
+        ]];
+        $result = $this->executeFixture($undeclared);
+
+        self::assertSame(1, $result['status']);
+        self::assertStringContainsString('composer.json declares no exact alias', $result['output']);
+
+        $divergent = $this->fixture();
+        $divergent['composer']['require']['kumwe/producer'] = '0.3.0 as 0.2.99';
+        $divergent['composer_lock']['aliases'] = [[
+            'package' => 'kumwe/producer',
+            'version' => '0.2.2.0',
+            'alias' => '0.2.99',
+            'alias_normalized' => '0.2.99.0',
+        ]];
+        $result = $this->executeFixture($divergent);
+
+        self::assertSame(1, $result['status']);
+        self::assertStringContainsString('but composer.json declares 0.3.0 as 0.2.99', $result['output']);
     }
 
     /**

@@ -8,8 +8,10 @@
  * enough: a stale or hand-edited lock can still resolve a branch, an alias, or a foreign repository.
  * This gate therefore binds both manifests to both locks, requires immutable Composer commit references,
  * accepts only the official Kumwe GitHub coordinates, and keeps every Studio package on an exact version.
- * It then invokes the Producer/Studio alignment verifier so the exact Producer commit cannot implement a
- * different Studio release than App vendors.
+ * The one admitted Composer alias form is `X.Y.Z as A.B.C` with two exact releases: the real release stays
+ * immutable while a sibling library whose constraint predates that release keeps resolving, and the lock
+ * must record exactly that alias. It then invokes the Producer/Studio alignment verifier so the exact
+ * Producer commit cannot implement a different Studio release than App vendors.
  *
  * Usage:
  *
@@ -73,12 +75,13 @@ $studioPackages = [
 $errors = [];
 
 $composer = dependencyManifest($paths['composer'], $errors);
+$composerAliases = [];
 $composerPins = $composer === null
     ? []
-    : verifyComposerManifest($composer, $composerRepositories, $errors);
+    : verifyComposerManifest($composer, $composerRepositories, $errors, $composerAliases);
 $composerLock = dependencyManifest($paths['composer-lock'], $errors);
 if ($composerLock !== null) {
-    verifyComposerLock($composerLock, $composerPins, $composerRepositories, $errors);
+    verifyComposerLock($composerLock, $composerPins, $composerRepositories, $composerAliases, $errors);
 }
 
 $package = dependencyManifest($paths['package'], $errors);
@@ -160,6 +163,28 @@ function exactDependencyVersion(string $specifier): bool
 }
 
 /**
+ * Read a Composer inline alias that binds one exact release to one exact alias version.
+ *
+ * Only the `X.Y.Z as A.B.C` form with two plain releases is admitted: the real release stays an immutable
+ * coordinate, and the alias only lets a sibling library whose constraint predates that release resolve.
+ * Branches, ranges and pre-release suffixes on either side are refused.
+ *
+ * @param   string  $specifier  Manifest version.
+ *
+ * @return  array{version: string, alias: string}|null  The exact release and its alias, or null.
+ *
+ * @since   2.0.0
+ */
+function exactDependencyAlias(string $specifier): ?array
+{
+    if (preg_match('/^v?(\d+\.\d+\.\d+) as (\d+\.\d+\.\d+)$/D', $specifier, $matches) !== 1) {
+        return null;
+    }
+
+    return ['version' => $matches[1], 'alias' => $matches[2]];
+}
+
+/**
  * Compare exact versions without treating Composer's conventional leading `v` as a different release.
  *
  * @param   string  $version  Exact version.
@@ -179,12 +204,13 @@ function normalizedDependencyVersion(string $version): string
  * @param   array<string, mixed>   $manifest      Decoded composer.json.
  * @param   array<string, string>  $repositories  Package names mapped to official GitHub repositories.
  * @param   list<string>           $errors        Accumulated failures.
+ * @param   array<string, string>  $aliases       Exact alias versions declared beside a pin, by package name.
  *
  * @return  array<string, string>  Exact versions by package name.
  *
  * @since   2.0.0
  */
-function verifyComposerManifest(array $manifest, array $repositories, array &$errors): array
+function verifyComposerManifest(array $manifest, array $repositories, array &$errors, array &$aliases = []): array
 {
     $pins = [];
     foreach (['require', 'require-dev'] as $section) {
@@ -200,6 +226,12 @@ function verifyComposerManifest(array $manifest, array $repositories, array &$er
             }
             if (isset($pins[$name])) {
                 $errors[] = sprintf('composer.json declares %s in more than one dependency section.', $name);
+                continue;
+            }
+            $alias = is_string($specifier) ? exactDependencyAlias($specifier) : null;
+            if ($alias !== null) {
+                $pins[$name] = $alias['version'];
+                $aliases[$name] = $alias['alias'];
                 continue;
             }
             if (!is_string($specifier) || !exactDependencyVersion($specifier)) {
@@ -232,14 +264,16 @@ function verifyComposerManifest(array $manifest, array $repositories, array &$er
  * @param   array<string, mixed>   $lock          Decoded composer.lock.
  * @param   array<string, string>  $pins          Direct exact manifest versions.
  * @param   array<string, string>  $repositories  Package names mapped to official GitHub repositories.
+ * @param   array<string, string>  $aliases       Exact alias versions composer.json declares, by package name.
  * @param   list<string>           $errors        Accumulated failures.
  *
  * @return  void
  *
  * @since   2.0.0
  */
-function verifyComposerLock(array $lock, array $pins, array $repositories, array &$errors): void
+function verifyComposerLock(array $lock, array $pins, array $repositories, array $aliases, array &$errors): void
 {
+    verifyComposerLockAliases($lock, $pins, $repositories, $aliases, $errors);
     $entries = [];
     foreach (['packages', 'packages-dev'] as $section) {
         /** @var mixed $packages */
@@ -332,6 +366,84 @@ function verifyComposerLock(array $lock, array $pins, array $repositories, array
                 $name,
                 $officialDist,
                 dependencyPrintable($dist['url'] ?? null),
+            );
+        }
+    }
+}
+
+/**
+ * Bind the lock's alias list to exactly the exact aliases composer.json declares for first-party packages.
+ *
+ * Composer writes one `aliases` record per root alias, carrying the normalized real version and the alias.
+ * A first-party alias the manifest does not declare, a declared alias the lock does not record, or a record
+ * whose real version differs from the pin all fail, so the alias can never widen beyond one exact release.
+ *
+ * @param   array<string, mixed>   $lock          Decoded composer.lock.
+ * @param   array<string, string>  $pins          Direct exact manifest versions.
+ * @param   array<string, string>  $repositories  Package names mapped to official GitHub repositories.
+ * @param   array<string, string>  $aliases       Exact alias versions composer.json declares, by package name.
+ * @param   list<string>           $errors        Accumulated failures.
+ *
+ * @return  void
+ *
+ * @since   2.0.0
+ */
+function verifyComposerLockAliases(
+    array $lock,
+    array $pins,
+    array $repositories,
+    array $aliases,
+    array &$errors,
+): void {
+    /** @var mixed $records */
+    $records = $lock['aliases'] ?? [];
+    if (!is_array($records) || !array_is_list($records)) {
+        $errors[] = 'composer.lock aliases must be an array.';
+
+        return;
+    }
+    $recorded = [];
+    foreach ($records as $index => $record) {
+        $name = is_array($record) ? ($record['package'] ?? null) : null;
+        if (!is_string($name) || !isset($repositories[$name])) {
+            continue;
+        }
+        if (!is_array($record) || isset($recorded[$name])) {
+            $errors[] = sprintf('composer.lock aliases entry %d repeats or malforms %s.', $index, $name);
+            continue;
+        }
+        $declared = $aliases[$name] ?? null;
+        if ($declared === null) {
+            $errors[] = sprintf(
+                'composer.lock aliases %s as %s but composer.json declares no exact alias.',
+                $name,
+                dependencyPrintable($record['alias'] ?? null),
+            );
+            continue;
+        }
+        $expectedVersion = isset($pins[$name]) ? $pins[$name] . '.0' : null;
+        if (
+            ($record['alias'] ?? null) !== $declared
+            || ($record['alias_normalized'] ?? null) !== $declared . '.0'
+            || ($record['version'] ?? null) !== $expectedVersion
+        ) {
+            $errors[] = sprintf(
+                'composer.lock aliases %s as %s from %s but composer.json declares %s as %s.',
+                $name,
+                dependencyPrintable($record['alias'] ?? null),
+                dependencyPrintable($record['version'] ?? null),
+                $pins[$name] ?? 'nothing',
+                $declared,
+            );
+        }
+        $recorded[$name] = true;
+    }
+    foreach ($aliases as $name => $alias) {
+        if (!isset($recorded[$name])) {
+            $errors[] = sprintf(
+                'composer.json declares %s as %s but composer.lock records no such alias; regenerate the lock.',
+                $name,
+                $alias,
             );
         }
     }

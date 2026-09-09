@@ -58,7 +58,12 @@ development programme, from the architecture decision that opened it to the curr
   module and a reviewed qualification (release, record digests, browser-module integrity). Producer `0.3.0` is
   adopted as App's first Version 2 manifested dependency (`NRM-2026-015`): the migration ledger
   `KUMWE-MIG-2026-032`, its change set, the integration train and the independent release attestation
-  record the verified `v0.3.0` release, and `kumwe/producer` leaves the legacy registry. Integration proves the create, save-as-new-type and save-new-type-version journeys through
+  record the verified `v0.3.0` release, and `kumwe/producer` leaves the legacy registry. Because
+  `kumwe/extension-sdk` 0.2.4 still constrains Producer to `^0.2` and no released extension-sdk admits
+  0.3.0, `composer.json` pins Producer as the exact inline alias `0.3.0 as 0.2.99`, Composer regenerates the
+  lock with that one alias record, and `composer studio:dependencies` admits only this exact two-release
+  form and refuses any alias the lock does not record verbatim; the alias retires when App adopts the
+  extension-sdk release train that selects Producer 0.3.0. Integration proves the create, save-as-new-type and save-new-type-version journeys through
   the real container and database. (#137)
 - **2026-09-07 — Extraction audit and next independent batch (`NRM-2026-008`).** Reviewed all 104 Version 2
   documents, the complete ERP roadmap and current governance rulings; recorded gaps in the four started
