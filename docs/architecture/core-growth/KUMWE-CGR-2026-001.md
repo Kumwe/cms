@@ -80,9 +80,9 @@ consumers:
   - src/Studio/Infrastructure/Release/PinnedStudioContextualAuthoringAvailability.php
   - templates/administrator/content-form.twig
 overlap_reviewed: []
-decision: pending
+decision: approved
 decided_by: "eWɘyn"
-reviewer: ""
+reviewer: "eWɘyn"
 decided_on: "2026-09-09"
 pull_request: "https://github.com/kumwe/app/pull/137"
 ---
@@ -150,8 +150,9 @@ reconciles, and admit only the enhancement families the pinned runtime publishes
 
 ## Decision
 
-Pending human review at the App pull request that adopts Producer 0.3.0: the author recorded the review
-above; the reviewer confirms the boundary, sets `decision: approved` and names themselves, and re-records
-the core-growth baseline in the same change. The record should be revisited when Studio publishes the
-first-party coordinate record (retiring `StudioCoreCatalog`) or when Producer gains a host-neutral
-authoring application service.
+Approved on 2026-09-09 by the maintainer, eWɘyn, reviewing at the App pull request that adopts Producer
+0.3.0 (`pull_request` above): the boundary recorded above stands, App owns the contextual Content
+authoring host and Producer owns the wire, schema, release record, asset locator, deployment emitter and
+policies it composes. The core-growth baseline was re-recorded in the same change. The record should be
+revisited when Studio publishes the first-party coordinate record (retiring `StudioCoreCatalog`) or when
+Producer gains a host-neutral authoring application service.

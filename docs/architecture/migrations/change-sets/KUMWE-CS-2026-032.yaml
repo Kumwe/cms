@@ -116,6 +116,8 @@ known_gaps:
   - "kumwe/extension-sdk 0.2.4 requires kumwe/producer ^0.2; no released extension-sdk admits 0.3.0 yet."
   - "composer.json therefore pins kumwe/producer as the exact alias 0.3.0 as 0.2.99, recorded in the lock."
   - "The alias retires when App adopts the extension-sdk release train that selects Producer 0.3.0."
-  - "KUMWE-CGR-2026-001 awaits reviewer approval before the core-growth baseline can be re-recorded."
+  - "The maintainer kept the alias on 2026-09-09 and ordered that train adoption as the next App change."
+  - "RELEASE-ATTESTATION.yaml was produced by an isolated verification agent with no Phase 1 context."
+  - "The maintainer accepted that provenance as the D-GOV-11 separate session on 2026-09-09."
 completion_claim: false
 accepted_by: null
