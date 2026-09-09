@@ -40,6 +40,7 @@ final readonly class StudioProducerHostFactory
      * @param  StudioRecoveryHostPort          $recovery          App recovery port prototype.
      * @param  StudioResourceHostPort          $resource          App resource port prototype.
      * @param  StudioTelemetryHostPort         $telemetry         App telemetry port prototype.
+     * @param  ?StudioAuthoringHostPort        $authoring         App contextual authoring port prototype.
      *
      * @since  2.0.0
      */
@@ -60,6 +61,7 @@ final readonly class StudioProducerHostFactory
         private StudioRecoveryHostPort $recovery,
         private StudioResourceHostPort $resource,
         private StudioTelemetryHostPort $telemetry,
+        private ?StudioAuthoringHostPort $authoring = null,
     ) {
     }
 
@@ -105,6 +107,7 @@ final readonly class StudioProducerHostFactory
             $this->recovery->forRequest($authority),
             $this->resource->forRequest($authority),
             $this->telemetry->forRequest($authority),
+            $this->authoring?->forRequest($authority),
         );
     }
 }

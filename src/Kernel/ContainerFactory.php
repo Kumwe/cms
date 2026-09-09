@@ -323,14 +323,16 @@ use Kumwe\App\Content\Infrastructure\Persistence\DoctrineContentModelRepository;
 use Kumwe\App\Content\Infrastructure\Persistence\DoctrineContentRepository;
 use Kumwe\App\Content\Infrastructure\Persistence\DoctrineTranslationGroupRepository;
 use Kumwe\App\Content\Presentation\TranslationGroupPresenter;
+use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringCatalog;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringLaunchResolver;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringContextAuthority;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringContextPurger;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringContextRepository;
+use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringService;
+use Kumwe\App\Studio\Application\Authoring\HostedContentStudioAuthoringConfigurationProvider;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringTargetResolver;
 use Kumwe\App\Studio\Application\Authoring\StudioContextualAuthoringAvailability;
 use Kumwe\App\Studio\Application\Authoring\StudioContextualAuthoringConfigurationProvider;
-use Kumwe\App\Studio\Application\Authoring\UnavailableStudioContextualAuthoringConfigurationProvider;
 use Kumwe\App\Studio\Application\Projection\ContentProjectionBindingRepository;
 use Kumwe\App\Studio\Application\Projection\ContentStudioProjector;
 use Kumwe\App\Studio\Application\Projection\ContentStudioResourceSearchProvider;
@@ -344,6 +346,7 @@ use Kumwe\App\Studio\Application\Composition\StudioCompositionContributionCatalo
 use Kumwe\App\Studio\Application\Composition\StudioBuiltInThemeRelease;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedCompositionGuard;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedContentRenderer;
+use Kumwe\App\Studio\Application\Composition\StudioPublishedEnhancementRuntime;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedTheme;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionAuthority;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionRepository;
@@ -355,6 +358,7 @@ use Kumwe\App\Studio\Application\Host\StudioArtifactPublicationGuard;
 use Kumwe\App\Studio\Application\Host\StudioArtifactRepository;
 use Kumwe\App\Studio\Application\Host\StudioMutationOutcomeCodec;
 use Kumwe\App\Studio\Application\Host\StudioMutationReplayRepository;
+use Kumwe\App\Studio\Application\Host\StudioAuthoringHostPort;
 use Kumwe\App\Studio\Application\Host\StudioProducerHostFactory;
 use Kumwe\App\Studio\Application\Host\StudioRecoveryHostPort;
 use Kumwe\App\Studio\Application\Host\StudioRecoveryRepository;
@@ -373,6 +377,7 @@ use Kumwe\App\Studio\Application\Preview\StudioPreviewSequenceRepository;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewTransportGuard;
 use Kumwe\App\Studio\Application\Rendering\StudioBlockRendererRuntime;
 use Kumwe\App\Studio\Application\Rendering\StudioContentFieldBlockRenderer;
+use Kumwe\App\Studio\Application\Release\StudioCoreCatalog;
 use Kumwe\App\Studio\Application\Release\StudioReleaseRecord;
 use Kumwe\App\Studio\Application\Media\StudioExternalAddressResolver;
 use Kumwe\App\Studio\Application\Media\StudioExternalMediaFetcher;
@@ -387,6 +392,9 @@ use Kumwe\App\Studio\Application\Media\StudioMediaStagingStorage;
 use Kumwe\App\Studio\Application\Media\StudioMediaUploadRepository;
 use Kumwe\App\Studio\Application\Media\StudioPinnedHttpTransport;
 use Kumwe\App\Studio\Application\Host\StudioTelemetryHostPort;
+use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
+use Kumwe\Producer\Deployment\StudioDeploymentEmitter;
+use Kumwe\Producer\Schema\StudioContractResources;
 use Kumwe\Producer\Schema\StudioDocumentSchemaRegistry;
 use Kumwe\App\Studio\Domain\Media\StudioExternalUrlPolicy;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadPolicy;
@@ -406,6 +414,7 @@ use Kumwe\App\Studio\Infrastructure\Persistence\DoctrineStudioHostSessionReposit
 use Kumwe\App\Studio\Infrastructure\Persistence\DoctrineStudioPreviewDraftSource;
 use Kumwe\App\Studio\Infrastructure\Persistence\DoctrineStudioPreviewRepository;
 use Kumwe\App\Studio\Infrastructure\Release\PinnedStudioContextualAuthoringAvailability;
+use Kumwe\App\Studio\Infrastructure\Release\StudioContextualAuthoringQualification;
 use Kumwe\App\Studio\Infrastructure\Transport\NativeStudioPreviewSequenceWaiter;
 use Kumwe\App\Demo\Application\DemoProfileLedger;
 use Kumwe\App\Demo\Application\DemoProfileReconciler;
@@ -1754,16 +1763,73 @@ final class ContainerFactory
             true,
         );
         $container->share(
-            StudioContextualAuthoringAvailability::class,
-            static fn (): StudioContextualAuthoringAvailability =>
-                new PinnedStudioContextualAuthoringAvailability($root, null),
+            StudioBrowserAssetLocator::class,
+            static fn (): StudioBrowserAssetLocator =>
+                StudioBrowserAssetLocator::npmPackages($configuration->studioBrowserBaseUrl),
             true,
         );
+        $container->share(StudioCoreCatalog::class, static fn (Container $container): StudioCoreCatalog =>
+            StudioCoreCatalog::fromFile(
+                $root . '/resources/studio-contract/core-catalog.json',
+                self::service($container, StudioReleaseRecord::class)->release,
+            ), true);
+        $container->share(StudioDeploymentEmitter::class, static fn (
+            Container $container,
+        ): StudioDeploymentEmitter => new StudioDeploymentEmitter(
+            self::service($container, StudioDocumentSchemaRegistry::class),
+            StudioContractResources::releaseRecord(),
+        ), true);
+        $container->share(
+            StudioContextualAuthoringAvailability::class,
+            static fn (Container $container): StudioContextualAuthoringAvailability =>
+                new PinnedStudioContextualAuthoringAvailability(
+                    $root,
+                    self::studioContextualAuthoringQualification(),
+                    self::service($container, StudioBrowserAssetLocator::class),
+                ),
+            true,
+        );
+        $container->share(ContentStudioAuthoringCatalog::class, static fn (
+            Container $container,
+        ): ContentStudioAuthoringCatalog => new ContentStudioAuthoringCatalog(
+            self::service($container, StudioCompositionContributionCatalog::class),
+            self::service($container, StudioCoreCatalog::class),
+        ), true);
         $container->share(
             StudioContextualAuthoringConfigurationProvider::class,
-            new UnavailableStudioContextualAuthoringConfigurationProvider(),
+            static fn (Container $container): StudioContextualAuthoringConfigurationProvider =>
+                new HostedContentStudioAuthoringConfigurationProvider(
+                    self::service($container, ContentStudioAuthoringContextAuthority::class),
+                    self::service($container, StudioHostSessionAuthority::class),
+                    self::service($container, ContentStudioAuthoringCatalog::class),
+                    self::service($container, StudioPublishedTheme::class),
+                    self::service($container, ActiveLocale::class),
+                    self::service($container, SiteSettings::class),
+                    self::service($container, StudioDeploymentEmitter::class),
+                    self::service($container, StudioBrowserAssetLocator::class),
+                    self::service($container, LoggerInterface::class),
+                ),
             true,
         );
+        $container->share(ContentStudioAuthoringService::class, static fn (
+            Container $container,
+        ): ContentStudioAuthoringService => new ContentStudioAuthoringService(
+            self::service($container, ContentStudioAuthoringContextAuthority::class),
+            self::service($container, ContentService::class),
+            self::service($container, ContentModelService::class),
+            self::service($container, ContentStudioProjector::class),
+            self::service($container, StudioContentCompositionService::class),
+            self::service($container, ContentProjectionBindingRepository::class),
+            self::service($container, StudioPublishedTheme::class),
+            self::service($container, StudioDocumentSchemaRegistry::class),
+            self::service($container, ContentStudioAuthoringCatalog::class),
+        ), true);
+        $container->share(StudioAuthoringHostPort::class, static fn (
+            Container $container,
+        ): StudioAuthoringHostPort => new StudioAuthoringHostPort(
+            self::service($container, ContentStudioAuthoringService::class),
+            self::service($container, StudioDocumentSchemaRegistry::class),
+        ), true);
         $container->share(ContentStudioAuthoringLaunchResolver::class, static fn (
             Container $container,
         ): ContentStudioAuthoringLaunchResolver => new ContentStudioAuthoringLaunchResolver(
@@ -1863,6 +1929,7 @@ final class ContainerFactory
         ): StudioBlockRendererRuntime => new StudioBlockRendererRuntime(
             self::service($container, ExtensionContributionRegistrySet::class),
             self::service($container, StudioContentFieldBlockRenderer::class),
+            self::service($container, StudioCoreCatalog::class),
         ), true);
         $container->share(StudioPublishedCompositionGuard::class, static fn (
             Container $container,
@@ -2062,6 +2129,7 @@ final class ContainerFactory
             self::service($container, StudioRecoveryHostPort::class),
             self::service($container, StudioResourceHostPort::class),
             self::service($container, StudioTelemetryHostPort::class),
+            self::service($container, StudioAuthoringHostPort::class),
         ), true);
         $container->share(NavigationRepository::class, static fn (Container $container): NavigationRepository =>
             new DoctrineNavigationRepository(
@@ -3822,6 +3890,7 @@ final class ContainerFactory
         }, true);
         $container->share(SecurityHeadersMiddleware::class, new SecurityHeadersMiddleware(
             $configuration->isProduction(),
+            StudioBrowserAssetLocator::npmPackages($configuration->studioBrowserBaseUrl)->origin(),
         ), true);
         $container->share(RouteMiddleware::class, static fn (Container $container): RouteMiddleware =>
             new RouteMiddleware(self::service($container, RouterInterface::class)), true);
@@ -3884,7 +3953,13 @@ final class ContainerFactory
                 self::service($container, TranslationGroupPresenter::class),
                 self::service($container, ActiveLocale::class),
                 self::service($container, StudioPublishedContentRenderer::class),
+                self::service($container, StudioPublishedEnhancementRuntime::class),
             ), true);
+        $container->share(StudioPublishedEnhancementRuntime::class, static fn (
+            Container $container,
+        ): StudioPublishedEnhancementRuntime => new StudioPublishedEnhancementRuntime(
+            self::service($container, StudioBrowserAssetLocator::class),
+        ), true);
         $container->share(LivenessHandler::class, new LivenessHandler(), true);
         $container->share(MetricsHandler::class, static fn (Container $container): MetricsHandler =>
             new MetricsHandler(
@@ -3951,6 +4026,7 @@ final class ContainerFactory
             self::service($container, TranslationGroupPresenter::class),
             self::service($container, ActiveLocale::class),
             self::service($container, StudioPublishedContentRenderer::class),
+            self::service($container, StudioPublishedEnhancementRuntime::class),
         ), true);
         $container->share(StudioPublishedStylesheetHandler::class, static fn (
             Container $container,
@@ -6559,6 +6635,30 @@ final class ContainerFactory
         }
 
         return $resolved;
+    }
+
+    /**
+     * The reviewed qualification of the exact Studio deployment this composition root ships.
+     *
+     * These digests are reviewed constants, not values read back from disk: `composer studio:corpus`,
+     * `npm run check:studio-release` and the architecture suite prove the committed release record,
+     * registry pin, materialized first-party catalog and Producer's pinned browser module still carry
+     * exactly these coordinates, and a re-pin that moves any of them must be reviewed here again
+     * before contextual authoring re-enables.
+     *
+     * @return  StudioContextualAuthoringQualification  Exact App-owned host qualification.
+     *
+     * @since   2.0.0
+     */
+    private static function studioContextualAuthoringQualification(): StudioContextualAuthoringQualification
+    {
+        return new StudioContextualAuthoringQualification(
+            '0.1.0-beta.3',
+            'c1860c64d1a4ce1e6d9b96ea94a2d63df42e8ebaaf423ed5b4fa4dd841ed39a4',
+            '5ba19c85b1a12071cabfd0f5588040072de7ffcf2891ff6ebc15c1c4eb5103b5',
+            '92aa7f78924faa93e520d36a77dc14723ff644780db8aae689013668f6b76e4f',
+            'sha256-bQLLnuYhQprCbuB1LX5Yb09/n+KVS6xB+M7Mdh2/D34=',
+        );
     }
 
     /**

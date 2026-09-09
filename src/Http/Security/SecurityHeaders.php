@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Http\Security;
 
+use Kumwe\Producer\Deployment\DeploymentException;
+use Kumwe\Producer\Deployment\StudioContentSecurityPolicy;
+
 /**
  * Response header policy that every Kumwe response is hardened with.
  *
@@ -62,16 +65,24 @@ final readonly class SecurityHeaders
      * selector, so the residual is UI redress rather than exfiltration. Removing it needs those values
      * served as same-origin stylesheets, which `docs/qualification/gap-matrix.md` records as still open.
      *
-     * @param   ?string  $scriptNonce  Nonce that admits matching inline scripts, or null to allow none.
+     * A script origin widens `script-src` alone, and only by an exact `scheme://host[:port]`: it is how a
+     * page that mounts the pinned Studio browser module from the configured npm CDN admits that one
+     * origin while every other directive, including `connect-src`, stays same-origin. The origin is
+     * proven by Producer's exact-origin grammar, so a wildcard, a path or a plain-HTTP host is refused.
+     *
+     * @param   ?string       $scriptNonce    Nonce that admits matching inline scripts, or null to allow none.
+     * @param   list<string>  $scriptOrigins  Exact origins that additionally serve script files.
      *
      * @return  array<string, string>  Header name to value; `Strict-Transport-Security` and the
      *          `upgrade-insecure-requests` directive only when enabled.
      *
+     * @throws  DeploymentException  When a script origin is not an exact admissible origin.
+     *
      * @since   2.0.0
      */
-    public function values(?string $scriptNonce = null): array
+    public function values(?string $scriptNonce = null, array $scriptOrigins = []): array
     {
-        return $this->build($scriptNonce, false);
+        return $this->build($scriptNonce, false, $scriptOrigins);
     }
 
     /**
@@ -93,16 +104,23 @@ final readonly class SecurityHeaders
     /**
      * Assemble the ordinary or exact preview policy without duplicating shared directives.
      *
-     * @param   string|null  $scriptNonce  Ordinary response nonce, or null for no inline script.
-     * @param   bool         $preview      Whether to apply the dedicated framed-document delta.
+     * @param   string|null   $scriptNonce    Ordinary response nonce, or null for no inline script.
+     * @param   bool          $preview        Whether to apply the dedicated framed-document delta.
+     * @param   list<string>  $scriptOrigins  Exact origins that additionally serve script files.
      *
      * @return  array<string, string>  Complete response header policy.
      *
+     * @throws  DeploymentException  When a script origin is not an exact admissible origin.
+     *
      * @since   2.0.0
      */
-    private function build(?string $scriptNonce, bool $preview): array
+    private function build(?string $scriptNonce, bool $preview, array $scriptOrigins = []): array
     {
         $scriptSource = $scriptNonce === null ? "'self'" : sprintf("'self' 'nonce-%s'", $scriptNonce);
+        foreach (array_values(array_unique($scriptOrigins)) as $origin) {
+            StudioContentSecurityPolicy::assertOrigin($origin);
+            $scriptSource .= ' ' . $origin;
+        }
         $directives = [
                 "default-src 'self'",
                 "base-uri 'self'",

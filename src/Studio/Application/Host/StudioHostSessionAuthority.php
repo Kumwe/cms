@@ -69,6 +69,27 @@ final readonly class StudioHostSessionAuthority
     ];
 
     /**
+     * Additional host capabilities served only to a contextual Content authoring session.
+     *
+     * The seven authoring operations and their port are advertised, routed and authorized only for a
+     * session whose resource is an opaque Content authoring context; a Blueprint or plain Content
+     * session never sees them, so its generation and route table stay exactly as before.
+     *
+     * @var    list<string>
+     * @since  2.0.0
+     */
+    public const array AUTHORING_CAPABILITIES = [
+        'studio.operation/authoring.list-types',
+        'studio.operation/authoring.plan-save',
+        'studio.operation/authoring.resolve-target',
+        'studio.operation/authoring.save-as-new-type',
+        'studio.operation/authoring.save-item',
+        'studio.operation/authoring.save-new-type-version',
+        'studio.operation/authoring.start',
+        'studio.port/authoring',
+    ];
+
+    /**
      * Closed canonical permission vocabulary that permission explanation will recognize.
      *
      * @var    list<string>
@@ -101,6 +122,25 @@ final readonly class StudioHostSessionAuthority
         private StudioResourceContextKeyFactory $keys,
         private ?StudioPublishedTheme $theme = null,
     ) {
+    }
+
+    /**
+     * Resolve the sorted host capabilities one resource family is served.
+     *
+     * @param   StudioResourceKind  $kind  Stored resource family.
+     *
+     * @return  list<string>  Sorted qualified port and operation capabilities.
+     *
+     * @since   2.0.0
+     */
+    public static function capabilities(StudioResourceKind $kind): array
+    {
+        $capabilities = $kind === StudioResourceKind::ContentAuthoring
+            ? [...self::HOST_CAPABILITIES, ...self::AUTHORING_CAPABILITIES]
+            : self::HOST_CAPABILITIES;
+        sort($capabilities, SORT_STRING);
+
+        return array_values(array_unique($capabilities));
     }
 
     /**
@@ -292,7 +332,7 @@ final readonly class StudioHostSessionAuthority
             $permissions[] = 'studio.permission/publish';
         }
         if (
-            $kind === StudioResourceKind::Content
+            in_array($kind, [StudioResourceKind::Content, StudioResourceKind::ContentAuthoring], true)
             && $mode !== StudioSessionMode::ReadOnly
             && $this->authorization->decide(
                 $context,
@@ -331,7 +371,7 @@ final readonly class StudioHostSessionAuthority
         $eligible = $modeAllowed && (
             $kind === StudioResourceKind::Blueprint
             && $mode === StudioSessionMode::Blueprint
-            || $kind === StudioResourceKind::Content
+            || in_array($kind, [StudioResourceKind::Content, StudioResourceKind::ContentAuthoring], true)
             && in_array(
                 $mode,
                 [StudioSessionMode::Content, StudioSessionMode::Hybrid, StudioSessionMode::Model],
@@ -386,8 +426,7 @@ final readonly class StudioHostSessionAuthority
         bool $canPublish,
         bool $canUnpublish,
     ): string {
-        $capabilities = self::HOST_CAPABILITIES;
-        sort($capabilities, SORT_STRING);
+        $capabilities = self::capabilities($kind);
         $themeRevision = $this->theme?->reference($context->site())->revision ?? 'unbound-test-theme';
 
         return 'session-' . hash('sha256', implode("\n", [
@@ -467,6 +506,11 @@ final readonly class StudioHostSessionAuthority
                 true,
             ),
             StudioResourceKind::Content => $mode !== StudioSessionMode::Blueprint,
+            StudioResourceKind::ContentAuthoring => in_array(
+                $mode,
+                [StudioSessionMode::Hybrid, StudioSessionMode::ReadOnly],
+                true,
+            ),
         };
     }
 }

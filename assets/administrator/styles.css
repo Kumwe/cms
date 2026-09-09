@@ -799,3 +799,34 @@ button[disabled], button[aria-disabled="true"] { cursor: not-allowed; opacity: .
     .business-custom-object > div { grid-template-columns: 1fr; }
   }
 }
+
+/* Contextual Studio mount on the Content editor. */
+.studio-authoring-region {
+  display: grid;
+  gap: var(--space-3, 0.75rem);
+}
+
+.studio-authoring-region[data-studio-surface='form'] .studio-authoring-mount,
+.studio-authoring-region .studio-authoring-mount[hidden] {
+  display: none;
+}
+
+.studio-authoring-mount {
+  min-block-size: 24rem;
+  border: 1px solid var(--color-border, #d5dbe3);
+  border-radius: var(--radius-2, 0.5rem);
+  background: var(--color-surface, #fff);
+}
+
+.studio-authoring-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2, 0.5rem);
+}
+
+.studio-authoring-status[data-studio-launch-state='failed'],
+.studio-authoring-status[data-studio-launch-state='error'] {
+  color: var(--color-danger, #a3261a);
+}

@@ -88,6 +88,56 @@ final class AdministratorStudioSessionHandlerTest extends TestCase
      *
      * @since   2.0.0
      */
+    /**
+     * The public open endpoint never mints a contextual Content authoring session; only the editor mount may.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAContentAuthoringKindIsRefusedBeforeTheAuthorityIsConsulted(): void
+    {
+        $sessions = self::createMock(StudioHostSessionRepository::class);
+        $sessions->expects(self::never())->method('add');
+        $keys = self::createStub(StudioResourceContextKeyFactory::class);
+        $keys->method('create')->willReturn('contexts/session-handler-authoring');
+        $authority = new StudioHostSessionAuthority(AuthorizationContext::gateway(), $sessions, $keys);
+        $preview = new StudioPreviewTransportGuard(
+            'https://kumwe.test',
+            self::createStub(StudioPreviewSequenceRepository::class),
+            self::createStub(StudioPreviewSequenceWaiter::class),
+        );
+        $handler = new AdministratorStudioSessionHandler($authority, $preview);
+        $context = AuthorizationContext::principal(['content.read', 'content.update', 'studio.mode.hybrid'])->context(
+            SiteContext::default(),
+            AuthenticationStrength::Password,
+            'studio-session-handler-authoring',
+            surface: AuthenticatedSurface::Administrator,
+            sessionId: 'administrator-studio-session-authoring',
+        );
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'https://kumwe.test/administrator/studio/session')
+            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withBody((new StreamFactory())->createStream(json_encode([
+                'mode' => 'hybrid',
+                'resourceId' => 'contexts/' . str_repeat('a', 64),
+                'resourceKind' => 'content-authoring',
+            ], JSON_THROW_ON_ERROR)));
+
+        $response = $handler->handle($request);
+
+        self::assertSame(400, $response->getStatusCode());
+        self::assertJson((string) $response->getBody());
+        self::assertStringContainsString('studio.host/invalid-request', (string) $response->getBody());
+    }
+
+    /**
+     * Every body outside the closed open grammar is refused as an invalid request.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
     public function testABodyOutsideTheClosedGrammarIsRefused(): void
     {
         $sessions = self::createStub(StudioHostSessionRepository::class);

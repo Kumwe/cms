@@ -33,6 +33,32 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-09 — The Studio page builder mounts on Content New/Edit, backed by PHP and Producer 0.3.0.**
+  The Content editor opens an opaque exact-target authoring context and a hybrid host session per mount,
+  `HostedContentStudioAuthoringConfigurationProvider` assembles the `studio-deployment` document (launch,
+  resolved `studio-config` session, the App's field-block and pattern contribution bundle, and an
+  operation-map transport with the administrator CSRF token) and Producer's `StudioDeploymentEmitter` proves it
+  against the pinned schema and release before the page renders the inert JSON block. The pinned browser
+  module loads from `KUMWE_STUDIO_BROWSER_BASE_URL` (the public npm CDN by default, or a mirror keeping the
+  npm package layout) with Producer's manifest integrity; `SecurityHeadersMiddleware` widens `script-src` by
+  that one exact origin only on responses that ask for it, and the compiled `studio-launch` start module
+  opts the page into `autoMountStudio()`, swaps between the page builder and the structured form, and
+  navigates on the shell's return request. `StudioAuthoringHostPort` and `ContentStudioAuthoringService`
+  answer the seven authoring operations behind Producer's wire — target resolution, the reusable-type
+  catalogue, blank/from-type/existing starts, deterministic save plans, `save-item` persisting the entry
+  under the identity the session promised at launch, `save-as-new-type` and `save-new-type-version`
+  adopting the entry to its successor — and refusals carry the Content model's field-level violations.
+  Published pages defer the pinned enhancement runtime only when a rendered block needs one of the
+  manifest's families. The eight vendored Studio tarballs are gone: packages resolve from the npm registry at
+  exact versions, `PIN.json` records each official tarball URL, SHA-256 and SHA-512 integrity, `composer
+  studio:corpus` binds them to Producer's package provenance, `npm run check:studio-release` binds them to the
+  lockfile, and `resources/studio-contract/core-catalog.json` materializes the first-party block and pattern
+  coordinates the pinned module compiles in, proven against the installed `@kumwe/studio-core`. The
+  readiness gate now binds the registry pin, that catalog, the configured asset origin, the built start
+  module and a reviewed qualification (release, record digests, browser-module integrity). Producer is
+  pinned at `0.3.0` (its exact commit ahead of the tagged release); the Version 2 adoption records follow
+  that release. Integration proves the create, save-as-new-type and save-new-type-version journeys through
+  the real container and database. (#PR-APP-STUDIO)
 - **2026-09-07 — Extraction audit and next independent batch (`NRM-2026-008`).** Reviewed all 104 Version 2
   documents, the complete ERP roadmap and current governance rulings; recorded gaps in the four started
   packages and the Localization/Contribution extraction boundaries. Follow-up review inventories all 38

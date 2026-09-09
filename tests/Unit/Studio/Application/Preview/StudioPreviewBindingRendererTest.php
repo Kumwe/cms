@@ -311,7 +311,7 @@ final class StudioPreviewBindingRendererTest extends TestCase
         $draft = new StudioPreviewDraft('default', $document);
 
         $this->expectException(RenderException::class);
-        $this->expectExceptionMessage('The App has no canonical Producer enhancement runtime.');
+        $this->expectExceptionMessage('The pinned Studio enhancement runtime does not implement motion.');
         $renderer->render(
             self::snapshot($draft),
             $draft,

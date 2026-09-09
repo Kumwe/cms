@@ -7,6 +7,7 @@ namespace Kumwe\App\Studio\Application\Rendering;
 use Kumwe\App\Extension\Contribution\ExtensionContributionRegistrySet;
 use Kumwe\App\Extension\Contribution\StudioPreviewRendererContribution;
 use Kumwe\App\Extension\Runtime\TrustEnforcingStudioPreviewBlockRenderer;
+use Kumwe\App\Studio\Application\Release\StudioCoreCatalog;
 use Kumwe\Extension\Spi\Contribution\CanonicalCompositionDocument;
 use Kumwe\Extension\Spi\Contribution\CanonicalCompositionKind;
 use Kumwe\Extension\Spi\Contribution\CompositionHostBinding;
@@ -36,12 +37,16 @@ final readonly class StudioBlockRendererRuntime
      *
      * @param  ExtensionContributionRegistrySet  $registries  Live owner-scoped contribution registries.
      * @param  StudioContentFieldBlockRenderer   $fields      App-owned Content field block renderer.
+     * @param  ?StudioCoreCatalog                $catalog     Exact first-party coordinates the pinned Studio
+     *         release compiles in; each is bound to Producer's own core implementation so a published
+     *         composition may use the same catalog the contextual authoring surface offers.
      *
      * @since  2.0.0
      */
     public function __construct(
         private ExtensionContributionRegistrySet $registries,
         private StudioContentFieldBlockRenderer $fields,
+        private ?StudioCoreCatalog $catalog = null,
     ) {
     }
 
@@ -149,6 +154,15 @@ final readonly class StudioBlockRendererRuntime
                 $coordinate,
                 new FragmentStudioPreviewBlockRenderer($implementation, $viewport ?? 'expanded'),
             );
+        }
+        foreach ($this->catalog?->blockCoordinates() ?? [] as $coordinate) {
+            if ($registry->supports($coordinate)) {
+                continue;
+            }
+            $renderer = $registry->draftRendererFor($coordinate->type, $coordinate->version);
+            if ($renderer !== null) {
+                $registry->register($coordinate, $renderer);
+            }
         }
 
         return $registry;

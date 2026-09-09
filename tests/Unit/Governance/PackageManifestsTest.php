@@ -102,18 +102,20 @@ final class PackageManifestsTest extends TestCase
     }
 
     /**
-     * The installed pre-Version-2 manifests of Producer (schema 2) and Conversion (schema 1) supply legacy symbols.
+     * The installed Version 2 manifests of Producer and the pre-Version-2 manifests of Conversion supply symbols.
      *
      * @return  void
      *
      * @since   2.0.0
      */
-    public function testInstalledPreVersion2ManifestsSupplyLegacySymbols(): void
+    public function testInstalledManifestsSupplyPublicSymbolsAcrossSchemas(): void
     {
         $producer = self::read(GovernanceFixture::repositoryRoot(), 'producer');
-        self::assertSame('legacy-unmanifested', $producer->manifestStatus());
-        self::assertSame('manifest:resources/public-api.json', $producer->publicSymbolsSource());
+        self::assertSame('v2-manifested', $producer->manifestStatus());
+        self::assertSame('manifest:resources/public-api/v1.json', $producer->publicSymbolsSource());
         self::assertContains('Kumwe\\Producer\\Canonical\\CanonicalJson', $producer->publicSymbols());
+        self::assertContains('Kumwe\\Producer\\Deployment\\StudioDeploymentEmitter', $producer->publicSymbols());
+        self::assertNotNull($producer->handoff());
 
         $conversion = self::read(GovernanceFixture::repositoryRoot(), 'conversion');
         self::assertSame('manifest:resources/public-api/v1.json', $conversion->publicSymbolsSource());

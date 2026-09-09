@@ -20,15 +20,19 @@ consumer, never its owner: nothing App-specific may enter that repository.
 
 ## The pin, as delivered
 
-`composer.json` requires `kumwe/producer` at exactly `0.2.0`, beside `kumwe/extension-sdk` `0.2.4`
+`composer.json` requires `kumwe/producer` at exactly `0.3.0`, beside `kumwe/extension-sdk` `0.2.4`
 and `kumwe/conversion` `0.1.2`. `composer studio:dependencies` refuses any range, branch, alias or
-foreign specifier for the three libraries or the eight `@kumwe/studio` tarballs, and
-`tests/Architecture/StudioDependencyPinGateTest.php` proves each refusal. Producer 0.2.0 pins
+foreign specifier for the three libraries or the eight `@kumwe/studio` packages, and
+`tests/Architecture/StudioDependencyPinGateTest.php` proves each refusal. Producer 0.3.0 pins
 Studio `0.1.0-beta.3` at protocol `0.1.0-draft.2`, so App's
 [`resources/studio-contract/PIN.json`](../../resources/studio-contract/PIN.json) moved
 deliberately from the interim `0.1.0-rc.1` snapshot to that coordinate: one chain, App → Producer
-→ Studio, with the release record and all eight tarball digests bound to Producer's typed release
-by `composer studio:corpus`. Producer owns the vendored schema and testkit corpus — the 56-file
+→ Studio, with the release record and all eight registry tarball digests and integrity values bound
+to Producer's typed release and package provenance by `composer studio:corpus`. Producer 0.3.0 also
+supplies the `Kumwe\Producer\Deployment` layer App composes for the contextual Content editor: the
+browser-asset locator that resolves the pinned module to an integrity-bound URL at the configured
+origin, the deployment emitter that proves each per-mount `studio-deployment` document against the
+pinned schema, and the exact-origin grammar the response policy admits. Producer owns the vendored schema and testkit corpus — the 56-file
 protocol schema tree and 301 testkit members in 14 groups; App copies neither.
 
 ## What this application delegates to Producer

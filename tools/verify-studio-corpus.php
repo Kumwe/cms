@@ -3,10 +3,12 @@
 /**
  * Prove App's deployment pin agrees with Producer's exact Studio authority.
  *
- * Producer owns and verifies the released PHP schema corpus and testkit resources. App retains only
- * the coordinated release record and the eight npm tarballs its browser build consumes. This gate
- * binds those App-owned bytes to Producer's typed release, compiles Producer's closed schema
- * registry, and resolves every manifest-listed testkit member through Producer's safe resource API.
+ * Producer owns and verifies the released PHP schema corpus, testkit resources and browser-asset
+ * manifest. App retains only the coordinated release record, the registry pin of the eight npm
+ * packages its browser build consumes, and the materialized first-party block catalog. This gate
+ * binds those App-owned records to Producer's typed release and package provenance, compiles
+ * Producer's closed schema registry, and resolves every manifest-listed testkit member through
+ * Producer's safe resource API.
  *
  * Usage:
  *
@@ -162,16 +164,19 @@ try {
 
     $pin = $object($fileBytes($contractRoot . '/PIN.json'), 'App Studio PIN');
     $releasePin = $pin['release_record'] ?? null;
+    $registry = $pin['registry'] ?? null;
     $pinned = $pin['pinned'] ?? null;
     if (
         !is_array($releasePin)
         || ($releasePin['file'] ?? null) !== 'studio-release.json'
         || ($releasePin['release'] ?? null) !== $installed->release()
         || ($releasePin['sha256'] ?? null) !== $installed->recordSha256()
+        || !is_string($registry)
+        || preg_match('#^https://[a-z0-9.-]+$#D', $registry) !== 1
         || !is_array($pinned)
         || array_is_list($pinned)
     ) {
-        throw new RuntimeException('App PIN.json does not bind Producer\'s exact release record.');
+        throw new RuntimeException('App PIN.json does not bind Producer\'s exact release record and registry.');
     }
 
     $expectedNames = $studioPackages;
@@ -184,41 +189,47 @@ try {
         throw new RuntimeException('The Studio release must coordinate exactly the eight public packages.');
     }
 
-    $listedTarballs = [];
+    $integrities = $installed->packageIntegrities();
     foreach ($studioPackages as $package) {
         $packagePin = $pinned[$package] ?? null;
-        $file = is_array($packagePin) ? ($packagePin['file'] ?? null) : null;
+        $version = $installedPackages[$package] ?? null;
+        $tarball = is_array($packagePin) ? ($packagePin['tarball'] ?? null) : null;
         $digest = is_array($packagePin) ? ($packagePin['npm_tarball_sha256'] ?? null) : null;
+        $integrity = is_array($packagePin) ? ($packagePin['integrity'] ?? null) : null;
+        $unscoped = substr($package, strlen('@kumwe/'));
         if (
             !is_array($packagePin)
-            || ($packagePin['version'] ?? null) !== ($installedPackages[$package] ?? null)
-            || !is_string($file)
-            || basename($file) !== $file
-            || preg_match('/^[A-Za-z0-9._-]+\.tgz$/D', $file) !== 1
-            || isset($listedTarballs[$file])
+            || !is_string($version)
+            || ($packagePin['version'] ?? null) !== $version
+            || $tarball !== sprintf('%s/%s/-/%s-%s.tgz', $registry, $package, $unscoped, $version)
             || !is_string($digest)
             || preg_match('/^[0-9a-f]{64}$/D', $digest) !== 1
+            || !is_string($integrity)
+            || preg_match('#^sha512-[A-Za-z0-9+/]{86}==$#D', $integrity) !== 1
         ) {
-            throw new RuntimeException(sprintf('App has a malformed package pin for %s.', $package));
+            throw new RuntimeException(sprintf('App has a malformed registry pin for %s.', $package));
         }
-        $listedTarballs[$file] = true;
-        $actual = hash_file('sha256', $contractRoot . '/packages/' . $file);
-        if (!is_string($actual) || !hash_equals($digest, $actual)) {
-            throw new RuntimeException(sprintf('The pinned npm tarball for %s is missing or changed.', $package));
+        if (!is_string($integrities[$package] ?? null) || !hash_equals($integrities[$package], $integrity)) {
+            throw new RuntimeException(sprintf(
+                'The pinned npm integrity for %s differs from Producer\'s package provenance.',
+                $package,
+            ));
         }
+    }
+    if (file_exists($contractRoot . '/packages')) {
+        throw new RuntimeException('App must not vendor Studio package tarballs; packages resolve from the registry.');
     }
 
-    $packageDirectory = scandir($contractRoot . '/packages');
-    if (!is_array($packageDirectory)) {
-        throw new RuntimeException('App\'s pinned Studio package directory is unreadable.');
-    }
-    foreach ($packageDirectory as $entry) {
-        if ($entry === '.' || $entry === '..') {
-            continue;
-        }
-        if (!isset($listedTarballs[$entry]) || !is_file($contractRoot . '/packages/' . $entry)) {
-            throw new RuntimeException(sprintf('The Studio package directory contains unpinned entry %s.', $entry));
-        }
+    $catalog = $object($fileBytes($contractRoot . '/core-catalog.json'), 'App Studio core catalog');
+    $blocks = $catalog['blocks'] ?? null;
+    if (
+        ($catalog['kind'] ?? null) !== 'studio-core-catalog'
+        || ($catalog['release'] ?? null) !== $installed->release()
+        || !is_array($blocks)
+        || !array_is_list($blocks)
+        || $blocks === []
+    ) {
+        throw new RuntimeException('App core-catalog.json does not describe the pinned Studio release.');
     }
 
     $manifest = $object($manifestBytes, 'Producer Studio testkit manifest');
@@ -255,7 +266,7 @@ if ($errors !== []) {
 }
 
 printf(
-    "Kumwe Studio dependencies verified: %d coordinated npm packages, %d Producer document kinds, "
+    "Kumwe Studio dependencies verified: %d registry-pinned npm packages, %d Producer document kinds, "
         . "%d testkit files in %d groups.\n",
     count($studioPackages),
     count(StudioDocumentSchemaRegistry::DOCUMENT_KINDS),

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Compiled interface message catalogue for en-GB, carrying 2405 messages.
+ * Compiled interface message catalogue for en-GB, carrying 2413 messages.
  *
  * Generated from en-GB.xlf by `composer translation:compile`. Do not edit: the build
  * compares these bytes against a fresh compilation and fails when they differ. Author the
@@ -1239,6 +1239,7 @@ return [
     'core.administrator.content_form.close_media_library' => 'Close media library',
     'core.administrator.content_form.complete_the_fields_below_kumwe_validates' => 'Complete the fields below; Kumwe validates them against the content model.',
     'core.administrator.content_form.complete_the_fields_supplied_by_the' => 'Complete the fields supplied by the {name} model.',
+    'core.administrator.content_form.compose_this_item_visually' => 'Compose this item visually',
     'core.administrator.content_form.content_details' => 'Content details',
     'core.administrator.content_form.content_editor_sections' => 'Content editor sections',
     'core.administrator.content_form.content_fields' => 'Content fields',
@@ -1246,6 +1247,7 @@ return [
     'core.administrator.content_form.content_version' => 'Content version {version}',
     'core.administrator.content_form.create_content' => 'Create content',
     'core.administrator.content_form.create_draft' => 'Create draft',
+    'core.administrator.content_form.discard_unsaved_studio_changes' => 'Discard unsaved Studio changes and return?',
     'core.administrator.content_form.edit_content' => 'Edit content',
     'core.administrator.content_form.edit_title' => 'Edit {title}',
     'core.administrator.content_form.filter_media' => 'Filter media',
@@ -1261,7 +1263,11 @@ return [
     'core.administrator.content_form.save_changes_again_to_apply_your' => 'Save changes again to apply your entries on top of version {current_version}.',
     'core.administrator.content_form.search_file_names' => 'Search file names',
     'core.administrator.content_form.structured_editor_fallback' => 'Structured editor fallback',
+    'core.administrator.content_form.studio_changes_saved' => 'Studio saved this item.',
     'core.administrator.content_form.studio_page_builder' => 'Studio page builder',
+    'core.administrator.content_form.studio_page_builder_could_not_start' => 'The Studio page builder could not start; the structured form remains available.',
+    'core.administrator.content_form.studio_page_builder_is_loading' => 'The Studio page builder is loading.',
+    'core.administrator.content_form.studio_page_builder_is_ready' => 'The Studio page builder is ready.',
     'core.administrator.content_form.studio_page_builder_unavailable_use_the' => 'The Studio page builder is not available for this content context. Use the structured editor below; Kumwe will preserve the exact content type and version when you save.',
     'core.administrator.content_form.the_content_model_refused_these_values' => 'The content model refused these values. Everything you typed is still below; correct the fields named here and save again.',
     'core.administrator.content_form.the_item_could_not_be_saved' => 'The item could not be saved',
@@ -1271,6 +1277,8 @@ return [
     'core.administrator.content_form.update_fields_publication_timing_and_workflow' => 'Update fields, publication timing and workflow state.',
     'core.administrator.content_form.url_slug' => 'URL slug',
     'core.administrator.content_form.use_selected_type' => 'Use selected type',
+    'core.administrator.content_form.use_the_page_builder' => 'Use the page builder',
+    'core.administrator.content_form.use_the_structured_form' => 'Use the structured form',
     'core.administrator.content_form.used_as_until_a_menu_path' => 'Used as /{value} until a menu path becomes canonical.',
     'core.administrator.content_form.view_page' => 'View page',
     'core.administrator.content_form.workflow_state' => 'Workflow state',

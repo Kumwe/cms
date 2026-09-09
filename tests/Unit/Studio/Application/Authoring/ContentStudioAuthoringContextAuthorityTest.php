@@ -565,6 +565,20 @@ final class ContentStudioAuthoringContextAuthorityTest extends TestCase
             {
                 return $this->bindings[$contextKey] ?? null;
             }
+
+            /**
+             * Replace one retained binding's target in place.
+             *
+             * @param   ContentStudioAuthoringContextBinding  $binding  Successor binding under the same key.
+             *
+             * @return  void
+             *
+             * @since   2.0.0
+             */
+            public function advance(ContentStudioAuthoringContextBinding $binding): void
+            {
+                $this->bindings[$binding->contextKey] = $binding;
+            }
         };
         $keys = new class implements StudioResourceContextKeyFactory {
             /**

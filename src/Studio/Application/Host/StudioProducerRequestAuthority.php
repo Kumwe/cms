@@ -6,6 +6,7 @@ namespace Kumwe\App\Studio\Application\Host;
 
 use LogicException;
 use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewTransport;
 use Kumwe\Producer\Error\HostError;
 use Kumwe\Producer\Wire\Operation;
@@ -153,6 +154,14 @@ final class StudioProducerRequestAuthority implements AuthorizationInterface
      */
     private function permitsOperation(Operation $operation, StudioHostSessionSnapshot $snapshot): bool
     {
+        if ($operation->port === 'authoring') {
+            return $snapshot->session->resourceKind === StudioResourceKind::ContentAuthoring
+                && $this->sessions->permits(
+                    $snapshot,
+                    $operation->mutating ? 'studio.permission/save' : 'studio.permission/read',
+                );
+        }
+
         return match ($operation->capability) {
             'studio.operation/artifact.publish' => $snapshot->canPublish,
             'studio.operation/artifact.unpublish' => $snapshot->canUnpublish,

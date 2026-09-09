@@ -10,7 +10,9 @@ use Kumwe\App\Presentation\ContentPageRenderService;
 use Kumwe\App\Presentation\ContentLayoutCatalog;
 use Kumwe\App\Presentation\ContentPresenter;
 use Kumwe\App\Site\Application\PublicPageLocator;
+use Kumwe\App\Http\Middleware\SecurityHeadersMiddleware;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedContentRenderer;
+use Kumwe\App\Studio\Application\Composition\StudioPublishedEnhancementRuntime;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedStylesheet;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -45,6 +47,8 @@ final readonly class HomePageHandler implements RequestHandlerInterface
      * @param  ActiveLocale                     $active     Request locale holder aligned to the resolved homepage
      *         before its template and translated chrome are rendered.
      * @param  ?StudioPublishedContentRenderer  $studio     Optional exact published Blueprint rendering boundary.
+     * @param  ?StudioPublishedEnhancementRuntime  $enhancements  Optional pinned enhancement runtime the page
+     *         defers when its rendered blocks need it; null serves every composition script-free.
      *
      * @since  2.0.0
      */
@@ -56,6 +60,7 @@ final readonly class HomePageHandler implements RequestHandlerInterface
         private TranslationGroupPresenter $languages,
         private ActiveLocale $active,
         private ?StudioPublishedContentRenderer $studio = null,
+        private ?StudioPublishedEnhancementRuntime $enhancements = null,
     ) {
     }
 
@@ -92,6 +97,7 @@ final readonly class HomePageHandler implements RequestHandlerInterface
             : $this->pages->presentationBindingFor($record);
         $studioResult = $record === null ? null : $this->studio?->render($record);
         $studioBody = $studioResult?->html;
+        $studioEnhancement = $studioResult === null ? null : $this->enhancements?->locationFor($studioResult);
         $template = $record === null
             ? 'home'
             : ($studioBody === null ? $this->layouts->templateFor($record, $binding['template']) : 'page');
@@ -114,6 +120,9 @@ final readonly class HomePageHandler implements RequestHandlerInterface
         if (!$this->renderer->searchIndexingEnabled()) {
             $headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive';
         }
+        if ($studioEnhancement?->origin() !== null) {
+            $headers[SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER] = $studioEnhancement->origin();
+        }
 
         return new HtmlResponse($this->renderer->render(
             $template,
@@ -128,6 +137,7 @@ final readonly class HomePageHandler implements RequestHandlerInterface
             $record === null || $studioResult === null
                 ? null
                 : StudioPublishedStylesheet::href($record, '/', $studioResult->css),
+            $studioEnhancement,
         ), 200, $headers);
     }
 

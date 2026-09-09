@@ -66,7 +66,17 @@ Start from `.env.example` for development. Production Compose maps operator-faci
 | `KUMWE_LOG_LEVEL` | Lowest severity written to the log stream | Unset; `config/observability.php` declares `info`. Set it — not `APP_DEBUG` — to change verbosity |
 | `KUMWE_METRICS_ENABLED` | Whether `/metrics` answers at all | Unset (off). Set `true` only where a scraper exists |
 | `KUMWE_METRICS_TOKEN` | Bearer token a private `/metrics` requires | 32+ random bytes; prefer `KUMWE_METRICS_TOKEN_FILE` in containers |
+| `KUMWE_STUDIO_BROWSER_BASE_URL` | Base the pinned Studio browser module and enhancement runtime load from, in the npm package layout `<base>/<package>@<version>/dist/browser/<path>` | `https://cdn.jsdelivr.net/npm` (default); a self-hosted mirror or site-absolute path keeping the same layout for air-gapped sites |
 | `EXTENSIONS_ALLOW_UNSIGNED_LOCAL` | Allow unsigned local packages | `false` in production |
+
+`KUMWE_STUDIO_BROWSER_BASE_URL` decides where a browser fetches the two Studio runtime assets the App never
+serves itself: the contextual authoring module the Content editor mounts and the enhancement runtime published
+pages defer. Producer pins both to exact package paths and subresource-integrity values, so whichever origin is
+configured, a byte that differs from the pinned release fails in the browser instead of running. The default is
+the public npm registry CDN; an exact HTTPS mirror or a site-absolute path (for example `/vendor/npm`, served by
+the web server from an extracted copy of the eight packages) keeps the same `<package>@<version>/dist/browser/`
+layout. Only the configured origin is added to the `script-src` directive of the pages that load it; every
+other directive stays same-origin.
 
 `KUMWE_LOG_LEVEL` exists so log verbosity stops riding on `APP_DEBUG`. Turning debug on to chase one
 incident also widens the detail `ProblemDetailsMiddleware` puts into a 500 response, which turns a

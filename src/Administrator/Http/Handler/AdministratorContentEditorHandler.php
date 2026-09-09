@@ -12,11 +12,13 @@ use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Content\Application\ContentModelService;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Domain\ContentTypeDefinition;
+use Kumwe\App\Http\Middleware\SecurityHeadersMiddleware;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Application\MediaService;
 use Kumwe\App\Site\Application\PublicPageLocator;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringLaunchResolver;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringTargetResolver;
+use Kumwe\App\Studio\Application\Authoring\StudioHostedDeploymentConfiguration;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -104,7 +106,9 @@ final readonly class AdministratorContentEditorHandler implements RequestHandler
      *          first visit.
      * @param   int                       $status      HTTP status; a refused save re-renders at 422 or 409.
      *
-     * @return  ResponseInterface  The rendered editor, marked `no-store` because it carries a CSRF token.
+     * @return  ResponseInterface  The rendered editor, marked `no-store` because it carries a CSRF token; when
+     *          the page mounts Studio from the configured CDN it also asks the security-header boundary for
+     *          that one exact script origin.
      *
      * @throws  \RuntimeException  When the stored entry's pinned type or workflow reference is unusable.
      * @throws  \Kumwe\App\Content\Application\ContentNotFound  When the route names an entry out of reach.
@@ -136,11 +140,8 @@ final readonly class AdministratorContentEditorHandler implements RequestHandler
                 $context,
                 $this->explicitTypeSelected($request, $submission, $selectedType) ? $selectedType : null,
             );
-        $studioAuthoring = $this->studioLaunches->resolve(
-            $context,
-            $studioTarget,
-            $session->csrfToken,
-        )->toArray();
+        $studioLaunch = $this->studioLaunches->resolve($context, $studioTarget, $session->csrfToken);
+        $studioAuthoring = $studioLaunch->toArray();
         $workflow = null;
         if (is_array($entry)) {
             $workflowId = $entry['workflow_id'] ?? null;
@@ -167,6 +168,15 @@ final readonly class AdministratorContentEditorHandler implements RequestHandler
             $values = [...$values, ...$submission->values];
         }
 
+        $headers = ['Cache-Control' => 'no-store'];
+        $studioConfiguration = $studioLaunch->configuration;
+        if (
+            $studioConfiguration instanceof StudioHostedDeploymentConfiguration
+            && $studioConfiguration->scriptOrigin !== null
+        ) {
+            $headers[SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER] = $studioConfiguration->scriptOrigin;
+        }
+
         return new HtmlResponse($this->renderer->render('content-form', [
             'csrf' => $session->csrfToken,
             'capabilities' => AdministratorRequest::capabilityMap($request),
@@ -186,7 +196,7 @@ final readonly class AdministratorContentEditorHandler implements RequestHandler
                 static fn (MediaAsset $asset): array => $asset->toArray(),
                 $this->media->browse($context, perPage: 48)->items,
             ),
-        ]), $status, ['Cache-Control' => 'no-store']);
+        ]), $status, $headers);
     }
 
     /**

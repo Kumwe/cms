@@ -117,6 +117,7 @@
     "Kumwe\\Extension\\Toolchain": "application",
     "Kumwe\\Producer\\Canonical": "shared",
     "Kumwe\\Producer\\Css": "application",
+    "Kumwe\\Producer\\Deployment": "application",
     "Kumwe\\Producer\\Error": "application",
     "Kumwe\\Producer\\Render": "application",
     "Kumwe\\Producer\\Schema": "shared",

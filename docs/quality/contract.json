@@ -652,7 +652,7 @@
         {
             "id": "studio-dependency-pins",
             "title": "Extracted libraries and Studio are pinned to exact reproducible coordinates",
-            "purpose": "Bind kumwe/conversion, kumwe/extension-sdk, and kumwe/producer to exact versions and official immutable Composer lock references; bind every @kumwe/studio* manifest entry to its exact package-lock version, local tarball or official registry URL, and integrity; and fail unless Producer's release, protocol, corpus digest, package family, claimed profiles, and release-record bytes equal App's coordinated Studio evidence (ADR 0007, V2-STU-002).",
+            "purpose": "Bind kumwe/conversion, kumwe/extension-sdk, and kumwe/producer to exact versions and official immutable Composer lock references; bind every @kumwe/studio* manifest entry to its exact package-lock version, official registry URL and integrity; and fail unless Producer's release, protocol, corpus digest, package family, claimed profiles, and release-record bytes equal App's coordinated Studio evidence (ADR 0007, V2-STU-002).",
             "owner": "platform-architecture",
             "runner": "composer",
             "composer_script": "studio:dependencies",

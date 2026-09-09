@@ -39,6 +39,8 @@ final readonly class StudioProducerHost implements HostAdapterInterface
      * @param  RecoveryPortInterface      $recovery       App recovery port.
      * @param  ResourcePortInterface      $resource       App resource port.
      * @param  TelemetryPortInterface     $telemetry      App telemetry port.
+     * @param  ?AuthoringPortInterface    $authoring      Contextual authoring port, served only to a
+     *         Content authoring session; null keeps the port unavailable.
      *
      * @since  2.0.0
      */
@@ -54,6 +56,7 @@ final readonly class StudioProducerHost implements HostAdapterInterface
         private RecoveryPortInterface $recovery,
         private ResourcePortInterface $resource,
         private TelemetryPortInterface $telemetry,
+        private ?AuthoringPortInterface $authoring = null,
     ) {
     }
 
@@ -82,19 +85,19 @@ final readonly class StudioProducerHost implements HostAdapterInterface
     }
 
     /**
-     * Decline the optional contextual authoring port.
+     * Return the contextual authoring port when this request serves one.
      *
-     * The App serves no studio.port/authoring implementation: contextual
-     * authoring stays unavailable until the availability decision pinned by
-     * the Studio release integration turns it on with a real port.
+     * The factory binds the port only for a session whose resource is an opaque Content authoring
+     * context; every other session keeps `studio.port/authoring` unavailable, exactly as its
+     * advertised capabilities say.
      *
-     * @return  AuthoringPortInterface|null  Always null; authoring is not served.
+     * @return  AuthoringPortInterface|null  Request-scoped authoring port, or null when not served.
      *
      * @since   2.0.0
      */
     public function authoring(): ?AuthoringPortInterface
     {
-        return null;
+        return $this->authoring;
     }
 
     /**

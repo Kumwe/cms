@@ -32,4 +32,19 @@ interface ContentStudioAuthoringContextRepository
      * @since   2.0.0
      */
     public function find(string $contextKey): ?ContentStudioAuthoringContextBinding;
+
+    /**
+     * Replace the stored target of one existing binding with its accepted successor.
+     *
+     * The key, scope, session and authority digests and the expiry are immutable; only the exact
+     * Content target advances, inside the same transaction that committed the durable effect that
+     * produced the successor coordinates.
+     *
+     * @param   ContentStudioAuthoringContextBinding  $binding  Binding carrying the successor target.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function advance(ContentStudioAuthoringContextBinding $binding): void;
 }

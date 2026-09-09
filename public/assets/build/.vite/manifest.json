@@ -4,7 +4,7 @@
     "name": "reveal-validation"
   },
   "assets/administrator/components/studio-composition.ts": {
-    "file": "js/studio-composition-DBPht1NY.js",
+    "file": "js/studio-composition-kD8U9L_7.js",
     "name": "studio-composition",
     "src": "assets/administrator/components/studio-composition.ts",
     "isDynamicEntry": true,
@@ -16,8 +16,17 @@
       "node_modules/@editorjs/editorjs/dist/editorjs.mjs"
     ]
   },
+  "assets/administrator/components/studio-launch.ts": {
+    "file": "js/studio-launch-BZQigDu3.js",
+    "name": "studio-launch",
+    "src": "assets/administrator/components/studio-launch.ts",
+    "isDynamicEntry": true,
+    "imports": [
+      "assets/administrator/main.ts"
+    ]
+  },
   "assets/administrator/main.ts": {
-    "file": "js/administrator-BF4tf80K.js",
+    "file": "js/administrator-CZSYedDP.js",
     "name": "administrator",
     "src": "assets/administrator/main.ts",
     "isEntry": true,
@@ -25,10 +34,11 @@
       "_reveal-validation-g1jDnck7.js"
     ],
     "dynamicImports": [
-      "assets/administrator/components/studio-composition.ts"
+      "assets/administrator/components/studio-composition.ts",
+      "assets/administrator/components/studio-launch.ts"
     ],
     "css": [
-      "css/administrator-twh75RA3.css"
+      "css/administrator-BIcCL0Nf.css"
     ]
   },
   "assets/portal/main.ts": {

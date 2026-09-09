@@ -9,24 +9,25 @@ use InvalidArgumentException;
 /**
  * App-owned qualification of one exact Studio deployment for the contextual PHP adapter.
  *
- * Filesystem records are evidence, not their own trust root. This value must therefore be created in
- * reviewed App wiring only when one coordinated Studio release, pin record, browser runtime, and PHP
- * host implementation have passed qualification together. Producer independently owns and verifies
- * the schema corpus. Until then the composition root passes null and contextual mounting remains
- * unavailable.
+ * Filesystem records are evidence, not their own trust root. This value is created in reviewed App
+ * wiring only when one coordinated Studio release, its pin record, the materialized first-party
+ * catalog, the pinned browser module and the PHP authoring host have passed qualification together.
+ * Producer independently owns and verifies the schema corpus and the browser-asset manifest; the
+ * qualification names the exact module integrity so a Producer re-pin that moves the module cannot
+ * keep an unreviewed App qualification alive.
  *
  * @since  2.0.0
  */
 final readonly class StudioContextualAuthoringQualification
 {
     /**
-     * Bind the adapter to immutable release and corpus evidence selected by App.
+     * Bind the adapter to immutable release and evidence digests selected by App.
      *
-     * @param   string  $release                Exact coordinated semantic version.
-     * @param   string  $releaseRecordSha256    Hex SHA-256 of `studio-release.json`.
-     * @param   string  $pinRecordSha256        Hex SHA-256 of App's complete `PIN.json`.
-     * @param   string  $browserManifestSha256  Hex SHA-256 of the compiled Vite manifest.
-     * @param   string  $browserEntrySha256     Hex SHA-256 of the contextual browser entry.
+     * @param   string  $release                 Exact coordinated semantic version.
+     * @param   string  $releaseRecordSha256     Hex SHA-256 of `studio-release.json`.
+     * @param   string  $pinRecordSha256         Hex SHA-256 of App's complete `PIN.json`.
+     * @param   string  $coreCatalogSha256       Hex SHA-256 of the materialized `core-catalog.json`.
+     * @param   string  $browserModuleIntegrity  Subresource-integrity value of the pinned browser module.
      *
      * @throws  InvalidArgumentException  When a coordinate cannot identify exact immutable evidence.
      *
@@ -36,8 +37,8 @@ final readonly class StudioContextualAuthoringQualification
         public string $release,
         public string $releaseRecordSha256,
         public string $pinRecordSha256,
-        public string $browserManifestSha256,
-        public string $browserEntrySha256,
+        public string $coreCatalogSha256,
+        public string $browserModuleIntegrity,
     ) {
         if (
             preg_match(
@@ -47,17 +48,13 @@ final readonly class StudioContextualAuthoringQualification
         ) {
             throw new InvalidArgumentException('Studio qualification requires an exact semantic release.');
         }
-        foreach (
-            [
-                $releaseRecordSha256,
-                $pinRecordSha256,
-                $browserManifestSha256,
-                $browserEntrySha256,
-            ] as $digest
-        ) {
+        foreach ([$releaseRecordSha256, $pinRecordSha256, $coreCatalogSha256] as $digest) {
             if (preg_match('/^[0-9a-f]{64}$/D', $digest) !== 1) {
                 throw new InvalidArgumentException('Studio qualification requires exact SHA-256 evidence.');
             }
+        }
+        if (preg_match('#^sha256-[A-Za-z0-9+/]{43}=$#D', $browserModuleIntegrity) !== 1) {
+            throw new InvalidArgumentException('Studio qualification requires the exact browser module integrity.');
         }
     }
 }

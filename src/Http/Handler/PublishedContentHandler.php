@@ -10,7 +10,9 @@ use Kumwe\App\Presentation\ContentPageRenderService;
 use Kumwe\App\Presentation\ContentLayoutCatalog;
 use Kumwe\App\Presentation\ContentPresenter;
 use Kumwe\App\Site\Application\PublicPageLocator;
+use Kumwe\App\Http\Middleware\SecurityHeadersMiddleware;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedContentRenderer;
+use Kumwe\App\Studio\Application\Composition\StudioPublishedEnhancementRuntime;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedStylesheet;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
@@ -49,6 +51,8 @@ final readonly class PublishedContentHandler implements RequestHandlerInterface
      * @param  ActiveLocale                     $active     Request locale holder aligned to a locale-bearing record
      *         before its template and translated chrome are rendered.
      * @param  ?StudioPublishedContentRenderer  $studio     Optional exact published Blueprint rendering boundary.
+     * @param  ?StudioPublishedEnhancementRuntime  $enhancements  Optional pinned enhancement runtime the page
+     *         defers when its rendered blocks need it; null serves every composition script-free.
      *
      * @since  2.0.0
      */
@@ -60,6 +64,7 @@ final readonly class PublishedContentHandler implements RequestHandlerInterface
         private TranslationGroupPresenter $languages,
         private ActiveLocale $active,
         private ?StudioPublishedContentRenderer $studio = null,
+        private ?StudioPublishedEnhancementRuntime $enhancements = null,
     ) {
     }
 
@@ -115,6 +120,10 @@ final readonly class PublishedContentHandler implements RequestHandlerInterface
         $binding = $this->pages->presentationBindingFor($record);
         $studioResult = $this->studio?->render($record);
         $studioBody = $studioResult?->html;
+        $studioEnhancement = $studioResult === null ? null : $this->enhancements?->locationFor($studioResult);
+        if ($studioEnhancement?->origin() !== null) {
+            $headers[SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER] = $studioEnhancement->origin();
+        }
         $template = $studioBody === null
             ? $this->layouts->templateFor($record, $binding['template'])
             : 'page';
@@ -140,6 +149,7 @@ final readonly class PublishedContentHandler implements RequestHandlerInterface
                 $studioResult === null
                     ? null
                     : StudioPublishedStylesheet::href($record, $canonicalPath, $studioResult->css),
+                $studioEnhancement,
             ),
             200,
             $headers,

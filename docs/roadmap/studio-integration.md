@@ -49,15 +49,23 @@ until then, which is why every version below is exact.
 ## Current App pin and next release family
 
 The App currently consumes the eight-package `0.1.0-beta.3` coordinated beta family — the Studio
-coordinate `kumwe/producer` 0.2.0 pins, adopted deliberately in place of the interim `0.1.0-rc.1`
-snapshot so that App → Producer → Studio is one chain. All eight exact tarballs are vendored and pinned:
+coordinate `kumwe/producer` 0.3.0 pins, adopted deliberately in place of the interim `0.1.0-rc.1`
+snapshot so that App → Producer → Studio is one chain. No package bytes are committed: the eight
+packages resolve from the public npm registry at their exact versions, and
 [`resources/studio-contract/PIN.json`](../../resources/studio-contract/PIN.json) is the authoritative
-record of their exact versions and tarball checksums, and `composer studio:corpus` fails when the
-App bytes, Producer's typed release, and the installed exact packages disagree. Producer owns the PHP schema
-registry and testkit resources; App does not copy either authority. App's contributor/release build consumes the
-release-bound npm tarballs and emits
-compiled browser assets. Production installation and operation consume the compiled result and never run npm,
-Node.js, Vite, a development server, or server-side JavaScript.
+record of the registry, each official tarball URL, its SHA-256 and its SHA-512 integrity, which
+`composer studio:corpus` binds to Producer's package provenance and `npm run check:studio-release` binds
+to the lockfile. Producer owns the PHP schema registry, the testkit resources and the browser-asset
+manifest; App does not copy any of them. The one Studio-derived record App materializes itself is
+[`resources/studio-contract/core-catalog.json`](../../resources/studio-contract/core-catalog.json), the
+exact first-party block and pattern coordinates the pinned browser module compiles in, regenerated from
+the installed exact `@kumwe/studio-core` and proven against it by `npm run check:studio-catalog`.
+
+At run time the Content editor loads the pinned Studio browser module, and published pages load the
+enhancement runtime, from the configured `KUMWE_STUDIO_BROWSER_BASE_URL` (the public npm CDN by default,
+or a mirror keeping the npm package layout) with the subresource-integrity values Producer publishes; the
+App's own contributor build compiles only its start module and administrator bundle. Production
+installation and operation never run npm, Node.js, Vite, a development server, or server-side JavaScript.
 
 | Package | Version | What it carries |
 |---|---|---|
@@ -104,11 +112,13 @@ an installation, startup, authoring, preview, publication, or production-server 
 2. Studio runs its required schema, unit, integration, browser, accessibility, security, conformance, package
    and clean-consumer lanes. A correction creates a new immutable prerelease; a published version is never
    rebuilt in place. Beta/RC promotion remains blocked until M1-04 and evidence acceptance.
-3. Studio publishes or otherwise supplies all eight integrity-addressed tarballs and the byte-identical release
+3. Studio publishes all eight integrity-addressed packages to the registry and the byte-identical release
    record. A partial family is not a release and App does not integrate from a branch, workspace link or
    locally packed substitute.
-4. The eight-package re-pin updates `package.json`, the npm lock, all eight vendored tarballs, `PIN.json`,
-   the copied Studio release record and the complete corpus together, exactly as decision D16 requires.
+4. The eight-package re-pin updates `package.json`, the npm lock, `PIN.json` (registry tarball URLs,
+   digests and integrity), the copied Studio release record, the materialized `core-catalog.json`, the
+   Producer dependency and the reviewed host qualification in `ContainerFactory` together, exactly as
+   decision D16 requires.
 5. App replays the host, media, rich-text, authoring-web and renderer-web corpus, runs the Twig adapter parity
    lane, builds the real administrator assets, and runs the database/browser/security/qualification matrix.
    Only the exact resulting App candidate may enter Gate B assessment.

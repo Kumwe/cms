@@ -1,19 +1,22 @@
 /**
- * Hold the administrator build, vendored corpus, and release evidence to one
+ * Hold the administrator build, installed packages, and release evidence to one
  * exact Studio release coordinate.
  *
- * A semantic range is not a qualification record. The App therefore accepts
- * either the exact published version or an immutable repository-vendored
- * tarball whose bytes and internal version are pinned in PIN.json. Both forms
- * resolve to the same complete release record and the lockfile must name the
- * exact package version actually installed.
+ * A semantic range is not a qualification record. The App declares every
+ * Studio package at its exact published version, PIN.json records the registry,
+ * the official tarball URL, the tarball SHA-256 and the SHA-512 integrity of
+ * each package, and the lockfile must resolve every package to that same
+ * registry tarball with that same integrity. No package bytes are committed:
+ * the registry and Producer's provenance record are the byte authorities, and
+ * the materialized first-party catalog must equal what the installed exact
+ * packages compile in.
  */
 
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import { basename, join } from "node:path";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { gunzipSync } from "node:zlib";
+import { execFileSync } from "node:child_process";
 
 const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 const contractRoot = join(repositoryRoot, "resources/studio-contract");
@@ -60,6 +63,7 @@ const lock = decode(await readFile(lockPath), "package-lock.json");
 verifyReleaseRecord();
 await verifyReleaseCopies();
 await verifyPin();
+verifyCoreCatalog();
 verifyDependencyManifest();
 verifyLockfile();
 
@@ -73,7 +77,7 @@ if (errors.length > 0) {
 
 process.stdout.write(
   `Studio release ${release.release} verified: ${packageNames.length} exact packages, ` +
-    "three identical release records, pinned tarball bytes, and a matching lockfile.\n",
+    "three identical release records, registry-pinned integrity, a materialized first-party catalog, and a matching lockfile.\n",
 );
 
 /** Verify the closed release-record shape and coordinated versions. */
@@ -214,7 +218,7 @@ async function verifyReleaseCopies() {
   }
 }
 
-/** Verify every tarball and record digest named by PIN.json. */
+/** Verify the registry coordinates and record digest named by PIN.json. */
 async function verifyPin() {
   const releasePin = pin.release_record;
   if (!isPlainObject(releasePin)) {
@@ -235,62 +239,83 @@ async function verifyPin() {
     }
   }
 
+  const registry = pin.registry;
+  if (typeof registry !== "string" || !/^https:\/\/[a-z0-9.-]+$/.test(registry)) {
+    errors.push("PIN.json must name one HTTPS npm registry origin.");
+    return;
+  }
   if (!isPlainObject(pin.pinned)) {
     errors.push("PIN.json lacks its package pin map.");
     return;
   }
-  const tarballNames = new Set();
   for (const name of packageNames) {
     const entry = pin.pinned[name];
     if (!isPlainObject(entry)) {
       errors.push(`PIN.json does not pin ${name}.`);
       continue;
     }
-    if (entry.version !== release.packages?.[name]) {
+    const version = release.packages?.[name];
+    if (entry.version !== version) {
       errors.push(
         `PIN.json version for ${name} differs from studio-release.json.`,
       );
     }
-    if (typeof entry.file !== "string" || basename(entry.file) !== entry.file) {
-      errors.push(`PIN.json must name one local tarball file for ${name}.`);
+    const unscoped = name.slice("@kumwe/".length);
+    const tarball = `${registry}/${name}/-/${unscoped}-${String(version)}.tgz`;
+    if (entry.tarball !== tarball) {
+      errors.push(`PIN.json must name the official registry tarball ${tarball} for ${name}.`);
+    }
+    if (
+      typeof entry.npm_tarball_sha256 !== "string" ||
+      !/^[0-9a-f]{64}$/.test(entry.npm_tarball_sha256)
+    ) {
+      errors.push(`PIN.json must record the lowercase SHA-256 of the ${name} tarball.`);
+    }
+    if (
+      typeof entry.integrity !== "string" ||
+      !/^sha512-[A-Za-z0-9+/]{86}==$/.test(entry.integrity)
+    ) {
+      errors.push(`PIN.json must record the SHA-512 integrity of the ${name} tarball.`);
+    }
+    const installed = lock.packages?.[`node_modules/${name}`];
+    if (!isPlainObject(installed)) {
       continue;
     }
-    if (tarballNames.has(entry.file)) {
-      errors.push(`PIN.json reuses tarball ${entry.file} for more than one package.`);
-      continue;
-    }
-    tarballNames.add(entry.file);
-    let bytes;
-    try {
-      bytes = await readFile(join(contractRoot, "packages", entry.file));
-    } catch {
-      errors.push(`Pinned tarball ${entry.file} for ${name} is missing.`);
-      continue;
-    }
-    if (entry.npm_tarball_sha256 !== sha256(bytes)) {
+    if (installed.resolved !== tarball) {
       errors.push(
-        `Pinned tarball ${entry.file} for ${name} has different bytes.`,
+        `package-lock.json resolves ${name} to ${String(installed.resolved)}, not the pinned registry tarball.`,
       );
     }
-    try {
-      const packedManifest = readPackedManifest(bytes, entry.file);
-      if (
-        packedManifest.name !== name ||
-        packedManifest.version !== release.packages?.[name]
-      ) {
-        errors.push(
-          `Pinned tarball ${entry.file} contains ${String(packedManifest.name)}@${String(
-            packedManifest.version,
-          )}, not ${name}@${String(release.packages?.[name])}.`,
-        );
-      }
-    } catch (failure) {
-      errors.push(
-        failure instanceof Error
-          ? failure.message
-          : `Pinned tarball ${entry.file} is unreadable.`,
-      );
+    if (installed.integrity !== entry.integrity) {
+      errors.push(`package-lock.json integrity for ${name} differs from PIN.json.`);
     }
+  }
+  try {
+    const packagesDirectory = join(contractRoot, "packages");
+    await readFile(packagesDirectory);
+    errors.push("resources/studio-contract/packages must not exist: packages resolve from the registry.");
+  } catch (failure) {
+    if (failure?.code === "EISDIR") {
+      errors.push("resources/studio-contract/packages must not exist: packages resolve from the registry.");
+    }
+  }
+}
+
+/** Require the materialized first-party catalog to equal the installed exact packages. */
+function verifyCoreCatalog() {
+  try {
+    execFileSync(
+      process.execPath,
+      [join(repositoryRoot, "tools/generate-studio-core-catalog.mjs"), "--check"],
+      { stdio: ["ignore", "ignore", "pipe"] },
+    );
+  } catch (failure) {
+    const detail = failure?.stderr?.toString?.().trim();
+    errors.push(
+      detail && detail !== ""
+        ? detail
+        : "resources/studio-contract/core-catalog.json does not match the installed @kumwe/studio-core.",
+    );
   }
 }
 
@@ -330,15 +355,10 @@ function verifyDependencyManifest() {
       errors.push(`${name} is not part of the coordinated Studio release.`);
       continue;
     }
-    const entry = pin.pinned?.[name];
     const version = release.packages?.[name];
-    const vendored =
-      isPlainObject(entry) && typeof entry.file === "string"
-        ? `file:resources/studio-contract/packages/${entry.file}`
-        : undefined;
-    if (specifier !== version && specifier !== vendored) {
+    if (specifier !== version) {
       errors.push(
-        `${name} must use exact ${String(version)} or its pinned tarball, not ${String(specifier)}.`,
+        `${name} must use exact ${String(version)}, not ${String(specifier)}.`,
       );
     }
   }
@@ -416,61 +436,6 @@ function sha256(bytes) {
 /** Return the SRI SHA-256 digest used by the Studio release record. */
 function sriSha256(bytes) {
   return `sha256-${createHash("sha256").update(bytes).digest("base64")}`;
-}
-
-/**
- * Read package/package.json directly from one npm gzip tar archive.
- *
- * Parsing the small POSIX header subset npm emits keeps this check independent
- * of globally installed package-manager internals. The pinned digest covers
- * every other byte; this read proves those bytes name the claimed coordinate.
- */
-function readPackedManifest(bytes, label) {
-  let archive;
-  try {
-    archive = gunzipSync(bytes);
-  } catch {
-    throw new Error(`Pinned tarball ${label} is not a gzip archive.`);
-  }
-
-  for (let offset = 0; offset + 512 <= archive.length; ) {
-    const header = archive.subarray(offset, offset + 512);
-    if (header.every((value) => value === 0)) {
-      break;
-    }
-    const name = tarText(header.subarray(0, 100));
-    const prefix = tarText(header.subarray(345, 500));
-    const path = prefix === "" ? name : `${prefix}/${name}`;
-    const sizeField = tarText(header.subarray(124, 136)).trim();
-    if (!/^[0-7]+$/.test(sizeField)) {
-      throw new Error(`Pinned tarball ${label} contains an invalid entry size.`);
-    }
-    const size = Number.parseInt(sizeField, 8);
-    const start = offset + 512;
-    const end = start + size;
-    if (!Number.isSafeInteger(size) || end > archive.length) {
-      throw new Error(`Pinned tarball ${label} contains a truncated entry.`);
-    }
-    if (path === "package/package.json") {
-      return decode(
-        archive.subarray(start, end),
-        `package/package.json in ${label}`,
-      );
-    }
-    offset = start + Math.ceil(size / 512) * 512;
-  }
-
-  throw new Error(
-    `Pinned tarball ${label} does not contain package/package.json.`,
-  );
-}
-
-/** Decode one NUL-padded UTF-8 tar header field. */
-function tarText(bytes) {
-  const nul = bytes.indexOf(0);
-  return bytes
-    .subarray(0, nul === -1 ? bytes.length : nul)
-    .toString("utf8");
 }
 
 /** Distinguish JSON objects from arrays and null. */

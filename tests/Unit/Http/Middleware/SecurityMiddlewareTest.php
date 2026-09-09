@@ -325,4 +325,85 @@ final class SecurityMiddlewareTest extends TestCase
             $overHttps->getHeaderLine('Content-Security-Policy'),
         );
     }
+
+    /**
+     * A response asking for exactly the configured Studio origin has `script-src` widened by that origin only.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testTheConfiguredStudioScriptOriginIsAdmittedAndTheMarkerIsStripped(): void
+    {
+        $middleware = new SecurityHeadersMiddleware(false, 'https://cdn.jsdelivr.net');
+
+        $response = $middleware->process($this->request(), $this->handlerRequesting('https://cdn.jsdelivr.net'));
+
+        self::assertStringContainsString(
+            "script-src 'self' https://cdn.jsdelivr.net;",
+            $response->getHeaderLine('Content-Security-Policy'),
+        );
+        self::assertFalse($response->hasHeader(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER));
+    }
+
+    /**
+     * A marker naming any other origin, or one sent while no origin is configured, changes nothing.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAForeignOrUnconfiguredScriptOriginRequestIsIgnored(): void
+    {
+        $foreign = (new SecurityHeadersMiddleware(false, 'https://cdn.jsdelivr.net'))
+            ->process($this->request(), $this->handlerRequesting('https://evil.example'));
+        $unconfigured = (new SecurityHeadersMiddleware(false))
+            ->process($this->request(), $this->handlerRequesting('https://cdn.jsdelivr.net'));
+
+        foreach ([$foreign, $unconfigured] as $response) {
+            self::assertStringContainsString("script-src 'self';", $response->getHeaderLine('Content-Security-Policy'));
+            self::assertStringNotContainsString('https://', $response->getHeaderLine('Content-Security-Policy'));
+            self::assertFalse($response->hasHeader(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER));
+        }
+    }
+
+    /**
+     * A handler whose response carries the script-origin marker header.
+     *
+     * @param   string  $origin  Origin the handler asks for.
+     *
+     * @return  RequestHandlerInterface  Handler returning a marked empty response.
+     *
+     * @since   2.0.0
+     */
+    private function handlerRequesting(string $origin): RequestHandlerInterface
+    {
+        return new class ($origin) implements RequestHandlerInterface {
+            /**
+             * Hold the requested origin.
+             *
+             * @param  string  $origin  Origin to place in the marker header.
+             *
+             * @since  2.0.0
+             */
+            public function __construct(private readonly string $origin)
+            {
+            }
+
+            /**
+             * Answer with the marker header set.
+             *
+             * @param   ServerRequestInterface  $request  Ignored request.
+             *
+             * @return  ResponseInterface  Marked response.
+             *
+             * @since   2.0.0
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return (new TextResponse('', 204))
+                    ->withHeader(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER, $this->origin);
+            }
+        };
+    }
 }
