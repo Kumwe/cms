@@ -58,7 +58,7 @@ development programme, from the architecture decision that opened it to the curr
   module and a reviewed qualification (release, record digests, browser-module integrity). Producer is
   pinned at `0.3.0` (its exact commit ahead of the tagged release); the Version 2 adoption records follow
   that release. Integration proves the create, save-as-new-type and save-new-type-version journeys through
-  the real container and database. (#PR-APP-STUDIO)
+  the real container and database. (#137)
 - **2026-09-07 — Extraction audit and next independent batch (`NRM-2026-008`).** Reviewed all 104 Version 2
   documents, the complete ERP roadmap and current governance rulings; recorded gaps in the four started
   packages and the Localization/Contribution extraction boundaries. Follow-up review inventories all 38

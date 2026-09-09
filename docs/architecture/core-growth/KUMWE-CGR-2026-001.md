@@ -84,7 +84,7 @@ decision: pending
 decided_by: "eWɘyn"
 reviewer: ""
 decided_on: "2026-09-09"
-pull_request: null
+pull_request: "https://github.com/kumwe/app/pull/137"
 ---
 
 ## Capability required
