@@ -24,7 +24,7 @@ symbols:
   - Kumwe\App\Studio\Application\Rendering\StudioRenderResultAdmission
   - Kumwe\App\Content\Application\ContentService
 layer: application
-capability_index_sha256: "87ded886f35f74878ca9eb8db4c36e23d681c4a49891f76dfc3210f385a7ce39"
+capability_index_sha256: "7a08da576bc4d4a845fc405d851c7fbbea36146afb5adc7bced83a53844e6aef"
 packages_reviewed:
   - package: kumwe/producer
     version: 0.3.0

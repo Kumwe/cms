@@ -1,0 +1,58 @@
+schema: kumwe-release-attestation/v2
+artifact_kind: framework_php
+migration_id: KUMWE-MIG-2026-032
+change_set: KUMWE-CS-2026-032
+repository: "https://github.com/kumwe/producer"
+merge_commit: "65d0a10ce39954738f091ec4b5e2626768053c8d"
+version: 0.3.0
+tag: v0.3.0
+source_archive:
+  url: "https://github.com/kumwe/producer/archive/refs/tags/v0.3.0.tar.gz"
+  sha256: "46c06bbc5f68288c2317981f4ede8199dc77d0abaadb2ab261d92d61682a53c5"
+artifacts:
+  - identity: "kumwe/producer 0.3.0 (Composer dist)"
+    url: "https://api.github.com/repos/kumwe/producer/zipball/65d0a10ce39954738f091ec4b5e2626768053c8d"
+    sha256: "c9210315f4eb2d5f8b453f1a7b32e1b2e591ec49da54e61c858e370b943a0b8e"
+manifests_and_corpora:
+  - path: resources/public-api/v1.json
+    sha256: "5fe7efb49a29799fcc3c3bbdba9ba4138d63688669ba933a2be6996f13f12cc2"
+  - path: resources/capabilities/v1.json
+    sha256: "a7e4b69f5b5612272584b187ae9ee9afe34ea85499dca91b35260ab3b66ee8a5"
+  - path: resources/service-map/v1.json
+    sha256: "7173160cd25ff40ff5002a8c5c63ae769ce8b8df6fcd1138f1d9e949acad7fd3"
+  - path: resources/public-api.json
+    sha256: "4318cc2465787f56dec78f831ed7b9b45c8d0edd6f94657e789917e5ba4e22f7"
+  - path: MIGRATION-HANDOFF.md
+    sha256: "2363da6372cac1166b1eeadaff79f41421ba862d31ff04b02d24b53730565b7c"
+  - path: resources/studio-contract/PIN.json
+    sha256: "3c1b094e59c5bbdeb867b2f12df0b8a88a4855ae61003913444dda8222b4ee77"
+  - path: resources/studio-contract/protocol/schemas/manifest.json
+    sha256: "b7d41d6cbe71a770f433ddce12bdcd5582a2be0249191f4845ad5278079ff6e9"
+  - path: resources/studio-contract/testkit/corpus-manifest.json
+    sha256: "3eea5d655bfe86d234c1dedb9c5b7055d173858541ec3c535e1faf8a204294d3"
+abi_and_capabilities: null
+sbom:
+  url: null
+  sha256: null
+provenance: null
+release_workflow: "https://github.com/kumwe/producer/actions/runs/34359681189 (Release on record, success)"
+registry_or_pie_verification:
+  - "Fetched https://repo.packagist.org/p2/kumwe/producer.json on 2026-09-09: kumwe/producer lists v0.3.0 (version_normalized 0.3.0.0, time 2026-09-09T13:50:26+00:00) with source.type git, source.url https://github.com/kumwe/producer.git, source.reference 65d0a10ce39954738f091ec4b5e2626768053c8d, dist.type zip, dist.url https://api.github.com/repos/kumwe/producer/zipball/65d0a10ce39954738f091ec4b5e2626768053c8d and dist.reference the same commit; Packagist publishes an empty dist shasum, so the dist SHA-256 recorded under artifacts was computed from the downloaded zipball."
+  - "git clone https://github.com/kumwe/producer: git rev-parse v0.3.0^{commit} is 65d0a10ce39954738f091ec4b5e2626768053c8d (refs/tags/v0.3.0 is a lightweight tag pointing at that commit); git merge-base --is-ancestor v0.3.0 origin/main holds, and origin/main resolves to the same commit."
+  - "GitHub release 385559398 (tag_name v0.3.0, target_commitish main, draft false, prerelease false, created 2026-09-09T13:50:26Z, published 2026-09-09T13:52:04Z by github-actions[bot]) has no assets, so sbom and provenance are recorded as null. Observed facts without a verdict: GitHub reports the release immutable=false and branch main protected=false; the package release standard (docs/package-release-standard.md) states that normal publication requires neither."
+  - "Workflow run 34359681189 (name Release on record, path .github/workflows/release-on-record.yml, event push, head_branch main, head_sha 65d0a10ce39954738f091ec4b5e2626768053c8d, started 2026-09-09T13:50:30Z) completed with conclusion success; all 8 jobs succeeded on that SHA: check / PHP 8.1, 8.2, 8.3, 8.4 and 8.5 (each with the steps Install the validated package toolchain, Run the complete quality lane, Prove the exact no-dev Composer archive and Prove a fresh authoritative archive dependency consumer), check / Release automation tests, check / Package gate and Release the recorded version."
+  - "The GitHub source archive (SHA-256 46c06bbc5f68288c2317981f4ede8199dc77d0abaadb2ab261d92d61682a53c5) and the Composer dist zipball (SHA-256 c9210315f4eb2d5f8b453f1a7b32e1b2e591ec49da54e61c858e370b943a0b8e) extract to byte-identical trees of 480 files; the archive ships CHARTER.md, README.md, docs/, resources/ and MIGRATION-HANDOFF.md, its composer.json name is kumwe/producer (require php >=8.1, ext-json, ext-mbstring), and the tree equals the v0.3.0 git checkout except for the export-ignored development paths (.editorconfig, .gitattributes, .github, .gitignore, AGENTS.md, phpcs.xml, phpstan.neon, composer.lock, tests, tools)."
+  - "MIGRATION-HANDOFF.md front matter in the released archive carries migration_id KUMWE-MIG-2026-032 and change_set KUMWE-CS-2026-032, equal to the expected identifiers; parsed with the App StrictYaml reader it validates against migration-handoff.v2.schema.json with no violations."
+clean_consumer_or_build_verification:
+  - "Platform of this verification: PHP 8.4.19 NTS on Linux x86_64 with ext-json, ext-mbstring and ext-zip, Composer 2.8.12. The package requires php >=8.1 and installed on PHP 8.4 as is, so no platform override was configured."
+  - "Fresh consumer directory with a composer.json requiring only kumwe/producer 0.3.0: composer install --no-dev --prefer-dist --no-interaction exited 0; it locked kumwe/producer v0.3.0 from dist https://api.github.com/repos/kumwe/producer/zipball/65d0a10ce39954738f091ec4b5e2626768053c8d (source and dist reference 65d0a10ce39954738f091ec4b5e2626768053c8d); vendor holds only kumwe/producer and the Composer autoloader, and packages-dev is empty."
+  - "php vendor/kumwe/producer/smoke.php exited 1 with the message: Composer autoload is absent; run composer install first. Cause: the shipped smoke.php resolves __DIR__/vendor/autoload.php, that is, it is the package-root smoke that composer.json exposes as the smoke script and that the package CI runs at the root of the extracted archive after composer install --no-dev --classmap-authoritative; this resolution is unchanged since 0.2.0 (only the expected type count changed between 0.2.2 and 0.3.0) and is not a defect of the installed package."
+  - "Package-defined no-dev smoke executed on the published Composer dist: unzip of the downloaded zipball; composer validate --strict reported ./composer.json is valid; composer install --no-interaction --no-progress --no-dev --classmap-authoritative exited 0 with nothing to install; composer run smoke exited 0 and printed: Package smoke verified (authoritative no-dev): 76 public types, 55 Studio schemas, 301 corpus files."
+  - "Consumer autoload proof in the fresh consumer, mirroring the inline smoke of the package tool tools/verify-clean-consumer.php: all 76 types listed in resources/public-api.json autoload from vendor/kumwe/producer and resolve to files inside that directory, CanonicalJson stringify orders object keys canonically, and no development package is present; exit 0."
+  - "Tag checkout (git clone at v0.3.0, HEAD 65d0a10ce39954738f091ec4b5e2626768053c8d): composer install --no-interaction exited 100 with Could not authenticate against github.com. Cause: the egress policy of this verification session answers HTTP 403 (GitHub access to this repository is not enabled for this session) for the api.github.com zipballs of the locked development tools phpstan/phpstan 2.2.9 (dist-only in composer.lock, no source URL) and squizlabs/php_codesniffer 4.0.4; the same install step succeeded in release run 34359681189 on PHP 8.1 to 8.5. This is an environment limitation, not a package fault."
+  - "Tag checkout substitute toolchain: composer install --no-interaction --no-dev exited 0 (root autoloader, nothing to download); the two locked development tools were then placed under vendor/ from shallow git clones at exactly their composer.lock references, phpstan/phpstan 2.2.9 at 13d6b4f347bad222da436580c8304fa6f83e6bd0 (phpstan.phar SHA-256 42af2954326f2f6f0c39e12eb0e1229b9e037297e2caec9a5db11d44e4f6cce1, identical to the phpstan 2.2.9 GitHub release asset) and squizlabs/php_codesniffer 4.0.4 at bbdc3d0532623e21838b7041a4364383a8126f96; the tracked tree of the checkout was not altered (git status clean)."
+  - "php tools/check.php in the tag checkout exited 0 and printed Producer source quality lane passed. Observed lane output: Lint passed 117 PHP files; release record parser 12 cases; release integrity gate 92 isolated fixtures; 9 negative ownership cases passed; 76 public symbols map to 125 discovered package tests; text style verified 504 files; member documentation complete 786 members across 76 files; architecture verified 76 source files, no host coupling; public API 76 canonical types pinned and the negative self-test passed; governed manifest schemas, exports, documentation, provider and handoff digests verified; importer safety verified; Studio contract verified (release 0.1.0-beta.3, protocol 0.1.0-draft.2, 55 schemas, 301 corpus files); phpcs -q -n clean; phpstan level max reported No errors; package smoke (development) 76 public types, 55 Studio schemas, 301 corpus files; Producer suite passed 125 tests, 1668 assertions."
+  - "php tools/verify-clean-consumer.php in the tag checkout (a verification command named by the released handoff) exited 0: composer archive built one ZIP, an isolated consumer installed it with --no-dev --classmap-authoritative --no-scripts, and the tool printed: True archive dependency consumer passed: 76 runtime exports; no development autoloader."
+verified_at: "2026-09-09T14:12:01Z"
+verified_by: "Release verification session"
+status: verified

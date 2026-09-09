@@ -101,8 +101,9 @@ canonical namespaces, the App namespaces its earlier extraction retired, the app
   non-`@internal` declarations; `public_symbols_source` records which.
 - `verified_legacy_release` is `null` until a `VERIFIED-LEGACY-RELEASE.yaml` (section 3.10) exists for the
   package; then it is that file's path.
-- Today's entries (D-GOV-10): `kumwe/conversion 0.1.2`, `kumwe/extension-sdk 0.2.4`, `kumwe/producer 0.2.0`.
-  Each leaves the registry when its package adopts Version 2 manifests.
+- Today's entries (D-GOV-10): `kumwe/conversion 0.1.2` and `kumwe/extension-sdk 0.2.4`. Each leaves the
+  registry when its package adopts Version 2 manifests, as `kumwe/producer` did at `0.3.0`
+  (`KUMWE-MIG-2026-032`).
 
 ---
 

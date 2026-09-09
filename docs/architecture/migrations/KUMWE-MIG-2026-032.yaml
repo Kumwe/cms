@@ -1,0 +1,77 @@
+schema: kumwe-migration-ledger/v1
+migration_id: KUMWE-MIG-2026-032
+change_set: KUMWE-CS-2026-032
+package: kumwe/producer
+version: 0.3.0
+artifact_digest: "46c06bbc5f68288c2317981f4ede8199dc77d0abaadb2ab261d92d61682a53c5"
+handoff_path: vendor/kumwe/producer/MIGRATION-HANDOFF.md
+handoff_sha256: "2363da6372cac1166b1eeadaff79f41421ba862d31ff04b02d24b53730565b7c"
+release_attestation: docs/architecture/migrations/evidence/KUMWE-MIG-2026-032/RELEASE-ATTESTATION.yaml
+old_namespace_roots: []
+symbols: []
+removed_paths: []
+removed_tests: []
+retained_tests:
+  - tests/Architecture/StudioMediaBoundaryTest.php
+  - tests/Integration/Studio/ExtensionStudioPreviewRendererIntegrationTest.php
+  - tests/Integration/Studio/StudioArtifactRecoveryPersistenceTest.php
+  - tests/Integration/Studio/StudioArtifactRecoveryProducerIntegrationTest.php
+  - tests/Integration/Studio/StudioArtifactRecoveryVectorReplayIntegrationTest.php
+  - tests/Integration/Studio/StudioPreviewDraftSourceTest.php
+  - tests/Integration/Studio/StudioPreviewPersistenceTest.php
+  - tests/Support/StudioProducerRequest.php
+  - tests/Unit/Administrator/Http/Handler/AdministratorStudioHostHandlerTest.php
+  - tests/Unit/Extension/Contribution/StudioPreviewRendererContributionTest.php
+  - tests/Unit/Http/Handler/HomePageHandlerTest.php
+  - tests/Unit/Http/Handler/PublishedContentHandlerTest.php
+  - tests/Unit/Site/Application/PublicPageLocatorTest.php
+  - tests/Unit/Studio/Application/Composition/StudioCompositionContributionCatalogTest.php
+  - tests/Unit/Studio/Application/Composition/StudioPublishedContentRendererTest.php
+  - tests/Unit/Studio/Application/Host/StudioArtifactAdmissionTest.php
+  - tests/Unit/Studio/Application/Host/StudioArtifactHostPortTest.php
+  - tests/Unit/Studio/Application/Host/StudioLocalizationTelemetryHostPortTest.php
+  - tests/Unit/Studio/Application/Host/StudioModelHostPortTest.php
+  - tests/Unit/Studio/Application/Host/StudioPermissionHostPortTest.php
+  - tests/Unit/Studio/Application/Host/StudioProducerErrorTest.php
+  - tests/Unit/Studio/Application/Host/StudioProducerHostTest.php
+  - tests/Unit/Studio/Application/Host/StudioProducerMutationBoundaryTest.php
+  - tests/Unit/Studio/Application/Host/StudioProducerRequestAuthorityTest.php
+  - tests/Unit/Studio/Application/Host/StudioRecoveryHostPortTest.php
+  - tests/Unit/Studio/Application/Host/StudioResourceHostPortTest.php
+  - tests/Unit/Studio/Application/Host/StudioTelemetryHostPortTest.php
+  - tests/Unit/Studio/Application/Media/StudioMediaHostPortTest.php
+  - tests/Unit/Studio/Application/Media/StudioMediaProducerPortTest.php
+  - tests/Unit/Studio/Application/Preview/ContentStudioPreviewBindingSourceTest.php
+  - tests/Unit/Studio/Application/Preview/StudioPreviewBindingRendererTest.php
+  - tests/Unit/Studio/Application/Preview/StudioPreviewHostPortTest.php
+  - tests/Unit/Studio/Application/Preview/StudioPreviewProducerPortTest.php
+  - tests/Unit/Studio/Application/Projection/ContentStudioProjectorTest.php
+  - tests/Unit/Studio/Application/Projection/StudioContentProjectionServiceTest.php
+  - tests/Unit/Studio/Application/Rendering/FragmentStudioPreviewBlockRendererTest.php
+  - tests/Unit/Studio/Application/Rendering/StudioBlockRendererRuntimeTest.php
+  - tests/Unit/Studio/Application/Rendering/StudioContentFieldBlockRendererTest.php
+  - tests/Unit/Studio/Application/Rendering/StudioLayoutBlockRendererTest.php
+  - tests/Unit/Studio/Domain/Media/StudioMediaPolicyVectorTest.php
+  - tests/Unit/Studio/Domain/Preview/StudioPreviewIdentityTest.php
+  - tests/Unit/Studio/Domain/Projection/EntryCompositionOverridesTest.php
+  - tests/Unit/Studio/Infrastructure/Host/SodiumStudioMutationOutcomeCodecTest.php
+  - tests/Unit/Studio/Infrastructure/Release/PinnedStudioContextualAuthoringAvailabilityTest.php
+di_changes:
+  - service: Kumwe\Producer\Schema\StudioDocumentSchemaRegistry
+    factory: Kumwe\App\Kernel\ContainerFactory
+    note: "One shared registry from the vendored corpus proves every host-port and deployment document; no provider."
+  - service: Kumwe\Producer\Deployment\StudioBrowserAssetLocator
+    factory: Kumwe\App\Kernel\ContainerFactory
+    note: "One shared locator from KUMWE_STUDIO_BROWSER_BASE_URL; gate, provider, headers and runtime share its origin."
+  - service: Kumwe\Producer\Deployment\StudioDeploymentEmitter
+    factory: Kumwe\App\Kernel\ContainerFactory
+    note: "One shared emitter bound to the registry and release record proves each per-mount deployment before render."
+capability_index_entries:
+  - kumwe/producer
+release_evidence:
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-032/RELEASE-ATTESTATION.yaml
+app_pull_request: "https://github.com/kumwe/app/pull/137"
+roadmap_refs: []
+non_roadmap_refs:
+  - NRM-2026-015
+conflicts: []
