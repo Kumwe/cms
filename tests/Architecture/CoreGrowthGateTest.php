@@ -15,10 +15,11 @@ use PHPUnit\Framework\TestCase;
 /**
  * Proves the Core Growth gate holds for this repository and is registered in every lane that must run it.
  *
- * The committed `docs/architecture/governance/core-growth-baseline.json` is the bootstrap snapshot of every
- * production class-like, recording it again is byte-identical, the real tree passes the check with no duplicate
- * owner, reintroduction or unrecorded growth, and the check is wired into `composer qa`, the quality contract and
- * both CI steps directly after the capability-index check.
+ * The committed `docs/architecture/governance/core-growth-baseline.json` records every production class-like,
+ * every growth entry it carries cites an approved Core Growth Record that names that symbol, recording it again
+ * is byte-identical, the real tree passes the check with no duplicate owner, reintroduction or unrecorded growth,
+ * and the check is wired into `composer qa`, the quality contract and both CI steps directly after the
+ * capability-index check.
  *
  * @since  2.0.0
  */
@@ -69,27 +70,35 @@ final class CoreGrowthGateTest extends TestCase
     {
         $baseline = (new CoreGrowthGate($this->root))->readBaseline();
         self::assertNotNull($baseline);
+        $recorded = 0;
+        foreach ($baseline['symbols'] as $symbol) {
+            if ($symbol['growth'] !== null) {
+                ++$recorded;
+            }
+        }
 
         $check = self::runGate([]);
         self::assertSame(0, $check['status'], $check['output']);
         self::assertSame(
             sprintf(
-                'Core growth verified (%d production symbols; 0 recorded growth entries; no duplicate owners).',
+                'Core growth verified (%d production symbols; %d recorded growth entries; no duplicate owners).',
                 count($baseline['symbols']),
+                $recorded,
             ),
             $check['output'],
         );
     }
 
     /**
-     * The committed baseline is the bootstrap snapshot of every production declaration: schema-valid, sorted,
-     * `growth` null throughout, and byte-identical to what recording produces now, twice.
+     * The committed baseline records every production declaration: schema-valid, sorted, every `growth` entry
+     * citing an approved Core Growth Record that names the symbol, and byte-identical to what recording produces
+     * now, twice.
      *
      * @return  void
      *
      * @since   2.0.0
      */
-    public function testTheCommittedBaselineIsTheBootstrapSnapshotAndIsByteStable(): void
+    public function testTheCommittedBaselineRecordsEveryDeclarationAndIsByteStable(): void
     {
         $committed = file_get_contents($this->root . '/' . CoreGrowthGate::BASELINE_PATH);
         self::assertIsString($committed);
@@ -110,7 +119,18 @@ final class CoreGrowthGateTest extends TestCase
         $sorted = $names;
         sort($sorted, SORT_STRING);
         self::assertSame($sorted, $names, 'The baseline is sorted by FQCN.');
-        self::assertSame([null], array_values(array_unique(array_column($symbols, 'growth'))));
+        foreach ($symbols as $fqcn => $symbol) {
+            if ($symbol['growth'] === null) {
+                continue;
+            }
+            self::assertIsArray($symbol['growth'], $fqcn);
+            if (isset($symbol['growth']['record'])) {
+                self::assertIsString($symbol['growth']['record'], $fqcn);
+                $this->assertApprovedRecordNames($symbol['growth']['record'], $fqcn);
+                continue;
+            }
+            self::assertIsString($symbol['growth']['classification'] ?? null, $fqcn . ' host growth is unclassified.');
+        }
         self::assertStringNotContainsString($this->root, $committed, 'No absolute path leaks into the baseline.');
 
         $inventory = CoreGrowthInventory::scan(
@@ -209,6 +229,29 @@ final class CoreGrowthGateTest extends TestCase
         exec($command . ' 2>&1', $lines, $status);
 
         return ['status' => $status, 'output' => implode("\n", $lines)];
+    }
+
+    /**
+     * The cited Core Growth Record exists, is `decision: approved` with a named reviewer, and lists the symbol.
+     *
+     * @param   string  $record  Record identifier such as `KUMWE-CGR-2026-001`.
+     * @param   string  $fqcn    The symbol whose growth entry cites the record.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    private function assertApprovedRecordNames(string $record, string $fqcn): void
+    {
+        $path = $this->root . '/docs/architecture/core-growth/' . $record . '.md';
+        $bytes = file_get_contents($path);
+        self::assertIsString($bytes, $fqcn . ' cites ' . $record . ', which does not exist.');
+        $end = strpos($bytes, "\n---\n", 4);
+        self::assertIsInt($end, $record . ' has no front matter.');
+        $frontMatter = substr($bytes, 0, $end + 1);
+        self::assertStringContainsString("\ndecision: approved\n", $frontMatter, $record . ' is not approved.');
+        self::assertMatchesRegularExpression('/\nreviewer: "[^"]+"\n/', $frontMatter, $record . ' names no reviewer.');
+        self::assertStringContainsString("\n  - " . $fqcn . "\n", $frontMatter, $record . ' does not name ' . $fqcn);
     }
 
     /**

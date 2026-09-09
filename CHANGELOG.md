@@ -33,6 +33,13 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-09 — A reviewer's approving review approves the Core Growth Records a pull request carries.**
+  The `Core growth approval` workflow runs on every submitted pull-request review: when a human collaborator
+  with write access approves a same-repository pull request, every `decision: pending` record whose
+  `pull_request` names it is set to `approved` with that reviewer's login and date, the core-growth baseline
+  is re-recorded, and the result is committed to the pull-request branch under the reviewer's identity; the
+  pull-request workflows are then started on the approved head. D-GOV-9 keeps its human authority and loses
+  its hand-edited step. `KUMWE-CGR-2026-001` and `KUMWE-CGR-2026-002` are the first approved records.
 - **2026-09-09 — The Studio page builder mounts on Content New/Edit, backed by PHP and Producer 0.3.0.**
   The Content editor opens an opaque exact-target authoring context and a hybrid host session per mount,
   `HostedContentStudioAuthoringConfigurationProvider` assembles the `studio-deployment` document (launch,

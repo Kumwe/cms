@@ -210,6 +210,8 @@ unique; year-sequence ids match `^[A-Z-]+-[0-9]{4}-[0-9]{3}$`.
 - Schema: [`schemas/core-growth-record.v1.schema.json`](schemas/core-growth-record.v1.schema.json).
 - Example: [`examples/core-growth-record.v1.example.md`](examples/core-growth-record.v1.example.md).
 - Written by the agent that adds portable growth; `decision: approved` requires a non-empty `reviewer`.
+  The reviewer's approving pull-request review sets it: the `Core growth approval` workflow approves every
+  pending record naming that pull request, re-records the baseline and commits as the reviewer.
   Guide: [`../core-growth/README.md`](../core-growth/README.md).
 
 ### 3.3 Migration ledger record

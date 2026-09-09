@@ -43,9 +43,9 @@ consumers:
   - src/Studio/Application/Host/StudioHostSessionAuthority.php
   - src/Studio/Application/Host/StudioProducerHostFactory.php
 overlap_reviewed: []
-decision: pending
+decision: approved
 decided_by: "eWɘyn"
-reviewer: ""
+reviewer: "eWɘyn"
 decided_on: "2026-09-09"
 pull_request: "https://github.com/kumwe/app/pull/137"
 ---
@@ -98,7 +98,7 @@ have no referent, because the authoring context it names exists only in App's pe
 
 ## Decision
 
-Pending human review at the App pull request that adopts Producer 0.3.0, together with
-`KUMWE-CGR-2026-001`: the author recorded the review above; the reviewer confirms the boundary, sets
-`decision: approved` and names themselves, and re-records the core-growth baseline in the same change.
-Revisit when Producer's host agreement gains a host-neutral resource-kind vocabulary.
+Approved on 2026-09-09 by the maintainer, eWɘyn, reviewing at the App pull request that adopts Producer
+0.3.0 together with `KUMWE-CGR-2026-001`: the resource kind is App's own vocabulary for its contextual
+Content authoring host, and no package publishes it. The core-growth baseline was re-recorded in the same
+change. Revisit when Producer's host agreement gains a host-neutral resource-kind vocabulary.

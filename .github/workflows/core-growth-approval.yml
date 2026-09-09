@@ -1,0 +1,157 @@
+name: Core growth approval
+
+# D-GOV-9 makes a human reviewer the authority over a Core Growth Record. This workflow turns that
+# reviewer's approving pull-request review into the record: when a collaborator with write access
+# approves a same-repository pull request, every `decision: pending` record that names this pull
+# request is set to `approved` with that reviewer's login, the core-growth baseline is re-recorded,
+# and the result is committed to the pull-request branch under the reviewer's own identity. A pull
+# request without a pending record is left untouched, and a review from a bot or a read-only account
+# changes nothing. Pushes made with the workflow token do not start the pull-request workflows, so
+# the workflow dispatches them itself on the updated branch; a `KUMWE_GOVERNANCE_TOKEN` secret (a
+# fine-grained token with contents write) makes the push trigger them naturally instead.
+on:
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: core-growth-approval-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    name: Approve pending Core Growth Records
+    if: >-
+      github.event.review.state == 'approved' &&
+      github.event.review.user.type == 'User' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.state == 'open'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PULL_REQUEST_URL: ${{ github.event.pull_request.html_url }}
+      REVIEWER_LOGIN: ${{ github.event.review.user.login }}
+      REVIEWER_ID: ${{ github.event.review.user.id }}
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+    steps:
+      - name: Require a reviewer with write access
+        id: reviewer
+        shell: bash
+        run: |
+          set -euo pipefail
+          permission="$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${REVIEWER_LOGIN}/permission" --jq '.permission')"
+          case "$permission" in
+            admin|maintain|write) echo "authorised=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "authorised=false" >> "$GITHUB_OUTPUT"; echo "::notice::${REVIEWER_LOGIN} has ${permission} access; a Core Growth Record needs a reviewer with write access." ;;
+          esac
+
+      - name: Check out the pull-request branch
+        if: steps.reviewer.outputs.authorised == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+          token: ${{ secrets.KUMWE_GOVERNANCE_TOKEN || github.token }}
+
+      - name: Find pending records that name this pull request
+        if: steps.reviewer.outputs.authorised == 'true'
+        id: records
+        shell: bash
+        run: |
+          set -euo pipefail
+          pending=()
+          for record in docs/architecture/core-growth/KUMWE-CGR-*.md; do
+            [ -f "$record" ] || continue
+            if awk -v url="$PULL_REQUEST_URL" '
+              NR == 1 && $0 != "---" { exit 1 }
+              NR > 1 && $0 == "---" { exit (pending && named) ? 0 : 1 }
+              $0 == "decision: pending" { pending = 1 }
+              $0 == "pull_request: \"" url "\"" { named = 1 }
+            ' "$record"; then
+              pending+=("$record")
+            fi
+          done
+          if [ "${#pending[@]}" -eq 0 ]; then
+            echo "::notice::No pending Core Growth Record names ${PULL_REQUEST_URL}; nothing to approve."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          printf 'found=true\nrecords=%s\n' "${pending[*]}" >> "$GITHUB_OUTPUT"
+
+      - name: Install PHP
+        if: steps.records.outputs.found == 'true'
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.5'
+          extensions: apcu, ctype, fileinfo, filter, intl, json, mbstring, openssl, pcntl, pdo, pdo_mysql, pdo_pgsql, redis, sodium, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer package downloads
+        if: steps.records.outputs.found == 'true'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/composer/files
+          key: composer-files-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-files-
+
+      - name: Install locked dependencies
+        if: steps.records.outputs.found == 'true'
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Approve the records and re-record the baseline
+        if: steps.records.outputs.found == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          today="$(date -u +%Y-%m-%d)"
+          for record in ${{ steps.records.outputs.records }}; do
+            awk -v reviewer="$REVIEWER_LOGIN" -v today="$today" '
+              BEGIN { front = 1 }
+              NR > 1 && front && $0 == "---" { front = 0 }
+              front && $0 == "decision: pending" { print "decision: approved"; next }
+              front && $0 ~ /^reviewer: / { print "reviewer: \"" reviewer "\""; next }
+              front && $0 ~ /^decided_on: / { print "decided_on: \"" today "\""; next }
+              { print }
+            ' "$record" > "$record.approved"
+            mv "$record.approved" "$record"
+            printf '\nApproved on %s by %s through the approving review on %s; the core-growth baseline\nwas re-recorded in the same change.\n' "$today" "$REVIEWER_LOGIN" "$PULL_REQUEST_URL" >> "$record"
+          done
+          composer kumwe:core-growth-record
+          composer kumwe:core-growth-check
+          composer docs:tests
+
+      - name: Commit and push as the reviewer
+        if: steps.records.outputs.found == 'true'
+        id: push
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add docs/architecture/core-growth docs/architecture/governance/core-growth-baseline.json
+          if git diff --cached --quiet; then
+            echo "::notice::The records were already approved and recorded; nothing to commit."
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          records="$(printf '%s\n' ${{ steps.records.outputs.records }} | xargs -n1 basename | sed 's/\.md$//' | paste -sd ' ' -)"
+          git -c user.name="$REVIEWER_LOGIN" -c user.email="${REVIEWER_ID}+${REVIEWER_LOGIN}@users.noreply.github.com" \
+            commit -m "Approve ${records}" \
+            -m "Approved through ${REVIEWER_LOGIN}'s review on ${PULL_REQUEST_URL}; the core-growth baseline is re-recorded in the same change."
+          git push origin "HEAD:${HEAD_REF}"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Start the pull-request workflows on the approved head
+        if: steps.push.outputs.pushed == 'true' && env.KUMWE_GOVERNANCE_TOKEN == ''
+        env:
+          KUMWE_GOVERNANCE_TOKEN: ${{ secrets.KUMWE_GOVERNANCE_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for workflow in ci.yml development-compose.yml security.yml; do
+            gh workflow run "$workflow" --ref "$HEAD_REF"
+          done

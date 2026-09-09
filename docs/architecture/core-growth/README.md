@@ -118,12 +118,24 @@ Seven H2 headings, in this order, all required:
 | `pending` | Written, awaiting review | Baseline may not cite it; the growth still fails |
 | `rejected` | Reviewer refused App ownership | Baseline may not cite it; move the behaviour upstream |
 
+### How a record is approved
+
+The reviewer's approving pull-request review is the approval. The `Core growth approval` workflow
+(`.github/workflows/core-growth-approval.yml`) runs on every submitted review: when a human collaborator
+with write access approves a same-repository pull request, every `decision: pending` record whose
+`pull_request` names that pull request is set to `approved` with the reviewer's login and the review date,
+the baseline is re-recorded with `composer kumwe:core-growth-record`, and the result is committed to the
+pull-request branch under the reviewer's own identity. A review by a bot, by a read-only account, or on a
+pull request without a pending record changes nothing. A reviewer may still do the same by hand: set the
+three fields, re-record, and commit them together.
+
 ### After writing it
 
 ```
 [ ] composer kumwe:core-growth-check        # names the FQCN if the record does not cover it
 [ ] composer kumwe:core-growth-record       # writes growth.record into the baseline
 [ ] commit the record, the baseline and the PR "Capability reuse review" section together
+[ ] leave decision: pending with pull_request set; the reviewer's approving review records the rest
 ```
 
 ## A worked example, in prose
