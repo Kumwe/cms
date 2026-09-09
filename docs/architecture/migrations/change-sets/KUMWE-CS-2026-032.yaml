@@ -5,7 +5,7 @@ roadmap_source:
   title: Kumwe ERP-Extensibility Foundation Roadmap
   sha256: a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8
 roadmap_refs: []
-state: release-verified
+state: app-pr-ready
 phase_1:
   source_repository: kumwe/app
   source_sha: "24ecf956423c18933e824b43cea1bfb9127a79a9"
@@ -28,7 +28,7 @@ phase_2:
   tested_sha: null
   merged_sha: null
   exact_dependency: "kumwe/producer 0.3.0"
-  composer_lock_digest: "5bc8ba3341e226baedd28f60f227fd4929832a8352a98a36973906edcc2b342e"
+  composer_lock_digest: "fc05f502d1d4b39abd533bc8890dd39703200bdd37c80954086cf74cfbfcf00d"
   removed_app_symbols: []
   moved_unit_tests: []
   retained_app_tests:
@@ -114,7 +114,8 @@ performance_claim: null
 rollback: "Revert the App pull request; the lock returns to kumwe/producer 0.2.0 with its legacy registry entry."
 known_gaps:
   - "kumwe/extension-sdk 0.2.4 requires kumwe/producer ^0.2; no released extension-sdk admits 0.3.0 yet."
-  - "Until such an extension-sdk release is pinned, Composer cannot resolve the lock that records this release."
+  - "composer.json therefore pins kumwe/producer as the exact alias 0.3.0 as 0.2.99, recorded in the lock."
+  - "The alias retires when App adopts the extension-sdk release train that selects Producer 0.3.0."
   - "KUMWE-CGR-2026-001 awaits reviewer approval before the core-growth baseline can be re-recorded."
 completion_claim: false
 accepted_by: null

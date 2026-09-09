@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cbf5fd26e7edf45ee23a502a8a08bbd",
+    "content-hash": "c0ade86c50d6a3ef727e9c6b6b03c754",
     "packages": [
         {
             "name": "brick/math",
@@ -456,7 +456,7 @@
                 "issues": "https://github.com/kumwe/producer/issues",
                 "source": "https://github.com/kumwe/producer"
             },
-            "time": "2026-09-01T12:11:22+00:00"
+            "time": "2026-09-09T13:50:26+00:00"
         },
         {
             "name": "laminas/laminas-authentication",
@@ -5851,7 +5851,14 @@
             "time": "2025-12-08T11:19:18+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "kumwe/producer",
+            "version": "0.3.0.0",
+            "alias": "0.2.99",
+            "alias_normalized": "0.2.99.0"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {},
     "prefer-stable": true,

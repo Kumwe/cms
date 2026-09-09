@@ -5,7 +5,7 @@ title: "The contextual Content authoring resource kind of a Studio host session"
 symbols:
   - Kumwe\App\Studio\Domain\Host\StudioResourceKind
 layer: domain
-capability_index_sha256: "7a08da576bc4d4a845fc405d851c7fbbea36146afb5adc7bced83a53844e6aef"
+capability_index_sha256: "17ed90eb256da0068179d9b1028b86b13b85558eb9762d0bfc511bb4f8f07693"
 packages_reviewed:
   - package: kumwe/producer
     version: 0.3.0
