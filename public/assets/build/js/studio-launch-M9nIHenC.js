@@ -1,4 +1,4 @@
-import { t as __vitePreload } from "./administrator-CZSYedDP.js";
+import { t as __vitePreload } from "./administrator-CdkFVkaC.js";
 //#region assets/administrator/components/studio-launch.ts
 /**
 * Start module for the contextual Studio mount on the Content editor.
@@ -11,10 +11,48 @@ import { t as __vitePreload } from "./administrator-CZSYedDP.js";
 * every target, and owns what the shell deliberately leaves to the host: swapping between the
 * page builder and the structured form, dirty-state confirmation, and navigation when the shell
 * asks to return.
+*
+* The page builder is the default surface. An editor who switched to the structured form is
+* remembered across navigations, and `?surface=form` or `?surface=studio` names the surface
+* explicitly. A page that opens on the form defers the mount until the editor asks for the page
+* builder: a mount nobody looks at costs the module download and would leave a second copy of
+* every content field in the document.
+*
+* `autoMountStudio()` resolves only once a session is open. On a create target that offers more
+* than a blank start, Studio first attaches its create-source chooser to the mount and awaits the
+* editor's choice, so the surface is brought in front as soon as Studio attaches its first element
+* rather than when the mount promise settles; a hidden chooser could never be answered.
+*
+* The status element reports the launch through `data-studio-launch-state`: `pending` as rendered,
+* then `deferred` or `loading`, then `ready` or `failed`; Studio's own `error` and `saved` follow.
 */
 var MOUNT_SELECTOR = "[data-kumwe-studio][data-studio-module-url]";
+/** The elements Studio attaches to the mount: the create-source chooser, then the contextual shell. */
+var STUDIO_ELEMENT_SELECTOR = "kumwe-studio-hosted-start, kumwe-studio-contextual";
+/** Where the editor's last surface choice is remembered. */
+var SURFACE_PREFERENCE_KEY = "kumwe.studio.surface";
 function isStudioBrowserModule(candidate) {
 	return typeof candidate === "object" && candidate !== null && typeof candidate.autoMountStudio === "function" && typeof candidate.StudioAuthoringControlRegistry === "function";
+}
+function isSurface(candidate) {
+	return candidate === "studio" || candidate === "form";
+}
+function requestedSurface() {
+	const requested = new URL(window.location.href).searchParams.get("surface");
+	return isSurface(requested) ? requested : null;
+}
+function rememberedSurface() {
+	try {
+		const remembered = window.localStorage.getItem(SURFACE_PREFERENCE_KEY);
+		return isSurface(remembered) ? remembered : null;
+	} catch {
+		return null;
+	}
+}
+function rememberSurface(surface) {
+	try {
+		window.localStorage.setItem(SURFACE_PREFERENCE_KEY, surface);
+	} catch {}
 }
 function returnPathOf(detail) {
 	const extension = detail?.result?.session?.extensions?.["kumwe.app/return"];
@@ -32,13 +70,17 @@ async function setupStudioLaunch() {
 	if (mount === null || region === null || formShell === null || status === null || toggle === null) return;
 	const moduleUrl = mount.dataset.studioModuleUrl ?? "";
 	let currentReturnPath = mount.dataset.studioReturnPath ?? "/administrator/content";
-	let surface = "studio";
 	const labels = {
 		showForm: toggle.dataset.labelForm ?? "Use the structured form",
 		showStudio: toggle.dataset.labelStudio ?? "Use the page builder",
+		deferred: status.dataset.messageDeferred ?? "The page builder loads when you switch to it.",
 		failed: status.dataset.messageFailed ?? "The Studio page builder could not start; the structured form remains available.",
+		loading: status.textContent ?? "",
 		ready: status.dataset.messageReady ?? "The Studio page builder is ready."
 	};
+	const requested = requestedSurface();
+	if (requested !== null) rememberSurface(requested);
+	let surface = requested ?? rememberedSurface() ?? "studio";
 	const show = (next) => {
 		surface = next;
 		region.dataset.studioSurface = next;
@@ -47,17 +89,60 @@ async function setupStudioLaunch() {
 		toggle.textContent = next === "studio" ? labels.showForm : labels.showStudio;
 		toggle.setAttribute("aria-pressed", next === "form" ? "true" : "false");
 	};
+	let revealed = false;
+	const reveal = () => {
+		if (revealed) return;
+		revealed = true;
+		if (status.dataset.studioLaunchState === "loading") {
+			status.textContent = labels.ready;
+			status.dataset.studioLaunchState = "ready";
+		}
+		toggle.hidden = false;
+		show(surface);
+	};
+	const attached = new MutationObserver(() => {
+		if (mount.querySelector(STUDIO_ELEMENT_SELECTOR) === null) return;
+		attached.disconnect();
+		reveal();
+	});
 	const fail = (error) => {
+		attached.disconnect();
 		status.textContent = labels.failed;
 		status.dataset.studioLaunchState = "failed";
-		region.dataset.studioSurface = "form";
-		mount.hidden = true;
-		formShell.hidden = false;
+		show("form");
 		toggle.hidden = true;
 		console.error("Studio page builder failed to mount.", error);
 	};
+	let launched = false;
+	const launch = async () => {
+		if (launched) return;
+		launched = true;
+		status.textContent = labels.loading;
+		status.dataset.studioLaunchState = "loading";
+		try {
+			const imported = await __vitePreload(() => import(
+				/* @vite-ignore */
+				moduleUrl
+), []);
+			if (!isStudioBrowserModule(imported)) throw new TypeError("The Studio browser module does not export the hosted runtime.");
+			const registry = new imported.StudioAuthoringControlRegistry({ strictContentSecurityPolicy: true });
+			attached.observe(mount, { childList: true });
+			const report = await imported.autoMountStudio({ hosted: () => ({ authoringControlRegistry: registry }) });
+			attached.disconnect();
+			if (report.failures.length > 0 || report.handles.length === 0) {
+				fail(report.failures[0]?.error ?? /* @__PURE__ */ new Error("No Studio target was mounted."));
+				return;
+			}
+			reveal();
+		} catch (error) {
+			fail(error);
+		}
+	};
 	toggle.addEventListener("click", () => {
-		show(surface === "studio" ? "form" : "studio");
+		const next = surface === "studio" ? "form" : "studio";
+		rememberSurface(next);
+		show(next);
+		if (next === "studio") launch();
 	});
 	mount.addEventListener("studio-contextual-return-request", (event) => {
 		if (event.detail?.returnContext === void 0) return;
@@ -78,25 +163,14 @@ async function setupStudioLaunch() {
 		status.textContent = detail?.error?.message?.defaultMessage ?? labels.failed;
 		status.dataset.studioLaunchState = "error";
 	});
-	status.dataset.studioLaunchState = "loading";
-	try {
-		const imported = await __vitePreload(() => import(
-			/* @vite-ignore */
-			moduleUrl
-), []);
-		if (!isStudioBrowserModule(imported)) throw new TypeError("The Studio browser module does not export the hosted runtime.");
-		const registry = new imported.StudioAuthoringControlRegistry({ strictContentSecurityPolicy: true });
-		const report = await imported.autoMountStudio({ hosted: () => ({ authoringControlRegistry: registry }) });
-		if (report.failures.length > 0 || report.handles.length === 0) {
-			fail(report.failures[0]?.error ?? /* @__PURE__ */ new Error("No Studio target was mounted."));
-			return;
-		}
-		status.textContent = labels.ready;
-		status.dataset.studioLaunchState = "ready";
-		show("studio");
-	} catch (error) {
-		fail(error);
+	if (surface === "form") {
+		status.textContent = labels.deferred;
+		status.dataset.studioLaunchState = "deferred";
+		toggle.hidden = false;
+		show("form");
+		return;
 	}
+	await launch();
 }
 //#endregion
 export { setupStudioLaunch };

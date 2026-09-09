@@ -4,7 +4,7 @@
     "name": "reveal-validation"
   },
   "assets/administrator/components/studio-composition.ts": {
-    "file": "js/studio-composition-kD8U9L_7.js",
+    "file": "js/studio-composition-B7X09ZvF.js",
     "name": "studio-composition",
     "src": "assets/administrator/components/studio-composition.ts",
     "isDynamicEntry": true,
@@ -17,7 +17,7 @@
     ]
   },
   "assets/administrator/components/studio-launch.ts": {
-    "file": "js/studio-launch-BZQigDu3.js",
+    "file": "js/studio-launch-M9nIHenC.js",
     "name": "studio-launch",
     "src": "assets/administrator/components/studio-launch.ts",
     "isDynamicEntry": true,
@@ -26,7 +26,7 @@
     ]
   },
   "assets/administrator/main.ts": {
-    "file": "js/administrator-CZSYedDP.js",
+    "file": "js/administrator-CdkFVkaC.js",
     "name": "administrator",
     "src": "assets/administrator/main.ts",
     "isEntry": true,
@@ -38,7 +38,7 @@
       "assets/administrator/components/studio-launch.ts"
     ],
     "css": [
-      "css/administrator-BIcCL0Nf.css"
+      "css/administrator-BN5j6vFg.css"
     ]
   },
   "assets/portal/main.ts": {

@@ -40,17 +40,17 @@ final readonly class PublishedContentHandler implements RequestHandlerInterface
     /**
      * Bind the public content route to the locator, settings, and rendering collaborators it composes.
      *
-     * @param  PublicPageLocator                $pages      Resolver that maps a request path to a published record and
+     * @param PublicPageLocator $pages Resolver that maps a request path to a published record and
      *         reports that record's canonical path.
-     * @param  ContentPageRenderService         $renderer   Canonical site template/theme path shared with preview.
-     * @param  ContentPresenter                 $presenter  Presenter that escapes and renders the record's stored
+     * @param ContentPageRenderService $renderer Canonical site template/theme path shared with preview.
+     * @param  ContentPresenter                    $presenter     Presenter that escapes and renders the record's stored
      *         bodies before they reach a template.
-     * @param  ContentLayoutCatalog             $layouts    Content-type to site-template layout selection.
-     * @param  TranslationGroupPresenter        $languages  Builder of the page's alternate-language links and
+     * @param  ContentLayoutCatalog                $layouts       Content-type to site-template layout selection.
+     * @param  TranslationGroupPresenter           $languages     Builder of the page's alternate-language links and
      *         the language selector, from the translation group the rendered entry belongs to.
-     * @param  ActiveLocale                     $active     Request locale holder aligned to a locale-bearing record
+     * @param ActiveLocale $active Request locale holder aligned to a locale-bearing record
      *         before its template and translated chrome are rendered.
-     * @param  ?StudioPublishedContentRenderer  $studio     Optional exact published Blueprint rendering boundary.
+     * @param  ?StudioPublishedContentRenderer     $studio        Optional exact published Blueprint rendering boundary.
      * @param  ?StudioPublishedEnhancementRuntime  $enhancements  Optional pinned enhancement runtime the page
      *         defers when its rendered blocks need it; null serves every composition script-free.
      *

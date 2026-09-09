@@ -2,6 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 import { expectNoDocumentOverflow } from './support/interface-diagnostics';
 import { gotoAfterRuntimeConvergence } from './support/runtime-convergence';
+import { preferStructuredContentForm } from './support/studio-authoring';
 
 const administratorEmail = process.env.KUMWE_BROWSER_ADMIN_EMAIL ?? 'browser-administrator@kumwe.test';
 const administratorPassword = process.env.KUMWE_BROWSER_ADMIN_PASSWORD ?? 'browser administrator password';
@@ -569,6 +570,7 @@ test.describe('authenticated administrator', () => {
   });
 
   test('content discovery and graphical editor work without raw JSON', async ({ page }, testInfo) => {
+    await preferStructuredContentForm(page.context());
     await page.goto('/administrator/content');
     await expect(page.getByRole('heading', { name: 'Content', exact: true })).toBeVisible();
     await page.getByRole('searchbox', { name: 'Search' }).fill('launch');
@@ -1189,6 +1191,7 @@ test.describe('authenticated administrator', () => {
     const title = `Browser About ${suffix}`;
     const slug = `browser-about-${suffix}`;
 
+    await preferStructuredContentForm(page.context());
     await page.goto('/administrator/content/new');
     await page.getByLabel('Title').fill(title);
     await page.getByLabel('URL slug').fill(slug);

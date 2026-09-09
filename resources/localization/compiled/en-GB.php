@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Compiled interface message catalogue for en-GB, carrying 2413 messages.
+ * Compiled interface message catalogue for en-GB, carrying 2414 messages.
  *
  * Generated from en-GB.xlf by `composer translation:compile`. Do not edit: the build
  * compares these bytes against a fresh compilation and fails when they differ. Author the
@@ -1268,6 +1268,7 @@ return [
     'core.administrator.content_form.studio_page_builder_could_not_start' => 'The Studio page builder could not start; the structured form remains available.',
     'core.administrator.content_form.studio_page_builder_is_loading' => 'The Studio page builder is loading.',
     'core.administrator.content_form.studio_page_builder_is_ready' => 'The Studio page builder is ready.',
+    'core.administrator.content_form.studio_page_builder_loads_when_you_switch' => 'The page builder loads when you switch to it.',
     'core.administrator.content_form.studio_page_builder_unavailable_use_the' => 'The Studio page builder is not available for this content context. Use the structured editor below; Kumwe will preserve the exact content type and version when you save.',
     'core.administrator.content_form.the_content_model_refused_these_values' => 'The content model refused these values. Everything you typed is still below; correct the fields named here and save again.',
     'core.administrator.content_form.the_item_could_not_be_saved' => 'The item could not be saved',

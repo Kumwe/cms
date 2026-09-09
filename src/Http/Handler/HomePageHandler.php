@@ -36,17 +36,17 @@ final readonly class HomePageHandler implements RequestHandlerInterface
     /**
      * Bind the front page to the locator, settings, and rendering collaborators it composes.
      *
-     * @param  PublicPageLocator                $pages      Resolver for the nominated homepage record and the site's
+     * @param PublicPageLocator $pages Resolver for the nominated homepage record and the site's
      *         public navigation tree.
-     * @param  ContentPageRenderService         $renderer   Canonical site template/theme path shared with preview.
-     * @param  ContentPresenter                 $presenter  Presenter that escapes and renders the record's stored
+     * @param ContentPageRenderService $renderer Canonical site template/theme path shared with preview.
+     * @param  ContentPresenter                    $presenter     Presenter that escapes and renders the record's stored
      *         bodies before they reach a template.
-     * @param  ContentLayoutCatalog             $layouts    Content-type to site-template layout selection.
-     * @param  TranslationGroupPresenter        $languages  Chooser of which locale of the nominated homepage the
+     * @param  ContentLayoutCatalog                $layouts       Content-type to site-template layout selection.
+     * @param  TranslationGroupPresenter           $languages     Chooser of which locale of the nominated homepage the
      *         reader is served, and builder of the alternate-language links and the language selector.
-     * @param  ActiveLocale                     $active     Request locale holder aligned to the resolved homepage
+     * @param  ActiveLocale                        $active        Request locale holder aligned to the resolved homepage
      *         before its template and translated chrome are rendered.
-     * @param  ?StudioPublishedContentRenderer  $studio     Optional exact published Blueprint rendering boundary.
+     * @param  ?StudioPublishedContentRenderer     $studio        Optional exact published Blueprint rendering boundary.
      * @param  ?StudioPublishedEnhancementRuntime  $enhancements  Optional pinned enhancement runtime the page
      *         defers when its rendered blocks need it; null serves every composition script-free.
      *

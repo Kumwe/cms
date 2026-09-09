@@ -2359,6 +2359,9 @@ button[disabled], button[aria-disabled="true"] { cursor: not-allowed; opacity: .
 
 .studio-authoring-mount {
   min-block-size: 24rem;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow: auto;
   border: 1px solid var(--color-border, #d5dbe3);
   border-radius: var(--radius-2, 0.5rem);
   background: var(--color-surface, #fff);

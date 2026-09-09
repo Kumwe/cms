@@ -105,4 +105,40 @@ final class EnvironmentTest extends TestCase
             }
         }
     }
+
+    /**
+     * The Studio browser asset origin is an allow-listed deployment setting, read from the process
+     * environment like every other `KUMWE_` selector; an unlisted variable never reaches the configuration.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testStudioBrowserBaseUrlIsReadFromTheProcessEnvironment(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'kumwe-env-');
+        self::assertIsString($file);
+        self::assertNotFalse(file_put_contents($file, ''));
+        $names = ['KUMWE_STUDIO_BROWSER_BASE_URL', 'KUMWE_STUDIO_UNLISTED'];
+        $originals = [];
+        foreach ($names as $name) {
+            $originals[$name] = getenv($name);
+        }
+        putenv('KUMWE_STUDIO_BROWSER_BASE_URL=http://127.0.0.1:8081');
+        putenv('KUMWE_STUDIO_UNLISTED=ignored');
+
+        try {
+            $environment = Environment::fromGlobals($file);
+            self::assertSame(
+                'http://127.0.0.1:8081',
+                $environment->string('KUMWE_STUDIO_BROWSER_BASE_URL', 'https://cdn.jsdelivr.net/npm'),
+            );
+            self::assertNull($environment->optionalString('KUMWE_STUDIO_UNLISTED'));
+        } finally {
+            unlink($file);
+            foreach ($originals as $name => $value) {
+                putenv(is_string($value) ? $name . '=' . $value : $name);
+            }
+        }
+    }
 }

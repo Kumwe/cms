@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, request as apiRequest, test, type Page } from '@playwright/test';
 import { gotoAfterRuntimeConvergence } from './support/runtime-convergence';
+import { preferStructuredContentForm } from './support/studio-authoring';
 
 /**
  * Installable site-theme lifecycle: the shipped Horizon example is installed through the signed demo
@@ -92,6 +93,7 @@ async function ensurePublishedPage(page: Page, title: string, slug: string): Pro
   if (probe.ok()) {
     return;
   }
+  await preferStructuredContentForm(page.context());
   await page.goto('/administrator/content/new');
   await page.getByLabel('Title').fill(title);
   await page.getByLabel('URL slug').fill(slug);
