@@ -36,12 +36,12 @@ final readonly class StudioProducerError
     /**
      * Create one canonical Producer error from delivery-safe App policy facts.
      *
-     * @param   string       $category                Closed Producer refusal category.
-     * @param   string       $diagnosticCode          Stable delivery-safe diagnostic code.
-     * @param   string|null  $revision                Safe current revision for a conflict.
-     * @param   bool         $retryable               Whether an unavailable refusal is transient.
-     * @param   int|null     $retryAfterMilliseconds  Bounded retry delay for a retryable refusal.
-     * @param   string|null  $correlationId           Delivery-safe support correlation identifier.
+     * @param   string        $category                Closed Producer refusal category.
+     * @param   string        $diagnosticCode          Stable delivery-safe diagnostic code.
+     * @param   string|null   $revision                Safe current revision for a conflict.
+     * @param   bool          $retryable               Whether an unavailable refusal is transient.
+     * @param   int|null      $retryAfterMilliseconds  Bounded retry delay for a retryable refusal.
+     * @param   string|null   $correlationId           Delivery-safe support correlation identifier.
      * @param   list<string>  $details                 Author-facing detail lines (validation violations) carried
      *          as additional non-blocking diagnostics; each is bounded and never echoes secrets.
      *
@@ -109,12 +109,12 @@ final readonly class StudioProducerError
     /**
      * Throw one canonical Producer refusal, optionally committing a safe failed mutation state.
      *
-     * @param   string       $category                Closed Producer refusal category.
-     * @param   string       $diagnosticCode          Stable delivery-safe diagnostic code.
-     * @param   string|null  $revision                Safe current revision for a conflict.
-     * @param   bool         $retryable               Whether an unavailable refusal is transient.
-     * @param   int|null     $retryAfterMilliseconds  Bounded retry delay for a retryable refusal.
-     * @param   bool         $commitsState            Whether safe mutation failure state must commit and replay.
+     * @param   string        $category                Closed Producer refusal category.
+     * @param   string        $diagnosticCode          Stable delivery-safe diagnostic code.
+     * @param   string|null   $revision                Safe current revision for a conflict.
+     * @param   bool          $retryable               Whether an unavailable refusal is transient.
+     * @param   int|null      $retryAfterMilliseconds  Bounded retry delay for a retryable refusal.
+     * @param   bool          $commitsState            Whether safe mutation failure state must commit and replay.
      * @param   list<string>  $details                 Author-facing detail lines carried as additional diagnostics.
      *
      * @return  never

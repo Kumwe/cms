@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
+import { preferStructuredContentForm } from './support/studio-authoring';
 
 const administratorEmail = process.env.KUMWE_BROWSER_ADMIN_EMAIL ?? 'browser-administrator@kumwe.test';
 const administratorPassword = process.env.KUMWE_BROWSER_ADMIN_PASSWORD ?? 'browser administrator password';
@@ -200,6 +201,7 @@ test.describe('data-entry integrity', () => {
     context,
   }) => {
     test.slow();
+    await preferStructuredContentForm(context);
     await signInToAdministrator(page);
     const suffix = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const title = `Retention content ${suffix}`;
@@ -251,6 +253,7 @@ test.describe('data-entry integrity', () => {
     // element children dropped that text, so the required textarea stayed empty, native validation
     // refused the form, and the editor looked full while Create draft did nothing. Forcing the shape
     // here rather than typing means every engine exercises the path, not only the ones that produce it.
+    await preferStructuredContentForm(page.context());
     await signInToAdministrator(page);
     await page.goto('/administrator/content/new');
     await expect(page.getByRole('textbox', { name: 'Rich text editor' }).first()).toBeVisible();

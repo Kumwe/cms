@@ -43,7 +43,13 @@ development programme, from the architecture decision that opened it to the curr
   npm package layout) with Producer's manifest integrity; `SecurityHeadersMiddleware` widens `script-src` by
   that one exact origin only on responses that ask for it, and the compiled `studio-launch` start module
   opts the page into `autoMountStudio()`, swaps between the page builder and the structured form, and
-  navigates on the shell's return request. `StudioAuthoringHostPort` and `ContentStudioAuthoringService`
+  navigates on the shell's return request. The page builder is the default surface: the start module brings
+  it in front as soon as Studio attaches its first element (on Content New that is the create-source
+  chooser, which Studio awaits before the mount promise settles), remembers an editor's switch to the
+  structured form across navigations (`?surface=form|studio` names it explicitly), and a page that opens on
+  the form defers the mount until the toggle asks for the page builder, so the form never carries a hidden
+  second copy of its fields. `KUMWE_STUDIO_BROWSER_BASE_URL` joins the `Environment` process allow-list; it
+  was documented but silently ignored. `StudioAuthoringHostPort` and `ContentStudioAuthoringService`
   answer the seven authoring operations behind Producer's wire — target resolution, the reusable-type
   catalogue, blank/from-type/existing starts, deterministic save plans, `save-item` persisting the entry
   under the identity the session promised at launch, `save-as-new-type` and `save-new-type-version`

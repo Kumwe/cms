@@ -30,18 +30,18 @@ final readonly class ContentPageRenderService
     /**
      * Render one content page through the same validated site presentation pipeline.
      *
-     * @param   string                      $template               Site layout name without `.twig`.
-     * @param   array<string, mixed>|null   $entry                  Already presented safe entry, or null for a home
+     * @param   string                       $template               Site layout name without `.twig`.
+     * @param   array<string, mixed>|null    $entry                  Already presented safe entry, or null for a home
      *          template with no selected record.
-     * @param   string                      $currentPath            Current application path.
-     * @param   string                      $canonicalUrl           Canonical path or absolute URL.
-     * @param   string|null                 $schemeOverride         Optional menu-bound colour scheme.
-     * @param   string                      $surfaceId              Stable interface surface identity.
-     * @param   list<array<string, mixed>>  $navigation             Presented site navigation.
-     * @param   array<string, mixed>        $languages              Presented language alternates.
-     * @param   bool                        $includeThemeVariables  Whether validated CSS variables may be emitted as
+     * @param   string                       $currentPath            Current application path.
+     * @param   string                       $canonicalUrl           Canonical path or absolute URL.
+     * @param   string|null                  $schemeOverride         Optional menu-bound colour scheme.
+     * @param   string                       $surfaceId              Stable interface surface identity.
+     * @param   list<array<string, mixed>>   $navigation             Presented site navigation.
+     * @param   array<string, mixed>         $languages              Presented language alternates.
+     * @param   bool                         $includeThemeVariables  Whether validated CSS variables may be emitted as
      *          the existing public theme attribute; preview documents set false under their stricter CSP.
-     * @param   string|null                 $studioStylesheetHref   Exact same-origin Producer stylesheet URL.
+     * @param   string|null                  $studioStylesheetHref   Exact same-origin Producer stylesheet URL.
      * @param   ?StudioBrowserAssetLocation  $studioEnhancement      Pinned enhancement runtime the rendered blocks
      *          need, deferred with its manifest integrity, or null for a script-free page.
      *

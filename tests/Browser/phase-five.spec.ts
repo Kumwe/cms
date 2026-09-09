@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page, type TestInfo } from '@playwright/test';
 import { expectNoDocumentOverflow } from './support/interface-diagnostics';
+import { awaitStudioLaunchSettled } from './support/studio-authoring';
 
 const administratorEmail = process.env.KUMWE_BROWSER_ADMIN_EMAIL
   ?? 'browser-administrator@kumwe.test';
@@ -66,16 +67,30 @@ test('Phase 5 administrator surfaces use one KIS task shell without route or pay
     await page.goto(path);
     await expect(page.locator(`[data-kis-surface="${surface}"]`)).toBeVisible();
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+    if (path === '/administrator/content/new') {
+      // The Content editor mounts the pinned Studio page builder beside the structured form; wait for
+      // that launch to settle so the overflow check measures the surface an editor actually sees.
+      const launch = await awaitStudioLaunchSettled(page);
+      if (launch === 'fallback') {
+        await expect(page.locator('[data-studio-authoring-fallback]')).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Structured editor fallback' })).toBeVisible();
+      } else {
+        await expect(page.locator('[data-studio-authoring-region]')).toBeVisible();
+        await expect(page.getByRole('heading', { name: 'Compose this item visually' })).toBeVisible();
+        if (launch === 'ready') {
+          await expect(page.locator('#kumwe-studio-content')).toBeVisible();
+          await expect(page.getByRole('button', { name: 'Use the structured form' })).toBeVisible();
+        } else {
+          await expect(page.locator('[data-studio-authoring-fallback-form]')).toBeVisible();
+        }
+      }
+      await expect(page.locator('[data-studio-authoring-fallback-form]'))
+        .toHaveAttribute('data-studio-authoring-intent', 'create');
+    }
     await expectNoDocumentOverflow(page, {
       root: '#administrator-content',
       detectControlOverlaps: false,
     });
-    if (path === '/administrator/content/new') {
-      await expect(page.locator('[data-studio-authoring-fallback]')).toBeVisible();
-      await expect(page.getByRole('heading', { name: 'Structured editor fallback' })).toBeVisible();
-      await expect(page.locator('[data-studio-authoring-fallback-form]'))
-        .toHaveAttribute('data-studio-authoring-intent', 'create');
-    }
   }
 
   await page.goto('/administrator/settings');
