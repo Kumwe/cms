@@ -65,7 +65,7 @@ final readonly class RecordRuleValidator
      *          data; equal to the record ID only under the UUID identity strategy.
      * @param string $recordId Public identity written into the identity field.
      * @param array<string, string> $allocated Numbers the caller's transaction has already reserved
-     *          from `BusinessNumberSequenceAllocator`, keyed by the `core.sequence` handle each belongs to;
+     *          from `NumberSequenceAllocator`, keyed by the `core.sequence` handle each belongs to;
      *          a sequence field with no reserved number here is reported rather than left empty.
      * @param   ?array<string, list<array<string, scalar|null>>>  $lines           Owned-line collections the
      *          definition's aggregate invariants reduce, keyed by relationship handle and in position

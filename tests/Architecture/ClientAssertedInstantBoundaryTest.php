@@ -39,7 +39,6 @@ final class ClientAssertedInstantBoundaryTest extends TestCase
      * @since  2.0.0
      */
     private const DECIDING_PATHS = [
-        'src/BusinessRecord/Application/BusinessNumberSequenceAllocator.php',
         'src/BusinessRecord/Infrastructure/Persistence/DoctrineBusinessNumberSequenceAllocator.php',
         'src/BusinessRecord/Domain/BusinessRecordIdempotency.php',
         'src/BusinessRecord/Domain/BusinessRecordReplayWindow.php',

@@ -56,7 +56,8 @@
     "Kumwe\\App",
     "Kumwe\\Conversion",
     "Kumwe\\Extension",
-    "Kumwe\\Producer"
+    "Kumwe\\Producer",
+    "Kumwe\\Sequence"
   ],
   "namespace_segments": {
     "Shared": "shared",
@@ -137,6 +138,9 @@
     "Kumwe\\App\\InterfaceStandard": "domain",
     "Kumwe\\App\\Localization\\Http": "delivery",
     "Kumwe\\App\\Portal\\Http": "delivery",
-    "Kumwe\\App\\Portal\\Contribution": "application"
+    "Kumwe\\App\\Portal\\Contribution": "application",
+    "Kumwe\\Sequence\\Contract": "shared",
+    "Kumwe\\Sequence\\Exception": "shared",
+    "Kumwe\\Sequence\\Value": "shared"
   }
 }

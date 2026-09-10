@@ -10,8 +10,6 @@ use Kumwe\App\Kernel\Container;
 use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceReset;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordPostingPeriodUndeclared;
@@ -41,8 +39,6 @@ use Ramsey\Uuid\Uuid;
  * @since  2.0.0
  */
 #[CoversClass(BusinessRecordService::class)]
-#[CoversClass(NumberSequenceReset::class)]
-#[CoversClass(NumberSequenceFormat::class)]
 #[CoversClass(BusinessRecordPostingPeriodUndeclared::class)]
 final class FiscalPeriodSequenceIntegrationTest extends TestCase
 {

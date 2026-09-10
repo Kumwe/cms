@@ -21,10 +21,8 @@ use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionCompatibilityAnal
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\InvalidBusinessDefinition;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceScope;
 use Kumwe\App\BusinessDefinition\Infrastructure\Persistence\DoctrineBusinessDefinitionRepository;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Query\ReadRecordQuery;
@@ -56,8 +54,6 @@ use RuntimeException;
 #[CoversClass(DoctrineBusinessNumberSequenceAllocator::class)]
 #[CoversClass(DoctrineBusinessDefinitionRepository::class)]
 #[CoversClass(BusinessDefinitionCompatibilityAnalyzer::class)]
-#[CoversClass(NumberSequenceFormat::class)]
-#[CoversClass(NumberSequenceScope::class)]
 final class BusinessNumberSequenceIdentityIntegrationTest extends TestCase
 {
     /**
@@ -481,14 +477,14 @@ final class BusinessNumberSequenceIdentityIntegrationTest extends TestCase
      *
      * @param   Container  $container  Integration container.
      *
-     * @return  BusinessNumberSequenceAllocator  The installed allocator.
+     * @return  NumberSequenceAllocator  The installed allocator.
      *
      * @since   2.0.0
      */
-    private function allocator(Container $container): BusinessNumberSequenceAllocator
+    private function allocator(Container $container): NumberSequenceAllocator
     {
-        $allocator = $container->get(BusinessNumberSequenceAllocator::class);
-        if (!$allocator instanceof BusinessNumberSequenceAllocator) {
+        $allocator = $container->get(NumberSequenceAllocator::class);
+        if (!$allocator instanceof NumberSequenceAllocator) {
             throw new RuntimeException('The business number sequence allocator is unavailable.');
         }
 

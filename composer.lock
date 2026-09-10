@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4176d50c5321ddab9db0a53a93a44a7e",
+    "content-hash": "d01af5fbccb92d97bb261fb301db3ca9",
     "packages": [
         {
             "name": "brick/math",
@@ -498,6 +498,47 @@
                 "source": "https://github.com/kumwe/producer"
             },
             "time": "2026-09-09T13:50:26+00:00"
+        },
+        {
+            "name": "kumwe/sequence",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/sequence.git",
+                "reference": "142c3e74a7596935ef42c8fa744ca705fd3b4b4f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/sequence/zipball/142c3e74a7596935ef42c8fa744ca705fd3b4b4f",
+                "reference": "142c3e74a7596935ef42c8fa744ca705fd3b4b4f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\Sequence\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Portable document numbering: format, reset and scope values and the storage-neutral allocator port.",
+            "homepage": "https://github.com/kumwe/sequence",
+            "support": {
+                "issues": "https://github.com/kumwe/sequence/issues",
+                "source": "https://github.com/kumwe/sequence"
+            },
+            "time": "2026-09-07T19:22:33+00:00"
         },
         {
             "name": "laminas/laminas-authentication",

@@ -8,7 +8,7 @@ use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionValidator;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeRegistry;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\InvalidBusinessDefinition;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat;
+use Kumwe\Sequence\Value\NumberSequenceFormat;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

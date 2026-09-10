@@ -44,7 +44,7 @@ final class ComposerLockTest extends TestCase
         self::assertSame(hash_file('sha256', $path), $lock->sha256());
         self::assertSame($path, $lock->path());
         self::assertSame(
-            ['kumwe/canonical-json', 'kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer'],
+            ['kumwe/canonical-json', 'kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer', 'kumwe/sequence'],
             array_keys($lock->packages()),
         );
         $conversion = $lock->package('kumwe/conversion');
