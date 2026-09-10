@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
-ARG PHP_IMAGE=php:8.5-fpm-alpine
+# PHP 8.5.10 FPM on Debian Bookworm: the native engine requires Linux/glibc.
+ARG PHP_IMAGE=php:8.5.10-fpm-bookworm@sha256:81b9c405b013ebda0c9b8cd7a1a61424cf3627ca96348d93752a9b0539ce9a25
 ARG COMPOSER_IMAGE=composer:2
 ARG NGINX_IMAGE=nginx:1.30.4-alpine3.24
 
@@ -8,19 +9,34 @@ FROM ${COMPOSER_IMAGE} AS composer
 
 FROM ${PHP_IMAGE} AS php-base
 
+COPY tools/install-native-engine.sh /tmp/kumwe-install/tools/install-native-engine.sh
+COPY resources/native-runtime/source.json /tmp/kumwe-install/resources/native-runtime/source.json
+
+ENV KUMWE_NATIVE_EXPECTED_TUPLE=/usr/local/etc/kumwe/native-expected-tuple.json
+
+# Preserve the former Alpine www-data identity so existing storage volumes remain writable.
+# Install runtime libraries explicitly; remove PHP/native compiler dependencies after building.
 RUN set -eux; \
-    apk add --no-cache icu-libs libpq libzip oniguruma su-exec tzdata; \
-    apk add --no-cache --virtual .build-dependencies \
+    test "$(dpkg --print-architecture)" = amd64; \
+    groupmod --gid 82 www-data; \
+    usermod --uid 82 --gid 82 www-data; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        bash ca-certificates curl gosu libicu72 libonig5 libpq5 libstdc++6 libzip4 tzdata; \
+    apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
-        icu-dev \
-        libzip-dev \
-        oniguruma-dev \
-        postgresql-dev; \
+        cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
     docker-php-ext-install -j"$(getconf _NPROCESSORS_ONLN)" intl mbstring pcntl pdo_mysql pdo_pgsql zip; \
     pecl install redis-6.3.0 apcu-5.1.28; \
     docker-php-ext-enable redis apcu; \
-    apk del .build-dependencies; \
-    php -r 'foreach (["apcu", "ctype", "fileinfo", "filter", "intl", "mbstring", "openssl", "pcntl", "Zend OPcache", "pdo", "pdo_mysql", "pdo_pgsql", "redis", "sodium", "zip"] as $extension) { if (!extension_loaded($extension)) { fwrite(STDERR, "Missing PHP extension: {$extension}\n"); exit(1); } }'; \
+    bash /tmp/kumwe-install/tools/install-native-engine.sh /usr/local/lib/kumwe-native; \
+    install -m 0644 /usr/local/lib/kumwe-native/kumwe_engine.ini "$PHP_INI_DIR/conf.d/kumwe_engine.ini"; \
+    install -d /usr/local/etc/kumwe; \
+    install -m 0644 /usr/local/lib/kumwe-native/native-expected-tuple.json "$KUMWE_NATIVE_EXPECTED_TUPLE"; \
+    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+        $PHPIZE_DEPS cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
+    rm -rf /var/lib/apt/lists/* /tmp/kumwe-install /tmp/pear; \
+    php -r 'foreach (["apcu", "ctype", "fileinfo", "filter", "intl", "kumwe_engine", "mbstring", "openssl", "pcntl", "Zend OPcache", "pdo", "pdo_mysql", "pdo_pgsql", "redis", "sodium", "zip"] as $extension) { if (!extension_loaded($extension)) { fwrite(STDERR, "Missing PHP extension: {$extension}\n"); exit(1); } }'; \
     { \
         echo 'expose_php=Off'; \
         echo 'display_errors=Off'; \
@@ -120,7 +136,7 @@ materialize_runtime() {
     esac
 
     if [ "$(id -u)" -eq 0 ]; then
-        su-exec www-data:www-data php bin/kumwe extension:runtime:materialize
+        gosu www-data:www-data php bin/kumwe extension:runtime:materialize
     else
         php bin/kumwe extension:runtime:materialize
     fi
@@ -130,14 +146,14 @@ materialize_runtime "$@"
 
 if [ "${1:-}" = 'php-fpm' ]; then
     if [ "$(id -u)" -eq 0 ]; then
-        su-exec www-data:www-data php bin/kumwe extension:runtime:watch --interval=10 --reload-pid=1 &
+        gosu www-data:www-data php bin/kumwe extension:runtime:watch --interval=10 --reload-pid=1 &
     else
         php bin/kumwe extension:runtime:watch --interval=10 --reload-pid=1 &
     fi
 fi
 
 if [ "$(id -u)" -eq 0 ]; then
-    exec su-exec www-data:www-data "$@"
+    exec gosu www-data:www-data "$@"
 fi
 
 exec "$@"

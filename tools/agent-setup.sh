@@ -136,6 +136,22 @@ seed_distonly_composer_cache() {
     done
 }
 
+say "Native computation runtime"
+if ! php -r 'exit(extension_loaded("kumwe_engine") && phpversion("kumwe_engine") === "1.0.1" ? 0 : 1);' \
+    || [ ! -r "${KUMWE_NATIVE_EXPECTED_TUPLE:-/usr/local/lib/kumwe-native/native-expected-tuple.json}" ]; then
+    if command -v apt-get >/dev/null 2>&1 && [ "$(id -u)" = 0 ]; then
+        apt-get update -q
+        apt-get install -y -q php8.5-dev autoconf build-essential cmake curl pkg-config
+    fi
+    bash tools/install-native-engine.sh || {
+        note "Native provisioning failed. PHP 8.5 development headers, a C++20 compiler and CMake 3.25+ are required on Linux x86_64/glibc."
+        exit 1
+    }
+    native_scan="$(php -r 'echo PHP_CONFIG_FILE_SCAN_DIR;')"
+    export PHP_INI_SCAN_DIR="$native_scan:/usr/local/lib/kumwe-native"
+    export KUMWE_NATIVE_EXPECTED_TUPLE=/usr/local/lib/kumwe-native/native-expected-tuple.json
+fi
+
 say "Composer dependencies"
 # An environment snapshot may carry a vendor/ tree built from an older composer.lock, so
 # presence alone proves nothing: after the library adoption such a tree lacked the service
@@ -352,6 +368,11 @@ EOF
 if [ -n "$NODE_BIN_DIR" ]; then
     printf 'export PATH="%s:$PATH"\n' "$NODE_BIN_DIR" >> "$ENV_FILE"
 fi
+if [ -n "${PHP_INI_SCAN_DIR:-}" ]; then
+    printf 'export PHP_INI_SCAN_DIR=%q\n' "$PHP_INI_SCAN_DIR" >> "$ENV_FILE"
+fi
+printf 'export KUMWE_NATIVE_EXPECTED_TUPLE=%q\n' \
+    "${KUMWE_NATIVE_EXPECTED_TUPLE:-/usr/local/lib/kumwe-native/native-expected-tuple.json}" >> "$ENV_FILE"
 note ".agent-env written."
 
 # ----------------------------------------------------------------- test schema

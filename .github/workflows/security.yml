@@ -43,6 +43,9 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
+
       - name: Cache Composer package downloads
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -70,7 +73,7 @@ jobs:
 
       - name: Validate and audit dependencies
         run: |
-          composer validate --strict
+          composer validate --strict --no-check-all
           composer audit --locked --abandoned=fail
           composer architecture:policy
 

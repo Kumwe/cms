@@ -92,6 +92,10 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Provision admitted native runtime
+        if: steps.records.outputs.found == 'true'
+        uses: ./.github/actions/native-runtime
+
       - name: Cache Composer package downloads
         if: steps.records.outputs.found == 'true'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

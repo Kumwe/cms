@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d01af5fbccb92d97bb261fb301db3ca9",
+    "content-hash": "b6de1f81a761874a6cc593cc78d83bff",
     "packages": [
         {
             "name": "brick/math",
@@ -364,6 +364,51 @@
                 "source": "https://github.com/kumwe/canonical-json"
             },
             "time": "2026-09-07T19:51:15+00:00"
+        },
+        {
+            "name": "kumwe/computation",
+            "version": "v0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/computation.git",
+                "reference": "de71747658ee7652b634bb5b9b7e30c85b75e34e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/computation/zipball/de71747658ee7652b634bb5b9b7e30c85b75e34e",
+                "reference": "de71747658ee7652b634bb5b9b7e30c85b75e34e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-kumwe_engine": "1.0.1",
+                "kumwe/canonical-json": "0.1.1",
+                "php": "^8.5",
+                "php-64bit": "^8.5",
+                "psr/container": "^2.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\Computation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Native computation and canonical encoding adapters with bounded portable transport.",
+            "homepage": "https://github.com/kumwe/computation",
+            "support": {
+                "issues": "https://github.com/kumwe/computation/issues",
+                "source": "https://github.com/kumwe/computation"
+            },
+            "time": "2026-09-10T12:08:12+00:00"
         },
         {
             "name": "kumwe/conversion",
@@ -5952,6 +5997,7 @@
         "ext-filter": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "ext-kumwe_engine": "1.0.1",
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
@@ -5960,5 +6006,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

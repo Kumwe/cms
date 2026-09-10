@@ -71,6 +71,9 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
+
       - name: Generate ephemeral application and runtime identities
         shell: bash
         run: |

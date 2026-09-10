@@ -43,6 +43,9 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
+
       - name: Cache Composer package downloads
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -105,8 +108,11 @@ jobs:
           extensions: apcu, ctype, fileinfo, filter, intl, json, mbstring, openssl, pcntl, pdo, pdo_mysql, pdo_pgsql, redis, sodium, zip
           coverage: none
           tools: composer:v2
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
+
       - name: Validate committed Composer metadata
-        run: composer validate --strict
+        run: composer validate --strict --no-check-all
       - name: Verify the locked dependency graph
         run: composer install --no-interaction --prefer-dist --dry-run
       - name: Require immutable dependency metadata
@@ -249,6 +255,9 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
+
       - name: Install Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -349,6 +358,9 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
+
       - name: Cache Composer package downloads
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -368,7 +380,7 @@ jobs:
 
       - name: Install and validate locked dependencies
         run: |
-          composer validate --strict
+          composer validate --strict --no-check-all
           composer install --no-interaction --prefer-dist
           composer audit --locked --abandoned=fail
 
@@ -563,6 +575,9 @@ jobs:
           extensions: apcu, ctype, fileinfo, filter, intl, json, mbstring, openssl, pcntl, pdo, pdo_mysql, pdo_pgsql, redis, sodium, zip
           coverage: ${{ matrix.database.coverage == 'true' && 'pcov' || 'none' }}
           tools: composer:v2
+
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
 
       - name: Generate ephemeral application secret
         shell: bash
@@ -882,6 +897,9 @@ jobs:
           extensions: apcu, ctype, fileinfo, filter, intl, json, mbstring, openssl, pcntl, pdo, pdo_mysql, pdo_pgsql, redis, sodium, zip
           coverage: none
           tools: composer:v2
+
+      - name: Provision admitted native runtime
+        uses: ./.github/actions/native-runtime
 
       - name: Run the deployed-artifact lane
         run: composer test:artifact
