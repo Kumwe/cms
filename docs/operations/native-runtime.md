@@ -4,7 +4,7 @@ Kumwe requires PHP 8.5 and `ext-kumwe_engine` 1.0.1 on Linux x86_64 with glibc. 
 FPM images include this runtime. Each image builds against its exact PHP patch, headers and toolchain;
 the source release is pinned by SHA-256 in `resources/native-runtime/source.json`.
 
-For a source checkout on a compatible host, install the PHP 8.5 development headers, a C++20 compiler,
+For a source checkout on a compatible host, install the PHP 8.5 development headers, GCC 13 or newer with C++20 support,
 Autoconf, Make, CMake 3.25 or newer, pkg-config, curl and tar. Before running Composer:
 
 ```bash

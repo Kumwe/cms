@@ -1149,6 +1149,11 @@ final class InterfaceTranslationGateTest extends TestCase
         self::assertNotFalse($uses);
         self::assertGreaterThan(0, $uses);
         foreach ($actionReferences[1] as $reference) {
+            if ($reference === './.github/actions/native-runtime') {
+                // This action comes from the checked-out SHA; the privileged job forbids local actions above.
+                self::assertFileExists($this->root . '/.github/actions/native-runtime/action.yml');
+                continue;
+            }
             self::assertMatchesRegularExpression(
                 '/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+@[0-9a-f]{40}$/D',
                 $reference,

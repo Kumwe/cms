@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
-# PHP 8.5.10 FPM on Debian Bookworm: the native engine requires Linux/glibc.
-ARG PHP_IMAGE=php:8.5.10-fpm-bookworm@sha256:81b9c405b013ebda0c9b8cd7a1a61424cf3627ca96348d93752a9b0539ce9a25
+# PHP 8.5.10 FPM on Debian Trixie supplies glibc and GCC 14 for the released native engine.
+ARG PHP_IMAGE=php:8.5.10-fpm-trixie@sha256:70076c1cae0cd0ba6761832417e3a1df3e5560f0544eb0fe40357373e54420fe
 ARG COMPOSER_IMAGE=composer:2
 ARG NGINX_IMAGE=nginx:1.30.4-alpine3.24
 
@@ -22,7 +22,7 @@ RUN set -eux; \
     usermod --uid 82 --gid 82 www-data; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        bash ca-certificates curl gosu libicu72 libonig5 libpq5 libstdc++6 libzip4 tzdata; \
+        bash ca-certificates curl gosu libicu76 libonig5 libpq5 libstdc++6 libzip5 tzdata; \
     apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
         cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
