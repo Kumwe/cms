@@ -7,6 +7,7 @@ namespace Kumwe\App\Tests\Integration\BusinessRecord;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Exception\RetryableException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
@@ -152,9 +153,10 @@ final class BusinessRecordDeadlockIntegrationTest extends TestCase
             }
             self::assertNotNull($caught, 'A blocked allocation must be reported, not silently retried forever.');
             self::assertInstanceOf(
-                RetryableException::class,
+                DriverException::class,
                 $caught->getPrevious(),
-                'The package refusal keeps the retryable driver failure reachable for the retry policy and the log.',
+                'The package refusal keeps the classified driver failure reachable for the retry policy and the log: '
+                . 'a lock-wait timeout on MariaDB and MySQL, the lock_timeout refusal on PostgreSQL.',
             );
             $concurrent->rollBack();
         } finally {
