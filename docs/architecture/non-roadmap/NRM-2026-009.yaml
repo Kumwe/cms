@@ -1,0 +1,32 @@
+schema: kumwe-non-roadmap-record/v1
+id: NRM-2026-009
+nrm_ref: NRM-2026-009
+roadmap_impact: None
+rationale: "Adopt verified kumwe/canonical-json 0.1.1, the generic canonical JSON semantic owner, through the ledger."
+repositories:
+  - kumwe/app
+  - kumwe/canonical-json
+behavior_before: "App's generic canonical JSON semantics lived only in its executor; no package owned its profile."
+behavior_after: "App pins verified kumwe/canonical-json 0.1.1; the index reads its manifests and the ledger records it."
+public_api_impact: "None; the package exports four metadata types and a port that no App class implements yet."
+dependency_impact: "Adds kumwe/canonical-json 0.1.1 exactly; no other lock entry changes."
+compatibility: "Additive: one semantic metadata package with no service, provider, configuration key or dependency."
+data_migration: None
+security_impact: "No new executable path; the package ships enums, an immutable value and an interface."
+performance:
+  claim: None
+  evidence: []
+operations_deployment: "None; no configuration or runtime change."
+recovery_rollback: "Revert the adoption pull request; no persisted data changes."
+artifacts_evidence:
+  - docs/architecture/migrations/KUMWE-MIG-2026-007.yaml
+  - docs/architecture/migrations/change-sets/KUMWE-CS-2026-007.yaml
+  - docs/architecture/migrations/trains/KUMWE-TRAIN-2026-002.yaml
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-007/RELEASE-ATTESTATION.yaml
+  - docs/architecture/capability-index.md
+  - tests/Architecture/CanonicalJsonSemanticIdentityGateTest.php
+known_gaps:
+  - "The App executor does not implement the CanonicalEncoder port; Computation's runtime cutover is separate work."
+  - "The remaining extension-sdk train packages follow as separate adoptions in dependency order."
+owner: "eWɘyn"
+status: in-progress

@@ -1,0 +1,62 @@
+schema: kumwe-change-set/v2
+change_set: KUMWE-CS-2026-007
+migration_id: KUMWE-MIG-2026-007
+roadmap_source:
+  title: Kumwe ERP-Extensibility Foundation Roadmap
+  sha256: a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8
+roadmap_refs: []
+state: app-pr-ready
+phase_1:
+  source_repository: kumwe/app
+  source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
+  target_repository: kumwe/canonical-json
+  package_pr: "https://github.com/kumwe/canonical-json/pull/7"
+  tested_sha: "8045d023fa42dbe5eb298a0852daac41cad0fc90"
+  public_api_digest: "43b126b3215555482b3d439cc2521808f16d252a99e0036138d6607a3c3a3465"
+  capability_digest: "fba51564639daa35180b354084649bacff466728ba531c2104b0a93d5136143b"
+  service_map_digest: "a9426334ed36972ab82781a64ace58bbac058aed884d5aa091354bbeb82e4108"
+  handoff_digest: "a0b6e32a94436b889d1f23c1d3b2eef0df7b4617c7661bd1a3ae3cac8cd1f75c"
+release:
+  version: 0.1.1
+  source_sha: "e7006a2580a49a1c8ab507b0d7b9c3403b4f9f58"
+  artifact_digest: "f9de51c56a20d9c6b53104b116552716b30f3b8d6b35d8a2578b6f8999aabcd5"
+  clean_consumer_evidence:
+    - "https://github.com/kumwe/canonical-json/actions/runs/34157162460"
+    - "https://github.com/kumwe/canonical-json/actions/runs/34157162566"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/138"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/canonical-json 0.1.1"
+  composer_lock_digest: "be88728dc69a8506235939d99bfa8e4a78846b0fc21068ef0bd613a0bbbcf742"
+  removed_app_symbols: []
+  moved_unit_tests: []
+  retained_app_tests:
+    - tests/Unit/Application/Automation/CanonicalJsonTest.php
+    - tests/Unit/Identity/Application/Administration/AccessControlServiceTest.php
+evidence:
+  package:
+    - "https://github.com/kumwe/canonical-json/actions/runs/34156150469"
+    - "https://github.com/kumwe/canonical-json/actions/runs/34157162460"
+    - "https://github.com/kumwe/canonical-json/actions/runs/34157162566"
+  app_composition:
+    - tests/Architecture/CanonicalJsonSemanticIdentityGateTest.php
+    - tests/Architecture/CapabilityIndexGateTest.php
+  database_matrix: []
+  concurrency: []
+  authorization_security: []
+  lifecycle_recovery: []
+  delivery_browser: []
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Additive: four exported metadata types and an interface, no service or provider; App is unchanged."
+migration_recovery: null
+security_impact: "No new executable path; the package ships enums, an immutable value and an interface."
+performance_claim: null
+rollback: "Revert the App pull request; no persisted data changes."
+known_gaps:
+  - "The App executor does not implement the CanonicalEncoder port; Computation's runtime cutover is separate work."
+  - "The remaining extension-sdk train packages follow as separate adoptions in dependency order."
+completion_claim: false
+accepted_by: null
