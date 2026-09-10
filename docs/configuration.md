@@ -55,6 +55,7 @@ Start from `.env.example` for development. Production Compose maps operator-faci
 | `RECORD_ENCRYPTION_PREVIOUS_KEYS` | JSON key-ID/secret set for retired record keys | Retain until re-encryption and revision retention have passed |
 | `RECORD_ENCRYPTION_LEGACY_SECRET` | Previous `APP_SECRET`, so `application-secret-v1` survives its rotation | Set before rotating `APP_SECRET`; drop after re-encryption |
 | `KUMWE_RELEASE` | Running release identifier | Exact deployed version |
+| `KUMWE_NATIVE_EXPECTED_TUPLE` | Independent native build tuple file | `/usr/local/lib/kumwe-native/native-expected-tuple.json`; images set `/usr/local/etc/kumwe/native-expected-tuple.json` |
 | `KUMWE_DEPLOYMENT_ID` | Stable rollout identity | Explicit deployment identifier |
 | `KUMWE_REPLICA_ID` | Stable replica identity | Unique per concurrently running replica |
 | `KUMWE_PROCESS_ID` | Stable process role identity | `app-runtime`, `queue-worker`, or `scheduler` |

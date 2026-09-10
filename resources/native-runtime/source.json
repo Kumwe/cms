@@ -1,0 +1,14 @@
+{
+  "schema": "kumwe-app-native-source/v1",
+  "binding": {
+    "version": "1.0.1",
+    "commit": "836939af765fcc50f8d4cc0f7e1f23bb7e909425",
+    "url": "https://github.com/kumwe/kumwe-engine/releases/download/v1.0.1/kumwe-engine-php-source.tar.gz",
+    "sha256": "95d13a5134ce352f2209c7907dd888496add42f88ebf7087740cdc242e1c7a82"
+  },
+  "engine": {
+    "version": "1.0.1",
+    "commit": "6e2baa49e1a4e3dd4c13da53e59f62abdf641f8a",
+    "sha256": "906dbb49c2fee9c28bee66c9f5cbd710494bc93a4fcb00067e0e60257b4013f7"
+  }
+}

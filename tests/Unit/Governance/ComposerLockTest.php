@@ -30,7 +30,7 @@ final class ComposerLockTest extends TestCase
     }
 
     /**
-     * The repository lock exposes the four Kumwe packages, sorted, with full references and PSR-4 roots.
+     * The repository lock exposes the admitted Kumwe packages, sorted, with full references and PSR-4 roots.
      *
      * @return  void
      *
@@ -44,7 +44,14 @@ final class ComposerLockTest extends TestCase
         self::assertSame(hash_file('sha256', $path), $lock->sha256());
         self::assertSame($path, $lock->path());
         self::assertSame(
-            ['kumwe/canonical-json', 'kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer', 'kumwe/sequence'],
+            [
+                'kumwe/canonical-json',
+                'kumwe/computation',
+                'kumwe/conversion',
+                'kumwe/extension-sdk',
+                'kumwe/producer',
+                'kumwe/sequence',
+            ],
             array_keys($lock->packages()),
         );
         $conversion = $lock->package('kumwe/conversion');

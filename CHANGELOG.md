@@ -17,6 +17,11 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
+- Provision pinned Engine/binding 1.0.1 and adopt `kumwe/computation` 0.3.1 for shared native canonical,
+  compiler and executor services. The deployment independently records and admits its exact PHP/build
+  tuple; missing or mismatched runtime metadata refuses boot. PHP Docker images use pinned glibc-based
+  builds, and source, CI and release installation paths provision the same native prerequisite.
+
 Kumwe 2.0 built from scratch: a content management system and a business application platform served by one
 set of application services, one composition root, one authoritative relational transaction, and one
 authorization decision in front of every read and every write. This block covers the whole of the 2.0

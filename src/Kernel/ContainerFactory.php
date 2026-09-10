@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Kernel;
 
+use Kumwe\CanonicalJson\CanonicalEncoder;
+use Kumwe\Computation\Compiler;
+use Kumwe\Computation\Executor;
+use Kumwe\Computation\NativeAdapter;
+use Kumwe\Computation\NativeCanonicalEncoder;
+use Kumwe\Computation\NativeCompatibility;
+use Kumwe\Engine\Runtime;
 use Doctrine\DBAL\Connection;
 use Kumwe\App\Application\Automation\AutomationManagementService;
 use Kumwe\App\Application\Automation\CryptographicJitterSource;
@@ -929,6 +936,15 @@ final class ContainerFactory
         $container->share(Container::class, $container, true);
         $container->alias(ContainerInterface::class, Container::class);
         $container->share(ApplicationConfiguration::class, $configuration, true);
+        $compatibility = (new NativeComputationFactory())->compatibility($environment);
+        $runtime = new Runtime();
+        $container->share(NativeCompatibility::class, $compatibility, true);
+        $container->share(Runtime::class, $runtime, true);
+        $container->share(NativeAdapter::class, new NativeAdapter($runtime, $compatibility), true);
+        $container->alias(Compiler::class, NativeAdapter::class);
+        $container->alias(Executor::class, NativeAdapter::class);
+        $container->share(NativeCanonicalEncoder::class, new NativeCanonicalEncoder($runtime, $compatibility), true);
+        $container->alias(CanonicalEncoder::class, NativeCanonicalEncoder::class);
         $container->share(ClockInterface::class, new SystemClock(), true);
         $container->share(AutomationJobFormRegistry::class, static fn (
             Container $container,
@@ -3317,6 +3333,7 @@ final class ContainerFactory
                 self::service($container, TrustStore::class),
                 $execution,
             ))->load([
+                CanonicalEncoder::class => self::service($container, CanonicalEncoder::class),
                 BusinessRecordReader::class => new PolicyBusinessRecordReader(
                     self::service($container, BusinessRecordService::class),
                 ),

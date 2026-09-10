@@ -82,6 +82,7 @@ continues from here.
 
 ### Without Docker
 
+First provision the [native computation runtime](docs/operations/native-runtime.md).
 The same flow runs on host PHP 8.5 with MariaDB (or MySQL/PostgreSQL) and Redis reachable from the
 process. Point `DB_HOST` and `REDIS_HOST` in `.env` at your services (for example `127.0.0.1`), then:
 

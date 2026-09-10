@@ -57,7 +57,10 @@
     "Kumwe\\Conversion",
     "Kumwe\\Extension",
     "Kumwe\\Producer",
-    "Kumwe\\Sequence"
+    "Kumwe\\Sequence",
+    "Kumwe\\CanonicalJson",
+    "Kumwe\\Computation",
+    "Kumwe\\Engine"
   ],
   "namespace_segments": {
     "Shared": "shared",
@@ -141,6 +144,15 @@
     "Kumwe\\App\\Portal\\Contribution": "application",
     "Kumwe\\Sequence\\Contract": "shared",
     "Kumwe\\Sequence\\Exception": "shared",
-    "Kumwe\\Sequence\\Value": "shared"
+    "Kumwe\\Sequence\\Value": "shared",
+    "Kumwe\\CanonicalJson": "shared",
+    "Kumwe\\Computation": "shared",
+    "Kumwe\\Computation\\ConfigProvider": "infrastructure",
+    "Kumwe\\Computation\\NativeAdapter": "infrastructure",
+    "Kumwe\\Computation\\NativeAdapterFactory": "infrastructure",
+    "Kumwe\\Computation\\NativeCanonicalEncoder": "infrastructure",
+    "Kumwe\\Computation\\NativeCanonicalEncoderFactory": "infrastructure",
+    "Kumwe\\Computation\\NativeCompatibility": "infrastructure",
+    "Kumwe\\Engine": "infrastructure"
   }
 }

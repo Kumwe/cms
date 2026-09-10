@@ -2,6 +2,7 @@
 
 These runbooks cover production installation, deployment, monitoring, recovery, upgrades, release verification, and incident response.
 
+- [Native runtime](native-runtime.md): pinned Engine build, PHP ABI admission, and host provisioning.
 - [Install](install.md): Docker images, Composer project, or release ZIP.
 - [Deploy](deploy.md): hardened container topology, database choice, image pinning, and acceptance.
 - [Configuration](../configuration.md): environment, secrets, database, Redis, and browser-managed settings.

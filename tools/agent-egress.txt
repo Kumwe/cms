@@ -11,6 +11,8 @@
 # --- Composer (PHP dependencies; dist zips come from GitHub's API) ---
 repo.packagist.org
 packagist.org
+github.com
+release-assets.githubusercontent.com
 api.github.com
 codeload.github.com
 objects.githubusercontent.com
