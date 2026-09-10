@@ -1,0 +1,312 @@
+schema: kumwe-change-set/v2
+change_set: KUMWE-CS-2026-004
+migration_id: KUMWE-MIG-2026-004
+roadmap_source:
+  title: Kumwe ERP-Extensibility Foundation Roadmap
+  sha256: a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8
+roadmap_refs: []
+state: app-pr-ready
+phase_1:
+  source_repository: kumwe/app
+  source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
+  target_repository: kumwe/access-context
+  package_pr: "https://github.com/kumwe/access-context/pull/8"
+  tested_sha: "132c3cd7c229ceda4398e19140d1477512c27ebf"
+  public_api_digest: "109b5449f343a28a2ab523c7460d7b7c4ee6d1c109f2cdaf96dd0d2124e681ba"
+  capability_digest: "fcd9597350e055c32b33ea442f51b952ba2621776a16069fa5ece318c909ea02"
+  service_map_digest: "88da845b4839b312723ec55bd5b1f3def42649683797e728d0ed6a124a8ab195"
+  handoff_digest: "3ab70a9ee37308329c745e8864d456d3cfc6d3d572808fdb9605dab3813145fb"
+release:
+  version: 0.1.2
+  source_sha: "132c3cd7c229ceda4398e19140d1477512c27ebf"
+  artifact_digest: "eece929808ae4e21cca8545176fa088a602b0c80ce30d656205182534f1a6611"
+  clean_consumer_evidence:
+    - "https://github.com/kumwe/access-context/actions/runs/34238712434"
+    - "https://github.com/kumwe/access-context/actions/runs/34238711816"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/141"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/access-context 0.1.2"
+  composer_lock_digest: "ede5a026c9aedb12177801da8918e9118291e2fe7e15560b2c987782e2bc3f89"
+  removed_app_symbols:
+    - Kumwe\App\Application\Authorization\AuthenticatedSurface
+    - Kumwe\App\Application\Authorization\AuthenticationStrength
+    - Kumwe\App\Application\Authorization\ExecutionContext
+    - Kumwe\App\Application\Authorization\MembershipContext
+    - Kumwe\App\Application\Authorization\OrganizationContext
+    - Kumwe\App\Application\Authorization\SiteContext
+    - Kumwe\App\Application\Authorization\StepUpProof
+    - Kumwe\App\Application\Authorization\WorkspaceContext
+  moved_unit_tests: []
+  retained_app_tests:
+    - tests/Functional/BusinessSurface/GeneratedBusinessAdapterParityTest.php
+    - tests/Functional/BusinessSurface/GeneratedBusinessDataEntryRetentionTest.php
+    - tests/Functional/BusinessSurface/GeneratedBusinessSurfaceWordingTest.php
+    - tests/Integration/Audit/AuditEnforcementUnavailableTest.php
+    - tests/Integration/Audit/AuditTamperEvidenceTest.php
+    - tests/Integration/Audit/AuditTrailRuntimeIntegrationTest.php
+    - tests/Integration/Authorization/BusinessGroupOwnershipEngineIntegrationTest.php
+    - tests/Integration/Automation/AutomationManagementIntegrationTest.php
+    - tests/Integration/Automation/IdempotencyFirstClaimContentionIntegrationTest.php
+    - tests/Integration/Automation/IdempotencyRecoveryIntegrationTest.php
+    - tests/Integration/Automation/KilledWorkerRecoveryIntegrationTest.php
+    - tests/Integration/BusinessIntegration/PoisonAndDeadLetterIntegrationTest.php
+    - tests/Integration/BusinessRecord/AggregateDocumentConcurrencyIntegrationTest.php
+    - tests/Integration/BusinessRecord/AggregateDocumentIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceContentionIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceHotPathIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordClientReferenceIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordPolicyCompilerIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordRelationshipIntegrationTest.php
+    - tests/Integration/BusinessRecord/CorrectionAfterPeriodCloseIntegrationTest.php
+    - tests/Integration/BusinessRecord/DocumentCommitInstrumentationIntegrationTest.php
+    - tests/Integration/BusinessRecord/FiscalPeriodSequenceIntegrationTest.php
+    - tests/Integration/BusinessRecord/ImmutableRecordReversalIntegrationTest.php
+    - tests/Integration/BusinessRecord/PostingPeriodLockIntegrationTest.php
+    - tests/Integration/BusinessRecord/RecordSecretRotationIntegrationTest.php
+    - tests/Integration/BusinessReporting/ExportArtifactPersistenceTest.php
+    - tests/Integration/BusinessReporting/ExportAttemptPublisherTest.php
+    - tests/Integration/BusinessSecurity/DoctrineApprovalQueryRepositoryIntegrationTest.php
+    - tests/Integration/BusinessSurface/GeneratedBusinessActionExposureIntegrationTest.php
+    - tests/Integration/BusinessSurface/GeneratedBusinessBrowserIntegrationTest.php
+    - tests/Integration/BusinessSurface/GeneratedBusinessQueryBudgetIntegrationTest.php
+    - tests/Integration/BusinessSurface/GeneratedBusinessRelatedPolicyIntegrationTest.php
+    - tests/Integration/Content/MultilingualContentIntegrationTest.php
+    - tests/Integration/Delivery/Http/Api/Idempotency/SecretOnceIdempotencyMiddlewareTest.php
+    - tests/Integration/Demo/Infrastructure/DemoBusinessProfileExportInstallIntegrationTest.php
+    - tests/Integration/Extension/ContributedContentTranslationIntegrationTest.php
+    - tests/Integration/Extension/ExtensionContributionLifecycleIntegrationTest.php
+    - tests/Integration/Extension/ExtensionOwnershipLifecycleIntegrationTest.php
+    - tests/Integration/Extension/GeneratedExtensionLifecycleIntegrationTest.php
+    - tests/Integration/Extension/ManifestGenerationLifecycleIntegrationTest.php
+    - tests/Integration/Extension/SupplyChainAdmissionIntegrationTest.php
+    - tests/Integration/Identity/AccessControlIntegrationTest.php
+    - tests/Integration/Identity/CredentialLifecycleIntegrationTest.php
+    - tests/Integration/Infrastructure/UnwritableStorageIntegrationTest.php
+    - tests/Integration/Localization/AdministratorWordingValidationIntegrationTest.php
+    - tests/Integration/Localization/MessageOverrideIntegrationTest.php
+    - tests/Integration/Mcp/McpProtocolContractIntegrationTest.php
+    - tests/Integration/OpenApi/OpenApiContractGenerationIntegrationTest.php
+    - tests/Integration/Performance/HotPlanRegressionIntegrationTest.php
+    - tests/Integration/Persistence/CrashResumableMigrationIntegrationTest.php
+    - tests/Integration/Persistence/MigrationIntegrationTest.php
+    - tests/Integration/Presentation/DoctrineThemeManagerIntegrationTest.php
+    - tests/Integration/Presentation/McpThemeIntegrationTest.php
+    - tests/Integration/Presentation/ThemePersistenceIntegrationTest.php
+    - tests/Integration/Studio/ContentStudioAuthoringContextPersistenceTest.php
+    - tests/Integration/Studio/ExtensionStudioPreviewRendererIntegrationTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryProducerIntegrationTest.php
+    - tests/Integration/Studio/StudioArtifactRecoveryVectorReplayIntegrationTest.php
+    - tests/Integration/Studio/StudioContentProjectionPersistenceTest.php
+    - tests/Support/AllowingAuditAuthorization.php
+    - tests/Support/AssetInspectionDeploymentAcceptance.php
+    - tests/Support/AuthorizationContext.php
+    - tests/Support/BusinessRuntimeBackupAcceptance.php
+    - tests/Support/CapabilityThemeAuthorizer.php
+    - tests/Support/DashboardPreferenceTestRuntime.php
+    - tests/Support/DrillDirectedJobHandler.php
+    - tests/Support/InMemoryPresentationAccessGroupRepository.php
+    - tests/Support/NeutralBusinessFixture.php
+    - tests/Support/RestoreSecurityAcceptance.php
+    - tests/Support/RestoredWork.php
+    - tests/Support/StudioProducerRequest.php
+    - tests/Support/TestKernelFactory.php
+    - tests/Support/TransientBusinessDefinitionFixtureScope.php
+    - tests/Support/customize-demo-profile.php
+    - tests/Support/prepare-browser-contribution.php
+    - tests/Unit/Administrator/Content/ContentFormTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorAccessControlHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorContentEditorHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorContentEditorRetentionTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorDashboardHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorDashboardPreferencesHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorExtensionActionHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorLoginHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorMediaHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorStudioHostHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorStudioMediaUploadHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorStudioPreviewDocumentHandlerTest.php
+    - tests/Unit/Administrator/Http/Handler/AdministratorStudioSessionHandlerTest.php
+    - tests/Unit/Administrator/Http/Middleware/AdministratorAuthorizationMiddlewareTest.php
+    - tests/Unit/Administrator/Http/Middleware/AdministratorSessionMiddlewareTest.php
+    - tests/Unit/Administrator/Presentation/AdministratorContributionRendererTest.php
+    - tests/Unit/Application/Authorization/AdapterAuthorizationParityTest.php
+    - tests/Unit/Application/Authorization/ApplicationAuthorizationTest.php
+    - tests/Unit/Application/Authorization/BusinessGroupOwnershipTest.php
+    - tests/Unit/Application/Authorization/DoctrineResourceSiteOwnershipWriterTest.php
+    - tests/Unit/Application/Authorization/OwnershipScopeModelTest.php
+    - tests/Unit/Application/Authorization/ResourceOwnershipScopeServiceTest.php
+    - tests/Unit/Application/Authorization/SiteGroupAdministrationTest.php
+    - tests/Unit/Application/Authorization/SiteScopeContainmentIsNotAWideningTest.php
+    - tests/Unit/Application/Automation/AutomationManagementServiceTest.php
+    - tests/Unit/Application/Automation/PurgeBusinessRecordIdempotencyHandlerTest.php
+    - tests/Unit/Application/Automation/PurgeIdempotencyRecordsHandlerTest.php
+    - tests/Unit/Application/Automation/PurgeStudioContentAuthoringContextsHandlerTest.php
+    - tests/Unit/Application/Automation/WorkerTest.php
+    - tests/Unit/Application/Operations/MigrationLockRecoveryServiceTest.php
+    - tests/Unit/Application/Presentation/Dashboard/DashboardPreferenceServiceTest.php
+    - tests/Unit/BusinessDefinition/Administrator/BusinessDefinitionFormMapperTest.php
+    - tests/Unit/BusinessDefinition/Infrastructure/DoctrineBusinessDefinitionRepositoryTest.php
+    - tests/Unit/BusinessIntegration/Application/BusinessRecordMutationEventPublisherTest.php
+    - tests/Unit/BusinessIntegration/Application/JobQueueIntegrationEventHandlerTest.php
+    - tests/Unit/BusinessIntegration/Application/ValidatedContributedJobHandlerTest.php
+    - tests/Unit/BusinessIntegration/ConsumerDispatcherTest.php
+    - tests/Unit/BusinessIntegration/ProcessWorkDispatcherTest.php
+    - tests/Unit/BusinessRecord/Application/BusinessRecordMutationPublicationTest.php
+    - tests/Unit/BusinessRecord/Application/BusinessRecordRelationshipCoordinatorTest.php
+    - tests/Unit/BusinessRecord/Application/PostingPeriodLockTest.php
+    - tests/Unit/BusinessRecord/Application/PostingPeriodServiceTest.php
+    - tests/Unit/BusinessRecord/Application/WriteDocumentCommandTest.php
+    - tests/Unit/BusinessRecord/Domain/RecordScopeTest.php
+    - tests/Unit/BusinessReporting/ExportArtifactTest.php
+    - tests/Unit/BusinessReporting/ExportGenerationPolicyFenceTest.php
+    - tests/Unit/BusinessReporting/ExportServiceTransactionTest.php
+    - tests/Unit/BusinessReporting/LiveExportExecutionContextResolverTest.php
+    - tests/Unit/BusinessReporting/RecordExportPipelineTest.php
+    - tests/Unit/BusinessReporting/RecordExportReportProviderTest.php
+    - tests/Unit/BusinessReporting/ReportApiDiscoveryTest.php
+    - tests/Unit/BusinessReporting/ReportBrowserErrorResponseTest.php
+    - tests/Unit/BusinessReporting/ReportDeliveryPresenterTest.php
+    - tests/Unit/BusinessReporting/ReportPolicyInferenceTest.php
+    - tests/Unit/BusinessSchema/Infrastructure/CanonicalDefinitionPhysicalSchemaCompilerTest.php
+    - tests/Unit/BusinessSecurity/Application/ApprovalServiceTest.php
+    - tests/Unit/BusinessSecurity/Application/BusinessSecurityAdministrationServiceTest.php
+    - tests/Unit/BusinessSecurity/Infrastructure/Persistence/DoctrineApprovalRepositoryTest.php
+    - tests/Unit/BusinessSecurity/Infrastructure/Persistence/DoctrineBusinessRecordAccessControllerTest.php
+    - tests/Unit/BusinessSecurity/Infrastructure/Persistence/DoctrineStepUpProofConsumerTest.php
+    - tests/Unit/BusinessSurface/Application/BusinessApprovalSurfaceServiceTest.php
+    - tests/Unit/BusinessSurface/Application/BusinessMutationPlanServiceTest.php
+    - tests/Unit/BusinessSurface/Application/BusinessSurfaceCatalogTest.php
+    - tests/Unit/BusinessSurface/Application/BusinessSurfaceServiceTest.php
+    - tests/Unit/BusinessSurface/Application/Custom/CustomBusinessActionExecutorTest.php
+    - tests/Unit/BusinessSurface/Application/Custom/CustomBusinessHandlerRegistryTest.php
+    - tests/Unit/BusinessSurface/Application/GeneratedBusinessActionStepUpTest.php
+    - tests/Unit/Content/Application/ContentTranslationServiceTest.php
+    - tests/Unit/Content/Application/ContributedContentTranslationTest.php
+    - tests/Unit/Content/Infrastructure/Persistence/DoctrineContentRepositoryTest.php
+    - tests/Unit/Content/Infrastructure/Persistence/DoctrineTranslationGroupRepositoryTest.php
+    - tests/Unit/Content/Presentation/TranslationGroupPresenterTest.php
+    - tests/Unit/Delivery/Console/Command/AuditConsoleCommandTest.php
+    - tests/Unit/Delivery/Console/Command/CreateAccessTokenCommandTest.php
+    - tests/Unit/Delivery/Console/Command/QueueWorkCommandTest.php
+    - tests/Unit/Delivery/Console/Command/RotateRecordSecretsCommandTest.php
+    - tests/Unit/Delivery/Console/Command/ThemeCommandTest.php
+    - tests/Unit/Delivery/Http/Api/Automation/AutomationApiHandlerTest.php
+    - tests/Unit/Delivery/Http/Api/Business/BusinessApprovalApiHandlerTest.php
+    - tests/Unit/Delivery/Http/Api/Business/BusinessOperationStatusApiHandlerTest.php
+    - tests/Unit/Delivery/Http/Api/Business/BusinessRecordApiHandlerTest.php
+    - tests/Unit/Delivery/Http/Api/Business/PostingPeriodApiHandlerTest.php
+    - tests/Unit/Delivery/Http/Api/Extension/ExtensionApiHandlerTest.php
+    - tests/Unit/Delivery/Http/Api/Idempotency/PersistentIdempotencyAuthorizationTest.php
+    - tests/Unit/Delivery/Http/Api/Idempotency/PersistentIdempotencyMiddlewareTest.php
+    - tests/Unit/Delivery/Http/Mcp/McpHttpHandlerTest.php
+    - tests/Unit/Demo/Application/DemoBusinessTemplateProjectorTest.php
+    - tests/Unit/Demo/Application/VdmBusinessManifestProjectorTest.php
+    - tests/Unit/Demo/Infrastructure/DemoExampleExtensionInstallerTest.php
+    - tests/Unit/Demo/Infrastructure/VdmBusinessDefinitionSchemaTest.php
+    - tests/Unit/Demo/Infrastructure/VdmBusinessDemoInstallerTest.php
+    - tests/Unit/Extension/Runtime/RestrictedExtensionContainerTest.php
+    - tests/Unit/Http/Handler/HomePageHandlerTest.php
+    - tests/Unit/Http/Handler/PublishedContentHandlerTest.php
+    - tests/Unit/Http/Middleware/BearerAuthenticationMiddlewareTest.php
+    - tests/Unit/Identity/Application/Administration/AccessControlServiceTest.php
+    - tests/Unit/Identity/Application/Administration/TokenDelegationPreauthorizerTest.php
+    - tests/Unit/Identity/Application/Authentication/AuthenticatedPrincipalTest.php
+    - tests/Unit/Identity/Infrastructure/Administration/DoctrineAdministratorSessionStoreTest.php
+    - tests/Unit/Infrastructure/Mcp/BusinessMcpHandlersTest.php
+    - tests/Unit/Infrastructure/Persistence/Migration/MigrationRunnerTest.php
+    - tests/Unit/Infrastructure/Security/DoctrineHighImpactCredentialGuardTest.php
+    - tests/Unit/InterfaceStandard/PresentationPreferenceManagerTest.php
+    - tests/Unit/InterfaceStandard/PresentationPreferenceResolverTest.php
+    - tests/Unit/Localization/Application/LocaleNegotiationTest.php
+    - tests/Unit/Localization/Application/MessageOverrideServiceTest.php
+    - tests/Unit/Localization/Http/LocaleNegotiationMiddlewareTest.php
+    - tests/Unit/Localization/Http/TranslationScopeMiddlewareTest.php
+    - tests/Unit/Media/Infrastructure/FilesystemMediaStorageTest.php
+    - tests/Unit/Navigation/Application/NavigationServiceTest.php
+    - tests/Unit/Navigation/Application/PublicNavigationTest.php
+    - tests/Unit/OpenApi/Application/OpenApiComponentClaimAdmissionTest.php
+    - tests/Unit/OpenApi/Application/OpenApiExtensionActivationAdmissionTest.php
+    - tests/Unit/OpenApi/Delivery/Http/OpenApiHandlerTest.php
+    - tests/Unit/Portal/Application/MembershipPortalSessionIdentityLoaderTest.php
+    - tests/Unit/Portal/Http/PortalDashboardPreferencesHandlerTest.php
+    - tests/Unit/Portal/Http/PortalHomeHandlerTest.php
+    - tests/Unit/Portal/Http/PortalSecurityBoundaryTest.php
+    - tests/Unit/Portal/Http/PortalSecurityHandlerTest.php
+    - tests/Unit/Portal/Infrastructure/Identity/DoctrinePortalPrincipalLoaderTest.php
+    - tests/Unit/Portal/Presentation/PortalContributionRendererTest.php
+    - tests/Unit/Presentation/ContentLayoutCatalogTest.php
+    - tests/Unit/Presentation/Twig/IsolatedTwigEnvironmentFactoryTest.php
+    - tests/Unit/Site/Application/PublicPageLocatorTest.php
+    - tests/Unit/Site/Infrastructure/Persistence/DoctrineSiteSettingsTest.php
+    - tests/Unit/Studio/Application/Authoring/ContentStudioAuthoringContextAuthorityTest.php
+    - tests/Unit/Studio/Application/Authoring/ContentStudioAuthoringTargetResolverTest.php
+    - tests/Unit/Studio/Application/Composition/StudioPublishedContentRendererTest.php
+    - tests/Unit/Studio/Application/Composition/StudioPublishedThemeTest.php
+    - tests/Unit/Studio/Application/Host/StudioArtifactHostPortTest.php
+    - tests/Unit/Studio/Application/Host/StudioHostSessionAuthorityTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerMutationBoundaryTest.php
+    - tests/Unit/Studio/Application/Host/StudioProducerRequestAuthorityTest.php
+    - tests/Unit/Studio/Application/Host/StudioResourceHostPortTest.php
+    - tests/Unit/Studio/Application/Media/StudioMediaAuditTest.php
+    - tests/Unit/Studio/Application/Media/StudioMediaLifecycleTest.php
+    - tests/Unit/Studio/Application/Media/StudioMediaProducerPortTest.php
+    - tests/Unit/Studio/Application/Preview/ContentStudioPreviewBindingSourceTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewActivityRecorderTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewBindingRendererTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewHostPortTest.php
+    - tests/Unit/Studio/Application/Preview/StudioPreviewProducerPortTest.php
+    - tests/Unit/Studio/Application/Projection/ContentStudioProjectorTest.php
+    - tests/Unit/Studio/Application/Projection/ContentStudioResourceSearchProviderTest.php
+    - tests/Unit/Studio/Application/Projection/RecordAuthorizedStudioContentFieldDisclosureTest.php
+    - tests/Unit/Studio/Application/Projection/StudioContentProjectionServiceTest.php
+    - tests/Unit/Studio/Domain/Projection/ContentBlueprintBindingTest.php
+    - tests/Unit/Studio/Domain/Projection/EntryCompositionOverridesTest.php
+    - tests/Unit/Studio/Infrastructure/Persistence/DoctrineContentProjectionBindingRepositoryTest.php
+    - tests/Unit/Support/TransientBusinessDefinitionFixtureScopeTest.php
+    - tests/Unit/Workflow/Domain/WorkflowTest.php
+evidence:
+  package:
+    - "https://github.com/kumwe/access-context/actions/runs/34238712434"
+    - "https://github.com/kumwe/access-context/actions/runs/34238711816"
+  app_composition:
+    - tests/Unit/Identity/Application/Authentication/AuthenticatedPrincipalTest.php
+    - tests/Unit/Application/Authorization/ApplicationAuthorizationTest.php
+    - tests/Unit/Application/Automation/WorkerTest.php
+    - tests/Unit/BusinessIntegration/Application/JobQueueIntegrationEventHandlerTest.php
+    - tests/Unit/BusinessIntegration/Application/ValidatedContributedJobHandlerTest.php
+    - tests/Unit/BusinessSurface/Application/Custom/CustomBusinessHandlerRegistryTest.php
+    - tests/Unit/BusinessSurface/Application/Custom/CustomBusinessActionExecutorTest.php
+    - tests/Unit/BusinessRecord/Application/PolicyBusinessRecordReaderTest.php
+  database_matrix:
+    - tests/Integration/Identity/AccessControlIntegrationTest.php
+    - tests/Integration/BusinessSecurity/DoctrineApprovalQueryRepositoryIntegrationTest.php
+    - tests/Integration/BusinessRecord/SdkBusinessRecordReaderIntegrationTest.php
+    - tests/Integration/Persistence/MigrationIntegrationTest.php
+  concurrency:
+    - tests/Integration/Automation/KilledWorkerRecoveryIntegrationTest.php
+    - tests/Integration/BusinessIntegration/PoisonAndDeadLetterIntegrationTest.php
+  authorization_security:
+    - tests/Unit/Application/Authorization/ApplicationAuthorizationTest.php
+    - tests/Unit/Portal/Http/PortalSecurityBoundaryTest.php
+    - tests/Unit/Delivery/Http/Api/Idempotency/PersistentIdempotencyAuthorizationTest.php
+    - tests/Integration/Delivery/Http/Api/Idempotency/SecretOnceIdempotencyMiddlewareTest.php
+    - tests/Integration/Authorization/BusinessGroupOwnershipEngineIntegrationTest.php
+  lifecycle_recovery:
+    - tests/Integration/Automation/KilledWorkerRecoveryIntegrationTest.php
+    - tests/Integration/Extension/ExtensionContributionLifecycleIntegrationTest.php
+  delivery_browser: []
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Drop-in for every value: identifier grammars, refusal messages, fingerprints and the surface and strength vocabularies are the App's; the package additionally refuses malformed UTF-8 identities and an orphan step-up workspace, and the context answers the neutral actor ports."
+migration_recovery: "Nine migrations changed only their imports; their pre-move checksums are accepted, so databases migrated before the move start unchanged."
+security_impact: "No authority change: provenance, grants, capabilities, sessions and the gateway stay host-owned; a foreign implementation of the principal port authorizes nothing, and extensions see only the seven SPI coordinates through the host adapter."
+performance_claim: null
+rollback: "Revert the App pull request and restore the eight removed classes from the baseline commit."
+known_gaps:
+  - "The handoff names a broad App namespace root that still holds App classes; the ledger names the exact symbols."
+  - "The handoff lists the governance layers fixture among retained tests; the ledger names PHP tests only, so it is omitted."
+completion_claim: false
+accepted_by: null

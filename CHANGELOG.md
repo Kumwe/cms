@@ -41,6 +41,21 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-10 — `kumwe/access-context` 0.1.2 owns the access-context values and the neutral actor ports.**
+  The third package of the extension-sdk release train enters App through the migration ledger (`NRM-2026-005`):
+  `KUMWE-MIG-2026-004`, its change set, the integration train `KUMWE-TRAIN-2026-004` and the independent release
+  attestation record the verified `v0.1.2` release, and `composer.json` pins it exactly. As the released handoff
+  prescribes, the App's `AuthenticatedSurface`, `AuthenticationStrength`, `ExecutionContext`, `MembershipContext`,
+  `OrganizationContext`, `SiteContext`, `StepUpProof` and `WorkspaceContext` are removed and every consumer reads
+  the package values; `AuthenticatedPrincipal` answers the package's `Principal` port and `AuthenticatedPrincipal::of()`
+  narrows it back to the grant-carrying class, `SystemIdentity` answers `SystemActor`, `ExecutionContextAttribute`
+  keeps the host request-attribute key, and `ExtensionExecutionContext` presents the host context to extension code
+  through the SDK contract and recovers it where package code hands the envelope back (`KUMWE-CGR-2026-004`). The
+  nine migrations that name the moved values changed only their imports, so their pre-move checksums are accepted
+  for databases migrated before the move. The core growth gate now tells a rename from growth: a public surface
+  that differs from its baseline entry only by the names an adopted migration ledger retired is re-recorded as
+  `renamed` and keeps its growth evidence, so the hundreds of App signatures that name the moved values need no
+  record of their own. (#141)
 - **2026-09-10 — `kumwe/sequence` 0.2.1 owns the document numbering values and the allocator port.**
   The second package of the extension-sdk release train enters App through the migration ledger (`NRM-2026-003`):
   `KUMWE-MIG-2026-002`, its change set, the integration train `KUMWE-TRAIN-2026-003` and the independent release

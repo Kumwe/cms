@@ -1,0 +1,26 @@
+schema: kumwe-integration-train/v1
+train: KUMWE-TRAIN-2026-004
+packages:
+  - package: kumwe/access-context
+    version: 0.1.2
+merge_order:
+  - "https://github.com/kumwe/app/pull/141"
+custodian: "Platform architecture"
+hotspots:
+  - composer.json
+  - composer.lock
+  - src/Kernel/ContainerFactory.php
+  - src/Identity/Application/Authentication/AuthenticatedPrincipal.php
+  - src/Application/Authorization/SystemIdentity.php
+  - src/Application/Authorization/DenyByDefaultAuthorizationGateway.php
+  - docs/architecture/layers.json
+  - docs/architecture/capability-index.md
+  - docs/architecture/governance/core-growth-baseline.json
+  - docs/quality/baseline.json
+  - CHANGELOG.md
+commands:
+  - "composer install"
+  - "composer kumwe:capability-index"
+  - "composer qa"
+conflict_ledger: docs/architecture/migrations/conflicts
+serialized_by: "eWɘyn"

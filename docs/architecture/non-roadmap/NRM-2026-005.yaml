@@ -1,0 +1,30 @@
+schema: kumwe-non-roadmap-record/v1
+id: NRM-2026-005
+nrm_ref: NRM-2026-005
+roadmap_impact: None
+rationale: "Adopt verified kumwe/access-context 0.1.2, the owner of the access-context values and the neutral actor ports."
+repositories:
+  - kumwe/app
+  - kumwe/access-context
+behavior_before: "App declared the site, organization, workspace, membership, surface, strength, step-up and execution-context values itself."
+behavior_after: "The eight values come from kumwe/access-context 0.1.2; App identities answer its Principal and SystemActor ports, and the host keeps the request attribute and the SDK adapter."
+public_api_impact: "None for callers of the values; principal() answers the neutral port and grant-carrying consumers narrow it through AuthenticatedPrincipal::of()."
+dependency_impact: "Adds kumwe/access-context 0.1.2 exactly; no other lock entry changes."
+compatibility: "Drop-in for every consumer; malformed UTF-8 identities and an orphan step-up workspace are now refused at the value."
+data_migration: None
+security_impact: "No authority change; provenance, grants, sessions and the gateway stay host-owned, and extensions see only the SPI coordinates through the host adapter."
+performance:
+  claim: None
+  evidence: []
+operations_deployment: "None; databases migrated before the move keep their recorded migration checksums."
+recovery_rollback: "Revert the adoption pull request and restore the eight removed classes; no persisted data changes."
+artifacts_evidence:
+  - docs/architecture/migrations/KUMWE-MIG-2026-004.yaml
+  - docs/architecture/migrations/change-sets/KUMWE-CS-2026-004.yaml
+  - docs/architecture/migrations/trains/KUMWE-TRAIN-2026-004.yaml
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-004/RELEASE-ATTESTATION.yaml
+  - docs/architecture/capability-index.md
+known_gaps:
+  - "The remaining extension-sdk train packages follow as separate adoptions in dependency order."
+owner: "eWɘyn"
+status: in-progress

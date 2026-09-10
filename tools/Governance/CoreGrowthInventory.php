@@ -43,7 +43,7 @@ final readonly class CoreGrowthInventory
      * Keep the sorted symbols.
      *
      * @param  array<string, array{fqcn: string, short_name: string, kind: string, layer: string, surface: string,
-     *         file: string, line: int, methods: list<string>, implements: list<string>,
+     *         canonical: string, file: string, line: int, methods: list<string>, implements: list<string>,
      *         extends: string|null}>  $symbols  Symbols by fully qualified name, sorted.
      *
      * @since  2.0.0
@@ -114,12 +114,14 @@ final readonly class CoreGrowthInventory
                  *   optional: bool, variadic: bool, by_reference: bool}>, return: string|null}> $methods */
                 $methods = $declaration['methods'];
                 $evidence = self::hostEvidence($declaration, $layer);
+                $canonical = self::canonicalSurface($declaration);
                 $symbols[$fqcn] = [
                     'fqcn' => $fqcn,
                     'short_name' => $shortName,
                     'kind' => $kind,
                     'layer' => $layer,
-                    'surface' => self::surface($declaration),
+                    'surface' => self::digest($canonical),
+                    'canonical' => $canonical,
                     'file' => $scan['file'],
                     'line' => $line,
                     'methods' => array_keys($methods),
@@ -137,8 +139,8 @@ final readonly class CoreGrowthInventory
      * Every production symbol.
      *
      * @return  array<string, array{fqcn: string, short_name: string, kind: string, layer: string, surface: string,
-     *          file: string, line: int, methods: list<string>, implements: list<string>, extends: string|null}>
-     *          By fully qualified name, sorted.
+     *          canonical: string, file: string, line: int, methods: list<string>, implements: list<string>,
+     *          extends: string|null}>  By fully qualified name, sorted.
      *
      * @since   2.0.0
      */
@@ -152,9 +154,9 @@ final readonly class CoreGrowthInventory
      *
      * @param   string  $fqcn  Fully qualified name without a leading backslash.
      *
-     * @return  array{fqcn: string, short_name: string, kind: string, layer: string, surface: string, file: string,
-     *          line: int, methods: list<string>, implements: list<string>, extends: string|null}|null  The symbol, or
-     *          null when `src/` does not declare it.
+     * @return  array{fqcn: string, short_name: string, kind: string, layer: string, surface: string,
+     *          canonical: string, file: string, line: int, methods: list<string>, implements: list<string>,
+     *          extends: string|null}|null  The symbol, or null when `src/` does not declare it.
      *
      * @since   2.0.0
      */
@@ -186,7 +188,24 @@ final readonly class CoreGrowthInventory
      */
     public static function surface(array $declaration): string
     {
-        return substr(hash('sha256', self::canonicalSurface($declaration)), 0, self::SURFACE_LENGTH);
+        return self::digest(self::canonicalSurface($declaration));
+    }
+
+    /**
+     * The digest of a canonical surface text.
+     *
+     * The gate takes it over a rewritten canonical text as well, to tell a rename a migration ledger records
+     * from a change of surface.
+     *
+     * @param   string  $canonical  Text in the form `canonicalSurface()` returns.
+     *
+     * @return  string  The first 24 hexadecimal characters of its SHA-256.
+     *
+     * @since   2.0.0
+     */
+    public static function digest(string $canonical): string
+    {
+        return substr(hash('sha256', $canonical), 0, self::SURFACE_LENGTH);
     }
 
     /**

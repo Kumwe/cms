@@ -68,6 +68,7 @@ final class CoreGrowthInventoryTest extends TestCase
             self::assertSame('class', $symbol['kind'], $fqcn);
             self::assertSame($fqcn, $symbol['fqcn']);
             self::assertMatchesRegularExpression('/^[a-f0-9]{24}$/', $symbol['surface'], $fqcn);
+            self::assertSame(CoreGrowthInventory::digest($symbol['canonical']), $symbol['surface'], $fqcn);
         }
         $adapter = $inventory->symbol('Kumwe\\App\\Example\\Infrastructure\\PrefixedExampleService');
         self::assertNotNull($adapter);
