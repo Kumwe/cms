@@ -126,7 +126,6 @@ use Kumwe\App\BusinessDefinition\Delivery\Administrator\BusinessDefinitionsHandl
 use Kumwe\App\BusinessDefinition\Infrastructure\Persistence\DoctrineBusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Infrastructure\Persistence\DoctrinePackageDefinitionSynchronizer;
 use Kumwe\App\BusinessDefinition\Infrastructure\Persistence\DoctrinePersistedFieldTypeDefinitionResolver;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordIdempotencyPurger;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordIdempotencyRepository;
@@ -392,6 +391,7 @@ use Kumwe\App\Studio\Application\Media\StudioMediaStagingStorage;
 use Kumwe\App\Studio\Application\Media\StudioMediaUploadRepository;
 use Kumwe\App\Studio\Application\Media\StudioPinnedHttpTransport;
 use Kumwe\App\Studio\Application\Host\StudioTelemetryHostPort;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
 use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
 use Kumwe\Producer\Deployment\StudioDeploymentEmitter;
 use Kumwe\Producer\Schema\StudioContractResources;
@@ -3147,9 +3147,9 @@ final class ContainerFactory
             self::service($container, MembershipDirectory::class),
             self::service($container, ClockInterface::class),
         ), true);
-        $container->share(BusinessNumberSequenceAllocator::class, static fn (
+        $container->share(NumberSequenceAllocator::class, static fn (
             Container $container,
-        ): BusinessNumberSequenceAllocator => new DoctrineBusinessNumberSequenceAllocator(
+        ): NumberSequenceAllocator => new DoctrineBusinessNumberSequenceAllocator(
             self::service($container, Connection::class),
             self::service($container, TableNames::class),
         ), true);
@@ -3195,7 +3195,7 @@ final class ContainerFactory
             self::service($container, BusinessRecordIdempotencyRepository::class),
             self::service($container, BusinessRecordMutationFence::class),
             self::service($container, BusinessRecordDefinitionResolver::class),
-            self::service($container, BusinessNumberSequenceAllocator::class),
+            self::service($container, NumberSequenceAllocator::class),
             self::service($container, RecordValueCodec::class),
             self::service($container, RecordRuleValidator::class),
             self::service($container, BusinessRecordAccessController::class),

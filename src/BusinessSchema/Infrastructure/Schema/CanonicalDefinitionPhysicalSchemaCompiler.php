@@ -12,7 +12,6 @@ use Kumwe\App\BusinessDefinition\Domain\DeleteBehavior;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
 use Kumwe\App\BusinessDefinition\Domain\IdentityStrategy;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat;
 use Kumwe\App\BusinessDefinition\Domain\RelationshipDefinition;
 use Kumwe\App\BusinessDefinition\Domain\RelationshipKind;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
@@ -26,6 +25,7 @@ use Kumwe\App\BusinessSchema\Domain\PhysicalSchemaBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableKind;
 use Kumwe\App\BusinessSchema\Domain\SchemaEvolutionHints;
+use Kumwe\Sequence\Value\NumberSequenceFormat;
 
 /**
  * Compiles immutable definition metadata into a portable, canonical physical blueprint.

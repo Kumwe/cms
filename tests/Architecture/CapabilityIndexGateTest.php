@@ -69,7 +69,7 @@ final class CapabilityIndexGateTest extends TestCase
         $check = GovernanceFixture::run(['--check']);
 
         self::assertSame(0, $check['status'], $check['output']);
-        self::assertStringContainsString('Capability index verified (4 packages; digest sha256:', $check['output']);
+        self::assertStringContainsString('Capability index verified (5 packages; digest sha256:', $check['output']);
 
         $digest = GovernanceFixture::run(['--digest']);
         self::assertSame(0, $digest['status'], $digest['output']);
@@ -199,7 +199,7 @@ final class CapabilityIndexGateTest extends TestCase
         $packages = $document['packages'];
 
         self::assertSame(
-            ['kumwe/canonical-json', 'kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer'],
+            ['kumwe/canonical-json', 'kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer', 'kumwe/sequence'],
             array_column($packages, 'package'),
         );
         foreach ([$packages[1], $packages[2]] as $package) {
@@ -234,7 +234,10 @@ final class CapabilityIndexGateTest extends TestCase
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/conversion']);
         self::assertSame('source-scan', $sources['kumwe/extension-sdk']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/producer']);
-        self::assertSame(['v0.1.1', 'v0.1.2', 'v0.2.4', 'v0.3.0'], array_column($packages, 'installed_version'));
+        self::assertSame(
+            ['v0.1.1', 'v0.1.2', 'v0.2.4', 'v0.3.0', 'v0.2.1'],
+            array_column($packages, 'installed_version'),
+        );
         self::assertSame([], $document['extracted_namespaces']);
         self::assertSame([], $document['removed_symbols']);
         self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[2]['legacy']['retired_app_namespaces']);

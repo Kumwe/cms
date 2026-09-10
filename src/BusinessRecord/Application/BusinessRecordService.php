@@ -6,23 +6,20 @@ namespace Kumwe\App\BusinessRecord\Application;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
+use Kumwe\App\Application\Authorization\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\ActionDefinition;
 use Kumwe\App\BusinessDefinition\Domain\DeleteBehavior;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
 use Kumwe\App\BusinessDefinition\Domain\IdentityStrategy;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat;
-use Kumwe\App\BusinessDefinition\Domain\NumberSequenceReset;
 use Kumwe\App\BusinessDefinition\Domain\PortalOperation;
-use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessDefinition\Domain\RelationshipKind;
+use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessRecord\Application\Command\ArchiveRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Command\DeleteRecordCommand;
@@ -48,10 +45,9 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordTemporarilyUnav
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordValidationFailed;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordVersionConflict;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRelationshipRejected;
-use Kumwe\App\BusinessRecord\Application\Query\BrowseRecordsQuery;
 use Kumwe\App\BusinessRecord\Application\Query\BrowseOwnedLineFieldChoicesQuery;
+use Kumwe\App\BusinessRecord\Application\Query\BrowseRecordsQuery;
 use Kumwe\App\BusinessRecord\Application\Query\BrowseRelatedRecordsQuery;
-use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordQueryPurpose;
 use Kumwe\App\BusinessRecord\Application\Query\OwnedLineFormQuery;
 use Kumwe\App\BusinessRecord\Application\Query\ReadRecordQuery;
 use Kumwe\App\BusinessRecord\Application\Query\RecordHistoryQuery;
@@ -59,18 +55,24 @@ use Kumwe\App\BusinessRecord\Domain\BusinessRecord;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordIdempotency;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordIdempotencyState;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordReplayWindow;
-use Kumwe\Conversion\Decimal\ExactDecimal;
 use Kumwe\App\BusinessRecord\Domain\RecordScope;
 use Kumwe\App\BusinessRecord\Domain\RecordValueGuard;
-use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
-use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessController;
-use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessPlan;
-use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldAccessUsage;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalBinding;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalDenied;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalService;
+use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessController;
+use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessPlan;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicyConstant;
+use Kumwe\Conversion\Decimal\ExactDecimal;
+use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
+use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordQueryPurpose;
+use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
+use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldAccessUsage;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
+use Kumwe\Sequence\Exception\NumberSequenceUnavailable;
+use Kumwe\Sequence\Value\NumberSequenceFormat;
+use Kumwe\Sequence\Value\NumberSequenceReset;
 use Psr\Clock\ClockInterface;
 use Ramsey\Uuid\Uuid;
 use Throwable;
@@ -124,7 +126,7 @@ final readonly class BusinessRecordService implements BusinessRecordCustomAction
      *         installation for the whole operation.
      * @param  BusinessRecordDefinitionResolver       $definitions     Resolver pairing a published definition
      *         version with its installed schema.
-     * @param  BusinessNumberSequenceAllocator        $numbers         Counter every `core.sequence` field
+     * @param  NumberSequenceAllocator                $numbers         Counter every `core.sequence` field
      *         draws its gapless document number from, inside this service's own transaction.
      * @param  RecordValueCodec                       $values          Value codec, used here to normalize a
      *         caller-supplied record identity.
@@ -170,7 +172,7 @@ final readonly class BusinessRecordService implements BusinessRecordCustomAction
         private BusinessRecordIdempotencyRepository $idempotency,
         private BusinessRecordMutationFence $mutationFence,
         private BusinessRecordDefinitionResolver $definitions,
-        private BusinessNumberSequenceAllocator $numbers,
+        private NumberSequenceAllocator $numbers,
         private RecordValueCodec $values,
         private RecordRuleValidator $rules,
         private BusinessRecordAccessController $recordAccess,
@@ -3293,7 +3295,8 @@ final readonly class BusinessRecordService implements BusinessRecordCustomAction
      * @throws  BusinessRecordValidationFailed  When the submitted posting date a `fiscal-period` counter
      *          must be keyed on is malformed.
      * @throws  BusinessRecordTemporarilyUnavailable  When another allocator holds the counter and this
-     *          command must be replayed rather than guess at a number.
+     *          command must be replayed rather than guess at a number; the port's `NumberSequenceUnavailable`
+     *          is translated here so callers keep seeing one transient refusal with the driver failure chained.
      *
      * @since   2.0.0
      */
@@ -3316,14 +3319,19 @@ final readonly class BusinessRecordService implements BusinessRecordCustomAction
                 ]
                 : $format->counter($scope->organizationIdentifier, $now);
             $sequenceStart = hrtime(true);
-            $allocated[$field->handle] = $format->render($this->numbers->allocate(
-                $scope->siteIdentifier ?? $resolved->definition->siteIdentifier,
-                $resolved->definition->id,
-                $field->handle,
-                $counter['scope'],
-                $counter['period'],
-                $now,
-            ), $counter['period']);
+            try {
+                $value = $this->numbers->allocate(
+                    $scope->siteIdentifier ?? $resolved->definition->siteIdentifier,
+                    $resolved->definition->id,
+                    $field->handle,
+                    $counter['scope'],
+                    $counter['period'],
+                    $now,
+                );
+            } catch (NumberSequenceUnavailable $unavailable) {
+                throw new BusinessRecordTemporarilyUnavailable($unavailable);
+            }
+            $allocated[$field->handle] = $format->render($value, $counter['period']);
             $this->commitTimings->add('lock_wait', (hrtime(true) - $sequenceStart) / 1_000_000);
         }
 

@@ -39,6 +39,7 @@
     "kumwe/conversion": "0.1.2",
     "kumwe/extension-sdk": "0.2.4",
     "kumwe/producer": "0.3.0 as 0.2.99",
+    "kumwe/sequence": "0.2.1",
     "laminas/laminas-authentication": "^2.19",
     "laminas/laminas-diactoros": "^3.8",
     "laminas/laminas-eventmanager": "^3.15",

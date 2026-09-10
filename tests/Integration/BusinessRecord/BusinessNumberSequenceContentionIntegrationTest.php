@@ -7,17 +7,19 @@ namespace Kumwe\App\Tests\Integration\BusinessRecord;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception as DbalException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Kumwe\App\Kernel\Container;
 use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Command\UpdateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordTemporarilyUnavailable;
+use Kumwe\Sequence\Exception\NumberSequenceUnavailable;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordValidationFailed;
 use Kumwe\App\BusinessRecord\Application\Query\ReadRecordQuery;
 use Kumwe\App\BusinessRecord\Application\ValidationViolation;
@@ -70,8 +72,13 @@ final class BusinessNumberSequenceContentionIntegrationTest extends TestCase
             try {
                 $rival->allocate('default', $counter, self::FIELD, '-', '2026', $now);
                 self::fail('A second allocator must not reach the counter while the first still holds it.');
-            } catch (BusinessRecordTemporarilyUnavailable) {
+            } catch (NumberSequenceUnavailable $refusal) {
                 self::assertTrue($concurrent->isTransactionActive());
+                self::assertInstanceOf(
+                    DbalException::class,
+                    $refusal->getPrevious(),
+                    'The adapter raises the package refusal with the driver failure chained.',
+                );
             }
             $concurrent->rollBack();
             $database->rollBack();
@@ -129,8 +136,13 @@ final class BusinessNumberSequenceContentionIntegrationTest extends TestCase
             try {
                 $this->allocator($secondary)->allocate('default', $counter, self::FIELD, '-', '2027', $now);
                 self::fail('Two sessions cannot both create the same counter.');
-            } catch (BusinessRecordTemporarilyUnavailable) {
+            } catch (NumberSequenceUnavailable $refusal) {
                 self::assertTrue($concurrent->isTransactionActive());
+                self::assertInstanceOf(
+                    DbalException::class,
+                    $refusal->getPrevious(),
+                    'A first-use race is reported as the package refusal over the driver failure that settled it.',
+                );
             }
             $concurrent->rollBack();
             $database->commit();
@@ -152,6 +164,77 @@ final class BusinessNumberSequenceContentionIntegrationTest extends TestCase
             }
             $concurrent->close();
         }
+    }
+
+    /**
+     * A create whose counter another transaction holds is refused by the record service as temporarily
+     * unavailable: the adapter's package refusal is translated at the service seam, so callers keep seeing one
+     * transient vocabulary, nothing is committed on either side, and the run starts at one once the holder lets go.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testTheRecordServiceTranslatesAHeldCounterIntoATransientRefusal(): void
+    {
+        $environment = Environment::fromGlobals();
+        $primary = TestKernelFactory::create($environment);
+        $database = $this->connection($primary);
+        if ($database->getDatabasePlatform() instanceof SQLitePlatform) {
+            self::markTestSkipped(
+                'SQLite has no row-level FOR UPDATE, so one session cannot hold the counter against another\'s create.',
+            );
+        }
+
+        $context = TestKernelFactory::administratorContext($primary);
+        $definition = $this->install($primary, $context);
+        $secondary = TestKernelFactory::create($environment);
+        $rivalContext = TestKernelFactory::administratorContext($secondary);
+        $concurrent = $this->connection($secondary);
+        $this->boundLockWait($concurrent);
+        $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+
+        try {
+            $database->beginTransaction();
+            self::assertSame(1, $this->allocator($primary)->allocate(
+                $definition->siteIdentifier,
+                $definition->id,
+                self::FIELD,
+                '-',
+                $this->period(),
+                $now,
+            ));
+            try {
+                $this->create($this->records($secondary), $rivalContext, $definition, 'Blocked create');
+                self::fail('A create whose counter another transaction holds must be refused as transient.');
+            } catch (BusinessRecordTemporarilyUnavailable $refusal) {
+                self::assertSame(
+                    'business_record.temporarily_unavailable',
+                    $refusal->stableCode(),
+                    'The record vocabulary reports the held counter as replayable rather than as a 409 conflict.',
+                );
+            }
+            self::assertFalse($concurrent->isTransactionActive(), 'The refused create rolled its transaction back.');
+        } finally {
+            if ($database->isTransactionActive()) {
+                $database->rollBack();
+            }
+            if ($concurrent->isTransactionActive()) {
+                $concurrent->rollBack();
+            }
+            $concurrent->close();
+        }
+
+        self::assertSame(
+            0,
+            $this->counter($primary, $definition->id, $this->period()),
+            'Neither the rolled-back holder nor the refused create committed a number.',
+        );
+        self::assertSame(
+            sprintf('SEQ-%s-0001', $this->period()),
+            $this->create($this->records($primary), $context, $definition, 'After release'),
+            'Once the holder releases the counter, the run starts at one.',
+        );
     }
 
     public function testInterleavedCreatesAcrossTwoKernelsProduceOneContiguousRun(): void
@@ -384,10 +467,10 @@ final class BusinessNumberSequenceContentionIntegrationTest extends TestCase
         return strtolower(substr(str_replace('-', '', Uuid::uuid7()->toString()), -12));
     }
 
-    private function allocator(Container $container): BusinessNumberSequenceAllocator
+    private function allocator(Container $container): NumberSequenceAllocator
     {
-        $allocator = $container->get(BusinessNumberSequenceAllocator::class);
-        if (!$allocator instanceof BusinessNumberSequenceAllocator) {
+        $allocator = $container->get(NumberSequenceAllocator::class);
+        if (!$allocator instanceof NumberSequenceAllocator) {
             throw new RuntimeException('The business number sequence allocator is unavailable.');
         }
 

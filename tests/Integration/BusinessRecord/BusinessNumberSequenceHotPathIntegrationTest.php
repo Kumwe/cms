@@ -18,7 +18,7 @@ use Kumwe\App\Application\Authorization\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Command\DeleteRecordCommand;
@@ -617,14 +617,14 @@ final class BusinessNumberSequenceHotPathIntegrationTest extends TestCase
      *
      * @param   Container  $container  Booted kernel container.
      *
-     * @return  BusinessNumberSequenceAllocator  The wired allocator.
+     * @return  NumberSequenceAllocator  The wired allocator.
      *
      * @since   2.0.0
      */
-    private function allocator(Container $container): BusinessNumberSequenceAllocator
+    private function allocator(Container $container): NumberSequenceAllocator
     {
-        $allocator = $container->get(BusinessNumberSequenceAllocator::class);
-        if (!$allocator instanceof BusinessNumberSequenceAllocator) {
+        $allocator = $container->get(NumberSequenceAllocator::class);
+        if (!$allocator instanceof NumberSequenceAllocator) {
             throw new RuntimeException('The business number sequence allocator is unavailable.');
         }
 

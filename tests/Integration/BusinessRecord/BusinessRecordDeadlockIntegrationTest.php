@@ -12,12 +12,12 @@ use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
 use Kumwe\App\Kernel\Container;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
-use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordTemporarilyUnavailable;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineBusinessNumberSequenceAllocator;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\TestKernelFactory;
+use Kumwe\Sequence\Exception\NumberSequenceUnavailable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -27,7 +27,8 @@ use RuntimeException;
  * Injects a real lock-order deadlock and proves what the runtime makes of it.
  *
  * Nothing in the suite provoked a deadlock before, so the classification path — driver error to
- * `RetryableException` to `BusinessRecordTemporarilyUnavailable` to a 503 carrying `Retry-After` — was
+ * `RetryableException`, to the package's `NumberSequenceUnavailable` at the allocator, to
+ * `BusinessRecordTemporarilyUnavailable` in the record service, to a 503 carrying `Retry-After` — was
  * asserted only by reading the code. The cycle cannot be built inside one PHP process, because it exists
  * only while both sessions are blocked and a blocked session blocks the interpreter with it; a second
  * operating-system process plays the other half through `tests/Support/deadlock-partner.php`.
@@ -41,7 +42,6 @@ use RuntimeException;
  * @since  2.0.0
  */
 #[CoversClass(DoctrineBusinessNumberSequenceAllocator::class)]
-#[CoversClass(BusinessRecordTemporarilyUnavailable::class)]
 final class BusinessRecordDeadlockIntegrationTest extends TestCase
 {
     public function testALockOrderInversionAcrossTwoProcessesIsClassifiedRetryable(): void
@@ -147,14 +147,14 @@ final class BusinessRecordDeadlockIntegrationTest extends TestCase
             $caught = null;
             try {
                 $rival->allocate('default', $counter, 'deadlock_probe', '-', '2026', $now);
-            } catch (BusinessRecordTemporarilyUnavailable $exception) {
+            } catch (NumberSequenceUnavailable $exception) {
                 $caught = $exception;
             }
             self::assertNotNull($caught, 'A blocked allocation must be reported, not silently retried forever.');
-            self::assertSame(
-                'business_record.temporarily_unavailable',
-                $caught->stableCode(),
-                'The record vocabulary reports contention as replayable rather than as a 409 conflict.',
+            self::assertInstanceOf(
+                RetryableException::class,
+                $caught->getPrevious(),
+                'The package refusal keeps the retryable driver failure reachable for the retry policy and the log.',
             );
             $concurrent->rollBack();
         } finally {
@@ -288,10 +288,10 @@ final class BusinessRecordDeadlockIntegrationTest extends TestCase
         );
     }
 
-    private function allocator(Container $container): BusinessNumberSequenceAllocator
+    private function allocator(Container $container): NumberSequenceAllocator
     {
-        $allocator = $container->get(BusinessNumberSequenceAllocator::class);
-        if (!$allocator instanceof BusinessNumberSequenceAllocator) {
+        $allocator = $container->get(NumberSequenceAllocator::class);
+        if (!$allocator instanceof NumberSequenceAllocator) {
             throw new RuntimeException('The business number sequence allocator is unavailable.');
         }
 

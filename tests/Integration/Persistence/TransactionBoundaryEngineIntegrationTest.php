@@ -27,7 +27,7 @@ use Kumwe\Extension\Spi\BusinessIntegration\Domain\EventSensitivity;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\IntegrationEvent;
 use Kumwe\App\BusinessIntegration\Domain\RecordedIntegrationEvent;
 use Kumwe\App\BusinessIntegration\Infrastructure\DoctrineOutboxStore;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineBusinessNumberSequenceAllocator;
 use Kumwe\App\Infrastructure\Persistence\DoctrineTransactionManager;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
@@ -125,9 +125,9 @@ final class TransactionBoundaryEngineIntegrationTest extends TestCase
         $transactions = $this->transactions($container);
         $database = $this->connection($container);
         $observer = $this->secondSession($database);
-        $allocator = $container->get(BusinessNumberSequenceAllocator::class);
+        $allocator = $container->get(NumberSequenceAllocator::class);
         $tables = $this->tables($container);
-        self::assertInstanceOf(BusinessNumberSequenceAllocator::class, $allocator);
+        self::assertInstanceOf(NumberSequenceAllocator::class, $allocator);
         $definitionId = Uuid::uuid7()->toString();
         $now = new DateTimeImmutable('2026-08-18T09:00:00', new DateTimeZone('UTC'));
         $allocate = static fn (): int => $allocator->allocate(

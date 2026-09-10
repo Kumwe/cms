@@ -12,9 +12,9 @@ use Doctrine\DBAL\Exception\RetryableException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator;
-use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordTemporarilyUnavailable;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Sequence\Contract\NumberSequenceAllocator;
+use Kumwe\Sequence\Exception\NumberSequenceUnavailable;
 use LogicException;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
@@ -43,7 +43,7 @@ use RuntimeException;
  *
  * @since  2.0.0
  */
-final readonly class DoctrineBusinessNumberSequenceAllocator implements BusinessNumberSequenceAllocator
+final readonly class DoctrineBusinessNumberSequenceAllocator implements NumberSequenceAllocator
 {
     /**
      * Wire the allocator to the counter table it advances.
@@ -79,10 +79,10 @@ final readonly class DoctrineBusinessNumberSequenceAllocator implements Business
      * @throws  LogicException  When the caller has no transaction open, which would make the allocation
      *          survive a rolled-back command and tear a hole in the run.
      * @throws  RuntimeException  When the counter row holds something other than a non-negative integer.
-     * @throws  BusinessRecordTemporarilyUnavailable  When a concurrent allocator created this counter
-     *          first, held the row past this session's lock wait, deadlocked with it, or won the
-     *          compare-and-set on a platform without row locks. Every one of those is the same answer to
-     *          the caller: nothing was reserved, so replay the command.
+     * @throws  NumberSequenceUnavailable  When a concurrent allocator created this counter first, held the
+     *          row past this session's lock wait, deadlocked with it, or won the compare-and-set on a
+     *          platform without row locks. Every one of those is the same answer to the caller: nothing was
+     *          reserved, so replay the command; the driver failure stays chained as the previous exception.
      *
      * @since   2.0.0
      */
@@ -124,10 +124,10 @@ final readonly class DoctrineBusinessNumberSequenceAllocator implements Business
             if (!$this->contention($exception)) {
                 throw $exception;
             }
-            throw new BusinessRecordTemporarilyUnavailable($exception);
+            throw new NumberSequenceUnavailable($exception);
         }
         if ($advanced !== 1) {
-            throw new BusinessRecordTemporarilyUnavailable();
+            throw new NumberSequenceUnavailable();
         }
 
         return $next;
