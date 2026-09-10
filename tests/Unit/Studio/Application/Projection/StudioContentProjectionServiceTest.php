@@ -32,6 +32,7 @@ use Kumwe\App\Presentation\Application\SitePresentation;
 use Kumwe\App\Site\Application\SiteSettings;
 use Kumwe\App\Studio\Application\Composition\ContentBlueprintBindingStore;
 use Kumwe\App\Studio\Application\Composition\StudioBuiltInThemeRelease;
+use Kumwe\App\Studio\Application\Composition\StudioCompositionLockMismatch;
 use Kumwe\App\Studio\Application\Composition\StudioCompositionModelMismatch;
 use Kumwe\App\Studio\Application\Composition\StudioContentCompositionService;
 use Kumwe\App\Studio\Application\Composition\StudioCompositionContributionCatalog;
@@ -40,6 +41,7 @@ use Kumwe\App\Studio\Application\Host\StudioArtifactAdmission;
 use Kumwe\App\Studio\Application\Host\StudioArtifactRepository;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Application\Host\StudioModelHostPort;
+use Kumwe\App\Studio\Application\Host\StudioPersistenceRace;
 use Kumwe\App\Studio\Application\Projection\ContentProjectionBindingRepository;
 use Kumwe\App\Studio\Application\Projection\ContentStudioProjector;
 use Kumwe\App\Studio\Application\Projection\RecordAuthorizedStudioContentFieldDisclosure;
@@ -620,6 +622,165 @@ final class StudioContentProjectionServiceTest extends TestCase
         self::assertSame(409, $mismatch->getStatusCode());
         self::assertSame('no-store', $mismatch->getHeaderLine('Cache-Control'));
         self::assertSame('theme-mismatch', (string) $mismatch->getBody());
+    }
+
+    /**
+     * Adopting an authored Blueprint refuses a type version that already binds one, a document without a
+     * dependency lock, a lock the admitted coordinates do not match and both persistence races, and otherwise
+     * stores the authored document under an `authored-` revision bound to the type version.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAdoptRefusesBoundTypesLockMismatchesAndPersistenceRacesBeforeBinding(): void
+    {
+        $models = $this->createStub(ContentModelRepository::class);
+        $models->method('contentType')->willReturn($this->definition());
+        $reads = 0;
+        $raceRead = null;
+        $raceBinding = null;
+        $currentBinding = null;
+        $bindings = $this->createStub(ContentProjectionBindingRepository::class);
+        $bindings->method('blueprint')->willReturnCallback(
+            static function () use (&$reads, &$raceRead, &$raceBinding, &$currentBinding): ?ContentBlueprintBinding {
+                $reads++;
+
+                return $reads === $raceRead ? $raceBinding : $currentBinding;
+            },
+        );
+        $projection = $this->service($models, $this->createStub(ContentRepository::class), $bindings);
+        $bindingStore = $this->createStub(ContentBlueprintBindingStore::class);
+        $bindingStore->method('add')->willReturnCallback(
+            static function (ContentBlueprintBinding $binding) use (&$currentBinding): void {
+                $currentBinding = $binding;
+            },
+        );
+        $storeAnswers = [];
+        $stored = null;
+        $artifacts = $this->createStub(StudioArtifactRepository::class);
+        $artifacts->method('current')->willReturnCallback(static function () use (&$stored) {
+            return $stored;
+        });
+        $artifacts->method('revision')->willReturn(null);
+        $artifacts->method('store')->willReturnCallback(
+            static function ($artifact) use (&$stored, &$storeAnswers): bool {
+                $accepted = $storeAnswers === [] ? true : (bool) array_shift($storeAnswers);
+                if ($accepted) {
+                    $stored = $artifact;
+                }
+
+                return $accepted;
+            },
+        );
+        $clock = $this->createStub(ClockInterface::class);
+        $clock->method('now')->willReturn(self::now());
+        $settings = $this->createStub(SiteSettings::class);
+        $settings->method('current')->willReturn(['presentation' => SitePresentation::defaults(), 'timezone' => []]);
+        $theme = new StudioPublishedTheme(
+            $settings,
+            new ActiveExtensionSet(new ExtensionContributionRegistrySet(withCore: false)),
+            new StudioBuiltInThemeRelease(str_repeat('a', 64)),
+        );
+        $service = $this->compositionService(
+            $projection,
+            $bindings,
+            $bindingStore,
+            new StudioArtifactAdmission(StudioDocumentSchemaRegistry::fromVendoredCorpus()),
+            $artifacts,
+            $clock,
+            $this->compositionCatalog(),
+            $theme,
+        );
+        $context = AuthorizationContext::human(['content.read'], '018f22e2-7c8b-7ab0-8f3a-88e8026bb305');
+        $admitted = ['acme.shop/grid-preview', 'core.renderer/field', 'core.renderer/layout'];
+
+        // Before anything is bound the reference names the initial Blueprint the type version would get.
+        $initial = $service->reference($context, self::TYPE_ID, 4, $admitted);
+        self::assertStringStartsWith('initial-', $initial->revision);
+        self::assertSame('1.0.0', $initial->version);
+
+        // A provisioned draft supplies the one lock the admitted coordinates accept, and binds the version.
+        $provisioned = $service->provision($context, self::TYPE_ID, 4, $admitted);
+        $locks = $provisioned->blueprint->document()->dependencyLock->blocks;
+        self::assertSame($initial->id, $provisioned->binding->blueprintId);
+        $bound = $service->reference($context, self::TYPE_ID, 4, $admitted);
+        self::assertSame($provisioned->binding->blueprintId, $bound->id);
+        self::assertSame($provisioned->binding->blueprintVersion, $bound->version);
+        self::assertSame($provisioned->blueprint->revision, $bound->revision);
+        $document = json_encode($provisioned->blueprint->document(), JSON_THROW_ON_ERROR);
+        $authored = static function (?array $blocks) use ($document): \stdClass {
+            $copy = json_decode($document, false, 64, JSON_THROW_ON_ERROR);
+            self::assertInstanceOf(\stdClass::class, $copy);
+            if ($blocks === null) {
+                unset($copy->dependencyLock);
+            } else {
+                $copy->dependencyLock->blocks = $blocks;
+            }
+
+            return $copy;
+        };
+        try {
+            $service->adopt($context, self::TYPE_ID, 4, $authored($locks), $locks, 'draft');
+            self::fail('A bound type version must not adopt a second Blueprint.');
+        } catch (RuntimeException $bound) {
+            self::assertSame('The Content type version already binds a Studio Blueprint.', $bound->getMessage());
+        }
+
+        // Once the draft binding is gone the authored document is admitted and bound under its own revision.
+        $currentBinding = null;
+        $stored = null;
+        $readsBefore = $reads;
+        // An empty layout is stored as the type's draft composition, exactly as the authoring service asks.
+        $adopted = $service->adopt($context, self::TYPE_ID, 4, $authored($locks), $locks, 'draft');
+        $readsPerAdoption = $reads - $readsBefore;
+        self::assertSame($provisioned->binding->blueprintId, $adopted->binding->blueprintId);
+        self::assertSame(1, $adopted->binding->revision);
+        self::assertIsString($adopted->binding->blueprintRevision);
+        self::assertStringStartsWith('authored-', $adopted->binding->blueprintRevision);
+        self::assertSame($adopted->binding->blueprintRevision, $adopted->blueprint->revision);
+        self::assertSame('draft', $adopted->blueprint->status);
+        self::assertSame($currentBinding, $adopted->binding);
+        self::assertSame($stored, $adopted->blueprint);
+        self::assertEquals($locks, $adopted->blueprint->document()->dependencyLock->blocks);
+
+        // A binding that appears on the read inside the transaction, or a store that refuses, is a race.
+        $currentBinding = null;
+        $stored = null;
+        $raceBinding = $provisioned->binding;
+        $raceRead = $reads + $readsPerAdoption;
+        try {
+            $service->adopt($context, self::TYPE_ID, 4, $authored($locks), $locks, 'draft');
+            self::fail('A concurrently provisioned binding must be refused.');
+        } catch (StudioPersistenceRace $race) {
+            self::assertSame('A Content composition was concurrently provisioned.', $race->getMessage());
+        }
+        $raceRead = null;
+        $storeAnswers = [false];
+        try {
+            $service->adopt($context, self::TYPE_ID, 4, $authored($locks), $locks, 'draft');
+            self::fail('A concurrently stored Blueprint must be refused.');
+        } catch (StudioPersistenceRace $race) {
+            self::assertSame('A Studio Blueprint was concurrently provisioned.', $race->getMessage());
+        }
+        self::assertNull($currentBinding);
+
+        // A document without a lock, or with a lock the admitted coordinates do not match, never reaches storage.
+        try {
+            $service->adopt($context, self::TYPE_ID, 4, $authored(null), $locks, 'draft');
+            self::fail('A document without a dependency lock must be refused.');
+        } catch (StudioCompositionLockMismatch $mismatch) {
+            self::assertSame('dependencyLock', $mismatch->type);
+        }
+        $stale = [(object) ['type' => 'acme.shop/grid', 'version' => '9.9.9', 'revision' => 'stale']];
+        try {
+            $service->adopt($context, self::TYPE_ID, 4, $authored($stale), $locks, 'draft');
+            self::fail('A lock the admitted coordinates do not match must be refused.');
+        } catch (StudioCompositionLockMismatch $mismatch) {
+            self::assertSame('acme.shop/grid', $mismatch->type);
+        }
+        self::assertNull($currentBinding);
+        self::assertNull($stored);
     }
 
     /**

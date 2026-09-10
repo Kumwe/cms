@@ -33,6 +33,21 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-09 — A stored item follows its type to a new version, and enum fields reach the Content schema.**
+  `save-new-type-version` on a persisted item refused as an internal failure: `ContentService::adoptContentType`
+  handed the adopted record to `ContentRepository::update()`, which by design never rewrites the pinned
+  definition versions, so the row kept the old type version and the opaque context's revalidation refused the
+  advance. `ContentRepository::adopt()` is the new persistence contract for exactly that move: it re-pins the
+  content type, its version, the workflow and its version under the version the caller read and leaves the
+  entry's title, slug, data, state and optimistic version untouched; `DoctrineContentRepository` implements it
+  and `KUMWE-CGR-2026-001` records the widened port. `ContentStudioAuthoringService` read enum members by
+  `id` although the content-model schema and the projector carry them as `value`, so every enum field was
+  refused as unsupported; it now reads `value`. The authoring journeys prove the edit mount, the stale-plan
+  conflict, a stored item adopting its type's successor, every supported field kind reaching the derived
+  schema, the handle a same-label type takes, and the wire refusals for malformed requests; the composition
+  service's adoption refusals and races, the content service's adoption refusals, the enhancement-runtime
+  origin header, the configuration's Studio origin validation, the context authority's advance refusals, the
+  authoring catalogue's core-coordinate guard and the producer error's detail bounds are unit-tested.
 - **2026-09-09 — A reviewer's approving review approves the Core Growth Records a pull request carries.**
   The `Core growth approval` workflow runs on every submitted pull-request review: when a human collaborator
   with write access approves a same-repository pull request, every `decision: pending` record whose

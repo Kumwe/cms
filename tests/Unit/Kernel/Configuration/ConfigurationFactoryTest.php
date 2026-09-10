@@ -402,6 +402,25 @@ final class ConfigurationFactoryTest extends TestCase
     }
 
     /**
+     * The Studio browser asset origin is validated when the configuration is built, before any page could
+     * embed a module URL nobody can load; a query string is one of the forms the locator refuses.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAnUnusableStudioBrowserBaseUrlIsRefused(): void
+    {
+        $values = $this->values();
+        $values['KUMWE_STUDIO_BROWSER_BASE_URL'] = 'https://cdn.example.test/npm?cache=false';
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('KUMWE_STUDIO_BROWSER_BASE_URL must be an absolute HTTPS URL');
+
+        (new ConfigurationFactory())->create(new Environment($values));
+    }
+
+    /**
      * @return array<string, string>
      */
     private function values(): array

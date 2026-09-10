@@ -98,6 +98,31 @@ final class StudioProducerErrorTest extends TestCase
     }
 
     /**
+     * Refusal details follow the blocking diagnostic as error diagnostics, trimmed and bounded, and a blank
+     * detail is dropped rather than sent as an empty message.
+     *
+     * @return  void
+     *
+     * @since  2.0.0
+     */
+    public function testBlankDetailsAreDroppedAndTheRestBecomeBoundedErrorDiagnostics(): void
+    {
+        $error = StudioProducerError::error(
+            'validation-failed',
+            'studio.host/test-refusal',
+            details: ['  ', '', ' first ', str_repeat('x', 600)],
+        );
+
+        $diagnostics = $error->diagnostics();
+        self::assertCount(3, $diagnostics);
+        self::assertSame('blocking', $diagnostics[0]->severity());
+        self::assertSame('error', $diagnostics[1]->severity());
+        self::assertSame('studio.host/test-refusal', $diagnostics[1]->code());
+        self::assertSame('first', $diagnostics[1]->message()->defaultMessage());
+        self::assertSame(500, mb_strlen((string) $diagnostics[2]->message()->defaultMessage()));
+    }
+
+    /**
      * Unknown categories never fall through to an arbitrary status or error shape.
      *
      * @return  void

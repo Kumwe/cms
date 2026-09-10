@@ -1538,11 +1538,11 @@ final readonly class ContentStudioAuthoringService
     {
         $values = [];
         foreach (is_array($field->enumValues ?? null) ? $field->enumValues : [] as $member) {
-            $id = $member instanceof stdClass ? ($member->id ?? null) : null;
-            if (!is_string($id)) {
+            $value = $member instanceof stdClass ? ($member->value ?? null) : null;
+            if (!is_string($value)) {
                 StudioProducerError::refuse('validation-failed', 'studio.authoring/unsupported-field');
             }
-            $values[] = $id;
+            $values[] = $value;
         }
         if ($values === []) {
             StudioProducerError::refuse('validation-failed', 'studio.authoring/unsupported-field');

@@ -486,6 +486,47 @@ final readonly class DoctrineContentRepository implements SiteScopedContentRepos
     }
 
     /**
+     * Re-pin an entry to the definition versions the record carries, touching nothing the author wrote.
+     *
+     * Only the content type, its version, the workflow and its version move, guarded by the version the
+     * caller read; the entry's own version is deliberately not raised because no revision was made.
+     *
+     * @param   ContentRecord  $record           Record carrying the adopted type and workflow versions.
+     * @param   int            $expectedVersion  Entry version the caller read before adopting.
+     *
+     * @return  void
+     *
+     * @throws  VersionConflict  When no untrashed row matched the identifier at the expected version.
+     *
+     * @since   2.0.0
+     */
+    public function adopt(ContentRecord $record, int $expectedVersion): void
+    {
+        $affected = $this->database->executeStatement(sprintf(
+            'UPDATE %s SET content_type_id = ?, content_type_version = ?, workflow_id = ?, workflow_version = ?, '
+            . 'updated_at = ? WHERE id = ? AND version = ? AND deleted_at IS NULL',
+            $this->tables->quoted('content_entries'),
+        ), [
+            $record->contentTypeId,
+            $record->contentTypeVersion,
+            $record->workflowId,
+            $record->workflowVersion,
+            $record->updatedAt,
+            $record->entry->id(),
+            $expectedVersion,
+        ], [
+            Types::GUID,
+            Types::INTEGER,
+            Types::GUID,
+            Types::INTEGER,
+            Types::DATETIME_IMMUTABLE,
+            Types::GUID,
+            Types::INTEGER,
+        ]);
+        $this->assertUpdated($affected, $expectedVersion, $record->entry->id());
+    }
+
+    /**
      * Move an entry into or out of the trash, raising its version in the same statement.
      *
      * Trashing marks a column instead of deleting the row, so the entry, its data and its revision

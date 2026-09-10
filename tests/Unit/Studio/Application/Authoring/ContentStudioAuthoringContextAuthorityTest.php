@@ -333,6 +333,59 @@ final class ContentStudioAuthoringContextAuthorityTest extends TestCase
     }
 
     /**
+     * Advancing an opaque context refuses a malformed or unknown key, an expired binding and a successor
+     * that does not revalidate to itself, including one whose Entry revision has already moved on; the
+     * successor that does revalidate is what the context resolves to afterwards.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAdvanceRefusesMalformedUnknownExpiredAndDriftedSuccessors(): void
+    {
+        $definition = self::definition();
+        $models = $this->createStub(ContentModelRepository::class);
+        $models->method('contentType')->willReturn($definition);
+        $content = $this->createStub(ContentRepository::class);
+        $content->method('find')->willReturn(self::record(8));
+        [$authority] = $this->authority($models, $content);
+        $context = self::context(['content.read', 'content.update', 'content.create']);
+        $resolver = new ContentStudioAuthoringTargetResolver(AuthorizationContext::gateway());
+        $create = $resolver->create($context);
+        $key = $authority->open($context, $create);
+        $current = $resolver->edit($context, self::record(8), $definition);
+        $drifted = $resolver->edit($context, self::record(7), $definition);
+
+        foreach (['contexts/not-a-digest', 'contexts/' . str_repeat('0', 64)] as $unknown) {
+            try {
+                $authority->advance($context, $unknown, $current);
+                self::fail('A context that was never opened must not advance.');
+            } catch (ContentStudioAuthoringContextRefused) {
+                self::assertSame($create->toArray(), $authority->resolve($context, $key)->toArray());
+            }
+        }
+        try {
+            $authority->advance($context, $key, $drifted);
+            self::fail('A successor whose Entry revision has moved on must be refused.');
+        } catch (ContentStudioAuthoringContextRefused) {
+            self::assertSame($create->toArray(), $authority->resolve($context, $key)->toArray());
+        }
+        $authority->advance($context, $key, $current);
+        self::assertSame($current->toArray(), $authority->resolve($context, $key)->toArray());
+
+        $now = new DateTimeImmutable('2026-08-27T00:00:00+00:00');
+        $clock = $this->createStub(ClockInterface::class);
+        $clock->method('now')->willReturnCallback(static function () use (&$now): DateTimeImmutable {
+            return $now;
+        });
+        [$expiring] = $this->authority($models, $content, null, $clock, 300);
+        $expiredKey = $expiring->open($context, $create);
+        $now = $now->modify('+301 seconds');
+        $this->expectException(ContentStudioAuthoringContextRefused::class);
+        $expiring->advance($context, $expiredKey, $current);
+    }
+
+    /**
      * Permission withdrawal remains a non-disclosing refusal and malformed keys never reach persistence.
      *
      * @return  void

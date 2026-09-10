@@ -33,7 +33,11 @@ use Kumwe\App\Presentation\SiteRenderer;
 use Kumwe\App\Presentation\Twig\SiteTwigEnvironment;
 use Kumwe\App\Site\Application\PublicPageLocator;
 use Kumwe\App\Site\Application\SiteSettings;
+use Kumwe\App\Http\Middleware\SecurityHeadersMiddleware;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedContentRenderer;
+use Kumwe\App\Studio\Application\Composition\StudioPublishedEnhancementRuntime;
+use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
+use Kumwe\Producer\Render\Enhancement;
 use Kumwe\Producer\Render\RenderResult;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Workflow\Domain\Workflow;
@@ -126,6 +130,34 @@ final class HomePageHandlerTest extends TestCase
                 . '.css?page=%2F&amp;entry=' . self::GERMAN . '&amp;locale=de" data-studio-composition>',
             $studioHtml,
         );
+        self::assertSame('', $studio->getHeaderLine(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER));
+    }
+
+    /**
+     * A homepage composition that needs the pinned enhancement runtime names that runtime's origin for the
+     * security headers, so `script-src` widens by exactly one origin on exactly that response.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAnEnhancedHomepageNamesTheRuntimeOriginForTheSecurityHeaders(): void
+    {
+        $response = $this->handle(
+            'de',
+            studioBody: '<section data-studio-enhancement="tabs"><p>Studio home</p></section>',
+            enhanced: true,
+        );
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(
+            'https://cdn.jsdelivr.net',
+            $response->getHeaderLine(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER),
+        );
+        self::assertStringContainsString(
+            '<section data-studio-enhancement="tabs"><p>Studio home</p></section>',
+            (string) $response->getBody(),
+        );
     }
 
     /**
@@ -175,6 +207,7 @@ final class HomePageHandlerTest extends TestCase
      * @param   bool    $indexing   Whether the site allows search engines to index it.
      * @param   ?ActiveLocale  $active  Shared locale holder, returned for assertions when requested.
      * @param   ?string  $studioBody  Safe published Studio fragment, or null for legacy rendering.
+     * @param   bool    $enhanced   Whether the Studio fragment needs the pinned enhancement runtime.
      *
      * @return  ResponseInterface  The handler's response.
      *
@@ -186,6 +219,7 @@ final class HomePageHandlerTest extends TestCase
         bool $indexing = true,
         ?ActiveLocale &$active = null,
         ?string $studioBody = null,
+        bool $enhanced = false,
     ): ResponseInterface {
         $settings = $this->settings($nominated, $indexing);
         $content = $this->content();
@@ -206,7 +240,12 @@ final class HomePageHandlerTest extends TestCase
             new ContentLayoutCatalog($this->createStub(ContentModelRepository::class), SiteContext::DEFAULT),
             $this->languages($content, $locator, $active),
             $active,
-            $this->studio($studioBody),
+            $this->studio($studioBody, $enhanced),
+            $enhanced
+                ? new StudioPublishedEnhancementRuntime(
+                    StudioBrowserAssetLocator::npmPackages('https://cdn.jsdelivr.net/npm'),
+                )
+                : null,
         );
 
         return $handler->handle(
@@ -217,13 +256,14 @@ final class HomePageHandlerTest extends TestCase
     /**
      * Build an optional published Studio rendering seam for the homepage path.
      *
-     * @param   ?string  $body  Safe Studio body or null to preserve the legacy Content presenter.
+     * @param   ?string  $body      Safe Studio body or null to preserve the legacy Content presenter.
+     * @param   bool     $enhanced  Whether the body carries one node the enhancement runtime must serve.
      *
      * @return  ?StudioPublishedContentRenderer  Configured renderer, or null without a Studio composition.
      *
      * @since   2.0.0
      */
-    private function studio(?string $body): ?StudioPublishedContentRenderer
+    private function studio(?string $body, bool $enhanced = false): ?StudioPublishedContentRenderer
     {
         if ($body === null) {
             return null;
@@ -232,7 +272,7 @@ final class HomePageHandlerTest extends TestCase
         $studio->method('render')->willReturn(new RenderResult(
             $body,
             '[data-studio-block]{display:block}',
-            [],
+            $enhanced ? [new Enhancement('tabs', 'node-one', 's6e6f64652d6f6e65')] : [],
         ));
 
         return $studio;
