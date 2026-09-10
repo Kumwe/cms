@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-# PHP 8.5.10 FPM on Debian Trixie supplies glibc and GCC 14 for the released native engine.
+# PHP 8.5.10 FPM on Debian Trixie supplies glibc; the released native engine builds with GCC 13.
 ARG PHP_IMAGE=php:8.5.10-fpm-trixie@sha256:70076c1cae0cd0ba6761832417e3a1df3e5560f0544eb0fe40357373e54420fe
 ARG COMPOSER_IMAGE=composer:2
 ARG NGINX_IMAGE=nginx:1.30.4-alpine3.24
@@ -25,16 +25,16 @@ RUN set -eux; \
         bash ca-certificates curl gosu libicu76 libonig5 libpq5 libstdc++6 libzip5 tzdata; \
     apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
-        cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
+        cmake gcc-13 g++-13 libicu-dev libonig-dev libpq-dev libzip-dev; \
     docker-php-ext-install -j"$(getconf _NPROCESSORS_ONLN)" intl mbstring pcntl pdo_mysql pdo_pgsql zip; \
     pecl install redis-6.3.0 apcu-5.1.28; \
     docker-php-ext-enable redis apcu; \
-    bash /tmp/kumwe-install/tools/install-native-engine.sh /usr/local/lib/kumwe-native; \
+    CC=gcc-13 CXX=g++-13 bash /tmp/kumwe-install/tools/install-native-engine.sh /usr/local/lib/kumwe-native; \
     install -m 0644 /usr/local/lib/kumwe-native/kumwe_engine.ini "$PHP_INI_DIR/conf.d/kumwe_engine.ini"; \
     install -d /usr/local/etc/kumwe; \
     install -m 0644 /usr/local/lib/kumwe-native/native-expected-tuple.json "$KUMWE_NATIVE_EXPECTED_TUPLE"; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-        $PHPIZE_DEPS cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
+        $PHPIZE_DEPS cmake gcc-13 g++-13 libicu-dev libonig-dev libpq-dev libzip-dev; \
     rm -rf /var/lib/apt/lists/* /tmp/kumwe-install /tmp/pear; \
     php -r 'foreach (["apcu", "ctype", "fileinfo", "filter", "intl", "kumwe_engine", "mbstring", "openssl", "pcntl", "Zend OPcache", "pdo", "pdo_mysql", "pdo_pgsql", "redis", "sodium", "zip"] as $extension) { if (!extension_loaded($extension)) { fwrite(STDERR, "Missing PHP extension: {$extension}\n"); exit(1); } }'; \
     { \

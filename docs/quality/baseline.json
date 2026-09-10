@@ -40,7 +40,7 @@
         },
         "unit": {
             "files": 488,
-            "test_methods": 2504
+            "test_methods": 2505
         }
     },
     "coverage": {

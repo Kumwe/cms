@@ -7,9 +7,14 @@ namespace Kumwe\App\Tests\Unit\Kernel;
 use InvalidArgumentException;
 use JsonException;
 use Kumwe\App\Kernel\NativeComputationFactory;
+use Kumwe\App\Kernel\Container;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\CanonicalJson\CanonicalEncoder;
 use Kumwe\Computation\ExecutionRefused;
+use Kumwe\Computation\Compiler;
+use Kumwe\Computation\Executor;
+use Kumwe\Computation\NativeAdapter;
+use Kumwe\Computation\NativeCanonicalEncoder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -35,6 +40,25 @@ final class NativeComputationFactoryTest extends TestCase
 
         self::assertInstanceOf(CanonicalEncoder::class, $encoder);
         self::assertSame('{"a":1,"b":2}', $encoder->encode(['b' => 2, 'a' => 1]));
+    }
+
+    /**
+     * Production composition shares one compiled-plan owner and exposes the package canonical contract.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testProductionBindingsShareNativeServicesBehindTheirPublicContracts(): void
+    {
+        $container = new Container();
+        (new NativeComputationFactory())->register($container, Environment::fromGlobals());
+
+        self::assertInstanceOf(NativeAdapter::class, $container->get(Compiler::class));
+        self::assertSame($container->get(Compiler::class), $container->get(Executor::class));
+        self::assertSame($container->get(Compiler::class), $container->get(NativeAdapter::class));
+        self::assertSame($container->get(CanonicalEncoder::class), $container->get(NativeCanonicalEncoder::class));
+        self::assertSame($container->get(CanonicalEncoder::class), $container->get(CanonicalEncoder::class));
     }
 
     /**
