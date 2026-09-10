@@ -163,13 +163,16 @@ final readonly class DoctrineNonTransactionalMigrationRecovery implements NonTra
     /**
      * Bind recovery to the database it journals in and the verifier it delegates authorization repair to.
      *
-     * @param  Connection                                 $database                  Connection every
+     * @param  Connection                                 $database                     Connection every
      *         journal read, DDL statement and recovery write goes through, outside any transaction.
-     * @param  TableNames                                 $tables                    Compiler turning
+     * @param  TableNames                                 $tables                       Compiler turning
      *         logical names into this installation's prefixed identifiers; that prefix also bounds
      *         which tables Core recovery is allowed to see and drop.
-     * @param  ApplicationAuthorizationMigrationRecovery  $applicationAuthorization  Verifier that
+     * @param  ApplicationAuthorizationMigrationRecovery  $applicationAuthorization     Verifier that
      *         captures and rebuilds the immutable application-authorization migration's postcondition.
+     * @param  array<string, list<string>>                $acceptedHistoricalChecksums  Earlier checksums,
+     *         by migration ID, that an attempt journaled by a previous build may still carry; the same
+     *         list the migration plan accepts for an already-applied migration.
      *
      * @since  2.0.0
      */
@@ -177,6 +180,7 @@ final readonly class DoctrineNonTransactionalMigrationRecovery implements NonTra
         private Connection $database,
         private TableNames $tables,
         private ApplicationAuthorizationMigrationRecovery $applicationAuthorization,
+        private array $acceptedHistoricalChecksums = [],
     ) {
     }
 
@@ -602,9 +606,12 @@ final readonly class DoctrineNonTransactionalMigrationRecovery implements NonTra
      *
      * A deployment that changed a migration's body between the interruption and the resume would
      * otherwise recover a schema change nobody can name, so the two checksums are compared before any
-     * undo, replay or retirement is allowed to proceed. The one compatibility exception is the exact
+     * undo, replay or retirement is allowed to proceed. Two compatibility exceptions exist. The exact
      * published constraint-name checksum: its immutable source remains present, while its same-ID wrapper
-     * deliberately resumes the attempt through the corrected, shape-validating implementation.
+     * deliberately resumes the attempt through the corrected, shape-validating implementation. And the
+     * earlier checksums the migration plan accepts for the same ID: a build that changed only a migration's
+     * imports resumes an attempt the previous build journaled, because the statements it replays are the
+     * same statements that attempt was running.
      *
      * @param   Migration             $migration  Migration whose checksum the journal must agree with.
      * @param   array<string, mixed>  $attempt    Journaled attempt row, as `attempt()` returned it.
@@ -628,6 +635,11 @@ final readonly class DoctrineNonTransactionalMigrationRecovery implements NonTra
             && hash_equals(ConstraintNameIsolationCompatibilityMigration::PUBLISHED_CHECKSUM, $checksum)
         ) {
             return;
+        }
+        foreach ($this->acceptedHistoricalChecksums[$migration->id()] ?? [] as $accepted) {
+            if (is_string($checksum) && hash_equals($accepted, $checksum)) {
+                return;
+            }
         }
 
         throw new RuntimeException(sprintf(

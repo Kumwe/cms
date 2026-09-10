@@ -16,8 +16,10 @@ use Kumwe\Extension\Spi\Application\ExecutionContext as ExtensionContext;
  * host wraps its context in this adapter at every boundary where control passes to package code, and unwraps
  * it again where package code hands the same envelope back. The adapter discloses exactly the seven scope
  * coordinates the SPI names and nothing else: no provenance, principal, session, proof or fingerprint reaches
- * an extension, and a foreign implementation of the SPI can never be mistaken for a host-issued context,
- * because only this class carries one.
+ * an extension, and only an envelope this class built yields a host context again, so a foreign implementation
+ * of the SPI recovers nothing. Recovering the context proves who wrapped it, not what it may do: authority is
+ * still established by the gateway's provenance check on the recovered context, exactly as for every other
+ * context the host handles.
  *
  * @since  2.0.0
  */
@@ -49,7 +51,7 @@ final readonly class ExtensionExecutionContext implements ExtensionContext
     }
 
     /**
-     * Recover the exact host context an SDK envelope carries, when the host issued it.
+     * Recover the exact host context an SDK envelope carries, when this adapter wrapped it.
      *
      * @param   ExtensionContext  $context  Context received through an SDK value or handler signature.
      *
@@ -144,5 +146,28 @@ final readonly class ExtensionExecutionContext implements ExtensionContext
     public function deliverySurface(): string
     {
         return $this->host->deliverySurface();
+    }
+
+    /**
+     * Show only the seven SPI coordinates when the adapter is dumped.
+     *
+     * The wrapped context holds the session identity, the proof nonce and the principal's grants, which its own
+     * export withholds on purpose; a debug dump of the adapter must not disclose them either.
+     *
+     * @return  array<string, string|null>  The coordinates by their export names.
+     *
+     * @since   2.0.0
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'site' => $this->siteIdentifier(),
+            'actor' => $this->actorId(),
+            'organization' => $this->organizationIdentifier(),
+            'workspace' => $this->workspaceIdentifier(),
+            'request_id' => $this->requestId(),
+            'correlation_id' => $this->correlationId(),
+            'surface' => $this->deliverySurface(),
+        ];
     }
 }

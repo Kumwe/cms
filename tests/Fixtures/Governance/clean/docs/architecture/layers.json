@@ -123,8 +123,6 @@
     "Kumwe\\Producer\\Render": "application",
     "Kumwe\\Producer\\Schema": "shared",
     "Kumwe\\Producer\\Wire": "application",
-    "Kumwe\\App\\Application\\Authorization\\AuthenticatedSurface": "shared",
-    "Kumwe\\App\\Application\\Authorization\\SiteContext": "shared",
     "Kumwe\\App\\Http": "delivery",
     "Kumwe\\App\\Administrator\\Http": "delivery",
     "Kumwe\\App\\Administrator\\Content": "presentation",

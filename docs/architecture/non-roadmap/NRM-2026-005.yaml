@@ -10,7 +10,7 @@ behavior_before: "App declared the site, organization, workspace, membership, su
 behavior_after: "The eight values come from kumwe/access-context 0.1.2; App identities answer its Principal and SystemActor ports, and the host keeps the request attribute and the SDK adapter."
 public_api_impact: "None for callers of the values; principal() answers the neutral port and grant-carrying consumers narrow it through AuthenticatedPrincipal::of()."
 dependency_impact: "Adds kumwe/access-context 0.1.2 exactly; no other lock entry changes."
-compatibility: "Drop-in for every consumer; malformed UTF-8 identities and an orphan step-up workspace are now refused at the value."
+compatibility: "Drop-in for every consumer; raw control bytes in a scope identifier, malformed UTF-8 identities, an invalid principal subject, epoch or system actor token and an orphan step-up workspace are now refused at the value."
 data_migration: None
 security_impact: "No authority change; provenance, grants, sessions and the gateway stay host-owned, and extensions see only the SPI coordinates through the host adapter."
 performance:
