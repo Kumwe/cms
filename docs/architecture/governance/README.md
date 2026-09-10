@@ -163,7 +163,13 @@ is why the gate can tell when they change.
 
 `--record` refuses while a duplicate owner, a reintroduction, an overlap or a missing, pending or rejected
 record remains; only "re-record" and "baseline stale" findings are cleared by it. It writes the baseline
-deterministically (sorted FQCNs) and prints the added, removed and expanded symbols.
+deterministically (sorted FQCNs) and prints the added, removed, expanded and renamed symbols.
+
+A rename is not growth. When a surface differs from its baseline entry only because a public signature,
+parent or interface now spells a symbol as the package name an adopted migration ledger maps its retired App
+name to (`symbols[].old_fqcn` → `new_fqcn`), the check reports "re-record: … differs from the baseline only by
+the names KUMWE-MIG-YYYY-NNN retired", `--record` lists the FQCN as `renamed` and keeps the entry's growth
+evidence, and any other difference in the same surface is judged as growth exactly as before.
 
 The baseline is [`core-growth-baseline.json`](core-growth-baseline.json), validated by
 [`schemas/core-growth-baseline.v1.schema.json`](schemas/core-growth-baseline.v1.schema.json). It holds every
@@ -182,6 +188,8 @@ for recorded host growth. Commit it in the same pull request as the change that 
   them as host evidence.
 - A private change that composes existing public APIs without adding an FQCN or changing a public
   signature: the surface digest does not move, so there is nothing to record.
+- A signature that names a symbol a migration ledger moved to its package: the surface differs from the
+  baseline only by the retired names, so re-record the baseline and the entry keeps its growth evidence.
 - Deleting a symbol: re-record the baseline.
 
 How to write one: [`../core-growth/README.md`](../core-growth/README.md).

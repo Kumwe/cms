@@ -19,7 +19,10 @@ use stdClass;
  * directories naming a retired namespace root; and a Core Growth Record that names an undeclared FQCN, records
  * the wrong layer, or is cited by the baseline while pending or rejected. Only the "baseline stale" and
  * "re-record" findings are cleared by `record()`, which refuses to write while any other finding remains and
- * otherwise rewrites the baseline deterministically.
+ * otherwise rewrites the baseline deterministically. A symbol whose surface differs from its baseline entry only
+ * by the names an adopted migration ledger retired (the ledger's `old_fqcn`, now spelled as its `new_fqcn`) is a
+ * rename, not growth: it is reported as a re-record, keeps its recorded growth evidence, and any further
+ * difference in the same surface is judged as growth exactly as before.
  *
  * Two allowances are explicit. When no baseline exists, `record()` writes the bootstrap snapshot with `growth`
  * null for every symbol, and the responsibility, portable and host rules are not applied to snapshot symbols;
@@ -189,8 +192,9 @@ final readonly class CoreGrowthGate
      * Compute the baseline `record()` would write, without writing it.
      *
      * @return  array{failures: list<string>, written: bool, json: string, symbols: int, recorded: int,
-     *          added: list<string>, removed: list<string>, expanded: list<string>}  The findings that refuse the
-     *          record (empty when it may proceed), the baseline bytes, the counts and the FQCNs that changed.
+     *          added: list<string>, removed: list<string>, expanded: list<string>, renamed: list<string>}  The
+     *          findings that refuse the record (empty when it may proceed), the baseline bytes, the counts and the
+     *          FQCNs that changed.
      *
      * @throws  GovernanceViolation  When the capability index is stale, a governance record or the baseline is
      *          malformed, or a production name cannot be classified.
@@ -206,9 +210,9 @@ final readonly class CoreGrowthGate
      * Re-run the check and rewrite the baseline when nothing but a stale or unrecorded entry stands in the way.
      *
      * @return  array{failures: list<string>, written: bool, json: string, symbols: int, recorded: int,
-     *          added: list<string>, removed: list<string>, expanded: list<string>}  The findings that refused the
-     *          record (the file is untouched when non-empty), the bytes written, the counts and the FQCNs added,
-     *          removed and expanded relative to the previous baseline.
+     *          added: list<string>, removed: list<string>, expanded: list<string>, renamed: list<string>}  The
+     *          findings that refused the record (the file is untouched when non-empty), the bytes written, the
+     *          counts and the FQCNs added, removed, expanded and renamed relative to the previous baseline.
      *
      * @throws  GovernanceViolation  When the check cannot run, or the baseline cannot be written.
      *
@@ -334,16 +338,20 @@ final readonly class CoreGrowthGate
                 'added' => [],
                 'removed' => [],
                 'expanded' => [],
+                'renamed' => [],
             ];
         }
 
         $snapshot = $evaluation['baseline'] === null;
+        $renames = $evaluation['renames'];
         $entries = [];
         $added = [];
         $expanded = [];
+        $renamed = [];
         foreach ($inventory->symbols() as $fqcn => $symbol) {
             $entry = $previous[$fqcn] ?? null;
-            if ($entry !== null && !self::isCandidate($symbol, $entry)) {
+            $rename = self::renamedOnly($symbol, $entry, $renames);
+            if ($entry !== null && (!self::isCandidate($symbol, $entry) || $rename !== null)) {
                 $growth = $entry['growth'];
             } elseif ($snapshot) {
                 $growth = null;
@@ -366,6 +374,8 @@ final readonly class CoreGrowthGate
             }
             if ($entry === null) {
                 $added[] = $fqcn;
+            } elseif ($rename !== null) {
+                $renamed[] = $fqcn;
             } elseif (self::isCandidate($symbol, $entry)) {
                 $expanded[] = $fqcn;
             }
@@ -401,6 +411,7 @@ final readonly class CoreGrowthGate
             'added' => $added,
             'removed' => $removed,
             'expanded' => $expanded,
+            'renamed' => $renamed,
         ];
     }
 
@@ -410,8 +421,10 @@ final readonly class CoreGrowthGate
      * @return  array{findings: list<array{message: string, recordable: bool}>, inventory: CoreGrowthInventory,
      *          baseline: array{schema: string, note: string, symbols: array<string, array{kind: string,
      *          layer: string, surface: string, growth: array<string, mixed>|null}>}|null,
-     *          approved: array<string, string>}  Findings in rule order, the inventory, the baseline (null before
-     *          the bootstrap snapshot) and the approved Core Growth Record of each FQCN one names.
+     *          approved: array<string, string>, renames: array<string, array{old_fqcn: string,
+     *          migration_id: string}>}  Findings in rule order, the inventory, the baseline (null before the
+     *          bootstrap snapshot), the approved Core Growth Record of each FQCN one names and the names the
+     *          adopted migration ledgers retired, by the name that replaced each.
      *
      * @throws  GovernanceViolation  When the capability index is stale, a governance record or the baseline is
      *          malformed, or a production name cannot be classified.
@@ -443,6 +456,7 @@ final readonly class CoreGrowthGate
         $inventory = CoreGrowthInventory::fromScans($sourceScans, $classifier);
         $baseline = $this->readBaseline();
         $approved = self::approvedRecords($records);
+        $renames = self::renames($document);
 
         $findings = [];
         if ($baseline === null) {
@@ -464,12 +478,21 @@ final readonly class CoreGrowthGate
             }
         }
         array_push($findings, ...$reintroductions['findings']);
-        array_push($findings, ...$this->growthFindings($inventory, $baseline, $document, $records, $lock, $approved));
+        array_push(
+            $findings,
+            ...$this->growthFindings($inventory, $baseline, $document, $records, $lock, $approved, $renames),
+        );
         array_push($findings, ...$this->serviceFindings($document, $records, $sourceScans));
         array_push($findings, ...$this->referenceFindings($retired, $sourceScans));
         array_push($findings, ...self::recordFindings($records, $inventory, $baseline));
 
-        return ['findings' => $findings, 'inventory' => $inventory, 'baseline' => $baseline, 'approved' => $approved];
+        return [
+            'findings' => $findings,
+            'inventory' => $inventory,
+            'baseline' => $baseline,
+            'approved' => $approved,
+            'renames' => $renames,
+        ];
     }
 
     /**
@@ -483,6 +506,8 @@ final readonly class CoreGrowthGate
      * @param   GovernanceRecords      $records    Governance records.
      * @param   ComposerLock           $lock       The lock, for package surfaces.
      * @param   array<string, string>  $approved   Approved Core Growth Record id by FQCN.
+     * @param   array<string, array{old_fqcn: string, migration_id: string}>  $renames  Retired names by the name
+     *          that replaced each, from the adopted migration ledgers.
      *
      * @return  list<array{message: string, recordable: bool}>  One finding per refused candidate.
      *
@@ -497,6 +522,7 @@ final readonly class CoreGrowthGate
         GovernanceRecords $records,
         ComposerLock $lock,
         array $approved,
+        array $renames,
     ): array {
         /** @var array<string, string> $ownership */
         $ownership = $document['ownership'];
@@ -544,6 +570,21 @@ final readonly class CoreGrowthGate
                         $replacement['package'],
                     ),
                     false,
+                );
+                continue;
+            }
+            $rename = self::renamedOnly($symbol, $entry, $renames);
+            if ($rename !== null) {
+                $findings[] = self::finding(
+                    $file,
+                    sprintf(
+                        're-record: %s differs from the baseline only by the names %s retired (%s)',
+                        $fqcn,
+                        implode(', ', $rename['migrations']),
+                        implode(', ', $rename['names']),
+                    ),
+                    'run ' . self::RECORD_COMMAND . ' and commit the baseline',
+                    true,
                 );
                 continue;
             }
@@ -1355,6 +1396,85 @@ final readonly class CoreGrowthGate
         }
 
         return null;
+    }
+
+    /**
+     * The names every adopted migration ledger retired, keyed by the package symbol that replaced each.
+     *
+     * @param   array<string, mixed>  $document  Capability index document.
+     *
+     * @return  array<string, array{old_fqcn: string, migration_id: string}>  By `new_fqcn`; a mapping whose two
+     *          names are equal contributes nothing, and the first ledger to name a replacement keeps it.
+     *
+     * @since   2.0.0
+     */
+    private static function renames(array $document): array
+    {
+        /** @var list<array{old_fqcn: string, new_fqcn: string, package: string, migration_id: string}> $removed */
+        $removed = $document['removed_symbols'];
+        $renames = [];
+        foreach ($removed as $symbol) {
+            if ($symbol['old_fqcn'] === $symbol['new_fqcn'] || isset($renames[$symbol['new_fqcn']])) {
+                continue;
+            }
+            $renames[$symbol['new_fqcn']] = [
+                'old_fqcn' => $symbol['old_fqcn'],
+                'migration_id' => $symbol['migration_id'],
+            ];
+        }
+
+        return $renames;
+    }
+
+    /**
+     * Whether a changed symbol's surface differs from its baseline entry only by retired names.
+     *
+     * The baseline recorded the surface spelled with App names a later migration ledger retired; spelling those
+     * names as the package symbols the ledger maps them to moves the digest without changing the surface. The
+     * comparison rewrites the current canonical surface back to the retired names and matches the result against
+     * the recorded digest, so any other difference in the surface still counts as growth.
+     *
+     * @param   array{kind: string, layer: string, surface: string, canonical: string}  $symbol   The symbol.
+     * @param   array{kind: string, layer: string, surface: string, growth: array<string, mixed>|null}|null  $entry
+     *          Its baseline entry, or null for a new symbol.
+     * @param   array<string, array{old_fqcn: string, migration_id: string}>  $renames  Retired names by the name
+     *          that replaced each.
+     *
+     * @return  array{names: list<string>, migrations: list<string>}|null  The `old -> new` renames the surface
+     *          carries and the ledgers that retired them, or null when the change is not a pure rename.
+     *
+     * @since   2.0.0
+     */
+    private static function renamedOnly(array $symbol, ?array $entry, array $renames): ?array
+    {
+        if (
+            $entry === null
+            || $renames === []
+            || $entry['surface'] === $symbol['surface']
+            || $entry['kind'] !== $symbol['kind']
+            || $entry['layer'] !== $symbol['layer']
+        ) {
+            return null;
+        }
+        $canonical = $symbol['canonical'];
+        $names = [];
+        $migrations = [];
+        foreach ($renames as $new => $rename) {
+            $pattern = '/(?<![\\\\\w])' . preg_quote($new, '/') . '(?![\\\\\w])/';
+            $rewritten = preg_replace($pattern, $rename['old_fqcn'], $canonical);
+            if (!is_string($rewritten) || $rewritten === $canonical) {
+                continue;
+            }
+            $canonical = $rewritten;
+            $names[] = $rename['old_fqcn'] . ' -> ' . $new;
+            $migrations[] = $rename['migration_id'];
+        }
+        if ($names === [] || CoreGrowthInventory::digest($canonical) !== $entry['surface']) {
+            return null;
+        }
+        sort($names, SORT_STRING);
+
+        return ['names' => $names, 'migrations' => array_values(array_unique($migrations))];
     }
 
     /**

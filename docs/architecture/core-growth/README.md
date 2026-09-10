@@ -20,6 +20,9 @@ records; without an approved one, growth in a portable layer fails the build. Th
   `extends` facts as host evidence; no record file is needed.
 - A private change that composes existing public package APIs without adding an FQCN or changing a public
   signature. The surface digest does not move, so there is nothing to record.
+- A public signature that now names the package symbol a migration ledger maps a retired App name to. The
+  surface differs from the baseline only by that rename, so `composer kumwe:core-growth-record` re-records it
+  as `renamed` and the entry keeps its growth evidence.
 - Removing a symbol. Re-record the baseline.
 
 If you are unsure whether the behaviour is portable, run the Capability Reuse Review (`AGENTS.md`

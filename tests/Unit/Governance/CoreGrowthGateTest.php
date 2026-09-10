@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Governance;
 
 use Kumwe\App\Tools\Governance\CoreGrowthGate;
+use Kumwe\App\Tools\Governance\CoreGrowthInventory;
 use Kumwe\App\Tools\Governance\GovernanceViolation;
+use Kumwe\App\Tools\Governance\LayerClassifier;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 
@@ -85,7 +87,7 @@ final class CoreGrowthGateTest extends TestCase
             self::assertSame(0, $first['status'], $first['output']);
             self::assertStringContainsString(
                 'Core growth baseline recorded (4 production symbols; 0 recorded growth entries; '
-                . '0 added, 0 removed, 0 expanded).',
+                . '0 added, 0 removed, 0 expanded, 0 renamed).',
                 $first['output'],
             );
             self::assertSame($committed, GovernanceFixture::read($root, CoreGrowthGate::BASELINE_PATH));
@@ -239,6 +241,69 @@ final class CoreGrowthGateTest extends TestCase
             $failures = self::assertRefused(
                 $root,
                 'Kumwe\\App\\Example\\Application\\DescribeSubject is changed portable growth in the application layer',
+            );
+            self::assertCount(1, $failures);
+        } finally {
+            GovernanceFixture::remove($root);
+        }
+    }
+
+    /**
+     * A public signature that now spells a name a migration ledger retired as the package symbol replacing it is
+     * a rename: the check asks for a re-record, the record reports it as renamed and keeps the entry's growth
+     * evidence, and any further widening of the same surface is still refused as growth.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testASurfaceChangedOnlyByALedgerRenameIsReRecordedNotGrowth(): void
+    {
+        $root = GovernanceFixture::copy();
+        try {
+            $fqcn = 'Kumwe\\App\\Example\\Application\\DescribeSubject';
+            $retiredName = 'Kumwe\\App\\Example\\Describing\\DescriberInterface';
+            $packageName = 'Kumwe\\Example\\Contract\\ExampleServiceInterface';
+            $symbol = CoreGrowthInventory::scan(
+                $root,
+                LayerClassifier::fromFile($root . '/' . CoreGrowthGate::LAYER_GRAPH),
+            )->symbol($fqcn);
+            self::assertNotNull($symbol);
+            self::assertStringContainsString($packageName, $symbol['canonical']);
+            $retiredSurface = CoreGrowthInventory::digest(
+                str_replace($packageName, $retiredName, $symbol['canonical']),
+            );
+            self::recordSurface($root, $fqcn, $retiredSurface);
+
+            $failures = self::assertRefused(
+                $root,
+                sprintf(
+                    're-record: %s differs from the baseline only by the names KUMWE-MIG-2026-001 retired (%s -> %s)',
+                    $fqcn,
+                    $retiredName,
+                    $packageName,
+                ),
+            );
+            self::assertCount(1, $failures);
+
+            $recorded = self::runGate(['--record', '--root=' . $root]);
+            self::assertSame(0, $recorded['status'], $recorded['output']);
+            self::assertStringContainsString('renamed ' . $fqcn, $recorded['output']);
+            self::assertStringContainsString('0 added, 0 removed, 0 expanded, 1 renamed', $recorded['output']);
+            self::assertVerified($root, 4, 0);
+
+            self::recordSurface($root, $fqcn, $retiredSurface);
+            $anchor = "    public function describe(ExampleSubject \$subject): string\n";
+            GovernanceFixture::replace(
+                $root,
+                'src/Example/Application/DescribeSubject.php',
+                $anchor,
+                "    public function shout(string \$text): string\n    {\n"
+                . "        return strtoupper(\$text);\n    }\n\n" . $anchor,
+            );
+            $failures = self::assertRefused(
+                $root,
+                $fqcn . ' is changed portable growth in the application layer',
             );
             self::assertCount(1, $failures);
         } finally {
@@ -939,6 +1004,25 @@ final class CoreGrowthGateTest extends TestCase
         $baseline = (new CoreGrowthGate($root))->readBaseline();
         self::assertNotNull($baseline);
         $baseline['symbols'][$fqcn]['growth'] = ['record' => $record];
+        GovernanceFixture::write($root, CoreGrowthGate::BASELINE_PATH, CoreGrowthGate::json($baseline));
+    }
+
+    /**
+     * Rewrite the surface digest one baseline entry records, leaving its growth evidence untouched.
+     *
+     * @param   string  $root     Fixture root.
+     * @param   string  $fqcn     Baseline entry to rewrite.
+     * @param   string  $surface  Digest to record.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    private static function recordSurface(string $root, string $fqcn, string $surface): void
+    {
+        $baseline = (new CoreGrowthGate($root))->readBaseline();
+        self::assertNotNull($baseline);
+        $baseline['symbols'][$fqcn]['surface'] = $surface;
         GovernanceFixture::write($root, CoreGrowthGate::BASELINE_PATH, CoreGrowthGate::json($baseline));
     }
 

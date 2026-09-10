@@ -74,19 +74,20 @@ try {
         ]));
     }
     $lines = [];
-    foreach (['added', 'removed', 'expanded'] as $change) {
+    foreach (['added', 'removed', 'expanded', 'renamed'] as $change) {
         foreach ($result[$change] as $fqcn) {
             $lines[] = sprintf('  %s %s', $change, $fqcn);
         }
     }
     $lines[] = sprintf(
         'Core growth baseline recorded (%d production symbols; %d recorded growth entries; '
-        . '%d added, %d removed, %d expanded).',
+        . '%d added, %d removed, %d expanded, %d renamed).',
         $result['symbols'],
         $result['recorded'],
         count($result['added']),
         count($result['removed']),
         count($result['expanded']),
+        count($result['renamed']),
     );
     exit(ToolOutput::succeed(implode(PHP_EOL, $lines)));
 } catch (GovernanceViolation $violation) {
