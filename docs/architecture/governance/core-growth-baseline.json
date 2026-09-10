@@ -1394,24 +1394,6 @@
             "surface": "f714ad0560be702589def22c",
             "growth": null
         },
-        "Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceFormat": {
-            "kind": "class",
-            "layer": "domain",
-            "surface": "0b2654d5f36094c2b24491e2",
-            "growth": null
-        },
-        "Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceReset": {
-            "kind": "enum",
-            "layer": "domain",
-            "surface": "3145b437c24de3f03142abbf",
-            "growth": null
-        },
-        "Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceScope": {
-            "kind": "enum",
-            "layer": "domain",
-            "surface": "c191489f578e6f3419802afb",
-            "growth": null
-        },
         "Kumwe\\App\\BusinessDefinition\\Domain\\PortalOperation": {
             "kind": "enum",
             "layer": "domain",
@@ -1754,12 +1736,6 @@
             "surface": "80159bd919c17f0e4eb6d272",
             "growth": null
         },
-        "Kumwe\\App\\BusinessRecord\\Application\\BusinessNumberSequenceAllocator": {
-            "kind": "interface",
-            "layer": "application",
-            "surface": "299760ee94551513bd54463c",
-            "growth": null
-        },
         "Kumwe\\App\\BusinessRecord\\Application\\BusinessRecordCustomActionGuard": {
             "kind": "interface",
             "layer": "application",
@@ -1841,8 +1817,10 @@
         "Kumwe\\App\\BusinessRecord\\Application\\BusinessRecordService": {
             "kind": "class",
             "layer": "application",
-            "surface": "f529fa430c63baa5f0039448",
-            "growth": null
+            "surface": "217a7fc9377390d4d59fae9c",
+            "growth": {
+                "record": "KUMWE-CGR-2026-003"
+            }
         },
         "Kumwe\\App\\BusinessRecord\\Application\\BusinessRecordView": {
             "kind": "class",
@@ -2405,8 +2383,14 @@
         "Kumwe\\App\\BusinessRecord\\Infrastructure\\Persistence\\DoctrineBusinessNumberSequenceAllocator": {
             "kind": "class",
             "layer": "infrastructure",
-            "surface": "89f649b78038b9421204b4cb",
-            "growth": null
+            "surface": "304873f135c25f0b99f080ea",
+            "growth": {
+                "classification": "host-infrastructure",
+                "implements": [
+                    "Kumwe\\Sequence\\Contract\\NumberSequenceAllocator"
+                ],
+                "extends": null
+            }
         },
         "Kumwe\\App\\BusinessRecord\\Infrastructure\\Persistence\\DoctrineBusinessRecordIdempotencyRepository": {
             "kind": "class",
