@@ -1,5 +1,5 @@
-# PHP 8.5.10 CLI on Debian Bookworm, pinned by digest; the native engine requires Linux/glibc.
-FROM php:8.5.10-cli-bookworm@sha256:b80dfc7d2bc0fc97755620a0dfb3d5e8e9cbf70a2970ea2d5c9dc64154b31422
+# PHP 8.5.10 CLI on Debian Trixie supplies glibc and GCC 14 for the released native engine.
+FROM php:8.5.10-cli-trixie@sha256:9ebdf4c28ab12c02085e171c31e22ac5f7bbb6a9f6927e3bc3dfe7ee23df51e0
 
 COPY tools/install-native-engine.sh /tmp/kumwe-install/tools/install-native-engine.sh
 COPY resources/native-runtime/source.json /tmp/kumwe-install/resources/native-runtime/source.json
@@ -14,7 +14,7 @@ RUN set -eux; \
     usermod --uid 82 --gid 82 www-data; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        bash ca-certificates curl git libicu72 libonig5 libpq5 libstdc++6 libzip4; \
+        bash ca-certificates curl git libicu76 libonig5 libpq5 libstdc++6 libzip5; \
     apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
         cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
