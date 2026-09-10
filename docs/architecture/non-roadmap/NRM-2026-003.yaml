@@ -1,0 +1,30 @@
+schema: kumwe-non-roadmap-record/v1
+id: NRM-2026-003
+nrm_ref: NRM-2026-003
+roadmap_impact: None
+rationale: "Adopt verified kumwe/sequence 0.2.1, the owner of document numbering values and the allocator port."
+repositories:
+  - kumwe/app
+  - kumwe/sequence
+behavior_before: "App declared the number format, reset and scope values and the allocator port itself."
+behavior_after: "The four symbols come from kumwe/sequence 0.2.1; the App keeps its adapter and translates the refusal."
+public_api_impact: "None for callers; the adapter raises the package refusal, which the record service translates."
+dependency_impact: "Adds kumwe/sequence 0.2.1 exactly; no other lock entry changes."
+compatibility: "Drop-in for every consumer; the reserved organization key is now refused at the scope value."
+data_migration: None
+security_impact: "No authority change; allocation still runs inside the record command's authorized transaction."
+performance:
+  claim: None
+  evidence: []
+operations_deployment: "None; no configuration or runtime change."
+recovery_rollback: "Revert the adoption pull request and restore the four removed classes; no persisted data changes."
+artifacts_evidence:
+  - docs/architecture/migrations/KUMWE-MIG-2026-002.yaml
+  - docs/architecture/migrations/change-sets/KUMWE-CS-2026-002.yaml
+  - docs/architecture/migrations/trains/KUMWE-TRAIN-2026-003.yaml
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-002/RELEASE-ATTESTATION.yaml
+  - docs/architecture/capability-index.md
+known_gaps:
+  - "The remaining extension-sdk train packages follow as separate adoptions in dependency order."
+owner: "eWɘyn"
+status: in-progress
