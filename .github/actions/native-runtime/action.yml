@@ -7,12 +7,12 @@ runs:
       shell: bash
       run: |
         sudo apt-get update -qq
-        sudo apt-get install -y --no-install-recommends autoconf build-essential cmake curl pkg-config
+        sudo apt-get install -y --no-install-recommends autoconf build-essential cmake curl gcc-13 g++-13 pkg-config
         sudo install -d -m 0755 -o "$(id -u)" -g "$(id -g)" /usr/local/lib/kumwe-native
     - name: Build and admit pinned native release
       shell: bash
       run: |
-        bash tools/install-native-engine.sh
+        CC=gcc-13 CXX=g++-13 bash tools/install-native-engine.sh
         native_scan="$(php -r 'echo PHP_CONFIG_FILE_SCAN_DIR;')"
         echo "PHP_INI_SCAN_DIR=$native_scan:/usr/local/lib/kumwe-native" >> "$GITHUB_ENV"
         echo 'KUMWE_NATIVE_EXPECTED_TUPLE=/usr/local/lib/kumwe-native/native-expected-tuple.json' >> "$GITHUB_ENV"

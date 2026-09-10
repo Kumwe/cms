@@ -7,7 +7,11 @@ namespace Kumwe\App\Kernel;
 use InvalidArgumentException;
 use JsonException;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
+use Kumwe\CanonicalJson\CanonicalEncoder;
 use Kumwe\Computation\CapabilitySet;
+use Kumwe\Computation\Compiler;
+use Kumwe\Computation\Executor;
+use Kumwe\Computation\NativeAdapter;
 use Kumwe\Computation\NativeCanonicalEncoder;
 use Kumwe\Computation\NativeCompatibility;
 use Kumwe\Engine\Runtime;
@@ -34,6 +38,29 @@ final readonly class NativeComputationFactory
     public function create(Environment $environment): NativeCanonicalEncoder
     {
         return new NativeCanonicalEncoder(new Runtime(), $this->compatibility($environment));
+    }
+
+    /**
+     * Bind the admitted native runtime and shared package services in the host container.
+     *
+     * @param   Container    $container    Host composition container.
+     * @param   Environment  $environment  Allow-listed deployment values.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function register(Container $container, Environment $environment): void
+    {
+        $compatibility = $this->compatibility($environment);
+        $runtime = new Runtime();
+        $container->share(NativeCompatibility::class, $compatibility, true);
+        $container->share(Runtime::class, $runtime, true);
+        $container->share(NativeAdapter::class, new NativeAdapter($runtime, $compatibility), true);
+        $container->alias(Compiler::class, NativeAdapter::class);
+        $container->alias(Executor::class, NativeAdapter::class);
+        $container->share(NativeCanonicalEncoder::class, new NativeCanonicalEncoder($runtime, $compatibility), true);
+        $container->alias(CanonicalEncoder::class, NativeCanonicalEncoder::class);
     }
 
     /**

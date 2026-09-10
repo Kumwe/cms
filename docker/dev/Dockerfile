@@ -1,4 +1,4 @@
-# PHP 8.5.10 CLI on Debian Trixie supplies glibc and GCC 14 for the released native engine.
+# PHP 8.5.10 CLI on Debian Trixie supplies glibc; the released native engine builds with GCC 13.
 FROM php:8.5.10-cli-trixie@sha256:9ebdf4c28ab12c02085e171c31e22ac5f7bbb6a9f6927e3bc3dfe7ee23df51e0
 
 COPY tools/install-native-engine.sh /tmp/kumwe-install/tools/install-native-engine.sh
@@ -17,16 +17,16 @@ RUN set -eux; \
         bash ca-certificates curl git libicu76 libonig5 libpq5 libstdc++6 libzip5; \
     apt-get install -y --no-install-recommends \
         $PHPIZE_DEPS \
-        cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
+        cmake gcc-13 g++-13 libicu-dev libonig-dev libpq-dev libzip-dev; \
     docker-php-ext-install -j"$(getconf _NPROCESSORS_ONLN)" intl mbstring pcntl pdo_mysql pdo_pgsql zip; \
     pecl install redis-6.3.0; \
     docker-php-ext-enable redis; \
-    bash /tmp/kumwe-install/tools/install-native-engine.sh /usr/local/lib/kumwe-native; \
+    CC=gcc-13 CXX=g++-13 bash /tmp/kumwe-install/tools/install-native-engine.sh /usr/local/lib/kumwe-native; \
     install -m 0644 /usr/local/lib/kumwe-native/kumwe_engine.ini "$PHP_INI_DIR/conf.d/kumwe_engine.ini"; \
     install -d /usr/local/etc/kumwe; \
     install -m 0644 /usr/local/lib/kumwe-native/native-expected-tuple.json "$KUMWE_NATIVE_EXPECTED_TUPLE"; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-        $PHPIZE_DEPS cmake libicu-dev libonig-dev libpq-dev libzip-dev; \
+        $PHPIZE_DEPS cmake gcc-13 g++-13 libicu-dev libonig-dev libpq-dev libzip-dev; \
     rm -rf /var/lib/apt/lists/* /tmp/kumwe-install /tmp/pear; \
     php -r 'foreach (["intl", "kumwe_engine", "mbstring", "Zend OPcache", "pcntl", "pdo_mysql", "pdo_pgsql", "redis", "zip"] as $extension) { if (!extension_loaded($extension)) { fwrite(STDERR, "Missing PHP extension: {$extension}\n"); exit(1); } }'
 
