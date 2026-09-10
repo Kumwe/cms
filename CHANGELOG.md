@@ -50,7 +50,9 @@ development programme, from the architecture decision that opened it to the curr
   the package values; `AuthenticatedPrincipal` answers the package's `Principal` port and `AuthenticatedPrincipal::of()`
   narrows it back to the grant-carrying class, `SystemIdentity` answers `SystemActor`, `ExecutionContextAttribute`
   keeps the host request-attribute key, and `ExtensionExecutionContext` presents the host context to extension code
-  through the SDK contract and recovers it where package code hands the envelope back (`KUMWE-CGR-2026-004`). The
+  through the SDK contract and recovers it where package code hands the envelope back (`KUMWE-CGR-2026-004`); the
+  SPI `ExecutionContext` an extension receives is that adapter, never the host value, and
+  `ExtensionExecutionContext::host()` is the one way host code recovers the value from an SDK envelope. The
   nine migrations that name the moved values changed only their imports, so their pre-move checksums are accepted
   for databases migrated before the move. The core growth gate now tells a rename from growth: a public surface
   that differs from its baseline entry only by the names an adopted migration ledger retired is re-recorded as

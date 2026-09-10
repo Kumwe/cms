@@ -151,6 +151,67 @@ final class CrashResumableMigrationIntegrationTest extends TestCase
         }
     }
 
+    /**
+     * An attempt a previous build journaled under a checksum this build still accepts resumes after the upgrade.
+     *
+     * The nine migrations that changed only their imports for `KUMWE-MIG-2026-004` keep their pre-move
+     * checksums accepted; an unfinished attempt one of them left behind must be picked up by the new bytes
+     * rather than refused as drift, and a build that does not accept the old checksum must still refuse it.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAnAttemptJournaledUnderAnAcceptedHistoricalChecksumResumes(): void
+    {
+        $database = $this->mysqlDatabase();
+        $tables = $this->uniqueTables($database);
+        $previous = '484705ff88bf14bc4f92a63cff2fcb613a739aa147a0e76c152e4f564f129bf0';
+
+        try {
+            $this->createAuthorizationParentSchema($database, $tables);
+            $migration = new ApplicationAuthorizationMigration($tables);
+            $interrupted = new InterruptOnceAuthorizationMigration($tables, $migration);
+            try {
+                $this->runner($database, $tables, [$interrupted])->migrate($this->context());
+                self::fail('The first application-authorization attempt must be interrupted.');
+            } catch (RuntimeException $exception) {
+                self::assertSame('simulated authorization migration interruption', $exception->getMessage());
+            }
+            $database->update(
+                $tables->raw('migration_attempts'),
+                ['checksum' => $previous],
+                ['version' => ApplicationAuthorizationMigration::ID],
+            );
+
+            try {
+                $this->runner($database, $tables, [$migration])->migrate($this->context());
+                self::fail('A build that does not accept the previous checksum must refuse the attempt.');
+            } catch (RuntimeException $exception) {
+                self::assertSame(
+                    'Interrupted migration checksum drift detected for "20260805010000_application_authorization".',
+                    $exception->getMessage(),
+                );
+            }
+
+            $historical = [ApplicationAuthorizationMigration::ID => [$previous]];
+            self::assertSame(
+                [ApplicationAuthorizationMigration::ID],
+                $this->runner($database, $tables, [$migration], $historical)->migrate($this->context())->applied,
+            );
+            self::assertSame($migration->checksum(), $database->fetchOne(sprintf(
+                'SELECT checksum FROM %s WHERE version = ?',
+                $tables->quoted('schema_migrations'),
+            ), [ApplicationAuthorizationMigration::ID]));
+            self::assertSame('0', (string) $database->fetchOne(sprintf(
+                'SELECT COUNT(*) FROM %s',
+                $tables->quoted('migration_attempts'),
+            )));
+        } finally {
+            $this->dropPrefixTables($database, $tables);
+        }
+    }
+
     public function testApplicationAuthorizationRecoveryRejectsDivergentPartialSchema(): void
     {
         $database = $this->mysqlDatabase();
@@ -590,20 +651,36 @@ final class CrashResumableMigrationIntegrationTest extends TestCase
         );
     }
 
-    /** @param list<Migration> $migrations */
-    private function runner(Connection $database, TableNames $tables, array $migrations): MigrationRunner
-    {
+    /**
+     * Build a runner over the given migrations, accepting the given earlier checksums.
+     *
+     * @param   Connection                   $database                     Database under test.
+     * @param   TableNames                   $tables                       Prefixed table names.
+     * @param   list<Migration>              $migrations                   Migrations the plan ships.
+     * @param   array<string, list<string>>  $acceptedHistoricalChecksums  Earlier checksums by migration ID.
+     *
+     * @return  MigrationRunner  Runner whose plan and recovery both accept the earlier checksums.
+     *
+     * @since   2.0.0
+     */
+    private function runner(
+        Connection $database,
+        TableNames $tables,
+        array $migrations,
+        array $acceptedHistoricalChecksums = [],
+    ): MigrationRunner {
         return new MigrationRunner(
             $database,
             new DoctrineMigrationRepository($database, $tables),
             new DirectCrashRecoveryMigrationLock(),
             new DoctrineTransactionManager($database),
-            new MigrationPlan($migrations),
+            new MigrationPlan($migrations, $acceptedHistoricalChecksums),
             AuthorizationContext::gateway(),
             new DoctrineNonTransactionalMigrationRecovery(
                 $database,
                 $tables,
                 new ApplicationAuthorizationMigrationRecovery($database, $tables),
+                $acceptedHistoricalChecksums,
             ),
         );
     }

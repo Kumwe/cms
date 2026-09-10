@@ -300,7 +300,7 @@ evidence:
   deployment_backup_restore: []
   native_parity_abi: []
   performance_capacity: []
-compatibility: "Drop-in for every value: identifier grammars, refusal messages, fingerprints and the surface and strength vocabularies are the App's; the package additionally refuses malformed UTF-8 identities and an orphan step-up workspace, and the context answers the neutral actor ports."
+compatibility: "Drop-in for every value: identifier grammars, refusal messages, fingerprints and the surface and strength vocabularies are the App's; the package additionally refuses raw control bytes in a scope identifier before trimming (a process-environment APP_PUBLIC_SITE with a trailing carriage return now fails at boot instead of normalizing), malformed UTF-8 identities, a principal subject or epoch and a system actor token that fail the identity grammar, and an orphan step-up workspace; PSR-7 header values are trimmed by the message layer before they reach a value, and the context answers the neutral actor ports."
 migration_recovery: "Nine migrations changed only their imports; their pre-move checksums are accepted, so databases migrated before the move start unchanged."
 security_impact: "No authority change: provenance, grants, capabilities, sessions and the gateway stay host-owned; a foreign implementation of the principal port authorizes nothing, and extensions see only the seven SPI coordinates through the host adapter."
 performance_claim: null

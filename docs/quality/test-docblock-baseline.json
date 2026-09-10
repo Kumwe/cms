@@ -8,7 +8,7 @@
   "recorded_from": [
     "https://github.com/kumwe/app/actions/runs/32251426675"
   ],
-  "entry_count": 3548,
+  "entry_count": 3543,
   "entries": [
     {
       "file": "tests/Architecture/BusinessDefinitionBoundaryTest.php",
@@ -8075,56 +8075,6 @@
       "line": 573,
       "member": "CrashResumableMigrationIntegrationTest::postgresDatabase()",
       "code": "MISSING_DOC",
-      "owner": "quality-engineering",
-      "finding": "V2-QA-010",
-      "expires": "2027-06-30",
-      "justification": "Pre-existing documentation debt under tests/ recorded when the gate was armed; the record only ever shrinks."
-    },
-    {
-      "file": "tests/Integration/Persistence/CrashResumableMigrationIntegrationTest.php",
-      "line": 594,
-      "member": "CrashResumableMigrationIntegrationTest::runner()",
-      "code": "MISSING_RETURN",
-      "owner": "quality-engineering",
-      "finding": "V2-QA-010",
-      "expires": "2027-06-30",
-      "justification": "Pre-existing documentation debt under tests/ recorded when the gate was armed; the record only ever shrinks."
-    },
-    {
-      "file": "tests/Integration/Persistence/CrashResumableMigrationIntegrationTest.php",
-      "line": 594,
-      "member": "CrashResumableMigrationIntegrationTest::runner()",
-      "code": "MISSING_SINCE",
-      "owner": "quality-engineering",
-      "finding": "V2-QA-010",
-      "expires": "2027-06-30",
-      "justification": "Pre-existing documentation debt under tests/ recorded when the gate was armed; the record only ever shrinks."
-    },
-    {
-      "file": "tests/Integration/Persistence/CrashResumableMigrationIntegrationTest.php",
-      "line": 594,
-      "member": "CrashResumableMigrationIntegrationTest::runner()",
-      "code": "MISSING_SUMMARY",
-      "owner": "quality-engineering",
-      "finding": "V2-QA-010",
-      "expires": "2027-06-30",
-      "justification": "Pre-existing documentation debt under tests/ recorded when the gate was armed; the record only ever shrinks."
-    },
-    {
-      "file": "tests/Integration/Persistence/CrashResumableMigrationIntegrationTest.php",
-      "line": 594,
-      "member": "CrashResumableMigrationIntegrationTest::runner() $database",
-      "code": "MISSING_PARAM",
-      "owner": "quality-engineering",
-      "finding": "V2-QA-010",
-      "expires": "2027-06-30",
-      "justification": "Pre-existing documentation debt under tests/ recorded when the gate was armed; the record only ever shrinks."
-    },
-    {
-      "file": "tests/Integration/Persistence/CrashResumableMigrationIntegrationTest.php",
-      "line": 594,
-      "member": "CrashResumableMigrationIntegrationTest::runner() $tables",
-      "code": "MISSING_PARAM",
       "owner": "quality-engineering",
       "finding": "V2-QA-010",
       "expires": "2027-06-30",
