@@ -1,0 +1,24 @@
+schema: kumwe-integration-train/v1
+train: KUMWE-TRAIN-2026-003
+packages:
+  - package: kumwe/sequence
+    version: 0.2.1
+merge_order:
+  - "https://github.com/kumwe/app/pull/139"
+custodian: "Platform architecture"
+hotspots:
+  - composer.json
+  - composer.lock
+  - src/Kernel/ContainerFactory.php
+  - src/BusinessRecord/Application/BusinessRecordService.php
+  - docs/architecture/layers.json
+  - docs/architecture/capability-index.md
+  - docs/architecture/governance/core-growth-baseline.json
+  - docs/quality/baseline.json
+  - CHANGELOG.md
+commands:
+  - "composer install"
+  - "composer kumwe:capability-index"
+  - "composer qa"
+conflict_ledger: docs/architecture/migrations/conflicts
+serialized_by: "eWɘyn"

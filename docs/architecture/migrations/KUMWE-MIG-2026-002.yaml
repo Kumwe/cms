@@ -1,0 +1,51 @@
+schema: kumwe-migration-ledger/v1
+migration_id: KUMWE-MIG-2026-002
+change_set: KUMWE-CS-2026-002
+package: kumwe/sequence
+version: 0.2.1
+artifact_digest: "d8cc7606bb39c74237b57fcf6b4be30830d77d7709d461c857d578ad9d14af60"
+handoff_path: vendor/kumwe/sequence/MIGRATION-HANDOFF.md
+handoff_sha256: "733ea4ab21a16a00565e81a513b9d3f1d36f79be3c473c2cf991bfa3145fd7db"
+release_attestation: docs/architecture/migrations/evidence/KUMWE-MIG-2026-002/RELEASE-ATTESTATION.yaml
+old_namespace_roots: []
+symbols:
+  - old_fqcn: Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat
+    new_fqcn: Kumwe\Sequence\Value\NumberSequenceFormat
+  - old_fqcn: Kumwe\App\BusinessDefinition\Domain\NumberSequenceReset
+    new_fqcn: Kumwe\Sequence\Value\NumberSequenceReset
+  - old_fqcn: Kumwe\App\BusinessDefinition\Domain\NumberSequenceScope
+    new_fqcn: Kumwe\Sequence\Value\NumberSequenceScope
+  - old_fqcn: Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator
+    new_fqcn: Kumwe\Sequence\Contract\NumberSequenceAllocator
+removed_paths:
+  - src/BusinessDefinition/Domain/NumberSequenceFormat.php
+  - src/BusinessDefinition/Domain/NumberSequenceReset.php
+  - src/BusinessDefinition/Domain/NumberSequenceScope.php
+  - src/BusinessRecord/Application/BusinessNumberSequenceAllocator.php
+removed_tests:
+  - tests/Unit/BusinessDefinition/Domain/NumberSequenceFormatTest.php
+retained_tests:
+  - tests/Architecture/ClientAssertedInstantBoundaryTest.php
+  - tests/Integration/BusinessRecord/BusinessNumberSequenceContentionIntegrationTest.php
+  - tests/Integration/BusinessRecord/BusinessNumberSequenceHotPathIntegrationTest.php
+  - tests/Integration/BusinessRecord/BusinessNumberSequenceIdentityIntegrationTest.php
+  - tests/Integration/BusinessRecord/BusinessRecordClientReferenceIntegrationTest.php
+  - tests/Integration/BusinessRecord/BusinessRecordDeadlockIntegrationTest.php
+  - tests/Integration/BusinessRecord/FiscalPeriodSequenceIntegrationTest.php
+  - tests/Integration/Persistence/TransactionBoundaryEngineIntegrationTest.php
+  - tests/Unit/BusinessDefinition/Application/AllocatedNumberFieldRuleTest.php
+  - tests/Unit/BusinessDefinition/Application/FiscalPeriodSequenceCoherenceTest.php
+  - tests/Unit/BusinessDefinition/Application/NumberSequenceScopeCoherenceTest.php
+di_changes:
+  - service: Kumwe\Sequence\Contract\NumberSequenceAllocator
+    factory: Kumwe\App\Kernel\ContainerFactory
+    note: "The host binds DoctrineBusinessNumberSequenceAllocator to the package port; the package ships no provider."
+capability_index_entries:
+  - kumwe/sequence
+release_evidence:
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-002/RELEASE-ATTESTATION.yaml
+app_pull_request: "https://github.com/kumwe/app/pull/139"
+roadmap_refs: []
+non_roadmap_refs:
+  - NRM-2026-003
+conflicts: []

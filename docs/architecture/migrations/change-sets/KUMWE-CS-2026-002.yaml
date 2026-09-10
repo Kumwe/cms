@@ -1,0 +1,81 @@
+schema: kumwe-change-set/v2
+change_set: KUMWE-CS-2026-002
+migration_id: KUMWE-MIG-2026-002
+roadmap_source:
+  title: Kumwe ERP-Extensibility Foundation Roadmap
+  sha256: a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8
+roadmap_refs: []
+state: app-pr-ready
+phase_1:
+  source_repository: kumwe/app
+  source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
+  target_repository: kumwe/sequence
+  package_pr: "https://github.com/kumwe/sequence/pull/4"
+  tested_sha: "142c3e74a7596935ef42c8fa744ca705fd3b4b4f"
+  public_api_digest: "01f26a717405438d10bd76e33dda4edaae16fa03f3976dc26d8ccde2a30c1964"
+  capability_digest: "13c07a238124b08486f53e3d4c7dccd7a0990d95b40ec017c302acc2357c9ea7"
+  service_map_digest: "34ee30e7c49f707bafaa0a7e5d6d1964f32af98124a396424ecc678aae266ed0"
+  handoff_digest: "733ea4ab21a16a00565e81a513b9d3f1d36f79be3c473c2cf991bfa3145fd7db"
+release:
+  version: 0.2.1
+  source_sha: "142c3e74a7596935ef42c8fa744ca705fd3b4b4f"
+  artifact_digest: "d8cc7606bb39c74237b57fcf6b4be30830d77d7709d461c857d578ad9d14af60"
+  clean_consumer_evidence:
+    - "https://github.com/kumwe/sequence/actions/runs/34155338963"
+    - "https://github.com/kumwe/sequence/actions/runs/34155339114"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/139"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/sequence 0.2.1"
+  composer_lock_digest: "cf4ccd00bc88d212891d8bad441a244ae6160c11e73060768de64c4bd0c985fd"
+  removed_app_symbols:
+    - Kumwe\App\BusinessDefinition\Domain\NumberSequenceFormat
+    - Kumwe\App\BusinessDefinition\Domain\NumberSequenceReset
+    - Kumwe\App\BusinessDefinition\Domain\NumberSequenceScope
+    - Kumwe\App\BusinessRecord\Application\BusinessNumberSequenceAllocator
+  moved_unit_tests:
+    - tests/Unit/BusinessDefinition/Domain/NumberSequenceFormatTest.php
+  retained_app_tests:
+    - tests/Architecture/ClientAssertedInstantBoundaryTest.php
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceContentionIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceHotPathIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceIdentityIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordClientReferenceIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordDeadlockIntegrationTest.php
+    - tests/Integration/BusinessRecord/FiscalPeriodSequenceIntegrationTest.php
+    - tests/Integration/Persistence/TransactionBoundaryEngineIntegrationTest.php
+    - tests/Unit/BusinessDefinition/Application/AllocatedNumberFieldRuleTest.php
+    - tests/Unit/BusinessDefinition/Application/FiscalPeriodSequenceCoherenceTest.php
+    - tests/Unit/BusinessDefinition/Application/NumberSequenceScopeCoherenceTest.php
+evidence:
+  package:
+    - "https://github.com/kumwe/sequence/actions/runs/34155338963"
+    - "https://github.com/kumwe/sequence/actions/runs/34155339114"
+  app_composition:
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceIdentityIntegrationTest.php
+    - tests/Integration/BusinessRecord/FiscalPeriodSequenceIntegrationTest.php
+    - tests/Integration/Persistence/TransactionBoundaryEngineIntegrationTest.php
+    - tests/Unit/BusinessDefinition/Application/AllocatedNumberFieldRuleTest.php
+  database_matrix:
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceContentionIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceHotPathIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordClientReferenceIntegrationTest.php
+  concurrency:
+    - tests/Integration/BusinessRecord/BusinessNumberSequenceContentionIntegrationTest.php
+    - tests/Integration/BusinessRecord/BusinessRecordDeadlockIntegrationTest.php
+  authorization_security: []
+  lifecycle_recovery: []
+  delivery_browser: []
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Drop-in: every constant, grammar, default, message and signature is the App's; a refusal is translated."
+migration_recovery: null
+security_impact: "No authority change; allocation still runs inside the record command's authorized transaction."
+performance_claim: null
+rollback: "Revert the App pull request and restore the four removed classes from the baseline commit."
+known_gaps:
+  - "The handoff names two broad App namespace roots that still hold App classes; the ledger names the exact symbols."
+completion_claim: false
+accepted_by: null

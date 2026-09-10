@@ -33,6 +33,17 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-10 — `kumwe/sequence` 0.2.1 owns the document numbering values and the allocator port.**
+  The second package of the extension-sdk release train enters App through the migration ledger (`NRM-2026-003`):
+  `KUMWE-MIG-2026-002`, its change set, the integration train `KUMWE-TRAIN-2026-003` and the independent release
+  attestation record the verified `v0.2.1` release, and `composer.json` pins it exactly. As the released handoff
+  prescribes, the App's `NumberSequenceFormat`, `NumberSequenceReset`, `NumberSequenceScope` and the
+  `BusinessNumberSequenceAllocator` port are removed together with their duplicated unit test, every consumer reads
+  the package's values and port, `ContainerFactory` binds `DoctrineBusinessNumberSequenceAllocator` to the package
+  port, the adapter raises the package's `NumberSequenceUnavailable` with the driver failure chained, and
+  `BusinessRecordService` translates it into `BusinessRecordTemporarilyUnavailable`, so callers keep seeing one
+  transient refusal; the contention journey proves both the chained adapter refusal and the service translation on
+  the real database. (#139)
 - **2026-09-10 — `kumwe/canonical-json` 0.1.1 is adopted as the generic canonical JSON semantic owner.**
   The first package of the extension-sdk release train enters App through the migration ledger (`NRM-2026-009`):
   `KUMWE-MIG-2026-007`, its change set, the integration train `KUMWE-TRAIN-2026-002` and the independent release

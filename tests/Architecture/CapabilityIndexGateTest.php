@@ -185,8 +185,9 @@ final class CapabilityIndexGateTest extends TestCase
 
     /**
      * Two pre-Version-2 packages remain legacy-unmanifested transitional entries that cannot satisfy a release
-     * gate, while `kumwe/canonical-json` and `kumwe/producer` are indexed from their Version 2 manifests and the
-     * ledger records adopting their handoffs.
+     * gate, while `kumwe/canonical-json`, `kumwe/producer` and `kumwe/sequence` are indexed from their Version 2
+     * manifests and the ledger records adopting their handoffs, and the sequence adoption's four removed symbols
+     * are the index's removed-symbol table.
      *
      * @return  void
      *
@@ -239,7 +240,19 @@ final class CapabilityIndexGateTest extends TestCase
             array_column($packages, 'installed_version'),
         );
         self::assertSame([], $document['extracted_namespaces']);
-        self::assertSame([], $document['removed_symbols']);
+        /** @var list<array{old_fqcn: string, new_fqcn: string, package: string, migration_id: string}> $removed */
+        $removed = $document['removed_symbols'];
+        self::assertSame(
+            [
+                'Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceFormat',
+                'Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceReset',
+                'Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceScope',
+                'Kumwe\\App\\BusinessRecord\\Application\\BusinessNumberSequenceAllocator',
+            ],
+            array_column($removed, 'old_fqcn'),
+        );
+        self::assertSame(['KUMWE-MIG-2026-002'], array_values(array_unique(array_column($removed, 'migration_id'))));
+        self::assertSame(['kumwe/sequence'], array_values(array_unique(array_column($removed, 'package'))));
         self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[2]['legacy']['retired_app_namespaces']);
     }
 
