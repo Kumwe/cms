@@ -21,6 +21,8 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
   compiler and executor services. The deployment independently records and admits its exact PHP/build
   tuple; missing or mismatched runtime metadata refuses boot. PHP Docker images use pinned glibc-based
   builds, and source, CI and release installation paths provision the same native prerequisite (#140).
+  CI uploads formatting evidence only after its generation succeeds, so an earlier failed gate does not
+  produce a second error for a patch file that was never generated.
 
 Kumwe 2.0 built from scratch: a content management system and a business application platform served by one
 set of application services, one composition root, one authoritative relational transaction, and one
