@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Studio\Application\Composition;
 
 use Kumwe\App\Studio\Application\Composition\StudioPublishedEnhancementRuntime;
+use Kumwe\App\Studio\Application\Rendering\StudioRenderResultAdmission;
 use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
 use Kumwe\Producer\Render\Enhancement;
 use Kumwe\Producer\Render\RenderException;
@@ -19,6 +20,7 @@ use PHPUnit\Framework\TestCase;
  * @since  2.0.0
  */
 #[CoversClass(StudioPublishedEnhancementRuntime::class)]
+#[CoversClass(StudioRenderResultAdmission::class)]
 final class StudioPublishedEnhancementRuntimeTest extends TestCase
 {
     /**

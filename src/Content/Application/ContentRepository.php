@@ -102,6 +102,24 @@ interface ContentRepository
     public function update(ContentRecord $record, int $expectedVersion): void;
 
     /**
+     * Re-pin an entry to the content type and workflow versions the record carries, leaving the entry as is.
+     *
+     * `update()` never rewrites the pinned definition versions, and adoption never rewrites the entry: the
+     * row keeps its title, slug, data, state and optimistic version and only follows its type to the
+     * adopted version, still guarded by the version the caller read.
+     *
+     * @param   ContentRecord  $record           Record carrying the adopted type and workflow versions.
+     * @param   int            $expectedVersion  Entry version the caller read before adopting.
+     *
+     * @return  void
+     *
+     * @throws  \Kumwe\App\Content\Domain\VersionConflict  When another writer moved the entry on first.
+     *
+     * @since   2.0.0
+     */
+    public function adopt(ContentRecord $record, int $expectedVersion): void;
+
+    /**
      * Move an entry into or out of the trash without touching its content or revisions.
      *
      * @param   string              $id               UUID of the content entry.

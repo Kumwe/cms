@@ -23,6 +23,7 @@ symbols:
   - Kumwe\App\Studio\Application\Rendering\StudioBlockRendererRuntime
   - Kumwe\App\Studio\Application\Rendering\StudioRenderResultAdmission
   - Kumwe\App\Content\Application\ContentService
+  - Kumwe\App\Content\Application\ContentRepository
 layer: application
 capability_index_sha256: "17ed90eb256da0068179d9b1028b86b13b85558eb9762d0bfc511bb4f8f07693"
 packages_reviewed:
@@ -155,4 +156,6 @@ Approved on 2026-09-09 by the maintainer, eWɘyn, reviewing at the App pull requ
 authoring host and Producer owns the wire, schema, release record, asset locator, deployment emitter and
 policies it composes. The core-growth baseline was re-recorded in the same change. The record should be
 revisited when Studio publishes the first-party coordinate record (retiring `StudioCoreCatalog`) or when
-Producer gains a host-neutral authoring application service.
+Producer gains a host-neutral authoring application service. `ContentRepository` joins the record on the
+same day for one widened port, `adopt()`: re-pinning a stored entry to an adopted type version is App's
+own persistence contract, distinct from `update()`, which never rewrites the pinned definition versions.

@@ -42,8 +42,12 @@ use Kumwe\App\Site\Application\PublicPageLocator;
 use Kumwe\App\Site\Application\SiteSettings;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedBlueprintUnavailable;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedContentRenderer;
+use Kumwe\App\Studio\Application\Composition\StudioPublishedEnhancementRuntime;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedStylesheet;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\App\Http\Middleware\SecurityHeadersMiddleware;
+use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
+use Kumwe\Producer\Render\Enhancement;
 use Kumwe\Producer\Render\RenderResult;
 use Kumwe\App\Workflow\Domain\Workflow;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -155,6 +159,7 @@ final class PublishedContentHandlerTest extends TestCase
             $response->getHeaderLine('Cache-Control'),
         );
         self::assertSame('noindex, nofollow, noarchive', $response->getHeaderLine('X-Robots-Tag'));
+        self::assertSame('', $response->getHeaderLine(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER));
         self::assertInstanceOf(ActiveLocale::class, $active);
         self::assertSame('ar', $active->locale()->toString());
         self::assertSame(TextDirection::RightToLeft, $active->locale()->direction());
@@ -312,10 +317,49 @@ final class PublishedContentHandlerTest extends TestCase
     }
 
     /**
+     * A composition that needs the pinned enhancement runtime names that runtime's origin for the security
+     * headers, so `script-src` widens by exactly one origin on exactly that response.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testAnEnhancedCompositionNamesTheRuntimeOriginForTheSecurityHeaders(): void
+    {
+        $studio = $this->createStub(StudioPublishedContentRenderer::class);
+        $studio->method('render')->willReturn(new RenderResult(
+            '<section data-studio-enhancement="tabs"><p>Composed roadmap</p></section>',
+            '[data-studio-block]{display:block}',
+            [new Enhancement('tabs', 'node-one', 's6e6f64652d6f6e65')],
+        ));
+        $active = null;
+        $handler = $this->handler(
+            $studio,
+            $active,
+            new StudioPublishedEnhancementRuntime(
+                StudioBrowserAssetLocator::npmPackages('https://cdn.jsdelivr.net/npm'),
+            ),
+        );
+
+        $response = $handler->handle($this->request('/insights/roadmap'));
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(
+            'https://cdn.jsdelivr.net',
+            $response->getHeaderLine(SecurityHeadersMiddleware::SCRIPT_ORIGIN_HEADER),
+        );
+        self::assertStringContainsString(
+            '<section data-studio-enhancement="tabs"><p>Composed roadmap</p></section>',
+            (string) $response->getBody(),
+        );
+    }
+
+    /**
      * Build the real public collaborators around a controllable Studio rendering boundary.
      *
-     * @param   StudioPublishedContentRenderer  $studio  Published composition boundary under test.
-     * @param   ?ActiveLocale                   $active  Shared locale holder returned for assertions.
+     * @param   StudioPublishedContentRenderer     $studio        Published composition boundary under test.
+     * @param   ?ActiveLocale                      $active        Shared locale holder returned for assertions.
+     * @param   ?StudioPublishedEnhancementRuntime  $enhancements  Optional pinned enhancement runtime locator.
      *
      * @return  PublishedContentHandler  Fully composed handler over deterministic in-memory stores.
      *
@@ -324,6 +368,7 @@ final class PublishedContentHandlerTest extends TestCase
     private function handler(
         StudioPublishedContentRenderer $studio,
         ?ActiveLocale &$active,
+        ?StudioPublishedEnhancementRuntime $enhancements = null,
     ): PublishedContentHandler {
         $settings = $this->settings();
         $content = $this->content();
@@ -367,6 +412,7 @@ final class PublishedContentHandlerTest extends TestCase
             $this->languages($content, $pages, $active),
             $active,
             $studio,
+            $enhancements,
         );
     }
 

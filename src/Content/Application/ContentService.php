@@ -525,7 +525,7 @@ final readonly class ContentService
             $context,
             $now,
         ): ContentRecord {
-            $this->repository->update($adopted, $expectedVersion);
+            $this->repository->adopt($adopted, $expectedVersion);
             $this->recordAudit($context->actorId(), 'content.adopt_type', $adopted->entry, $now);
 
             return $adopted;

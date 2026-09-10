@@ -3785,8 +3785,10 @@
         "Kumwe\\App\\Content\\Application\\ContentRepository": {
             "kind": "interface",
             "layer": "application",
-            "surface": "7a0fce7abcd344f199a9ddd8",
-            "growth": null
+            "surface": "1eece44b59d948ae4f264b61",
+            "growth": {
+                "record": "KUMWE-CGR-2026-001"
+            }
         },
         "Kumwe\\App\\Content\\Application\\ContentSearchRepository": {
             "kind": "interface",
@@ -3913,8 +3915,15 @@
         "Kumwe\\App\\Content\\Infrastructure\\Persistence\\DoctrineContentRepository": {
             "kind": "class",
             "layer": "infrastructure",
-            "surface": "64e4e38bd253accbf6e64144",
-            "growth": null
+            "surface": "1b41aefb466b200830a3afbf",
+            "growth": {
+                "classification": "host-infrastructure",
+                "implements": [
+                    "Kumwe\\App\\Content\\Application\\ContentSearchRepository",
+                    "Kumwe\\App\\Content\\Application\\SiteScopedContentRepository"
+                ],
+                "extends": null
+            }
         },
         "Kumwe\\App\\Content\\Infrastructure\\Persistence\\DoctrineTranslationGroupRepository": {
             "kind": "class",
