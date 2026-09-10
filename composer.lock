@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0ade86c50d6a3ef727e9c6b6b03c754",
+    "content-hash": "4176d50c5321ddab9db0a53a93a44a7e",
     "packages": [
         {
             "name": "brick/math",
@@ -323,6 +323,47 @@
                 "source": "https://github.com/php-fig/http-message-util/tree/1.1.5"
             },
             "time": "2020-11-24T22:02:12+00:00"
+        },
+        {
+            "name": "kumwe/canonical-json",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/canonical-json.git",
+                "reference": "e7006a2580a49a1c8ab507b0d7b9c3403b4f9f58"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/canonical-json/zipball/e7006a2580a49a1c8ab507b0d7b9c3403b4f9f58",
+                "reference": "e7006a2580a49a1c8ab507b0d7b9c3403b4f9f58",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\CanonicalJson\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Canonical JSON semantic profile, bounded operation metadata and language-neutral conformance corpus.",
+            "homepage": "https://github.com/kumwe/canonical-json",
+            "support": {
+                "issues": "https://github.com/kumwe/canonical-json/issues",
+                "source": "https://github.com/kumwe/canonical-json"
+            },
+            "time": "2026-09-07T19:51:15+00:00"
         },
         {
             "name": "kumwe/conversion",
