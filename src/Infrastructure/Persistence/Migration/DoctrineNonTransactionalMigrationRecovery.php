@@ -91,13 +91,16 @@ final readonly class DoctrineNonTransactionalMigrationRecovery implements NonTra
      * SHA-256 of `ApplicationAuthorizationMigration` as released, pinning the skip-`up()` strategy to it.
      *
      * That strategy records the migration as applied without ever running it again, so it is granted
-     * only to the published bytes whose postcondition the paired verifier knows how to reconstruct.
+     * only to the published bytes whose postcondition the paired verifier knows how to reconstruct. The
+     * pin follows the published source exactly: when `KUMWE-MIG-2026-004` moved `SiteContext` to
+     * `kumwe/access-context`, the migration changed only its import and this pin moved with it, while
+     * the pre-move checksum stays accepted for databases migrated earlier.
      *
      * @var    string
      * @since  2.0.0
      */
     private const PUBLISHED_APPLICATION_AUTHORIZATION_CHECKSUM =
-        '484705ff88bf14bc4f92a63cff2fcb613a739aa147a0e76c152e4f564f129bf0';
+        'ec925040815c2e4f1069355be969982db4f515186e7734bdbbfdf3f9cb045be1';
 
     /**
      * IDs of already-released migrations whose `up()` is idempotent but which cannot say so in code.
