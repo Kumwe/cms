@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessReporting\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;

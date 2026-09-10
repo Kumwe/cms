@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessRecord\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessRecord\Application\Query\BrowseRecordsQuery;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordPage;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordReader;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordReadRequest;
 use RuntimeException;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 /**
  * Host implementation of the SDK business-record reader port for in-process extension code.
@@ -51,10 +52,8 @@ final readonly class PolicyBusinessRecordReader implements BusinessRecordReader
      */
     public function readPage(BusinessRecordReadRequest $query): BusinessRecordPage
     {
-        $context = $query->context;
-        if (!$context instanceof ExecutionContext) {
-            throw new RuntimeException('Business-record disclosure requires the host-issued execution context.');
-        }
+        $context = ExtensionExecutionContext::host($query->context)
+            ?? throw new RuntimeException('Business-record disclosure requires the host-issued execution context.');
 
         return $this->records->browse(new BrowseRecordsQuery(
             $context,

@@ -6,7 +6,7 @@ namespace Kumwe\App\BusinessSurface\Application\Custom;
 
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Domain\ActionDefinition;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionOwner;
@@ -20,6 +20,7 @@ use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessActionR
 use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessViewQuery;
 use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessViewResult;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 /**
  * Resolves custom declarations from one installed definition and dispatches their typed handlers.
@@ -286,11 +287,7 @@ final readonly class CustomBusinessSurfaceDispatcher
     private static function context(
         \Kumwe\Extension\Spi\Application\ExecutionContext $context,
     ): ExecutionContext {
-        if (!$context instanceof ExecutionContext) {
-            throw new BusinessRecordDefinitionUnavailable();
-        }
-
-        return $context;
+        return ExtensionExecutionContext::host($context) ?? throw new BusinessRecordDefinitionUnavailable();
     }
 
     /**

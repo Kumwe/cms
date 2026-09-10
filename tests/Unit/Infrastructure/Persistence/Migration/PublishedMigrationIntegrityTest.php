@@ -15,7 +15,7 @@ final class PublishedMigrationIntegrityTest extends TestCase
         $root = dirname(__DIR__, 5);
         $published = [
             'ApplicationAuthorizationMigration.php' =>
-                '52667a12993dfd7944c95fa8723193ce199c663470385ddd77bcf4b3823dced6',
+                '687bccd141376133117c53468185d84cefebab11418a8506f0b2df43e7513ef9',
             'AuthorizationRecoveryIntegrationMigration.php' =>
                 '60c2d1cd888c89bffb49456b77851d13e08d520d57bb7851c9640443b5910f43',
             'CoreSchemaMigration.php' =>

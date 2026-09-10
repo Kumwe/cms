@@ -7,10 +7,10 @@ namespace Kumwe\App\Media\Infrastructure;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Media\Application\BoundedMediaChoiceStorage;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Application\MediaStorage;
+use Kumwe\Context\Value\SiteContext;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 

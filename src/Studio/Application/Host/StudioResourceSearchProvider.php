@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Host;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Host-owned, policy-aware source for one exact Studio resource family.

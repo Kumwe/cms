@@ -17,8 +17,8 @@ use Doctrine\DBAL\Types\DateTimeType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 

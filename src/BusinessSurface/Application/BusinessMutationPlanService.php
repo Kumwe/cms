@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessSurface\Application;
 use DateInterval;
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;

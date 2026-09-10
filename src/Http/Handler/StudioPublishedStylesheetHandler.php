@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Http\Handler;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Presentation\TranslationGroupPresenter;
 use Kumwe\App\Site\Application\PublicPageLocator;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedContentRenderer;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedStylesheet;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Laminas\Diactoros\Response\TextResponse;
 use Psr\Http\Message\ResponseInterface;

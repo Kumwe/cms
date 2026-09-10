@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use JsonException;
 use LogicException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Content\Application\ContentModelRepository;
 use Kumwe\App\Content\Domain\ContentTypeDefinition;
 use Kumwe\App\Content\Domain\VersionConflict;

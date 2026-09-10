@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Administrator\Presentation;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Binding\Http\AdministratorRouteRenderer;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -53,7 +54,7 @@ final readonly class AdministratorContributionRenderer implements AdministratorR
     public function render(array $model, ServerRequestInterface $request): string
     {
         $session = $request->getAttribute(AdministratorSession::REQUEST_ATTRIBUTE);
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (
             !$session instanceof AdministratorSession
             || !$context instanceof ExecutionContext

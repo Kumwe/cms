@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionCompatibilityAnalyzer;

@@ -6,7 +6,7 @@ namespace Kumwe\App\Tests\Unit\Studio\Application\Projection;
 
 use DateTimeImmutable;
 use Kumwe\App\Audit\Application\AuditRecorder;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Content\Application\ContentBrowseQuery;
 use Kumwe\App\Content\Application\ContentPage;
 use Kumwe\App\Content\Application\ContentRecord;

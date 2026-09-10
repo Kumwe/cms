@@ -6,7 +6,7 @@ namespace Kumwe\App\Tests\Unit\OpenApi\Application;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Application\DefinitionCatalogEntry;
 use Kumwe\App\BusinessDefinition\Application\DefinitionVersionRecord;

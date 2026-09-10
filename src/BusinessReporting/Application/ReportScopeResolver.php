@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessReporting\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessReporting\Domain\ReportDefinition;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Resolves the record-organization dimension independently from the actor's membership context.

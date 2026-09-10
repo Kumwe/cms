@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Automation\Job;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\Audit\Application\AuditAnchorWriter;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Scheduled driver that seals settled audit rows into the chained anchor ledger.

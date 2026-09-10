@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Localization\Http\Middleware;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Localization\Application\ActiveLocale;
 use Kumwe\App\Localization\Application\TranslationScope;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -51,7 +52,7 @@ final readonly class TranslationScopeMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if ($context instanceof ExecutionContext) {
             $this->active->adoptScope(new TranslationScope(
                 $context->site()->identifier(),

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSchema\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessSchema\Domain\PhysicalSchemaBlueprint;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Port translating a published business definition into the physical schema that definition installs.

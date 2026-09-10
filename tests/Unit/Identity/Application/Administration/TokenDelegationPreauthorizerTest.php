@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Identity\Application\Administration;
 
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\MembershipContext;
-use Kumwe\App\Application\Authorization\OrganizationContext;
-use Kumwe\App\Application\Authorization\SiteContext;
-use Kumwe\App\Application\Authorization\WorkspaceContext;
 use Kumwe\App\Identity\Application\Administration\AccessControlRepository;
 use Kumwe\App\Identity\Application\Administration\TokenDelegation;
 use Kumwe\App\Identity\Application\Administration\TokenDelegationPreauthorizer;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\OrganizationContext;
+use Kumwe\Context\Value\SiteContext;
+use Kumwe\Context\Value\WorkspaceContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

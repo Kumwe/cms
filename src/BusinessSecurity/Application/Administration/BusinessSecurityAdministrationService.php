@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationPolicyRegistry;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
@@ -27,6 +27,7 @@ use Kumwe\Extension\Spi\BusinessSecurity\Policy\RecordPolicyValueType;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Psr\Clock\ClockInterface;
 use Ramsey\Uuid\Uuid;
+use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 
 /**
  * Guarded runtime for the structured administrator Business Security workspace.
@@ -1251,7 +1252,7 @@ final readonly class BusinessSecurityAdministrationService
         string $capability,
         ?string $organizationId,
     ): bool {
-        if ($context->principal()?->hasCapability(Capability::fromString($capability)) !== true) {
+        if (AuthenticatedPrincipal::of($context)?->hasCapability(Capability::fromString($capability)) !== true) {
             return false;
         }
         if ($organizationId === null) {

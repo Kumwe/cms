@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Studio\Domain\Projection;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Studio\Domain\Projection\EntryCompositionOverrides;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Producer\Canonical\CanonicalEncodingException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

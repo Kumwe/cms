@@ -9,7 +9,6 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use JsonException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\TranslationGroupRepository;
 use Kumwe\App\Content\Domain\InvalidTranslationGroup;
 use Kumwe\App\Content\Domain\PublicationWindow;
@@ -18,6 +17,7 @@ use Kumwe\App\Content\Domain\TranslationGroupMember;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Localization\Domain\InvalidLocaleTag;
 use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /**

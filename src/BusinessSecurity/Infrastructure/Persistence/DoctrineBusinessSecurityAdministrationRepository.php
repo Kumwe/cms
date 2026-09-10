@@ -12,9 +12,9 @@ use InvalidArgumentException;
 use JsonException;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSecurity\Application\Administration\BusinessSecurityAdministrationRepository;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /**

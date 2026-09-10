@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Delivery\Console\Command;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Demo\Application\DemoProfileReconciler;
 use Kumwe\App\Extension\Runtime\ExtensionRuntimeMapCompiler;
 use Kumwe\App\Infrastructure\Persistence\Migration\MigrationRunner;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Console command that applies the pending schema migrations and republishes the extension runtime.

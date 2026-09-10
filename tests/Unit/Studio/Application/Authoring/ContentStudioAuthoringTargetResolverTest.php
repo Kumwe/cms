@@ -6,7 +6,6 @@ namespace Kumwe\App\Tests\Unit\Studio\Application\Authoring;
 
 use DateTimeImmutable;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Content\Domain\ContentEntry;
@@ -19,6 +18,7 @@ use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringTargetResolver;
 use Kumwe\App\Studio\Application\Projection\ContentStudioProjector;
 use Kumwe\App\Studio\Domain\Authoring\StudioAuthoringIntent;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

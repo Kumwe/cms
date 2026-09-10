@@ -325,6 +325,47 @@
             "time": "2020-11-24T22:02:12+00:00"
         },
         {
+            "name": "kumwe/access-context",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/access-context.git",
+                "reference": "132c3cd7c229ceda4398e19140d1477512c27ebf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/access-context/zipball/132c3cd7c229ceda4398e19140d1477512c27ebf",
+                "reference": "132c3cd7c229ceda4398e19140d1477512c27ebf",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\Context\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Immutable Kumwe access-context values and actor contracts, supplied explicitly to every use case.",
+            "homepage": "https://github.com/kumwe/access-context",
+            "support": {
+                "issues": "https://github.com/kumwe/access-context/issues",
+                "source": "https://github.com/kumwe/access-context"
+            },
+            "time": "2026-09-08T14:30:31+00:00"
+        },
+        {
             "name": "kumwe/canonical-json",
             "version": "v0.1.1",
             "source": {

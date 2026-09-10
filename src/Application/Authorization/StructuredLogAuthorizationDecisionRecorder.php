@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Authorization;
 
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Psr\Log\LoggerInterface;
 

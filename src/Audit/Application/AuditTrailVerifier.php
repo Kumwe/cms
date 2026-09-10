@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Audit\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Audit\Domain\AuditVerificationReport;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port that re-derives the audit trail's tamper evidence and reports the first divergence.

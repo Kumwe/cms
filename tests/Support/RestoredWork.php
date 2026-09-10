@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Support;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Kumwe\App\Kernel\Container;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Automation\AutomationManagementService;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use RuntimeException;

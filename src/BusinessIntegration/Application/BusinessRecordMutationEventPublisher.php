@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessIntegration\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessIntegration\Domain\RecordedDomainEvent;
 use Kumwe\App\BusinessIntegration\Domain\RecordedIntegrationEvent;
 use Kumwe\App\Extension\Application\ExtensionExecutionGate;
 use Kumwe\App\Extension\Contribution\ExtensionContributionRegistrySet;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessIntegration\Application\DomainEventHandler;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\DomainListenerDefinition;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\EventSensitivity;
@@ -72,7 +72,7 @@ final readonly class BusinessRecordMutationEventPublisher
         DateTimeImmutable $occurredAt,
     ): string {
         sort($disclosedFields, SORT_STRING);
-        $systemIdentity = $context->systemIdentity()?->value;
+        $systemIdentity = $context->systemActor()?->identifier();
         $event = new RecordedDomainEvent(
             'core.business_record.mutated',
             1,

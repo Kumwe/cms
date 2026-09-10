@@ -8,7 +8,6 @@ use Kumwe\App\Delivery\Http\Mcp\McpHttpHandler;
 use Kumwe\App\Infrastructure\Mcp\KumweMcpServerFactory;
 use Kumwe\App\Infrastructure\Mcp\McpCapabilityCatalog;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\McpHandlersFixture;
 use Laminas\Diactoros\ResponseFactory;
@@ -17,6 +16,7 @@ use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(McpHttpHandler::class)]
 final class McpHttpHandlerTest extends TestCase
@@ -38,7 +38,7 @@ final class McpHttpHandlerTest extends TestCase
                 AuthenticatedPrincipal::REQUEST_ATTRIBUTE,
                 $context->principal(),
             )
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         self::assertSame(204, $this->handler()->handle($request)->getStatusCode());
     }
@@ -84,7 +84,7 @@ final class McpHttpHandlerTest extends TestCase
             ->withMethod('POST')
             ->withUri(new \Laminas\Diactoros\Uri('https://kumwe.test/mcp'))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $other->principal())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('identities must match');

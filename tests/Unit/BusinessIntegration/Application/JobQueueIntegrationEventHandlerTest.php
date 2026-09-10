@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessIntegration\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\BusinessIntegration\Application\JobQueueIntegrationEventHandler;
 use Kumwe\App\BusinessIntegration\Domain\RecordedEventEnvelope;
 use Kumwe\App\BusinessIntegration\Domain\RecordedIntegrationEvent;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\Application\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\EventConsumerDefinition;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\EventSensitivity;
@@ -222,6 +223,6 @@ final class JobQueueIntegrationEventHandlerTest extends TestCase
         )->willReturn('job-1');
 
         (new JobQueueIntegrationEventHandler($jobs, $clock, 'kumwe.integration.consume'))
-            ->handle($definition, $event, $context);
+            ->handle($definition, $event, ExtensionExecutionContext::of($context));
     }
 }

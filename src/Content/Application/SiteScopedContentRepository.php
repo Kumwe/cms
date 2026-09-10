@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Content\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Content persistence whose every read is bounded by the site that owns the entry.

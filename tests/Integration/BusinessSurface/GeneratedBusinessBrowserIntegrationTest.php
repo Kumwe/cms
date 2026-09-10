@@ -6,9 +6,8 @@ namespace Kumwe\App\Tests\Integration\BusinessSurface;
 
 use ArrayObject;
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordDefinitionUnavailable;
@@ -43,6 +42,7 @@ use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Exercises generated browser delivery against the installed business-record runtime.
@@ -88,7 +88,7 @@ final class GeneratedBusinessBrowserIntegrationTest extends TestCase
                 'https://kumwe.test/administrator/business/' . rawurlencode($definition->handle),
             )
             ->withAttribute('definition', $definition->handle)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, new AdministratorSession(
                 '018f22e2-7c8b-7ab0-8f3a-88e8026bb398',
                 $principal,
@@ -150,7 +150,7 @@ final class GeneratedBusinessBrowserIntegrationTest extends TestCase
             )
             ->withHeader('Accept', 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8')
             ->withAttribute('definition', $definition->handle)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $limited)
+            ->withAttribute(ExecutionContextAttribute::NAME, $limited)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, new AdministratorSession(
                 '018f22e2-7c8b-7ab0-8f3a-88e8026bb399',
                 $principal,
@@ -1406,7 +1406,7 @@ final class GeneratedBusinessBrowserIntegrationTest extends TestCase
      *
      * @param   string  $label  Short uniqueness label.
      *
-     * @return  array{\Kumwe\App\Application\Authorization\ExecutionContext, string,
+     * @return  array{\Kumwe\Context\Value\ExecutionContext, string,
      *          BusinessRecordService, GeneratedBusinessBrowserController, string}
      *
      * @since   2.0.0

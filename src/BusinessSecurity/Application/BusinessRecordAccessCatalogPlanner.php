@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSecurity\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessRecord\Application\ResolvedBusinessDefinition;
 use Kumwe\App\BusinessRecord\Domain\RecordScope;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Optional bulk policy-planning port for generated definition catalogs.

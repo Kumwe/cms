@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Extension\Application\Package;
 
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Manifest\ExtensionManifest;
 
 /**

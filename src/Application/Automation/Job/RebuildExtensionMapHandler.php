@@ -7,7 +7,7 @@ namespace Kumwe\App\Application\Automation\Job;
 use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Extension\Runtime\ExtensionRuntimeMapCompiler;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 

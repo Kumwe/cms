@@ -10,8 +10,6 @@ use Kumwe\App\Administrator\Http\AdministratorRequest;
 use Kumwe\App\Administrator\Http\Middleware\AdministratorSessionMiddleware;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\SecurityWorkspaceState;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessSecurity\Application\Approval\StepUpProofConsumer;
 use Kumwe\App\BusinessSecurity\Application\MembershipDirectory;
@@ -19,6 +17,7 @@ use Kumwe\App\Http\Middleware\TrustedProxyMiddleware;
 use Kumwe\App\Identity\Application\Administration\AccessControlService;
 use Kumwe\App\Identity\Application\Administration\AdministratorIdentityGateway;
 use Kumwe\App\Identity\Application\Administration\AdministratorSessionStore;
+use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\StepUp\AdministratorStepUpProvider;
 use Kumwe\App\Identity\Application\StepUp\AuthorizationStepUpProofAdapter;
 use Kumwe\App\Identity\Domain\StepUp\StepUpEnrollmentCompletion;
@@ -26,6 +25,8 @@ use Kumwe\App\Identity\Domain\StepUp\StepUpIntent;
 use Kumwe\App\Identity\Domain\StepUp\StepUpVerification;
 use Kumwe\App\Identity\Domain\UserStatus;
 use Kumwe\App\Shared\Domain\CanonicalJson;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Clock\ClockInterface;
@@ -592,7 +593,7 @@ final readonly class AdministratorAccessControlHandler implements RequestHandler
         ExecutionContext $context,
         \Kumwe\App\Identity\Domain\StepUp\StepUpVerification $verification,
     ): ExecutionContext {
-        return $context->principal()?->context(
+        return AuthenticatedPrincipal::of($context)?->context(
             $context->site(),
             AuthenticationStrength::MultiFactor,
             $context->requestId(),

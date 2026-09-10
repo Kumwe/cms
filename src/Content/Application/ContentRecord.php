@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Content\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Domain\ContentEntry;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * A stored content entry together with the persistence facts the domain entry deliberately omits.

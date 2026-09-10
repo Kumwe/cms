@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Integration\BusinessRecord;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\DeleteRecordCommand;

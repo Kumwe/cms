@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Support;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Identity\Application\Authorization\InsufficientCapability;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Presentation\Application\ThemeMutationAuthorizer;

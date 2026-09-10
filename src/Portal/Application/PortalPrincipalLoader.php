@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Portal\Application;
 
-use Kumwe\App\Application\Authorization\MembershipContext;
+use Kumwe\Context\Value\MembershipContext;
 
 /**
  * Live user-role loader shared by portal password login and session resolution.

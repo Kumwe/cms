@@ -6,7 +6,7 @@ namespace Kumwe\App\Workflow\Domain;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * One published version of a site's editorial workflow: its states, its edges, and what each edge costs.

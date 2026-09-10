@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Infrastructure\Mcp;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessSurface\Application\BusinessHistoryUseCase;
 use Kumwe\App\BusinessSurface\Application\BusinessMutationPlanService;
 use Kumwe\App\BusinessSurface\Application\BusinessOperationStatusService;
@@ -14,6 +13,7 @@ use Kumwe\App\BusinessSurface\Application\BusinessSurfaceCatalog;
 use Kumwe\App\BusinessSurface\Application\BusinessSurfaceService;
 use Kumwe\App\Infrastructure\Mcp\BusinessMcpHandlers;
 use Kumwe\App\Infrastructure\Mcp\McpMutationGuard;
+use Kumwe\Context\Value\ExecutionContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSchema\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Locking re-reads of the facts a schema execution started from, taken again before it commits.

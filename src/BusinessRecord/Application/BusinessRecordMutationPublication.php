@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessRecord\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessDefinition\Domain\ComputationMode;
@@ -18,6 +17,7 @@ use Kumwe\App\BusinessRecord\Domain\BusinessRecord;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordRevision;
 use Kumwe\App\BusinessRecord\Domain\ClientAssertedInstant;
 use Kumwe\App\BusinessRecord\Domain\RecordValueGuard;
+use Kumwe\Context\Value\ExecutionContext;
 use Ramsey\Uuid\Uuid;
 
 /**

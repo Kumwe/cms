@@ -8,11 +8,11 @@ use DateTimeImmutable;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\OwnershipScope;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Navigation\Application\MenuItemRecord;
 use Kumwe\App\Navigation\Application\MenuRecord;
 use Kumwe\App\Navigation\Application\NavigationRepository;
 use Kumwe\App\Navigation\Application\PublicNavigation;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -21,7 +21,6 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(MenuItemRecord::class)]
 #[UsesClass(MenuRecord::class)]
 #[UsesClass(AuthorizationResource::class)]
-#[UsesClass(SiteContext::class)]
 final class PublicNavigationTest extends TestCase
 {
     public function testBuildsTheManagedMainMenuRecursivelyInPositionOrder(): void

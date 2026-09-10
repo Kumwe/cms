@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use JsonException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;

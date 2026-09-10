@@ -15,7 +15,7 @@ use Kumwe\App\Application\Automation\QueueRuntimePolicy;
 use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;
 use Kumwe\App\Application\Automation\StoredJob;
 use Kumwe\App\Application\Automation\Worker;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Delivery\Console\Command\QueueWorkCommand;
 use Kumwe\App\Delivery\Console\Output;

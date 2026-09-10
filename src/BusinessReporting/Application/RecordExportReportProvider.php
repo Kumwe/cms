@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessReporting\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
@@ -16,6 +15,7 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordDefinitionUnava
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordSchemaUnavailable;
 use Kumwe\App\BusinessReporting\Domain\ReportColumnDefinition;
 use Kumwe\App\BusinessReporting\Domain\ReportDefinition;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessReporting\Domain\ReportValueType;
 
 /**

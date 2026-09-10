@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Http\Middleware;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Http\Middleware\BearerAuthenticationMiddleware;
 use Kumwe\App\Identity\Application\Authentication\AccessTokenVerifier;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
@@ -23,6 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(BearerAuthenticationMiddleware::class)]
 #[UsesClass(AuthenticatedPrincipal::class)]
@@ -118,7 +119,7 @@ final class BearerAuthenticationMiddlewareTest extends TestCase
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::once())->method('handle')->with(self::callback(
             static function (ServerRequestInterface $request) use ($principal): bool {
-                $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+                $context = $request->getAttribute(ExecutionContextAttribute::NAME);
 
                 return $request->getAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE) === $principal
                     && $context instanceof ExecutionContext
@@ -207,7 +208,7 @@ final class BearerAuthenticationMiddlewareTest extends TestCase
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::once())->method('handle')->with(self::callback(
             static function (ServerRequestInterface $request): bool {
-                $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+                $context = $request->getAttribute(ExecutionContextAttribute::NAME);
 
                 return $context instanceof ExecutionContext
                     && $context->site()->identifier() === 'corporate';

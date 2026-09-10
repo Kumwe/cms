@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessIntegration\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Application\Automation\RetryPolicy;
 use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Context\Value\SiteContext;
 use LogicException;
 use Psr\Log\LoggerInterface;
 use Throwable;

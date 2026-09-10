@@ -6,11 +6,11 @@ namespace Kumwe\App\Kernel;
 
 use Closure;
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\DefinitionVersionRecord;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaLifecycleObserver;
 use Kumwe\App\BusinessSchema\Application\PublishedDefinitionSchemaObserver;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlan;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Stand-in for both business-schema observers that resolves the real ones only when a call arrives.

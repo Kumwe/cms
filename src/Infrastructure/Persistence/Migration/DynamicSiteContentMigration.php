@@ -8,12 +8,12 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Content\Domain\ContentEntry;
 use Kumwe\App\Content\Domain\ContentRevision;
 use Kumwe\App\Content\Domain\ContentStatus;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /** Adds typed navigation targets and installs the editable example site without overwriting user content. */

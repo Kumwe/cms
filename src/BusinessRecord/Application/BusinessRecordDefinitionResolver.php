@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessRecord\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port that pairs a published business definition with the physical schema installed for it.

@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Administrator\Http\Handler;
 
 use Kumwe\App\Administrator\Http\Handler\AdministratorStudioMediaUploadHandler;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionAuthority;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionRepository;
 use Kumwe\App\Studio\Application\Host\StudioResourceContextKeyFactory;
@@ -17,6 +14,9 @@ use Kumwe\App\Studio\Domain\Host\StudioHostSession;
 use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Host\StudioSessionMode;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -89,7 +89,7 @@ final class AdministratorStudioMediaUploadHandlerTest extends TestCase
         $handler = new AdministratorStudioMediaUploadHandler($media, $authority);
         $request = (new ServerRequestFactory())
             ->createServerRequest('PUT', 'https://app.example.invalid/administrator/studio/media/uploads/x')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute('upload', '0123456789abcdef0123456789abcdef')
             ->withHeader('Content-Type', 'image/jpeg')
             ->withHeader('X-Studio-Resource-Context', 'contexts/upload-handler')

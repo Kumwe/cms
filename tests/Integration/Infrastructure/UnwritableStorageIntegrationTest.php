@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Integration\Infrastructure;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessReporting\Infrastructure\FilesystemExportArtifactStorage;
 use Kumwe\App\Media\Infrastructure\FilesystemMediaStorage;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

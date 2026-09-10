@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Console\Command;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Infrastructure\Mcp\KumweMcpHandlers;

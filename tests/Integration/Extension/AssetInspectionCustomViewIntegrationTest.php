@@ -27,6 +27,7 @@ use KumweExample\AssetInspection\Application\InspectionSummaryViewHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 /**
  * Exercises the example custom view against the real record service and persisted row/field policies.
@@ -210,7 +211,7 @@ final class AssetInspectionCustomViewIntegrationTest extends TestCase
         $handler = new InspectionSummaryViewHandler(new PolicyBusinessRecordReader($records));
 
         $result = $handler->handle(new CustomBusinessViewQuery(
-            $viewer,
+            ExtensionExecutionContext::of($viewer),
             $definition->handle,
             'inspection_risk_summary',
             new RecordQuerySpecification(

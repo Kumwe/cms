@@ -7,12 +7,12 @@ namespace Kumwe\App\Infrastructure\Mcp;
 use Closure;
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Automation\AutomationManagementService;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Application\ContentService;
@@ -3067,7 +3067,7 @@ final readonly class KumweMcpHandlers
      */
     private function principal(): AuthenticatedPrincipal
     {
-        return $this->context()->principal()
+        return AuthenticatedPrincipal::of($this->context())
             ?? throw new InsufficientCapability('authenticated');
     }
 

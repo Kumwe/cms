@@ -11,7 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Automation\QueueRuntimeOperations;
 use Kumwe\App\Application\Automation\QueueRuntimePolicy;
 use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;

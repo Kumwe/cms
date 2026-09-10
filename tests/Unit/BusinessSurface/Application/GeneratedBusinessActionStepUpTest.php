@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\BusinessSurface\Application;
 
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\MembershipContext;
-use Kumwe\App\Application\Authorization\OrganizationContext;
-use Kumwe\App\Application\Authorization\SiteContext;
-use Kumwe\App\Application\Authorization\WorkspaceContext;
 use Kumwe\App\BusinessSurface\Application\GeneratedBusinessActionStepUp;
 use Kumwe\App\BusinessSurface\Application\GeneratedBusinessStepUpInputRejected;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\StepUp\AuthorizationStepUpProofAdapter;
 use Kumwe\App\Tests\Support\GeneratedActionCapturingStepUpProvider;
 use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\OrganizationContext;
+use Kumwe\Context\Value\SiteContext;
+use Kumwe\Context\Value\WorkspaceContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

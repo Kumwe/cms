@@ -9,9 +9,9 @@ use Kumwe\App\Application\Automation\AutomationManagementService;
 use Kumwe\App\Application\Automation\Job\ScheduleRepository;
 use Kumwe\App\Application\Automation\JobHandlerRegistry;
 use Kumwe\App\Application\Automation\JobQueue;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Delivery\Http\Api\Automation\AutomationApiHandler;
@@ -25,6 +25,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AutomationApiHandler::class)]
 final class AutomationApiHandlerTest extends TestCase
@@ -43,7 +44,7 @@ final class AutomationApiHandlerTest extends TestCase
             ->createServerRequest('GET', 'https://kumwe.test/api/v1/schedules/' . self::SCHEDULE)
             ->withAttribute('id', self::SCHEDULE)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $this->principal())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $this->context());
+            ->withAttribute(ExecutionContextAttribute::NAME, $this->context());
 
         $response = $this->handler($schedules)->handle($request);
 
@@ -64,7 +65,7 @@ final class AutomationApiHandlerTest extends TestCase
             ->createServerRequest('PATCH', 'https://kumwe.test/api/v1/schedules/' . self::SCHEDULE)
             ->withAttribute('id', self::SCHEDULE)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $this->principal())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $this->context())
+            ->withAttribute(ExecutionContextAttribute::NAME, $this->context())
             ->withAttribute(RequireIfMatchMiddleware::ATTRIBUTE, IfMatch::fromHeader('"v2"'))
             ->withBody((new StreamFactory())->createStream('{"enabled":false}'));
 
@@ -79,7 +80,7 @@ final class AutomationApiHandlerTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/api/v1/schedules')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $this->principal())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $this->context())
+            ->withAttribute(ExecutionContextAttribute::NAME, $this->context())
             ->withBody((new StreamFactory())->createStream(json_encode([
                 'name' => 'Session maintenance',
                 'cron_expression' => '0 * * * *',

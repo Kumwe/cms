@@ -13,7 +13,7 @@ use Kumwe\App\Application\Automation\JobHandlerRegistry;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\Application\Automation\RetryPolicy;
 use Kumwe\App\Application\Automation\Worker;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\EventContractRegistry;
 use Kumwe\App\BusinessIntegration\Application\InboxDisposition;

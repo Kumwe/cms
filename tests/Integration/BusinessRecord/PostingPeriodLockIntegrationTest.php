@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\BusinessRecord;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\ArchiveRecordCommand;

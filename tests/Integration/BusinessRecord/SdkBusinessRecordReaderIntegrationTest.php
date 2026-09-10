@@ -7,6 +7,7 @@ namespace Kumwe\App\Tests\Integration\BusinessRecord;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\PolicyBusinessRecordReader;
 use Kumwe\App\BusinessRecord\Application\RecordBrowseResult;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use Kumwe\App\Tests\Support\TestKernelFactory;
@@ -48,7 +49,7 @@ final class SdkBusinessRecordReaderIntegrationTest extends TestCase
         $reader = new PolicyBusinessRecordReader($records);
 
         $page = $reader->readPage(new BusinessRecordReadRequest(
-            $context,
+            ExtensionExecutionContext::of($context),
             $definition->handle,
             new RecordQuerySpecification(),
         ));

@@ -7,10 +7,10 @@ namespace Kumwe\App\Tests\Unit\Application\Authorization;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\AuthorizationResourceOwnershipUnknown;
 use Kumwe\App\Application\Authorization\DenyByDefaultAuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\OwnershipScope;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SiteGroup;
 use Kumwe\App\Application\Authorization\SiteGroupRegistry;
 use Kumwe\App\Application\Authorization\SiteGroupUnknown;
@@ -254,7 +254,7 @@ final class BusinessGroupOwnershipTest extends TestCase
             'scope_identifier' => 'freight',
         ]])->context(
             SiteContext::fromString('retail'),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'test-request-group-0001',
         );
 

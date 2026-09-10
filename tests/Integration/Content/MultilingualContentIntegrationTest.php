@@ -13,7 +13,7 @@ use Doctrine\DBAL\Schema\Name\UnqualifiedName;
 use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Content\Application\TranslationGroupRepository;

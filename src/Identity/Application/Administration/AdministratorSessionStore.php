@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Identity\Application\Administration;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Store that mints, resolves, and ends the browser sessions behind the administrator.

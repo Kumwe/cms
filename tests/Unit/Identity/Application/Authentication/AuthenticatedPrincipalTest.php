@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Identity\Application\Authentication;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\Authentication\PrincipalGrant;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
@@ -18,9 +18,6 @@ use PHPUnit\Framework\TestCase;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 
 #[CoversClass(AuthenticatedPrincipal::class)]
-#[UsesClass(AuthenticationStrength::class)]
-#[UsesClass(ExecutionContext::class)]
-#[UsesClass(SiteContext::class)]
 #[UsesClass(GrantScope::class)]
 #[UsesClass(PrincipalGrant::class)]
 final class AuthenticatedPrincipalTest extends TestCase

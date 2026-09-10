@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessSurface\Application;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\ActionDefinition;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessDefinition\Delivery\Api;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionService;
 use Kumwe\App\BusinessDefinition\Application\DefinitionCatalogEntry;
 use Kumwe\App\BusinessDefinition\Application\DefinitionVersionRecord;

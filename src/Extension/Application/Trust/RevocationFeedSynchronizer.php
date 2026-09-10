@@ -6,10 +6,10 @@ namespace Kumwe\App\Extension\Application\Trust;
 
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\Kernel\Configuration\RevocationFeedConfiguration;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;

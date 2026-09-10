@@ -6,11 +6,12 @@ namespace Kumwe\App\Tests\Integration\Localization;
 
 use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorWordingHandler;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\TestKernelFactory;
+use Kumwe\Context\Value\ExecutionContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -88,7 +89,7 @@ final class AdministratorWordingValidationIntegrationTest extends TestCase
             ->createServerRequest('POST', 'https://kumwe.test/administrator/wording?locale=en-GB&layer=site')
             ->withQueryParams(['locale' => 'en-GB', 'layer' => 'site'])
             ->withParsedBody($form)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, new AdministratorSession(
                 '018f22e2-7c8b-7ab0-8f3a-88e8026bb399',
                 $principal,

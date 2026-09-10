@@ -16,7 +16,7 @@ use Kumwe\App\Content\Application\ContentBrowseQuery;
 use Kumwe\App\Content\Application\ContentRepository;
 use Kumwe\App\Content\Application\ContentSearchRepository;
 use Kumwe\App\Content\Application\SiteScopedContentRepository;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Content\Domain\ContentEntry;
 use Kumwe\App\Content\Domain\ContentRevision;
 use Kumwe\App\Content\Domain\PublicationWindow;

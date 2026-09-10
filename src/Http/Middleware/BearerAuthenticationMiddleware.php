@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Http\Middleware;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Identity\Application\Authentication\AccessTokenVerifier;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\Authentication\ScopedAccessTokenVerifier;
@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Authenticates the API routes that opt in to bearer tokens and enforces the capabilities they declare.
@@ -188,7 +189,7 @@ final readonly class BearerAuthenticationMiddleware implements MiddlewareInterfa
             $request
                 ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
                 ->withAttribute(
-                    ExecutionContext::REQUEST_ATTRIBUTE,
+                    ExecutionContextAttribute::NAME,
                     $context,
                 ),
         );

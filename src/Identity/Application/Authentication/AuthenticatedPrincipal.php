@@ -7,6 +7,13 @@ namespace Kumwe\App\Identity\Application\Authentication;
 use InvalidArgumentException;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Identity\Domain\GrantScope;
+use Kumwe\Context\Contract\Principal;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\SiteContext;
+use Kumwe\Context\Value\StepUpProof;
 
 /**
  * A human actor that has proved who it is, together with the exact scoped authority it holds.
@@ -19,11 +26,13 @@ use Kumwe\App\Identity\Domain\GrantScope;
  * epoch must both be present, which lets every consumer treat the instance as trusted. The grant list
  * is the whole of the actor's authority and is stored in a stable order; the provenance object records
  * which authority vouched for it, and is what stops a principal assembled elsewhere from being wrapped
- * in an `ExecutionContext` that this installation's gateway will honour.
+ * in an `ExecutionContext` that this installation's gateway will honour. The class answers the package's
+ * `Principal` port, which is how `ExecutionContext::issueHuman()` reads it; the grants stay host-owned and are
+ * reached only through `of()`, which narrows the port back to this class.
  *
  * @since  2.0.0
  */
-final readonly class AuthenticatedPrincipal
+final readonly class AuthenticatedPrincipal implements Principal
 {
     /**
      * PSR-7 request attribute the authentication middleware publishes the current principal under.
@@ -243,6 +252,28 @@ final readonly class AuthenticatedPrincipal
     }
 
     /**
+     * Reach the App principal a host-issued context carries.
+     *
+     * The package context exposes its actor through the neutral `Principal` port, which is all a policy needs
+     * to name an actor. Grants, capabilities and the ability to re-issue a context at a stronger authentication
+     * strength stay on this class, so a consumer that needs them narrows the port here rather than trusting any
+     * implementation that merely answers it. No App authority issues a context around another implementation,
+     * so a foreign one is read as no principal at all and authorizes nothing.
+     *
+     * @param   ExecutionContext  $context  Context whose actor is being read.
+     *
+     * @return  ?self  The App principal, or null for a system context or a foreign implementation of the port.
+     *
+     * @since   2.0.0
+     */
+    public static function of(ExecutionContext $context): ?self
+    {
+        $principal = $context->principal();
+
+        return $principal instanceof self ? $principal : null;
+    }
+
+    /**
      * The user this principal speaks for, in the single spelling every store keys the actor by.
      *
      * Lowercasing here rather than at each call site is what lets the idempotency records, the MCP
@@ -459,21 +490,21 @@ final readonly class AuthenticatedPrincipal
      * invocation and pass the result down; every authorization decision, audit record and idempotency
      * fingerprint reads the context rather than re-deriving the actor.
      *
-     * @param   \Kumwe\App\Application\Authorization\SiteContext             $site                    Site this
+     * @param   SiteContext             $site                    Site this
      *          unit of work executes in.
-     * @param   \Kumwe\App\Application\Authorization\AuthenticationStrength  $authenticationStrength  How the
+     * @param   AuthenticationStrength  $authenticationStrength  How the
      *          actor proved itself; `System` is rejected, since this context has a human behind it.
-     * @param   string                                                       $requestId               Identifier
+     * @param   string                  $requestId               Identifier
      *          of this single unit of work.
-     * @param   ?string                                                      $correlationId           Trace
+     * @param   ?string                 $correlationId           Trace
      *          identifier shared by related work; defaults to `$requestId`.
-     * @param ?\Kumwe\App\Application\Authorization\AuthenticatedSurface $surface Authenticated delivery boundary.
-     * @param ?\Kumwe\App\Application\Authorization\MembershipContext $membership Exact live membership scope.
-     * @param ?string $sessionId Rotated browser-session
+     * @param   ?AuthenticatedSurface   $surface                 Authenticated delivery boundary.
+     * @param   ?MembershipContext      $membership              Exact live membership scope.
+     * @param   ?string                 $sessionId               Rotated browser-session
      *          identity.
-     * @param ?\Kumwe\App\Application\Authorization\StepUpProof $stepUpProof Fresh multi-factor proof.
+     * @param   ?StepUpProof            $stepUpProof             Fresh multi-factor proof.
      *
-     * @return  \Kumwe\App\Application\Authorization\ExecutionContext  A human context bound to this
+     * @return  ExecutionContext  A human context bound to this
      *          principal's authority.
      *
      * @throws  InvalidArgumentException  When the strength is `System`, or either identifier is empty, longer
@@ -482,16 +513,16 @@ final readonly class AuthenticatedPrincipal
      * @since   2.0.0
      */
     public function context(
-        \Kumwe\App\Application\Authorization\SiteContext $site,
-        \Kumwe\App\Application\Authorization\AuthenticationStrength $authenticationStrength,
+        SiteContext $site,
+        AuthenticationStrength $authenticationStrength,
         string $requestId,
         ?string $correlationId = null,
-        ?\Kumwe\App\Application\Authorization\AuthenticatedSurface $surface = null,
-        ?\Kumwe\App\Application\Authorization\MembershipContext $membership = null,
+        ?AuthenticatedSurface $surface = null,
+        ?MembershipContext $membership = null,
         ?string $sessionId = null,
-        ?\Kumwe\App\Application\Authorization\StepUpProof $stepUpProof = null,
-    ): \Kumwe\App\Application\Authorization\ExecutionContext {
-        return \Kumwe\App\Application\Authorization\ExecutionContext::issueHuman(
+        ?StepUpProof $stepUpProof = null,
+    ): ExecutionContext {
+        return ExecutionContext::issueHuman(
             $this->provenance,
             $this,
             $site,

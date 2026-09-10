@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Portal\Http;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\Contribution\ContributionOwner;
 use Kumwe\App\Extension\Contribution\ExtensionContributionRegistrySet;
 use Kumwe\App\InterfaceStandard\CustomizationScope;
@@ -35,6 +34,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Verifies portal POST delivery uses the resolved session catalog and preserves role authorization boundaries.
@@ -263,7 +263,7 @@ final class PortalDashboardPreferencesHandlerTest extends TestCase
             ->withQueryParams($query)
             ->withParsedBody($form)
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+            ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                 SiteContext::default(),
                 AuthenticationStrength::Password,
                 'test-portal-dashboard-preferences',

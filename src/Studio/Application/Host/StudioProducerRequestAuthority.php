@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Studio\Application\Host;
 
 use LogicException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewTransport;
 use Kumwe\Producer\Error\HostError;

@@ -12,7 +12,7 @@ use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\Application\Automation\JobHandlerRegistry;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\Application\Automation\QueueRuntimeOperations;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;

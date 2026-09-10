@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Portal\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSecurity\Application\MembershipDirectory;
 use Kumwe\App\Portal\Application\PortalContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Composes live principal and canonical membership loaders for portal session resolution.

@@ -8,7 +8,6 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
@@ -18,6 +17,7 @@ use Kumwe\App\Navigation\Application\NavigationRepository;
 use Kumwe\App\Navigation\Application\NavigationService;
 use Kumwe\App\Navigation\Application\NavigationVersionConflict;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -352,7 +352,7 @@ final class NavigationServiceTest extends TestCase
         );
     }
 
-    private function context(): \Kumwe\App\Application\Authorization\ExecutionContext
+    private function context(): \Kumwe\Context\Value\ExecutionContext
     {
         return AuthorizationContext::human(['navigation.manage'], self::ACTOR);
     }

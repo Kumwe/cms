@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Authoring;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Combines release/runtime evidence with one canonical per-mount configuration atomically.

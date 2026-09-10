@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessIntegration;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Application\Automation\JitterSource;
@@ -21,6 +19,8 @@ use Kumwe\App\BusinessIntegration\Application\ProcessWorkLease;
 use Kumwe\App\BusinessIntegration\Application\TrustedRuntimeGenerationGuard;
 use Kumwe\App\BusinessIntegration\Domain\ProcessWorkItem;
 use Kumwe\App\BusinessIntegration\Domain\ProcessWorkKind;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;

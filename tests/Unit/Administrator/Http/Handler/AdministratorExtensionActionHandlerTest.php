@@ -6,9 +6,9 @@ namespace Kumwe\App\Tests\Unit\Administrator\Http\Handler;
 
 use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorExtensionActionHandler;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Extension\Application\ExtensionManager;
 use Kumwe\App\Extension\Application\Trust\TrustStore;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
@@ -18,6 +18,7 @@ use Kumwe\App\Tests\Support\AuthorizationContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorExtensionActionHandler::class)]
 final class AdministratorExtensionActionHandlerTest extends TestCase
@@ -96,7 +97,7 @@ final class AdministratorExtensionActionHandlerTest extends TestCase
                 'current_password' => 'current password',
             ])
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     private function handler(ExtensionManager $extensions): AdministratorExtensionActionHandler

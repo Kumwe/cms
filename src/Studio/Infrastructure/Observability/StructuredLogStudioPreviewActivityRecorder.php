@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Studio\Infrastructure\Observability;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewActivityRecorder;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Log\LoggerInterface;
 
 /**

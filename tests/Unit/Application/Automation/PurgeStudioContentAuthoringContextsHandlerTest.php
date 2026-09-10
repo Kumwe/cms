@@ -6,12 +6,12 @@ namespace Kumwe\App\Tests\Unit\Application\Automation;
 
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Automation\Job\PurgeStudioContentAuthoringContextsHandler;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringContextPurger;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

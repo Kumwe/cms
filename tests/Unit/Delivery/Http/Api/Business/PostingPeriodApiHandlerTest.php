@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Delivery\Http\Api\Business;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\SiteContext;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessRecord\Application\PostingPeriodService;
@@ -25,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Pins the REST face of posting-period administration: routing, JSON shapes, and problem mapping.
@@ -295,7 +295,7 @@ final class PostingPeriodApiHandlerTest extends TestCase
 
         return $request
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     /**

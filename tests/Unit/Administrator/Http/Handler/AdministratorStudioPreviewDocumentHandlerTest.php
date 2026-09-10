@@ -7,10 +7,10 @@ namespace Kumwe\App\Tests\Unit\Administrator\Http\Handler;
 use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorStudioPreviewDocumentHandler;
 use Kumwe\App\Administrator\Http\Handler\AdministratorStudioPreviewStylesheetHandler;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionAuthority;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionRepository;
@@ -29,6 +29,7 @@ use Kumwe\App\Tests\Support\AuthorizationContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Proves the authenticated preview document is single-use application output with hardened delivery headers.
@@ -114,7 +115,7 @@ final class AdministratorStudioPreviewDocumentHandlerTest extends TestCase
             ->createServerRequest('GET', 'https://kumwe.test/administrator/studio/preview')
             ->withQueryParams($query)
             ->withHeader('Referer', 'https://kumwe.test/administrator/content/entry/edit')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = (new AdministratorStudioPreviewDocumentHandler($authority, $preview))->handle($request);
 
@@ -176,7 +177,7 @@ final class AdministratorStudioPreviewDocumentHandlerTest extends TestCase
                 'channel' => $channel,
                 'source' => $source,
             ])
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = (new AdministratorStudioPreviewStylesheetHandler($authority, $preview))->handle($request);
 

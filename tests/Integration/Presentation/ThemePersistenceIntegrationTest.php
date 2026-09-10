@@ -84,7 +84,7 @@ final class ThemePersistenceIntegrationTest extends TestCase
         $gateway = $this->identityGateway($database, $tables);
         $userId = $gateway->createInitialAdministrator(
             AuthorizationContext::system(SystemIdentity::Bootstrap)->context(
-                \Kumwe\App\Application\Authorization\SiteContext::default(),
+                \Kumwe\Context\Value\SiteContext::default(),
                 'theme-bootstrap-test',
             ),
             'admin@example.test',
@@ -108,7 +108,7 @@ final class ThemePersistenceIntegrationTest extends TestCase
         $gateway = $this->identityGateway($database, $tables);
         $userId = $gateway->createInitialAdministrator(
             AuthorizationContext::system(SystemIdentity::Bootstrap)->context(
-                \Kumwe\App\Application\Authorization\SiteContext::default(),
+                \Kumwe\Context\Value\SiteContext::default(),
                 'theme-authority-bootstrap-test',
             ),
             'authority@example.test',

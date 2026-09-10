@@ -8,9 +8,9 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /** Seeds the document-driven core content types that give the public site several distinct layouts. */

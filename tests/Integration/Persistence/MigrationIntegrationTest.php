@@ -19,7 +19,7 @@ use Kumwe\App\Application\Automation\JobExecutionClass;
 use Kumwe\App\Application\Automation\JobHandlerRegistry;
 use Kumwe\App\Delivery\Console\Command\MigrateCommand;
 use Kumwe\App\Delivery\Console\Output;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\Content\Infrastructure\Persistence\DoctrineContentModelRepository;

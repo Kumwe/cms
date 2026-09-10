@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Projection;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Content\Application\ContentBrowseQuery;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchItem;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchPage;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchProvider;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Authorized Content entry browser projected as Studio dynamic resources.

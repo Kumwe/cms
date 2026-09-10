@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Delivery\Console\Command;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Application\Operations\MigrationLockRecoveryService;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Break-glass console command that removes one expired pre-2.0 migration lock owner.

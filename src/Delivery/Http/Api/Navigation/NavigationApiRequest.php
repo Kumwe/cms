@@ -6,11 +6,12 @@ namespace Kumwe\App\Delivery\Http\Api\Navigation;
 
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Delivery\Http\Api\Concurrency\EntityTag;
 use Kumwe\App\Delivery\Http\Api\Concurrency\IfMatch;
 use Kumwe\App\Delivery\Http\Api\Concurrency\RequireIfMatchMiddleware;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -226,7 +227,7 @@ final class NavigationApiRequest
      */
     public static function context(ServerRequestInterface $request): ExecutionContext
     {
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (!$context instanceof ExecutionContext) {
             throw new InvalidArgumentException('An authenticated execution context is required.');
         }

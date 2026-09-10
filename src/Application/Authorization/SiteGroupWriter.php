@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Authorization;
 
+use Kumwe\Context\Value\SiteContext;
+
 /**
  * Write side of the declared-group registry that `SiteGroupRegistry` reads.
  *

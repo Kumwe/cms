@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Studio\Application\Host;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioResourceHostPort;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchItem;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchPage;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchProvider;
 use Kumwe\App\Tests\Support\StudioProducerRequest;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Producer\Error\HostRefusal;
 use Kumwe\Producer\Wire\RequestContext;
 use LogicException;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Presentation\Preference;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Read-only boundary projecting access-control roles as KIS presentation access groups.

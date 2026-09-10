@@ -6,11 +6,11 @@ namespace Kumwe\App\BusinessSchema\Infrastructure\Execution;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DbalException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaConflict;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaExecutionStateGuard;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Doctrine-backed locking reads the executor takes before it finalizes a schema execution.

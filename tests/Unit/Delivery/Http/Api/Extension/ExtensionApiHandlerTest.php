@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Delivery\Http\Api\Extension;
 
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Delivery\Http\Api\Extension\ExtensionApiHandler;
 use Kumwe\App\Delivery\Http\Api\ProblemDetailsResponseFactory;
 use Kumwe\App\Extension\Application\ExtensionManager;
@@ -17,6 +17,7 @@ use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(ExtensionApiHandler::class)]
 final class ExtensionApiHandlerTest extends TestCase
@@ -151,8 +152,8 @@ final class ExtensionApiHandlerTest extends TestCase
 
         $principal = AuthorizationContext::principal($capabilities, self::ACTOR);
         $context = $principal->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'theme-api-test-request',
         );
 
@@ -164,7 +165,7 @@ final class ExtensionApiHandlerTest extends TestCase
                 AuthenticatedPrincipal::REQUEST_ATTRIBUTE,
                 $principal,
             )
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withBody((new StreamFactory())->createStream(json_encode(
                 $body === [] ? (object) [] : $body,
                 JSON_THROW_ON_ERROR,

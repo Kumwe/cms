@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessReporting;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeRegistry;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;

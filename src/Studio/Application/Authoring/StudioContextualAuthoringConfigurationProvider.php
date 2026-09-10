@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Authoring;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Supplies the canonical host configuration for one authorized Content Studio mount.

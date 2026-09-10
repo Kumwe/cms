@@ -47,7 +47,7 @@ use Kumwe\App\Application\Authorization\ResourceOwnershipScopePolicy;
 use Kumwe\App\Application\Authorization\ResourceOwnershipScopeService;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SiteGroupAdministration;
 use Kumwe\App\Application\Authorization\SiteGroupRegistry;
 use Kumwe\App\Application\Authorization\SiteGroupWriter;
@@ -2327,6 +2327,36 @@ final class ContainerFactory
                     // databases run the corrected compatibility implementation in that same plan slot.
                     ConstraintNameIsolationCompatibilityMigration::ID => [
                         ConstraintNameIsolationCompatibilityMigration::PUBLISHED_CHECKSUM,
+                    ],
+                    // KUMWE-MIG-2026-004 moved the site and execution-context values to kumwe/access-context.
+                    // The nine migrations that name them changed only their imports; their statements are
+                    // unchanged, so databases migrated before the move keep the checksums recorded then.
+                    ApplicationAuthorizationMigration::ID => [
+                        '484705ff88bf14bc4f92a63cff2fcb613a739aa147a0e76c152e4f564f129bf0',
+                    ],
+                    ContentModelRuntimeMigration::ID => [
+                        '5b32b7007ee4819ad67fef186cee61c4f76952dd462cb99b3dca891d9549b79d',
+                    ],
+                    DynamicSiteContentMigration::ID => [
+                        'e42d07ec8c59e29293e0aac77f2acdf3c35bc8c57314af4375d2d7585e259f05',
+                    ],
+                    BusinessSecurityPortalMigration::ID => [
+                        'adac395af8bed6dde8b179895e7b59e46eb220a736c902014f7ea1db85d754c9',
+                    ],
+                    DocumentContentTypesMigration::ID => [
+                        '939135ac28684c06cf09d41564524e56f060e9ec8448c05f4aab2e5de8821eff',
+                    ],
+                    ResourceOwnershipScopeMigration::ID => [
+                        '71ee7868025464ddf3465f00f9b2e7825ea9c450307d547bee58a48071386e86',
+                    ],
+                    InterfaceMessageOverrideMigration::ID => [
+                        '069b5375c77fb60dccf65d57152dc8a8f9da57a3355dd410c8621e96d9d1bec6',
+                    ],
+                    PeriodPostingLockMigration::ID => [
+                        'e887d43fd7c155f2f633bab2220d699a8007dd2edd930d617083fc969b6364a0',
+                    ],
+                    StudioHostSessionMigration::ID => [
+                        '9579330402183aedb650109583b9c10531fa84ba5172e0a377319d9cf4c61eda',
                     ],
                 ],
             ), true);

@@ -11,8 +11,8 @@ use Kumwe\App\Administrator\Http\Middleware\AdministratorSessionMiddleware;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Localization\Application\Translator;
 use Kumwe\App\Administrator\Presentation\SecurityWorkspaceState;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessSecurity\Application\Administration\BusinessSecurityAdministrationService;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalService;
@@ -27,6 +27,7 @@ use Laminas\Diactoros\Response\RedirectResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 
 /**
  * Structured administrator UI for organization security, maker-checker and credential diagnostics.
@@ -108,7 +109,7 @@ final readonly class AdministratorBusinessSecurityHandler implements RequestHand
                             AdministratorRequest::required($form, 'step_up_code'),
                             $this->source($request),
                         );
-                    $steppedContext = $context->principal()?->context(
+                    $steppedContext = AuthenticatedPrincipal::of($context)?->context(
                         $context->site(),
                         AuthenticationStrength::MultiFactor,
                         $context->requestId(),

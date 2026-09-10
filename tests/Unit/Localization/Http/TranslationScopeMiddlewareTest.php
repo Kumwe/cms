@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Localization\Http;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Localization\Application\ActiveLocale;
 use Kumwe\App\Localization\Application\SupportedLocales;
 use Kumwe\App\Localization\Application\TranslationScope;
@@ -47,7 +47,7 @@ final class TranslationScopeMiddlewareTest extends TestCase
 
         (new TranslationScopeMiddleware($active))->process(
             (new ServerRequestFactory())->createServerRequest('GET', 'https://kumwe.test/')
-                ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context),
+                ->withAttribute(ExecutionContextAttribute::NAME, $context),
             $this->handler(static function () use ($active, &$seen): void {
                 $seen = [
                     'locale' => $active->locale()->toString(),

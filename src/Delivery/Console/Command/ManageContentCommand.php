@@ -8,7 +8,7 @@ use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Throwable;
 
 /**

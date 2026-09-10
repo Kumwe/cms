@@ -12,10 +12,10 @@ use Kumwe\App\Application\Authorization\OwnershipScopeLevel;
 use Kumwe\App\Application\Authorization\ResourceOwnership;
 use Kumwe\App\Application\Authorization\ResourceOwnershipScopePolicy;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipConflict;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SiteGroup;
 use Kumwe\App\Infrastructure\Authorization\DoctrineResourceSiteOwnershipWriter;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

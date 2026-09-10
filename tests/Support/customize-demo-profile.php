@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Demo\Application\DemoProfileLedger;
 use Kumwe\App\Demo\Infrastructure\DemoContentProfileInstaller;

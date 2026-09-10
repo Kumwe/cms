@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Studio\Application\Media;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Application\Media\StudioMediaCursorCodec;
 use Kumwe\App\Studio\Application\Media\StudioMediaHostPort;
@@ -15,6 +14,7 @@ use Kumwe\App\Studio\Domain\Media\StudioMediaPolicyRejected;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadPolicy;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadRequest;
 use Kumwe\App\Tests\Support\StudioProducerRequest;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Producer\Canonical\CanonicalJson;
 use Kumwe\Producer\Error\HostRefusal;
 use Kumwe\Producer\Wire\HostResult;

@@ -14,7 +14,7 @@ use InvalidArgumentException;
 use JsonException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
 use Kumwe\App\Application\Automation\ExpiredJobLease;
 use Kumwe\App\Application\Automation\JobExecutionClass;

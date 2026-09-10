@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessDefinition\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\CompatibilityPlan;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionStatus;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Store behind a site's definition catalog: the draft in progress and every version already published.

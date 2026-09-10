@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessIntegration\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\OrganizationContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessIntegration\Domain\ProcessWorkItem;
+use Kumwe\Context\Value\OrganizationContext;
+use Kumwe\Context\Value\SiteContext;
 use Ramsey\Uuid\Uuid;
 
 /**

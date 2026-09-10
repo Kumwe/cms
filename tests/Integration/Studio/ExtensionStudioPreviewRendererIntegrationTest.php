@@ -10,7 +10,6 @@ use Kumwe\App\Administrator\Http\Handler\AdministratorExtensionsHandler;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Kernel\Container;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Extension\Application\ExtensionManager;
 use Kumwe\App\Extension\Application\Trust\TrustStore;
 use Kumwe\App\Extension\Contribution\CanonicalManifestActivator;
@@ -47,6 +46,7 @@ use SplFileInfo;
 use stdClass;
 use Throwable;
 use ZipArchive;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(StudioBlockRendererRuntime::class)]
 #[CoversClass(AdministratorExtensionsHandler::class)]
@@ -578,7 +578,7 @@ final class ExtensionStudioPreviewRendererIntegrationTest extends TestCase
         $handler = self::service($runtime, AdministratorExtensionsHandler::class);
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/administrator/extensions')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, new AdministratorSession(
                 '018f22e2-7c8b-7ab0-8f3a-88e8026bb39a',
                 $principal,

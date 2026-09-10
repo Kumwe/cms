@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSurface\Delivery\Portal;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordDefinitionUnavailable;
 use Kumwe\App\BusinessSurface\Application\BusinessSurface;
 use Kumwe\App\BusinessSurface\Application\GeneratedBusinessActionStepUp;

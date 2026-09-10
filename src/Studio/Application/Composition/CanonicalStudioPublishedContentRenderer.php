@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Composition;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Studio\Application\Host\StudioArtifactRepository;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewBindingResolver;
@@ -14,6 +13,7 @@ use Kumwe\App\Studio\Application\Projection\ContentStudioProjector;
 use Kumwe\App\Studio\Application\Projection\StudioProjectionRejected;
 use Kumwe\App\Studio\Application\Rendering\StudioBlockRendererRuntime;
 use Kumwe\App\Studio\Application\Rendering\StudioRenderResultAdmission;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Producer\Render\CompositionRenderer;
 use Kumwe\Producer\Render\RenderContext;
 use Kumwe\Producer\Render\RenderPolicy;

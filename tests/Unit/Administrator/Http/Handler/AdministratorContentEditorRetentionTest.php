@@ -12,9 +12,8 @@ use Kumwe\App\Administrator\Http\Handler\AdministratorCreateContentHandler;
 use Kumwe\App\Administrator\Http\Handler\AdministratorUpdateContentHandler;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Content\Application\ContentModelRepository;
 use Kumwe\App\Content\Application\ContentModelService;
@@ -48,6 +47,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorContentEditorHandler::class)]
 #[CoversClass(AdministratorCreateContentHandler::class)]
@@ -328,7 +328,7 @@ final class AdministratorContentEditorRetentionTest extends TestCase
                 'csrf-token',
                 new DateTimeImmutable('+1 hour'),
             ))
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+            ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                 SiteContext::default(),
                 AuthenticationStrength::Password,
                 'test-request-0001',

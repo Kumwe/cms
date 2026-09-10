@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Identity\Application\Authorization\InsufficientCapability;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;

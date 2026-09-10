@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Studio\Application\Composition;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Content\Application\ContentModelRepository;
 use Kumwe\App\Content\Domain\ContentTypeDefinition;
 use Kumwe\Extension\Spi\Contribution\CanonicalCompositionDocument;

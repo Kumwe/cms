@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Delivery\Console\Command;
 
 use Kumwe\App\Tests\Support\TranslatesConsoleOutput;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditTrailExport;
 use Kumwe\App\Audit\Application\AuditTrailExporter;
 use Kumwe\App\Audit\Application\AuditTrailVerifier;

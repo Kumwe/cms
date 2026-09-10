@@ -6,14 +6,14 @@ namespace Kumwe\App\Delivery\Console\Command;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSecurity\Application\MembershipDirectory;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Identity\Application\Administration\AdministratorIdentityGateway;
 use Kumwe\App\Identity\Application\Authorization\InsufficientCapability;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Throwable;
 

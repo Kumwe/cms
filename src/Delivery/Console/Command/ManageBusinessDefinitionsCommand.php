@@ -164,10 +164,10 @@ final readonly class ManageBusinessDefinitionsCommand implements Command
      * `execute()` routes no other action here. Only a site-owned definition can be retired this way —
      * a definition a package owns follows its extension's lifecycle instead.
      *
-     * @param   \Kumwe\App\Application\Authorization\ExecutionContext  $context  Authorized actor and site.
-     * @param   string                                                 $action   `supersede`, `deprecate` or `reject`.
-     * @param   string                                                 $handle   Definition handle being retired.
-     * @param   int                                                    $version  Published version to retire.
+     * @param   \Kumwe\Context\Value\ExecutionContext  $context  Authorized actor and site.
+     * @param   string                                 $action   `supersede`, `deprecate` or `reject`.
+     * @param   string                                 $handle   Definition handle being retired.
+     * @param   int                                    $version  Published version to retire.
      *
      * @return  DefinitionVersionRecord  The version as stored after the status change.
      *
@@ -179,7 +179,7 @@ final readonly class ManageBusinessDefinitionsCommand implements Command
      * @since   2.0.0
      */
     private function retire(
-        \Kumwe\App\Application\Authorization\ExecutionContext $context,
+        \Kumwe\Context\Value\ExecutionContext $context,
         string $action,
         string $handle,
         int $version,

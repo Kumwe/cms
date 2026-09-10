@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Support;
 
 use Kumwe\App\Application\Automation\JobHandler;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * A job handler that starts its work, says so on disk, and then waits for a drill to decide how it ends.

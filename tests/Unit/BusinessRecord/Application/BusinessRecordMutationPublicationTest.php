@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessRecord\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;

@@ -6,8 +6,6 @@ namespace Kumwe\App\Tests\Unit\Content\Application;
 
 use DateTimeImmutable;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\Content\Application\ContentRecord;
@@ -22,6 +20,8 @@ use Kumwe\App\Localization\Domain\LocaleTag;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

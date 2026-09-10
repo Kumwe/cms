@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Delivery\Console\Command;
 
 use Kumwe\App\Tests\Support\TranslatesConsoleOutput;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\BusinessSecurity\Application\MembershipDirectory;
 use Kumwe\App\Delivery\Console\Command\ConsoleAuthorizer;
 use Kumwe\App\Delivery\Console\Command\CreateAccessTokenCommand;

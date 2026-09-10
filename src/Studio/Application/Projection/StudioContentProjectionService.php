@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kumwe\App\Studio\Application\Projection;
 
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Content\Application\ContentModelNotFound;
 use Kumwe\App\Content\Application\ContentModelService;
 use Kumwe\App\Content\Application\ContentNotFound;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Studio\Domain\Projection\StudioProjectionRejection;
+use Kumwe\Context\Value\ExecutionContext;
 use stdClass;
 
 /**

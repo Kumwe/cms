@@ -8,12 +8,12 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\StepUpProof;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalDenied;
 use Kumwe\App\BusinessSecurity\Application\Approval\StepUpProofConsumer;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\StepUpProof;
 
 /**
  * Doctrine replay fence for persisted, short-lived step-up proofs.

@@ -8,12 +8,9 @@ use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorAccessControlHandler;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Application\Security\HighImpactCredentialGuard;
 use Kumwe\App\Audit\Application\AuditRecorder;
@@ -32,6 +29,9 @@ use Kumwe\App\Identity\Application\StepUp\StepUpCredentialStore;
 use Kumwe\App\Presentation\Twig\AdministratorTwigEnvironment;
 use Kumwe\App\Presentation\Twig\RecoveryAdministratorTwigEnvironment;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -102,7 +102,7 @@ final class AdministratorAccessControlHandlerTest extends TestCase
             ->withQueryParams($query)
             ->withHeader('User-Agent', 'Kumwe test browser')
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withParsedBody([
                 'action' => 'context.select',
                 'organization' => 'acme',

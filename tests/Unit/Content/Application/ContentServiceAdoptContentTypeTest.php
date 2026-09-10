@@ -6,7 +6,6 @@ namespace Kumwe\App\Tests\Unit\Content\Application;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Content\Application\ContentModelNotFound;
 use Kumwe\App\Content\Application\ContentModelRepository;
@@ -21,6 +20,7 @@ use Kumwe\App\Content\Domain\PublicationWindow;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;

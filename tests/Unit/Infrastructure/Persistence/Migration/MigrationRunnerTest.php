@@ -8,7 +8,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Infrastructure\Persistence\Migration\Migration;
@@ -20,6 +19,7 @@ use Kumwe\App\Infrastructure\Persistence\Migration\MigrationRunner;
 use Kumwe\App\Infrastructure\Persistence\Migration\NonTransactionalMigrationAction;
 use Kumwe\App\Infrastructure\Persistence\Migration\NonTransactionalMigrationRecovery;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -220,7 +220,7 @@ final class MigrationRunnerTest extends TestCase
         );
     }
 
-    private function context(): \Kumwe\App\Application\Authorization\ExecutionContext
+    private function context(): \Kumwe\Context\Value\ExecutionContext
     {
         return AuthorizationContext::system(SystemIdentity::Migration)->context(
             SiteContext::default(),

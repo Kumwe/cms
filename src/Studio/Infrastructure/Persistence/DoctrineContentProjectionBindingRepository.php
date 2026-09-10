@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Studio\Application\Projection\ContentProjectionBindingRepository;
 use Kumwe\App\Studio\Application\Composition\ContentBlueprintBindingStore;

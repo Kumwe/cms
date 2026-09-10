@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Demo\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionOwnerType;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionStatus;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /**

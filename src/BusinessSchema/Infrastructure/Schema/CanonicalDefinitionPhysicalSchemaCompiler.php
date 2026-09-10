@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSchema\Infrastructure\Schema;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\ComputationMode;
@@ -25,6 +24,7 @@ use Kumwe\App\BusinessSchema\Domain\PhysicalSchemaBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableKind;
 use Kumwe\App\BusinessSchema\Domain\SchemaEvolutionHints;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Sequence\Value\NumberSequenceFormat;
 
 /**

@@ -8,9 +8,8 @@ use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorDashboardHandler;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceAccessGroupState;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceService;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceState;
@@ -48,6 +47,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorDashboardHandler::class)]
 #[CoversClass(AdministratorRenderer::class)]
@@ -232,7 +232,7 @@ final class AdministratorDashboardHandlerTest extends TestCase
             ->createServerRequest('GET', 'https://kumwe.test/administrator')
             ->withQueryParams($query)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+            ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                 SiteContext::default(),
                 AuthenticationStrength::Password,
                 'test-request-0001',

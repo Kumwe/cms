@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Preview;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewGrant;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewTransport;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Narrow application boundary used by the authenticated preview-document delivery adapter.

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSchema\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\DefinitionVersionRecord;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlan;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Port the definition publisher notifies so schema plans exist for the versions it just published.

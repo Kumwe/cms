@@ -6,11 +6,11 @@ namespace Kumwe\App\Tests\Unit\Portal\Presentation;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationPolicyRegistry;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Extension\Contribution\CapabilityDefinitionRegistry;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Portal\Application\PortalContext;
@@ -33,6 +33,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(PortalContributionRenderer::class)]
 /**
@@ -92,7 +93,7 @@ final class PortalContributionRendererTest extends TestCase
         $fabricated = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/portal/extensions/acme/routes')
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, new stdClass())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, new stdClass());
+            ->withAttribute(ExecutionContextAttribute::NAME, new stdClass());
 
         $this->assertRefused(static fn (): string => $capability->render([], $fabricated));
         $this->assertRefused(fn (): string => $capability->render(
@@ -184,7 +185,7 @@ final class PortalContributionRendererTest extends TestCase
         return (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/portal/extensions/acme/routes')
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     /**

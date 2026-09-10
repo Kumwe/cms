@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Studio\Domain\Projection;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Producer\Canonical\CanonicalEncodingException;
 use Kumwe\Producer\Canonical\CanonicalJson;
 use stdClass;

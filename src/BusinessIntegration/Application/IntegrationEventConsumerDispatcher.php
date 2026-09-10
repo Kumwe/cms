@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessIntegration\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;
 use Kumwe\App\Application\Automation\RetryPolicy;
 use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessIntegration\Application\IntegrationEventHandler;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\EventConsumerDefinition;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\IntegrationEvent;
@@ -99,7 +100,7 @@ final readonly class IntegrationEventConsumerDispatcher
                 $context,
             ): void {
                 $this->runtime->assertCurrent($lease->runtimeGeneration);
-                $handler->handle($registered, $event, $context);
+                $handler->handle($registered, $event, ExtensionExecutionContext::of($context));
                 $this->inbox->complete($lease);
             });
             $this->logger->info('Integration event consumer completed.', [

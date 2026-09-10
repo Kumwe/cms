@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Studio\Application\Preview;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewActivityRecorder;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewBindingSource;

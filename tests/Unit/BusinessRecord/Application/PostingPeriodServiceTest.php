@@ -6,7 +6,7 @@ namespace Kumwe\App\Tests\Unit\BusinessRecord\Application;
 
 use DateTimeImmutable;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordPostingPeriodConflict;

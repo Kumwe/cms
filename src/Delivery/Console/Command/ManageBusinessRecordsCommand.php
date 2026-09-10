@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Console\Command;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;

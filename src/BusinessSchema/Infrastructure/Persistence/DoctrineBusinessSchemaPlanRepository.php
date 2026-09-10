@@ -11,13 +11,13 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Types\Types;
 use JsonException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaConflict;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaPlanRepository;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlan;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlanStep;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /**

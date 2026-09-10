@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Http\Api;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -39,7 +40,7 @@ final class ApiExecutionContext
      */
     public static function fromRequest(ServerRequestInterface $request): ExecutionContext
     {
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (!$context instanceof ExecutionContext) {
             throw new InvalidArgumentException('An authenticated execution context is required.');
         }

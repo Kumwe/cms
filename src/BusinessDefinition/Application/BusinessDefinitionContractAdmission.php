@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessDefinition\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Admits a complete post-publication definition set to derived public contracts before commit.

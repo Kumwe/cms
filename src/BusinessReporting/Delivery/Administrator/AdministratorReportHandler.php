@@ -6,8 +6,8 @@ namespace Kumwe\App\BusinessReporting\Delivery\Administrator;
 
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Administrator\Http\AdministratorRequest;
 use Kumwe\App\Administrator\Http\Middleware\AdministratorCsrfMiddleware;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;

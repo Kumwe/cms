@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSecurity\Application\Approval;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Relational store and role-membership predicates for generic maker-checker approval.

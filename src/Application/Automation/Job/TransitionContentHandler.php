@@ -6,7 +6,7 @@ namespace Kumwe\App\Application\Automation\Job;
 
 use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\Application\Automation\PermanentFailure;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Content\Application\ContentService;
 
 /**

@@ -8,7 +8,7 @@ use Doctrine\DBAL\DriverManager;
 use Kumwe\App\Application\Automation\AutomationManagementService;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionService;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaService;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Extension\Application\ExtensionManager;

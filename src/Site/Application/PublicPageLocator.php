@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Site\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Navigation\Application\PublicNavigation;
 use Kumwe\App\Presentation\Application\SitePresentation;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Two-way map between a public request path and the published content mounted at it.

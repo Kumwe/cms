@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\BusinessReporting;
 
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\App\BusinessReporting\Application\ReportDefinitionRegistry;
 use Kumwe\App\BusinessReporting\Application\ReportExecutionResult;
 use Kumwe\App\BusinessReporting\Delivery\Api\ReportApiPresenter;

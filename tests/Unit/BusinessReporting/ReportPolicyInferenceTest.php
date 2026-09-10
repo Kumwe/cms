@@ -28,7 +28,7 @@ use Kumwe\App\BusinessReporting\Domain\ReportParameterDefinition;
 use Kumwe\App\BusinessReporting\Domain\ReportSortDefinition;
 use Kumwe\App\BusinessReporting\Domain\ReportSortDirection;
 use Kumwe\Extension\Spi\BusinessReporting\Domain\ReportValueType;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

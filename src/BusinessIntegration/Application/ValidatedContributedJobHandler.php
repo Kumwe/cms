@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessIntegration\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\JobHandler;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\JobHandler as ContributedJobHandler;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\JobContributionDefinition;
 
@@ -62,6 +63,6 @@ final readonly class ValidatedContributedJobHandler implements JobHandler
     public function handle(array $payload, ExecutionContext $context): void
     {
         $this->payloads->assertPayload($this->definition->payloadSchema(), $payload);
-        $this->handler->handle($this->definition, $payload, $context);
+        $this->handler->handle($this->definition, $payload, ExtensionExecutionContext::of($context));
     }
 }

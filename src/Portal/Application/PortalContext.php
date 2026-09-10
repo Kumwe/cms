@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Portal\Application;
 
-use Kumwe\App\Application\Authorization\MembershipContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Site and optional membership selected by trusted portal resolution rather than request input.

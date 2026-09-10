@@ -6,7 +6,7 @@ namespace Kumwe\App\Tests\Unit\InterfaceStandard;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroup;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroupCatalog;

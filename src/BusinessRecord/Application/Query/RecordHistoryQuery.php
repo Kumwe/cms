@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessRecord\Application\Query;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessRecord\Application\RecordRequestGuard;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Request for one bounded window of a business record's revision log.

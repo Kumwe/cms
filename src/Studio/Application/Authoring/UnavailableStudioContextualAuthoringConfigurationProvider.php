@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Authoring;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Keeps contextual Studio unavailable until its canonical mount configuration is published.

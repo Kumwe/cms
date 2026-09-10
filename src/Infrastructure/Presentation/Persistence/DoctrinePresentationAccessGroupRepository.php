@@ -8,11 +8,11 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroup;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroupCatalog;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroupRepository;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\ExecutionContext;
 use RuntimeException;
 
 /**

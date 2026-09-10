@@ -6,10 +6,10 @@ namespace Kumwe\App\Tests\Unit\Administrator\Http\Handler;
 
 use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorStudioHostHandler;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Application\Persistence\TransactionState;
 use Kumwe\App\Audit\Application\AuditRecorder;
@@ -48,6 +48,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Psr\Log\NullLogger;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorStudioHostHandler::class)]
 #[CoversClass(StudioProducerHostFactory::class)]
@@ -116,7 +117,7 @@ final class AdministratorStudioHostHandlerTest extends TestCase
             'https://kumwe.test/administrator/studio/host',
             'POST',
             (new StreamFactory())->createStream($body),
-        ))->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+        ))->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = $handler->handle($request);
 
@@ -462,6 +463,6 @@ final class AdministratorStudioHostHandlerTest extends TestCase
         ))
             ->withAttribute('port', $port)
             ->withAttribute('operation', $operation)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 }

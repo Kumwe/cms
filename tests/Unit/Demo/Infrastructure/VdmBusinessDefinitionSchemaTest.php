@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Demo\Infrastructure;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionValidator;
 use Kumwe\App\BusinessDefinition\Application\DefinitionCatalogEntry;
@@ -17,6 +16,7 @@ use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessSchema\Domain\PhysicalNameCompiler;
 use Kumwe\App\BusinessSchema\Infrastructure\Schema\CanonicalDefinitionPhysicalSchemaCompiler;
 use Kumwe\App\Demo\Infrastructure\FilesystemDemoManifestCatalog;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 

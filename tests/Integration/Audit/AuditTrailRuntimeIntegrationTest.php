@@ -9,7 +9,7 @@ use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Kumwe\App\Kernel\Container;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Automation\GlobalJobPrincipals;
 use Kumwe\App\Application\Automation\JobExecutionScope;
 use Kumwe\App\Audit\Application\AuditAnchorWriter;

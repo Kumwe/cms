@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\BusinessRecord;
 use DateTimeImmutable;
 use DateTimeZone;
 use Kumwe\App\Kernel\Container;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;

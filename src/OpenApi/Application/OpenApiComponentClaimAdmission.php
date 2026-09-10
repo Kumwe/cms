@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\OpenApi\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionContractAdmission;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\InvalidBusinessDefinition;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Claims every deterministic per-definition OpenAPI component before definitions become active.

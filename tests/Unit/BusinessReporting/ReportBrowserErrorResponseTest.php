@@ -7,12 +7,12 @@ namespace Kumwe\App\Tests\Unit\BusinessReporting;
 use DateTimeImmutable;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationPolicyRegistry;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordQueryPurpose;
 use Kumwe\App\BusinessRecord\Application\RecordBrowseResult;
 use Kumwe\Extension\Spi\BusinessRecord\Query\RecordQuerySpecification;
@@ -45,6 +45,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorReportHandler::class)]
 #[CoversClass(PortalReportHandler::class)]
@@ -70,7 +71,7 @@ final class ReportBrowserErrorResponseTest extends TestCase
             ->withParsedBody(['parameters_json' => '{commercially-sensitive'])
             ->withAttribute('operation', 'execute')
             ->withAttribute('report', 'acme.open_items')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session);
 
         $response = (new AdministratorReportHandler(
@@ -112,7 +113,7 @@ final class ReportBrowserErrorResponseTest extends TestCase
             ->withParsedBody(['parameters_json' => '{commercially-sensitive'])
             ->withAttribute('operation', 'execute')
             ->withAttribute('report', 'acme.open_items')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session);
 
         $response = (new PortalReportHandler(

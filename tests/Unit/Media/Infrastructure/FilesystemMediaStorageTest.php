@@ -6,16 +6,15 @@ namespace Kumwe\App\Tests\Unit\Media\Infrastructure;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Infrastructure\FilesystemMediaStorage;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(FilesystemMediaStorage::class)]
 #[UsesClass(MediaAsset::class)]
-#[UsesClass(SiteContext::class)]
 final class FilesystemMediaStorageTest extends TestCase
 {
     private string $directory;

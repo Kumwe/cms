@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Portal\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Provenance-owning adapter that mints portal-surface execution contexts from resolved sessions.

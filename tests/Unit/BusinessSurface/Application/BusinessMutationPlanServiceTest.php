@@ -6,12 +6,12 @@ namespace Kumwe\App\Tests\Unit\BusinessSurface\Application;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\BuiltInFieldTypes;

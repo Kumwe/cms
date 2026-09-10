@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Kumwe\App\Presentation\Application\Preference;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\InterfaceStandard\CustomizationScope;
 use Kumwe\App\InterfaceStandard\CustomizationSlot;
 use Kumwe\App\InterfaceStandard\PresentationPreferenceKey;
 use Kumwe\App\InterfaceStandard\SurfaceArea;
 use Kumwe\App\InterfaceStandard\SurfaceId;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Server-resolved hierarchy identities used to resolve preferences for one rendered surface.

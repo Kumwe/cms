@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessReporting\Infrastructure;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;

@@ -6,6 +6,9 @@ namespace Kumwe\App\Application\Authorization;
 
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Identity\Domain\GrantScope;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 
 /**
  * The authorization gateway every guarded operation in Kumwe runs through, refusing whatever it cannot
@@ -141,7 +144,7 @@ final readonly class DenyByDefaultAuthorizationGateway implements AuthorizationG
         $identifier = $scope->identifier() ?? '*';
         $type = $scope->isGlobal() ? 'capability' : $scope->type();
         $resource = AuthorizationResource::item($type, $identifier);
-        $principal = $context->principal();
+        $principal = AuthenticatedPrincipal::of($context);
         $requested = [$scope];
 
         if (!$scope->isGlobal() && $scope->type() !== 'site') {
@@ -246,11 +249,11 @@ final readonly class DenyByDefaultAuthorizationGateway implements AuthorizationG
             return new AuthorizationDecision(false, 'core.site-ownership.v1', 'resource_site_mismatch');
         }
 
-        $principal = $context->principal();
-        if ($principal !== null && !$this->policies->allowsHumanGrant($action)) {
+        if ($context->principal() !== null && !$this->policies->allowsHumanGrant($action)) {
             return new AuthorizationDecision(false, 'core.system-identity.v1', 'system_identity_required');
         }
-        $identity = $context->systemIdentity();
+        $principal = AuthenticatedPrincipal::of($context);
+        $actor = $context->systemActor();
         $allowed = $principal !== null
             ? $principal->allows(
                 $action,
@@ -258,7 +261,7 @@ final readonly class DenyByDefaultAuthorizationGateway implements AuthorizationG
                     ? [GrantScope::global()]
                     : $this->effectiveScopes($context, $resource),
             )
-            : $identity !== null && $resourcePolicy->allowsSystemIdentity($identity);
+            : $actor instanceof SystemIdentity && $resourcePolicy->allowsSystemIdentity($actor);
 
         return new AuthorizationDecision(
             $allowed,

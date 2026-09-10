@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessReporting\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Durable internal producer for export generation jobs.

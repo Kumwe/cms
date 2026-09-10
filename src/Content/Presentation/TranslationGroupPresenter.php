@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Content\Presentation;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Content\Application\TranslationGroupRepository;
@@ -12,6 +11,7 @@ use Kumwe\App\Content\Domain\TranslationGroup;
 use Kumwe\App\Content\Domain\TranslationGroupMember;
 use Kumwe\App\Localization\Application\ActiveLocale;
 use Kumwe\App\Site\Application\PublicPageLocator;
+use Kumwe\Context\Value\SiteContext;
 use Locale;
 use Psr\Clock\ClockInterface;
 

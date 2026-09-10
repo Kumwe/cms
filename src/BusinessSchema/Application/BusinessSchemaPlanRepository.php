@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSchema\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlan;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlanStep;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Store of schema plans and of the per-step journal their execution is replayed from.

@@ -6,7 +6,7 @@ namespace Kumwe\App\Tests\Unit\Application\Automation;
 
 use Kumwe\App\Application\Automation\IdempotencyPurger;
 use Kumwe\App\Application\Automation\Job\PurgeIdempotencyRecordsHandler;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -46,7 +46,7 @@ final class PurgeIdempotencyRecordsHandlerTest extends TestCase
         ));
     }
 
-    private function context(): \Kumwe\App\Application\Authorization\ExecutionContext
+    private function context(): \Kumwe\Context\Value\ExecutionContext
     {
         return AuthorizationContext::system(SystemIdentity::InstallationMaintenance)->context(
             SiteContext::default(),

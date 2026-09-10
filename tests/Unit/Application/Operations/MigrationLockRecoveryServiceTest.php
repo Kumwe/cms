@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Application\Operations;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Operations\ExpiredMigrationLockRecovery;
 use Kumwe\App\Application\Operations\MigrationLockRecoveryService;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -55,7 +55,7 @@ final class MigrationLockRecoveryServiceTest extends TestCase
         self::assertSame([$owner], $port->owners);
     }
 
-    private function context(): \Kumwe\App\Application\Authorization\ExecutionContext
+    private function context(): \Kumwe\Context\Value\ExecutionContext
     {
         return AuthorizationContext::system(SystemIdentity::Migration)->context(
             SiteContext::default(),

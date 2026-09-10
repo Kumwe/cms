@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Administrator\Http\Handler;
 
 use Kumwe\App\Administrator\Http\Handler\AdministratorStudioSessionHandler;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionAuthority;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionRepository;
 use Kumwe\App\Studio\Application\Host\StudioResourceContextKeyFactory;
@@ -16,6 +13,9 @@ use Kumwe\App\Studio\Application\Preview\StudioPreviewSequenceRepository;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewSequenceWaiter;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewTransportGuard;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -60,7 +60,7 @@ final class AdministratorStudioSessionHandlerTest extends TestCase
         );
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/administrator/studio/session')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withBody((new StreamFactory())->createStream(json_encode([
                 'mode' => 'blueprint',
                 'resourceId' => 'blueprints/session-handler',
@@ -117,7 +117,7 @@ final class AdministratorStudioSessionHandlerTest extends TestCase
         );
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/administrator/studio/session')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withBody((new StreamFactory())->createStream(json_encode([
                 'mode' => 'hybrid',
                 'resourceId' => 'contexts/' . str_repeat('a', 64),
@@ -170,7 +170,7 @@ final class AdministratorStudioSessionHandlerTest extends TestCase
         foreach ($bodies as $body) {
             $request = (new ServerRequestFactory())
                 ->createServerRequest('POST', 'https://kumwe.test/administrator/studio/session')
-                ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+                ->withAttribute(ExecutionContextAttribute::NAME, $context)
                 ->withBody((new StreamFactory())->createStream($body));
             $response = $handler->handle($request);
             self::assertSame(400, $response->getStatusCode(), $body);
@@ -205,7 +205,7 @@ final class AdministratorStudioSessionHandlerTest extends TestCase
         );
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/administrator/studio/session')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withBody((new StreamFactory())->createStream(json_encode([
                 'mode' => 'content',
                 'resourceId' => 'contents/forbidden',

@@ -13,10 +13,10 @@ use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\MembershipContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\MembershipContext;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessSecurity\Application\MembershipDirectory;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
@@ -123,7 +123,7 @@ final readonly class DoctrineAdministratorSessionStore implements AdministratorS
             Capability::fromString('administrator.access'),
             AuthorizationResource::collection('administrator_session'),
         );
-        $principal = $context->principal()
+        $principal = AuthenticatedPrincipal::of($context)
             ?? throw new InvalidArgumentException('Administrator sessions require a human principal.');
         $id = Uuid::uuid7()->toString();
         $token = $this->base64Url(random_bytes(48));
@@ -328,7 +328,7 @@ final readonly class DoctrineAdministratorSessionStore implements AdministratorS
     ): CreatedAdministratorSession {
         $sessionId = $context->sessionId()
             ?? throw new InvalidArgumentException('An administrator membership selection requires a live session.');
-        $principal = $context->principal()
+        $principal = AuthenticatedPrincipal::of($context)
             ?? throw new InvalidArgumentException('An administrator membership selection requires a human actor.');
         $directory = $this->memberships
             ?? throw new InvalidArgumentException('Organization membership resolution is unavailable.');

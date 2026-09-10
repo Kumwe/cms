@@ -10,10 +10,10 @@ use Kumwe\App\Administrator\Navigation\AdministratorNavigationRegistry;
 use Kumwe\App\Administrator\Presentation\AdministratorContributionRenderer;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Extension\Contribution\AdministratorViewRegistry;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
@@ -29,6 +29,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use stdClass;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorContributionRenderer::class)]
 #[CoversClass(AdministratorRenderer::class)]
@@ -86,7 +87,7 @@ final class AdministratorContributionRendererTest extends TestCase
         $fabricated = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/administrator/extensions/acme/routes')
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, new stdClass())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, new stdClass());
+            ->withAttribute(ExecutionContextAttribute::NAME, new stdClass());
 
         $this->assertRefused(static fn (): string => $capability->render([], $fabricated));
         $this->assertRefused(fn (): string => $capability->render(
@@ -167,7 +168,7 @@ final class AdministratorContributionRendererTest extends TestCase
         return (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/administrator/extensions/acme/routes')
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     /**

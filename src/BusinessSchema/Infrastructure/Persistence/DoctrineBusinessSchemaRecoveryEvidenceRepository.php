@@ -7,10 +7,10 @@ namespace Kumwe\App\BusinessSchema\Infrastructure\Persistence;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use JsonException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaRecoveryEvidenceRepository;
 use Kumwe\App\BusinessSchema\Domain\SchemaRecoveryEvidence;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /**

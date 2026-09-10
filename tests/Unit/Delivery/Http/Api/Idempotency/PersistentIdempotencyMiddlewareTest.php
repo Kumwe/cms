@@ -6,9 +6,8 @@ namespace Kumwe\App\Tests\Unit\Delivery\Http\Api\Idempotency;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Delivery\Http\Api\Idempotency\HttpMutationPreauthorizer;
@@ -32,6 +31,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(PersistentIdempotencyMiddleware::class)]
 #[CoversClass(DoctrineIdempotencyLedger::class)]
@@ -198,6 +198,6 @@ final class PersistentIdempotencyMiddlewareTest extends TestCase
                 AuthenticatedPrincipal::REQUEST_ATTRIBUTE,
                 $principal,
             )
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 }
