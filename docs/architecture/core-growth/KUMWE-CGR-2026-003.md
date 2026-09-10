@@ -45,9 +45,9 @@ consumers:
   - src/BusinessSurface/Application/BusinessMutationPlanService.php
   - src/BusinessReporting/Infrastructure/BusinessRecordServiceReportReader.php
 overlap_reviewed: []
-decision: pending
+decision: approved
 decided_by: "eWɘyn"
-reviewer: null
+reviewer: "Codex (review delegated by Llewellynvdm)"
 decided_on: "2026-09-10"
 pull_request: "https://github.com/kumwe/app/pull/139"
 ---
@@ -113,7 +113,11 @@ because its constructor now names the package port instead of the retired App po
 
 ## Decision
 
-Pending the reviewer's approving review on the App pull request that adopts `kumwe/sequence` 0.2.1
-(`KUMWE-MIG-2026-002`); the `Core growth approval` workflow records the reviewer and the date and re-records
-the baseline. Revisit when `kumwe/sequence` next releases a port whose refusal the host no longer needs to
-translate, or when a package owns the record command's transaction boundary.
+Approved on 2026-09-10 under Llewellynvdm's explicit instruction to complete, verify and rebase-merge the
+dependency-adoption pull requests. Codex reviewed the runtime changes and the retained contention tests
+at PR #139 head `be427fb2cf5d3fe965455a81939639521d24bc5e`; the review found no new portable behavior.
+The constructor now consumes the package port, while transaction ownership, fiscal-period resolution,
+authorization and translation into the existing application refusal remain host responsibilities.
+The generated baseline is re-recorded with this approval; all required CI checks must pass before merge.
+Revisit when `kumwe/sequence` next releases a port whose refusal the host no longer needs to translate,
+or when a package owns the record command's transaction boundary.
