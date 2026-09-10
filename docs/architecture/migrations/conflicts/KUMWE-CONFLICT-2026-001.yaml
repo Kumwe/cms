@@ -1,0 +1,35 @@
+schema: "kumwe-conflict-ledger/v1"
+conflict_id: "KUMWE-CONFLICT-2026-001"
+change_sets:
+  - "KUMWE-CS-2026-002"
+  - "KUMWE-CS-2026-008"
+file: "composer.lock"
+symbols_or_keys:
+  - "kumwe/sequence"
+  - "kumwe/computation"
+  - "ext-kumwe_engine"
+  - "docs/architecture/layers.json"
+  - "docs/quality/baseline.json"
+  - "tests/Architecture/CapabilityIndexGateTest.php"
+  - "tests/Unit/Governance/ComposerLockTest.php"
+base_behavior: "The original native branch predated the sequence adoption merged through PR139."
+current_objective: "Keep the verified Sequence 0.2.1 package, host adapter binding and retained refusal behavior on master."
+incoming_objective: "Provision Engine/binding 1.0.3 and compose Computation 0.3.3 shared native services."
+resolution: "Rebased all native commits onto master 32d6a6f3; Composer regenerated the lock, both package namespace entries remain, and inventory assertions include all six installed Kumwe packages."
+content_removed: []
+content_preserved:
+  - "Sequence package adoption and chained driver refusal translation."
+  - "Native package provisioning, compiler/executor aliases and canonical encoder composition."
+generated_files_regenerated:
+  - "composer.lock"
+  - "docs/quality/baseline.json"
+focused_tests:
+  - "tests/Unit/Kernel/NativeComputationFactoryTest.php"
+  - "tests/Unit/Governance/ComposerLockTest.php"
+combined_tests:
+  - "composer validate --strict --no-check-all"
+  - "composer baseline:check"
+  - "composer qa"
+ownership_review: "Sequence remains the allocation contract owner; Computation owns native adapters and canonical encoding; App owns provisioning and composition."
+resolved_by: "Codex"
+reviewed_by: "Codex under the maintainer-authorized semantic preservation review"

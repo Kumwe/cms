@@ -17,10 +17,11 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
-- Provision pinned Engine/binding 1.0.1 and adopt `kumwe/computation` 0.3.1 for shared native canonical,
+- Provision pinned Engine/binding 1.0.3 and adopt `kumwe/computation` 0.3.3 for shared native canonical,
   compiler and executor services. The deployment independently records and admits its exact PHP/build
   tuple; missing or mismatched runtime metadata refuses boot. PHP Docker images use pinned glibc-based
-  builds, and source, CI and release installation paths provision the same native prerequisite (#140).
+  builds, and source, CI and release installation paths provision the same native prerequisite (#140,
+  `NRM-2026-016`).
   CI uploads formatting evidence only after its generation succeeds, so an earlier failed gate does not
   produce a second error for a patch file that was never generated.
 

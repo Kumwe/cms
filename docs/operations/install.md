@@ -136,7 +136,7 @@ php bin/kumwe-install
 
 Requirements for a native installation:
 
-- Linux x86_64 with glibc and the admitted `ext-kumwe_engine` 1.0.1 native runtime;
+- Linux x86_64 with glibc and the admitted `ext-kumwe_engine` 1.0.3 native runtime;
 - PHP 8.5 with all extensions required by `composer.json` and the PDO driver for the selected database (`pdo_mysql` for MariaDB/MySQL or `pdo_pgsql` for PostgreSQL);
 - Composer 2 for installation and locked upgrades;
 - a supported database and Redis 8 endpoint;

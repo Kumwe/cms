@@ -6653,6 +6653,16 @@
             "surface": "35b603ae2cc5a7dd1b5e45e9",
             "growth": null
         },
+        "Kumwe\\App\\Kernel\\NativeComputationFactory": {
+            "kind": "class",
+            "layer": "kernel",
+            "surface": "feccae9772c1e838cacb443c",
+            "growth": {
+                "classification": "host-kernel",
+                "implements": [],
+                "extends": null
+            }
+        },
         "Kumwe\\App\\Localization\\Application\\ActiveLocale": {
             "kind": "class",
             "layer": "application",

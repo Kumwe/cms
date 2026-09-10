@@ -255,6 +255,10 @@ final class KernelTest extends TestCase
             'KUMWE_REPLICA_ID' => 'test-replica',
             'KUMWE_PROCESS_ID' => 'test-process',
             'KUMWE_INSTANCE_ID' => 'test-instance',
+            'KUMWE_NATIVE_EXPECTED_TUPLE' => $this->environment(
+                'KUMWE_NATIVE_EXPECTED_TUPLE',
+                '/usr/local/lib/kumwe-native/native-expected-tuple.json',
+            ),
             'DB_DRIVER' => $this->environment('DB_DRIVER', 'pgsql'),
             'DB_HOST' => $this->environment('DB_HOST', '127.0.0.1'),
             'DB_PORT' => $this->environment('DB_PORT', '5432'),

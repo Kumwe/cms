@@ -1,6 +1,6 @@
 # Native computation runtime
 
-Kumwe requires PHP 8.5 and `ext-kumwe_engine` 1.0.1 on Linux x86_64 with glibc. The PHP CLI and
+Kumwe requires PHP 8.5 and `ext-kumwe_engine` 1.0.3 on Linux x86_64 with glibc. The PHP CLI and
 FPM images include this runtime. Each image builds against its exact PHP patch, headers and toolchain;
 the source release is pinned by SHA-256 in `resources/native-runtime/source.json`.
 

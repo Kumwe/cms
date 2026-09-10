@@ -243,7 +243,7 @@ final class CapabilityIndexGateTest extends TestCase
         self::assertSame('source-scan', $sources['kumwe/extension-sdk']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/producer']);
         self::assertSame(
-            ['v0.1.1', 'v0.3.1', 'v0.1.2', 'v0.2.4', 'v0.3.0', 'v0.2.1'],
+            ['v0.1.1', 'v0.3.3', 'v0.1.2', 'v0.2.4', 'v0.3.0', 'v0.2.1'],
             array_column($packages, 'installed_version'),
         );
         self::assertSame([], $document['extracted_namespaces']);
