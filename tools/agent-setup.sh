@@ -137,7 +137,10 @@ seed_distonly_composer_cache() {
 }
 
 say "Native computation runtime"
-if ! php -r 'exit(extension_loaded("kumwe_engine") && phpversion("kumwe_engine") === "1.0.1" ? 0 : 1);' \
+if ! php -r '
+    $pin = json_decode(file_get_contents($argv[1]), true, 64, JSON_THROW_ON_ERROR);
+    exit(extension_loaded("kumwe_engine") && phpversion("kumwe_engine") === $pin["binding"]["version"] ? 0 : 1);
+' resources/native-runtime/source.json \
     || [ ! -r "${KUMWE_NATIVE_EXPECTED_TUPLE:-/usr/local/lib/kumwe-native/native-expected-tuple.json}" ]; then
     if command -v apt-get >/dev/null 2>&1 && [ "$(id -u)" = 0 ]; then
         apt-get update -q
