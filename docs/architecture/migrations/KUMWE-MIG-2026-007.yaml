@@ -1,0 +1,26 @@
+schema: kumwe-migration-ledger/v1
+migration_id: KUMWE-MIG-2026-007
+change_set: KUMWE-CS-2026-007
+package: kumwe/canonical-json
+version: 0.1.1
+artifact_digest: "f9de51c56a20d9c6b53104b116552716b30f3b8d6b35d8a2578b6f8999aabcd5"
+handoff_path: vendor/kumwe/canonical-json/MIGRATION-HANDOFF.md
+handoff_sha256: "a0b6e32a94436b889d1f23c1d3b2eef0df7b4617c7661bd1a3ae3cac8cd1f75c"
+release_attestation: docs/architecture/migrations/evidence/KUMWE-MIG-2026-007/RELEASE-ATTESTATION.yaml
+old_namespace_roots: []
+symbols: []
+removed_paths: []
+removed_tests: []
+retained_tests:
+  - tests/Unit/Application/Automation/CanonicalJsonTest.php
+  - tests/Unit/Identity/Application/Administration/AccessControlServiceTest.php
+di_changes: []
+capability_index_entries:
+  - kumwe/canonical-json
+release_evidence:
+  - docs/architecture/migrations/evidence/KUMWE-MIG-2026-007/RELEASE-ATTESTATION.yaml
+app_pull_request: "https://github.com/kumwe/app/pull/138"
+roadmap_refs: []
+non_roadmap_refs:
+  - NRM-2026-009
+conflicts: []

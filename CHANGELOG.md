@@ -33,6 +33,14 @@ development programme, from the architecture decision that opened it to the curr
 
 ### Added
 
+- **2026-09-10 — `kumwe/canonical-json` 0.1.1 is adopted as the generic canonical JSON semantic owner.**
+  The first package of the extension-sdk release train enters App through the migration ledger (`NRM-2026-009`):
+  `KUMWE-MIG-2026-007`, its change set, the integration train `KUMWE-TRAIN-2026-002` and the independent release
+  attestation record the verified `v0.1.1` release, `composer.json` pins it exactly, and the capability index reads
+  its `canonical-json.semantics` capability from the installed manifests. The adoption is semantic-only, as the
+  released handoff prescribes: no App class, test or namespace is removed, the App's generic executor keeps running
+  until Computation's separately gated runtime cutover, and a gate test proves the installed profile, corpus
+  digest, manifests and handoff are the bytes the attestation verified. (#138)
 - **2026-09-09 — A stored item follows its type to a new version, and enum fields reach the Content schema.**
   `save-new-type-version` on a persisted item refused as an internal failure: `ContentService::adoptContentType`
   handed the adopted record to `ContentRepository::update()`, which by design never rewrites the pinned

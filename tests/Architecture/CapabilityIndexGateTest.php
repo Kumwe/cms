@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
  *
  * The committed `docs/architecture/capability-index.md` matches what the installed Kumwe packages generate, the
  * generator is deterministic, a stale digest is refused, the two remaining pre-Version-2 packages appear only as
- * approved legacy-unmanifested entries that cannot satisfy a release gate while `kumwe/producer` is indexed from its
- * Version 2 manifests and ledger record, and the check is wired into `composer qa`, the quality contract, both CI
- * steps and the coverage contract.
+ * approved legacy-unmanifested entries that cannot satisfy a release gate while `kumwe/canonical-json` and
+ * `kumwe/producer` are indexed from their Version 2 manifests and ledger records, and the check is wired into
+ * `composer qa`, the quality contract, both CI steps and the coverage contract.
  *
  * @since  2.0.0
  */
@@ -69,7 +69,7 @@ final class CapabilityIndexGateTest extends TestCase
         $check = GovernanceFixture::run(['--check']);
 
         self::assertSame(0, $check['status'], $check['output']);
-        self::assertStringContainsString('Capability index verified (3 packages; digest sha256:', $check['output']);
+        self::assertStringContainsString('Capability index verified (4 packages; digest sha256:', $check['output']);
 
         $digest = GovernanceFixture::run(['--digest']);
         self::assertSame(0, $digest['status'], $digest['output']);
@@ -185,7 +185,8 @@ final class CapabilityIndexGateTest extends TestCase
 
     /**
      * Two pre-Version-2 packages remain legacy-unmanifested transitional entries that cannot satisfy a release
-     * gate, while `kumwe/producer` is indexed from its Version 2 manifests and the ledger record adopting its handoff.
+     * gate, while `kumwe/canonical-json` and `kumwe/producer` are indexed from their Version 2 manifests and the
+     * ledger records adopting their handoffs.
      *
      * @return  void
      *
@@ -198,10 +199,10 @@ final class CapabilityIndexGateTest extends TestCase
         $packages = $document['packages'];
 
         self::assertSame(
-            ['kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer'],
+            ['kumwe/canonical-json', 'kumwe/conversion', 'kumwe/extension-sdk', 'kumwe/producer'],
             array_column($packages, 'package'),
         );
-        foreach ([$packages[0], $packages[1]] as $package) {
+        foreach ([$packages[1], $packages[2]] as $package) {
             self::assertSame('legacy-unmanifested', $package['manifest_status'], (string) $package['package']);
             self::assertFalse($package['release_gate_eligible'], (string) $package['package']);
             self::assertIsArray($package['legacy']);
@@ -210,7 +211,16 @@ final class CapabilityIndexGateTest extends TestCase
             self::assertNull($package['handoff']);
             self::assertNotEmpty($package['public_symbols']);
         }
-        $producer = $packages[2];
+        $canonical = $packages[0];
+        self::assertSame('v2-manifested', $canonical['manifest_status']);
+        self::assertTrue($canonical['release_gate_eligible']);
+        self::assertNull($canonical['legacy']);
+        self::assertIsArray($canonical['handoff']);
+        self::assertSame('KUMWE-MIG-2026-007', $canonical['handoff']['migration_id']);
+        self::assertSame('KUMWE-CS-2026-007', $canonical['handoff']['change_set']);
+        self::assertSame('vendor/kumwe/canonical-json/MIGRATION-HANDOFF.md', $canonical['handoff']['path']);
+        self::assertContains('Kumwe\\CanonicalJson\\Profile', $canonical['public_symbols']);
+        $producer = $packages[3];
         self::assertSame('v2-manifested', $producer['manifest_status']);
         self::assertTrue($producer['release_gate_eligible']);
         self::assertNull($producer['legacy']);
@@ -220,13 +230,14 @@ final class CapabilityIndexGateTest extends TestCase
         self::assertSame('vendor/kumwe/producer/MIGRATION-HANDOFF.md', $producer['handoff']['path']);
         self::assertContains('Kumwe\\Producer\\Deployment\\StudioDeploymentEmitter', $producer['public_symbols']);
         $sources = array_column($packages, 'public_symbols_source', 'package');
+        self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/canonical-json']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/conversion']);
         self::assertSame('source-scan', $sources['kumwe/extension-sdk']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/producer']);
-        self::assertSame(['v0.1.2', 'v0.2.4', 'v0.3.0'], array_column($packages, 'installed_version'));
+        self::assertSame(['v0.1.1', 'v0.1.2', 'v0.2.4', 'v0.3.0'], array_column($packages, 'installed_version'));
         self::assertSame([], $document['extracted_namespaces']);
         self::assertSame([], $document['removed_symbols']);
-        self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[1]['legacy']['retired_app_namespaces']);
+        self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[2]['legacy']['retired_app_namespaces']);
     }
 
     /**
