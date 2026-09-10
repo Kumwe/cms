@@ -6,8 +6,8 @@ namespace Kumwe\App\Tests\Unit\BusinessSurface\Application\Custom;
 
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionOwner;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
@@ -32,6 +32,7 @@ use LogicException;
 use RuntimeException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 #[CoversClass(CustomBusinessActionHandlerRegistry::class)]
 #[CoversClass(CustomBusinessHandlerFailed::class)]
@@ -599,17 +600,17 @@ final class CustomBusinessHandlerRegistryTest extends TestCase
     /**
      * Mint a trusted system context without introducing any delivery-layer dependency.
      *
-     * @return  ExecutionContext  Background context used only as typed handler input.
+     * @return  ExtensionExecutionContext  Background context, as typed handler input.
      *
      * @since   2.0.0
      */
-    private static function context(): ExecutionContext
+    private static function context(): ExtensionExecutionContext
     {
-        return ExecutionContext::issueSystem(
+        return ExtensionExecutionContext::of(ExecutionContext::issueSystem(
             new \stdClass(),
             SystemIdentity::Worker,
             SiteContext::default(),
             'custom-business-test',
-        );
+        ));
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSurface\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
@@ -46,6 +46,7 @@ use Kumwe\App\Localization\Application\ActiveLocale;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Application\MediaService;
 use Ramsey\Uuid\Uuid;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 /**
  * Shared generated-business use-case facade consumed by every delivery adapter.
@@ -159,7 +160,7 @@ final readonly class BusinessSurfaceService implements BusinessHistoryUseCase, B
             $view,
         );
         $result = $this->customBusiness->view($resolved->definition, new CustomBusinessViewQuery(
-            $context,
+            ExtensionExecutionContext::of($context),
             $definition,
             $view,
             $specification,
@@ -1254,7 +1255,7 @@ final readonly class BusinessSurfaceService implements BusinessHistoryUseCase, B
         $resolved = $this->definitions->forCreate($context, $definition);
         if ($this->customBusiness->handlesAction($resolved->definition, $action)) {
             $result = $this->customActions->execute(new CustomBusinessActionCommand(
-                $context,
+                ExtensionExecutionContext::of($context),
                 $definition,
                 $record,
                 $expectedVersion,

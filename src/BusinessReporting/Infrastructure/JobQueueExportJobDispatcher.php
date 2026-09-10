@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessReporting\Infrastructure;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\BusinessReporting\Application\ExportJobDispatcher;
 use Kumwe\App\BusinessReporting\Application\ExportQueueProducerContextProvider;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 
 /**

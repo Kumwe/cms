@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroupRepository;
 use Kumwe\App\Application\Presentation\Preference\PresentationPreferenceManager;
 use Kumwe\Extension\Spi\Contribution\ContributionOwner;

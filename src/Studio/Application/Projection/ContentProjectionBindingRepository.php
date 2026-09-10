@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Projection;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Studio\Domain\Projection\ContentBlueprintBinding;
 use Kumwe\App\Studio\Domain\Projection\EntryCompositionOverrides;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Read boundary for the host-owned coordinates a Content projection adds to Studio documents.

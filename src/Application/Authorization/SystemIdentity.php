@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Authorization;
 
+use Kumwe\Context\Contract\SystemActor;
+use Kumwe\Context\Value\ExecutionContext;
+
 /**
  * The closed set of unattended actors Kumwe will issue an execution context to.
  *
  * Work that runs with no operator present still has to name who is acting. A `SystemPrincipal` binds
  * one of these cases for the life of the process, `ExecutionContext::issueSystem()` stamps it on the
- * context, and owner-bound resource-policy definitions explicitly name the cases permitted to use each
- * action/resource binding — unattended authority is therefore registered as typed core data, never
- * inferred from a stored grant. Keeping the set small and each binding narrow is what stops one
- * compromised background task from acting with the authority of another; the backing value is also the
- * actor identifier written into audit records, which is why it is a stable `system:` token.
+ * context through the package's `SystemActor` port this enum implements, and owner-bound resource-policy
+ * definitions explicitly name the cases permitted to use each action/resource binding — unattended
+ * authority is therefore registered as typed core data, never inferred from a stored grant. Keeping the
+ * set small and each binding narrow is what stops one compromised background task from acting with the
+ * authority of another; the backing value is also the actor identifier written into audit records, which
+ * is why it is a stable `system:` token.
  *
  * @since  2.0.0
  */
-enum SystemIdentity: string
+enum SystemIdentity: string implements SystemActor
 {
     /**
      * Creates the first administrator account on an installation that has no operator yet.
@@ -119,4 +123,16 @@ enum SystemIdentity: string
      * @since  2.0.0
      */
     case Worker = 'system:worker';
+
+    /**
+     * Name this actor in audit records and fingerprints, as the package port requires.
+     *
+     * @return  string  The backing `system:` token, unchanged from the value audit records already carry.
+     *
+     * @since   2.0.0
+     */
+    public function identifier(): string
+    {
+        return $this->value;
+    }
 }

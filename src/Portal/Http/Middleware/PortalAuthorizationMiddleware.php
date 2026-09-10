@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Portal\Application\PortalSession;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Fail-closed capability declaration gate for every matched portal route.
@@ -68,7 +69,7 @@ final readonly class PortalAuthorizationMiddleware implements MiddlewareInterfac
         if (!$routeResult instanceof RouteResult || !$routeResult->isSuccess()) {
             return $handler->handle($request);
         }
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         $session = $request->getAttribute(PortalSession::REQUEST_ATTRIBUTE);
         if (!$context instanceof ExecutionContext || !$session instanceof PortalSession) {
             throw new LogicException('Portal authorization requires a resolved session context.');

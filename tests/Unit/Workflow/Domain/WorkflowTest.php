@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Unit\Workflow\Domain;
 use Kumwe\App\Content\Domain\ContentStatus;
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Workflow\Domain\InvalidWorkflowTransition;
 use Kumwe\App\Workflow\Domain\Workflow;

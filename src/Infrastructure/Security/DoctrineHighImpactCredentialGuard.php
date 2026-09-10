@@ -6,12 +6,12 @@ namespace Kumwe\App\Infrastructure\Security;
 
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Security\HighImpactAuthenticationRequired;
 use Kumwe\App\Application\Security\HighImpactCredentialGuard;
 use Kumwe\App\Identity\Application\Administration\AuthenticationRateLimiter;
 use Kumwe\App\Identity\Application\Security\PasswordHasher;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Re-proves the acting operator's password against the credential table before a high-impact operation.

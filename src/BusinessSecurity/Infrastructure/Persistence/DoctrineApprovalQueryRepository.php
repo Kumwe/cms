@@ -7,13 +7,13 @@ namespace Kumwe\App\BusinessSecurity\Infrastructure\Persistence;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalBinding;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalQueryRepository;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalRequestView;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalStatus;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalVoteView;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\ExecutionContext;
 use RuntimeException;
 
 /**

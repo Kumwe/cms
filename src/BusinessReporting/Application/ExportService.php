@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessReporting\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
@@ -93,7 +93,7 @@ final readonly class ExportService
             throw new InvalidArgumentException('Export retention must be between one minute and seven days.');
         }
         $report = $this->report($context, $reportIdentifier);
-        $principal = $context->principal();
+        $principal = AuthenticatedPrincipal::of($context);
         if ($principal === null) {
             throw new InvalidArgumentException('A report export must have an accountable human actor.');
         }

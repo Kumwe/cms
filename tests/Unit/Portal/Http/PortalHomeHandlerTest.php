@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Portal\Http;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceAccessGroupState;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceService;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceState;
@@ -39,6 +38,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Proves the portal home consumes the shared widget engine and exact portal navigation projection.
@@ -93,7 +93,7 @@ final class PortalHomeHandlerTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/portal')
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+            ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                 SiteContext::default(),
                 AuthenticationStrength::Password,
                 'test-portal-dashboard',
@@ -163,7 +163,7 @@ final class PortalHomeHandlerTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/portal')
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+            ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                 SiteContext::default(),
                 AuthenticationStrength::Password,
                 'test-portal-dashboard-volume',
@@ -226,7 +226,7 @@ final class PortalHomeHandlerTest extends TestCase
                 ->createServerRequest('GET', 'https://kumwe.test/portal')
                 ->withQueryParams($query)
                 ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-                ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+                ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                     SiteContext::default(),
                     AuthenticationStrength::Password,
                     'test-portal-dashboard-notice',

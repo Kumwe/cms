@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Content\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Optional repository capability that answers the administrator content browser's filtered queries.

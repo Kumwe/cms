@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Kumwe\App\Administrator\Http\Middleware;
 
 use Kumwe\Extension\Spi\Http\ExtensionRequest;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Http\Middleware\RequestIdMiddleware;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Administration\AdministratorSessionStore;
@@ -23,6 +23,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Turns the administrator cookie into the session, principal and execution context the back office runs on.
@@ -135,8 +137,8 @@ final readonly class AdministratorSessionMiddleware implements MiddlewareInterfa
             $request
                 ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
                 ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $session->principal)
-                ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
-                ->withAttribute(ExtensionRequest::CONTEXT, $context)
+                ->withAttribute(ExecutionContextAttribute::NAME, $context)
+                ->withAttribute(ExtensionRequest::CONTEXT, ExtensionExecutionContext::of($context))
                 ->withAttribute(ExtensionRequest::CSRF_TOKEN, $session->csrfToken),
         );
     }

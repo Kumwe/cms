@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessRecord\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
 use Kumwe\App\BusinessDefinition\Domain\IdentityStrategy;
@@ -27,6 +25,8 @@ use Kumwe\App\BusinessRecord\Domain\BusinessRecord;
 use Kumwe\App\BusinessRecord\Domain\RecordScope;
 use Kumwe\App\BusinessRecord\Domain\RecordValueGuard;
 use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessPlan;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldAccessUsage;
 use Ramsey\Uuid\Uuid;
 use Throwable;

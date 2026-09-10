@@ -8,10 +8,10 @@ use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorStudioCompositionHandler;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Content\Application\ContentModelRepository;
 use Kumwe\App\Content\Application\ContentModelService;
@@ -90,6 +90,7 @@ use Psr\Clock\ClockInterface;
 use RuntimeException;
 use Laminas\Diactoros\ServerRequestFactory;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Proves the Studio Content read boundary delegates only through authorized, version-pinned services.
@@ -456,7 +457,7 @@ final class StudioContentProjectionServiceTest extends TestCase
             ->withAttribute('id', self::TYPE_ID)
             ->withAttribute('version', '4')
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $handlerContext)
+            ->withAttribute(ExecutionContextAttribute::NAME, $handlerContext)
             ->withQueryParams(['locale' => 'de-DE']);
 
         $response = $handler->handle($request);

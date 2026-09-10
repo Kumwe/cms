@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Authorization;
 
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
+
 /**
  * The capability that lets unattended code mint a trusted execution context for one system identity.
  *

@@ -10,13 +10,13 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalBinding;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalRepository;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalRequest;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalRule;
 use Kumwe\App\BusinessSecurity\Application\Approval\ApprovalStatus;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\ExecutionContext;
 use RuntimeException;
 
 /**

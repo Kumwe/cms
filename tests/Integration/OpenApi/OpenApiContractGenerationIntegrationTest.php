@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Integration\OpenApi;
 
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
 use Kumwe\App\BusinessSurface\Application\BusinessSurfaceCatalog;
 use Kumwe\App\OpenApi\Application\CompiledOpenApiContract;
 use Kumwe\App\OpenApi\Application\OpenApiContractCache;
@@ -15,6 +14,7 @@ use Kumwe\App\OpenApi\Application\OpenApiContractUnavailable;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use Kumwe\App\Tests\Support\TestKernelFactory;
+use Kumwe\Context\Value\AuthenticationStrength;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;

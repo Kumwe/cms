@@ -7,7 +7,7 @@ namespace Kumwe\App\Navigation\Application;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\AuthorizationResourceOwnershipUnknown;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Read-only view of a site's navigation, shaped for anonymous visitors.

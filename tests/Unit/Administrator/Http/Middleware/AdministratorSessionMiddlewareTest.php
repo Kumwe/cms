@@ -6,11 +6,12 @@ namespace Kumwe\App\Tests\Unit\Administrator\Http\Middleware;
 
 use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Middleware\AdministratorSessionMiddleware;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Administration\AdministratorSessionStore;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\Response\TextResponse;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -108,7 +109,7 @@ final class AdministratorSessionMiddlewareTest extends TestCase
         ))->process($request, new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+                $context = $request->getAttribute(ExecutionContextAttribute::NAME);
 
                 return new TextResponse(
                     $context instanceof ExecutionContext ? $context->site()->identifier() : 'missing',

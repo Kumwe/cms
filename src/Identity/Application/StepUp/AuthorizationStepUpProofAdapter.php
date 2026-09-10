@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Identity\Application\StepUp;
 
-use Kumwe\App\Application\Authorization\OrganizationContext;
-use Kumwe\App\Application\Authorization\SiteContext;
-use Kumwe\App\Application\Authorization\StepUpProof;
-use Kumwe\App\Application\Authorization\WorkspaceContext;
 use Kumwe\App\Identity\Domain\StepUp\StepUpVerification;
+use Kumwe\Context\Value\OrganizationContext;
+use Kumwe\Context\Value\SiteContext;
+use Kumwe\Context\Value\StepUpProof;
+use Kumwe\Context\Value\WorkspaceContext;
 
 /**
  * Converts provider output into the authorization layer's fresh proof value.

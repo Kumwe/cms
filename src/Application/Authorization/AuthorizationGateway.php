@@ -6,6 +6,7 @@ namespace Kumwe\App\Application\Authorization;
 
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Identity\Domain\GrantScope;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * The one port application code asks before it changes or reveals anything.

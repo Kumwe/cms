@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\OpenApi\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Supplies the exact verified OpenAPI contract for an authenticated request context.

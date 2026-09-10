@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\Automation;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Delivery\Http\Api\Idempotency\IdempotencyKey;
 use Kumwe\App\Delivery\Http\Api\Idempotency\PersistentIdempotencyMiddleware;
 use Kumwe\App\Delivery\Http\Api\Idempotency\RequireIdempotencyKeyMiddleware;
@@ -18,6 +18,7 @@ use Kumwe\App\Infrastructure\Persistence\DoctrineIdempotencyLedger;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\TestKernelFactory;
+use Kumwe\Context\Value\ExecutionContext;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -423,7 +424,7 @@ final class IdempotencyRecoveryIntegrationTest extends TestCase
                 AuthenticatedPrincipal::REQUEST_ATTRIBUTE,
                 $principal,
             )
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     private function digest(ServerRequestInterface $request): string

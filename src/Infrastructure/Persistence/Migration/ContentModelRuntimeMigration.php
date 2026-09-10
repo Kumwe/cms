@@ -12,8 +12,8 @@ use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use JsonException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /** Adds immutable, site-owned content-type and workflow definition versions. */

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Application\Authorization;
 
 use InvalidArgumentException;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * A named, declared set of sites that may jointly own a resource.

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Delivery\Http\Api\Business;
 
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;
@@ -39,6 +39,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use ReflectionClass;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(BusinessRecordApiHandler::class)]
 /**
@@ -81,7 +82,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::OPERATION_ATTRIBUTE, BusinessRecordApiHandler::CREATE)
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, 'core.invoice')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(
                 RequireIdempotencyKeyMiddleware::ATTRIBUTE,
                 IdempotencyKey::fromHeader('record-create-0001'),
@@ -108,7 +109,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::OPERATION_ATTRIBUTE, BusinessRecordApiHandler::CREATE)
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, 'core.invoice')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = $this->handler()->handle($request);
 
@@ -165,7 +166,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, 'invoice-7')
             ->withAttribute(BusinessRecordApiHandler::ACTION_ATTRIBUTE, 'send')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(
                 RequireIdempotencyKeyMiddleware::ATTRIBUTE,
                 IdempotencyKey::fromHeader('record-action-0001'),
@@ -214,7 +215,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, 'invoice-7')
             ->withAttribute(BusinessRecordApiHandler::ACTION_ATTRIBUTE, 'send')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(
                 RequireIdempotencyKeyMiddleware::ATTRIBUTE,
                 IdempotencyKey::fromHeader('record-approval-0001'),
@@ -272,7 +273,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, 'core.invoice')
             ->withAttribute(BusinessRecordApiHandler::VIEW_ATTRIBUTE, 'overdue')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = $this->handler($surfaces)->handle($request);
 
@@ -329,7 +330,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, 'invoice-7')
             ->withAttribute(BusinessRecordApiHandler::VIEW_ATTRIBUTE, 'timeline')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = $this->handler($surfaces)->handle($request);
 
@@ -381,7 +382,7 @@ final class BusinessRecordApiHandlerTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, 'invoice-7')
             ->withAttribute(BusinessRecordApiHandler::RELATIONSHIP_ATTRIBUTE, 'lines')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = $this->handler(catalog: $catalog)->handle($request);
 

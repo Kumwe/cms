@@ -36,6 +36,7 @@
     "ext-redis": "*",
     "ext-sodium": "*",
     "ext-zip": "*",
+    "kumwe/access-context": "0.1.2",
     "kumwe/canonical-json": "0.1.1",
     "kumwe/computation": "0.3.3",
     "kumwe/conversion": "0.1.2",

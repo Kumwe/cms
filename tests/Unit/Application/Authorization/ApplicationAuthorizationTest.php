@@ -6,20 +6,20 @@ namespace Kumwe\App\Tests\Unit\Application\Authorization;
 
 use ArrayObject;
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationAuditUnavailable;
 use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationDecisionRecorder;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\DenyByDefaultAuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\MembershipContextValidator;
 use Kumwe\App\Application\Authorization\OwnershipScope;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
 use Kumwe\App\Application\Authorization\ResourcePolicyTarget;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
@@ -45,12 +45,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(DenyByDefaultAuthorizationGateway::class)]
-#[CoversClass(ExecutionContext::class)]
 #[UsesClass(AuthorizationDenied::class)]
 #[UsesClass(AuthorizationResource::class)]
-#[UsesClass(SiteContext::class)]
 final class ApplicationAuthorizationTest extends TestCase
 {
     private const SUBJECT = '018f22e2-7c8b-7ab0-8f3a-88e8026bb301';
@@ -764,7 +763,7 @@ final class ApplicationAuthorizationTest extends TestCase
             ->createServerRequest('POST', 'https://kumwe.test/api/v1/content')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(
-                ExecutionContext::REQUEST_ATTRIBUTE,
+                ExecutionContextAttribute::NAME,
                 $context,
             )
             ->withBody((new StreamFactory())->createStream(

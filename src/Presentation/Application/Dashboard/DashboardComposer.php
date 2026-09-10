@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Presentation\Application\Dashboard;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceQuery;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroupRepository;
 use Kumwe\Extension\Spi\Contribution\ContributionOwner;

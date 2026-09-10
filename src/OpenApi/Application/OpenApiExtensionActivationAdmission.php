@@ -6,12 +6,12 @@ namespace Kumwe\App\OpenApi\Application;
 
 use Closure;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionOwnerType;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionStatus;
 use Kumwe\App\Extension\Application\Package\ExtensionActivationAdmission;
 use Kumwe\App\Extension\Contribution\CanonicalManifestInterpreter;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Manifest\ExtensionManifest;
 
 /**

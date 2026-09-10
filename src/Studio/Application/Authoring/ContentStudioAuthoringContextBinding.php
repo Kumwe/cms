@@ -6,8 +6,8 @@ namespace Kumwe\App\Studio\Application\Authoring;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
 use Kumwe\App\Studio\Domain\Authoring\StudioAuthoringIntent;
+use Kumwe\Context\Value\AuthenticatedSurface;
 
 /**
  * Holds the server-side binding behind one opaque contextual Content authoring key.

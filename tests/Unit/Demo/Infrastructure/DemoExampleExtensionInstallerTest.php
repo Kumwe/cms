@@ -312,11 +312,11 @@ final class DemoExampleExtensionInstallerTest extends TestCase
     /**
      * Build the administrator context every scenario runs under.
      *
-     * @return  \Kumwe\App\Application\Authorization\ExecutionContext  Provenance-bound test context.
+     * @return  \Kumwe\Context\Value\ExecutionContext  Provenance-bound test context.
      *
      * @since   2.0.0
      */
-    private function context(): \Kumwe\App\Application\Authorization\ExecutionContext
+    private function context(): \Kumwe\Context\Value\ExecutionContext
     {
         return AuthorizationContext::human(['extensions.manage']);
     }

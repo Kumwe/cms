@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Authorization;
 
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\SiteContext;
+
 /**
  * Inward-facing freshness authority for versioned organization membership contexts.
  *

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Extension\Application\Trust\TrustStore;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Throwable;
 
 /**

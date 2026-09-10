@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Site\Infrastructure\Persistence;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Infrastructure\Redis\RedisRuntime;
 use Kumwe\App\Site\Application\SiteSettings;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Log\LoggerInterface;
 use Throwable;
 

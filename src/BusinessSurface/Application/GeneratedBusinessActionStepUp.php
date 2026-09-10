@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSurface\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\StepUp\AuthorizationStepUpProofAdapter;
 use Kumwe\App\Identity\Application\StepUp\StepUpProvider;
 use Kumwe\App\Identity\Domain\StepUp\StepUpIntent;
 use Kumwe\App\Identity\Domain\StepUp\StepUpVerification;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Coordinates fresh generated-action proof issuance and execution inside one application transaction.
@@ -139,7 +140,7 @@ final readonly class GeneratedBusinessActionStepUp
         ExecutionContext $context,
         StepUpVerification $verification,
     ): ExecutionContext {
-        $principal = $context->principal()
+        $principal = AuthenticatedPrincipal::of($context)
             ?? throw new InvalidArgumentException('Generated business step-up requires a human actor.');
 
         return $principal->context(

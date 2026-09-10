@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Portal\Presentation;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Portal\Application\PortalSession;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Binding\Http\PortalRouteRenderer;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -54,7 +55,7 @@ final readonly class PortalContributionRenderer implements PortalRouteRenderer
     public function render(array $model, ServerRequestInterface $request): string
     {
         $session = $request->getAttribute(PortalSession::REQUEST_ATTRIBUTE);
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (
             !$session instanceof PortalSession
             || !$context instanceof ExecutionContext

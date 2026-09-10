@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessSurface\Application;
 use DateInterval;
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\ActionDefinition;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
@@ -37,6 +37,7 @@ use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessSchema;
 use Kumwe\App\Extension\Runtime\RuntimeMaterializationState;
 use Psr\Clock\ClockInterface;
 use Ramsey\Uuid\Uuid;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 /**
  * Executes typed custom actions through the canonical transaction, fence, policy and idempotency ledger.
@@ -419,10 +420,6 @@ final readonly class CustomBusinessActionExecutor
      */
     private static function context(CustomBusinessActionCommand $command): ExecutionContext
     {
-        if (!$command->context instanceof ExecutionContext) {
-            throw new BusinessRecordDefinitionUnavailable();
-        }
-
-        return $command->context;
+        return ExtensionExecutionContext::host($command->context) ?? throw new BusinessRecordDefinitionUnavailable();
     }
 }

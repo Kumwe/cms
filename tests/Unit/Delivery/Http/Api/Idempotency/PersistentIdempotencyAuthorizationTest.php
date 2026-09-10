@@ -9,7 +9,6 @@ use Doctrine\DBAL\Connection;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Delivery\Http\Api\Idempotency\HttpMutationPreauthorizer;
@@ -35,6 +34,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionClass;
 use RuntimeException;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(PersistentIdempotencyMiddleware::class)]
 #[CoversClass(DoctrineIdempotencyLedger::class)]
@@ -69,8 +69,8 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
     {
         $principal = AuthorizationContext::principal(['business.record.export']);
         $context = $principal->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'idempotency-malformed-report-export-test',
         );
         $authorization = $this->createMock(AuthorizationGateway::class);
@@ -82,7 +82,7 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             ->createServerRequest('POST', '/api/v1/business/reports/acme%2Fopen_items/exports')
             ->withAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE, IdempotencyKey::fromHeader('stable-key-0005'))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::never())->method('handle');
 
@@ -109,8 +109,8 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             'scope_identifier' => 'acme.allowed_report',
         ]]);
         $context = $principal->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'idempotency-report-export-test',
         );
         $database = $this->createMock(Connection::class);
@@ -120,7 +120,7 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             ->createServerRequest('POST', '/api/v1/business/reports/acme.denied_report/exports')
             ->withAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE, IdempotencyKey::fromHeader('stable-key-0004'))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::never())->method('handle');
 
@@ -144,8 +144,8 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             'scope_identifier' => $allowed,
         ]]);
         $context = $principal->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'idempotency-auth-test',
         );
         $database = $this->createMock(Connection::class);
@@ -155,7 +155,7 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             ->createServerRequest('PATCH', '/api/v1/content/' . $denied)
             ->withAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE, IdempotencyKey::fromHeader('stable-key-0001'))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::never())->method('handle');
 
@@ -182,8 +182,8 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
     {
         $principal = AuthorizationContext::principal(['content.create']);
         $context = $principal->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'idempotency-failure-test',
         );
         $database = $this->createMock(Connection::class);
@@ -196,7 +196,7 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             ->createServerRequest('POST', '/api/v1/content')
             ->withAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE, IdempotencyKey::fromHeader('stable-key-0002'))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         $handler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -229,8 +229,8 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
         $subjectId = '018f22e2-7c8b-7ab0-8f3a-88e8026bb421';
         $principal = AuthorizationContext::principal(['users.manage']);
         $context = $principal->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'idempotency-token-delegation-test',
         );
         $repository = $this->createStub(AccessControlRepository::class);
@@ -253,7 +253,7 @@ final class PersistentIdempotencyAuthorizationTest extends TestCase
             ->withBody((new StreamFactory())->createStream($body))
             ->withAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE, IdempotencyKey::fromHeader('stable-key-0003'))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::never())->method('handle');
 

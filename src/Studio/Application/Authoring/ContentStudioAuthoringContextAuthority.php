@@ -6,9 +6,7 @@ namespace Kumwe\App\Studio\Application\Authoring;
 
 use DateInterval;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Content\Application\ContentModelNotFound;
 use Kumwe\App\Content\Application\ContentModelService;
 use Kumwe\App\Content\Application\ContentNotFound;
@@ -16,6 +14,8 @@ use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Studio\Application\Host\StudioResourceContextKeyFactory;
 use Kumwe\App\Studio\Application\Projection\ContentStudioProjector;
 use Kumwe\App\Studio\Domain\Authoring\StudioAuthoringIntent;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 
 /**

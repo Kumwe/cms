@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Delivery\Console\Command;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Navigation\Application\MenuItemRecord;
 use Kumwe\App\Navigation\Application\MenuRecord;
 use Kumwe\App\Navigation\Application\NavigationService;
+use Kumwe\Context\Value\ExecutionContext;
 use Throwable;
 
 /**

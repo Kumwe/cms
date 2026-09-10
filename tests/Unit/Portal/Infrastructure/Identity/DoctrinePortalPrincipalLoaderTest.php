@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\Portal\Infrastructure\Identity;
 
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Application\Authorization\MembershipContext;
-use Kumwe\App\Application\Authorization\OrganizationContext;
-use Kumwe\App\Application\Authorization\WorkspaceContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\OrganizationContext;
+use Kumwe\Context\Value\WorkspaceContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Infrastructure\Persistence\TableNames;

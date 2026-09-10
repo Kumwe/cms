@@ -6,8 +6,8 @@ namespace Kumwe\App\BusinessReporting\Delivery\Portal;
 
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordQueryPurpose;
 use Kumwe\App\BusinessReporting\Application\ExportArtifactUnavailable;
 use Kumwe\App\BusinessReporting\Application\ExportService;

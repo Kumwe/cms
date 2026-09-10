@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Http\Api\Idempotency;
 
 use JsonException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Application\Idempotency\SecretOnceIdempotencyLedger;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Delivery\Http\Api\ProblemDetailsResponseFactory;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\ExecutionContext;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -96,7 +97,7 @@ final readonly class SecretOnceIdempotencyMiddleware implements MiddlewareInterf
     {
         $key = $request->getAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE);
         $principal = $request->getAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE);
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (
             !$key instanceof IdempotencyKey
             || !$principal instanceof AuthenticatedPrincipal

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Identity\Application\Administration;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * The operations that produce a credential rather than consume one: sign in, bootstrap, mint, rotate.

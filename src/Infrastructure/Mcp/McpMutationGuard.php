@@ -11,10 +11,10 @@ use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use JsonException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
@@ -155,7 +155,7 @@ final readonly class McpMutationGuard
         array $input,
         callable $mutation,
     ): array {
-        $principal = $context->principal()
+        $principal = AuthenticatedPrincipal::of($context)
             ?? throw new InvalidArgumentException('MCP mutations require a human execution context.');
         if (preg_match('/^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$/D', $operationId) !== 1) {
             throw new InvalidArgumentException('MCP operationId must be a stable 16 to 128 character identifier.');

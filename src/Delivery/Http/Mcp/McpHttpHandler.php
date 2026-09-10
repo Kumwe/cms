@@ -6,7 +6,7 @@ namespace Kumwe\App\Delivery\Http\Mcp;
 
 use Kumwe\App\Infrastructure\Mcp\KumweMcpHandlers;
 use Kumwe\App\Infrastructure\Mcp\KumweMcpServerFactory;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Mcp\Server\Transport\Http\Middleware\CorsMiddleware;
 use Mcp\Server\Transport\Http\Middleware\DnsRebindingProtectionMiddleware;
@@ -18,6 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Serves `/mcp`, the Model Context Protocol endpoint, over the official streamable HTTP transport.
@@ -150,7 +151,7 @@ final readonly class McpHttpHandler implements RequestHandlerInterface
             ],
             maxBodyBytes: $this->maxBodyBytes,
         );
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (!$context instanceof ExecutionContext) {
             throw new \LogicException('MCP HTTP requests require an execution context.');
         }

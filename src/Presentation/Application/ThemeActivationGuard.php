@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Presentation\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Extension\Domain\ThemeSurface;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port for the extra proof of presence a theme activation must clear before it is applied.

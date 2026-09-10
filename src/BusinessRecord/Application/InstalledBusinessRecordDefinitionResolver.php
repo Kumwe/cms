@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessRecord\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionStatus;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordDefinitionUnavailable;
@@ -12,6 +11,7 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordSchemaUnavailab
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaInstallationRepository;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallation;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Resolver that reconciles the published definition catalog against the installed schema rows.

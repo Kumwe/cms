@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditTrailVerifier;
 use Kumwe\App\Audit\Domain\AuditAnchorDigest;
 use Kumwe\App\Audit\Domain\AuditEnforcementState;

@@ -9,7 +9,7 @@ use Kumwe\App\Administrator\Http\AdministratorRequest;
 use Kumwe\App\Administrator\Http\Middleware\AdministratorCsrfMiddleware;
 use Kumwe\App\Administrator\Http\Middleware\AdministratorSessionMiddleware;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordDefinitionUnavailable;
 use Kumwe\App\BusinessSurface\Application\BusinessSurface;
 use Kumwe\App\BusinessSurface\Application\GeneratedBusinessActionStepUp;

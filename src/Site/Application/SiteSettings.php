@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Site\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port through which every layer reads and writes the site's global settings document.

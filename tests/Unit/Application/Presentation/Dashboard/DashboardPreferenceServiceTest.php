@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceAccessGroupState;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceMutation;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceQuery;

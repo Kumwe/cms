@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSurface\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordIdempotency;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port for non-enumerating caller-bound business operation lookup.

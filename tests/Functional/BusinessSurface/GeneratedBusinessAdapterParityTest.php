@@ -6,10 +6,10 @@ namespace Kumwe\App\Tests\Functional\BusinessSurface;
 
 use Doctrine\DBAL\Connection;
 use Kumwe\App\Kernel\Container;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\PortalOperation;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
@@ -48,6 +48,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Ramsey\Uuid\Uuid;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(BusinessSurfaceService::class)]
 #[CoversClass(BusinessRecordService::class)]
@@ -964,7 +965,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::OPERATION_ATTRIBUTE, $operation)
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, $definition)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(
                 RequireIdempotencyKeyMiddleware::ATTRIBUTE,
                 HttpIdempotencyKey::fromHeader($operationId),
@@ -1008,7 +1009,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, $record)
             ->withAttribute(BusinessRecordApiHandler::RELATIONSHIP_ATTRIBUTE, $relationship)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(
                 RequireIfMatchMiddleware::ATTRIBUTE,
                 IfMatch::fromHeader('"v' . $expectedVersion . '"'),
@@ -1050,7 +1051,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, $definition)
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, $record)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(
                 RequireIfMatchMiddleware::ATTRIBUTE,
                 IfMatch::fromHeader('"v' . $expectedVersion . '"'),
@@ -1087,7 +1088,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, $definition)
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, $record)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         return $includes === [] ? $request : $request->withQueryParams([
             'projection' => ['includes' => $includes],
@@ -1121,7 +1122,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, $record)
             ->withAttribute(BusinessRecordApiHandler::RELATIONSHIP_ATTRIBUTE, $relationship)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     /**
@@ -1148,7 +1149,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->withAttribute(BusinessRecordApiHandler::DEFINITION_ATTRIBUTE, $definition)
             ->withAttribute(BusinessRecordApiHandler::RECORD_ATTRIBUTE, $record)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     /**
@@ -1171,7 +1172,7 @@ final class GeneratedBusinessAdapterParityTest extends TestCase
             ->createServerRequest('GET', 'https://kumwe.test/api/v1/business/definitions/' . $definition)
             ->withAttribute('definition', $definition)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 
     /**

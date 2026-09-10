@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Application\Automation\Job;
 
 use Kumwe\App\Application\Automation\JobHandler;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Identity\Application\Administration\AdministratorSessionStore;
 
 /**

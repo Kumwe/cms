@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Media;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadRequest;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\StreamInterface;
 use stdClass;
 

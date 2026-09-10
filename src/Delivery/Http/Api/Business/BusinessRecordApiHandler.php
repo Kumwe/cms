@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Http\Api\Business;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\ArchiveRecordCommand;
@@ -26,6 +25,7 @@ use Kumwe\App\BusinessSurface\Application\BusinessSurfaceCatalog;
 use Kumwe\App\BusinessSurface\Application\BusinessSurfaceOperation;
 use Kumwe\App\BusinessSurface\Application\BusinessSurfaceUseCases;
 use Kumwe\App\Delivery\Http\Api\ApiExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

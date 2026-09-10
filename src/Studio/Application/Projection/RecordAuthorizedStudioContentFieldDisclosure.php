@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Projection;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Domain\ContentTypeDefinition;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Applies Content's current record-level disclosure contract to Studio fields.

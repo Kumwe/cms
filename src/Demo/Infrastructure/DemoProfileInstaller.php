@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Demo\Infrastructure;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\Demo\Application\DemoProfileLedger;
 use Kumwe\App\Demo\Application\DemoProfileReconciler;
 use Kumwe\App\Demo\Infrastructure\FilesystemDemoManifestCatalog;
 use Kumwe\App\Kernel\Configuration\ApplicationConfiguration;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 use Throwable;
 
@@ -79,13 +79,13 @@ final readonly class DemoProfileInstaller implements DemoProfileReconciler
     /**
      * Reconcile the selected site-content profile.
      *
-     * @param   \Kumwe\App\Application\Authorization\ExecutionContext  $context  Installer context.
+     * @param   \Kumwe\Context\Value\ExecutionContext  $context  Installer context.
      *
      * @return  list<string>  Content reconciliation diagnostics.
      *
      * @since   2.0.0
      */
-    private function content(\Kumwe\App\Application\Authorization\ExecutionContext $context): array
+    private function content(\Kumwe\Context\Value\ExecutionContext $context): array
     {
         $profile = $this->configuration->siteContentProfile;
         $loaded = $this->catalog->content($profile);
@@ -118,13 +118,13 @@ final readonly class DemoProfileInstaller implements DemoProfileReconciler
     /**
      * Reconcile the named business demonstration or persist the explicit no-business-data selection.
      *
-     * @param   \Kumwe\App\Application\Authorization\ExecutionContext  $context  Installer context.
+     * @param   \Kumwe\Context\Value\ExecutionContext  $context  Installer context.
      *
      * @return  list<string>  Business reconciliation diagnostics.
      *
      * @since   2.0.0
      */
-    private function business(\Kumwe\App\Application\Authorization\ExecutionContext $context): array
+    private function business(\Kumwe\Context\Value\ExecutionContext $context): array
     {
         $profile = $this->configuration->businessProfile;
         $enabled = $profile !== 'none';

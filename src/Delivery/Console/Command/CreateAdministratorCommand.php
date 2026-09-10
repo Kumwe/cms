@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Console\Command;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Identity\Application\Administration\AdministratorIdentityGateway;
+use Kumwe\Context\Value\SiteContext;
 use Throwable;
 
 /**

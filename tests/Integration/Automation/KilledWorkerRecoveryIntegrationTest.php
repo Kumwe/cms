@@ -9,7 +9,7 @@ use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\Application\Automation\JobHandlerRegistry;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\Application\Automation\Worker;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Infrastructure\Automation\DoctrineJobQueue;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;

@@ -6,7 +6,7 @@ namespace Kumwe\App\Studio\Application\Authoring;
 
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Content\Application\ContentRecord;
 use Kumwe\App\Content\Domain\ContentTypeDefinition;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;

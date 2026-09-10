@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Identity\Application\Administration;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\MembershipContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * The signed-in administrator behind one request, as resolved from the session cookie.

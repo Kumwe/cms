@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessIntegration\Application;
 
 use LogicException;
-use Kumwe\App\Application\Authorization\ExecutionContext as HostExecutionContext;
+use Kumwe\Context\Value\ExecutionContext as HostExecutionContext;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\BusinessIntegration\Domain\RecordedEventEnvelope;
 use Kumwe\Extension\Spi\Application\ExecutionContext;
@@ -14,6 +14,7 @@ use Kumwe\Extension\Spi\BusinessIntegration\Domain\EventConsumerDefinition;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\IntegrationContractValidator;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\IntegrationEvent;
 use Psr\Clock\ClockInterface;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 /**
  * Durable consumer that hands a validated event envelope to the existing job queue.
@@ -60,11 +61,12 @@ final readonly class JobQueueIntegrationEventHandler implements IntegrationEvent
         IntegrationEvent $event,
         ExecutionContext $context,
     ): void {
-        if (!$context instanceof HostExecutionContext) {
+        $host = ExtensionExecutionContext::host($context);
+        if ($host === null) {
             throw new LogicException('An integration-event job requires an App-issued execution context.');
         }
         $this->jobs->enqueue(
-            $context,
+            $host,
             $this->jobType,
             ['event_id' => $event->eventId(), 'event' => RecordedEventEnvelope::document($event)],
             $this->clock->now(),

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Delivery\Http\Api\Business;
 
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\BusinessSurface\Application\BusinessApprovalSurfaceService;
 use Kumwe\App\Delivery\Http\Api\Business\BusinessApprovalApiHandler;
 use Kumwe\App\Delivery\Http\Api\Business\BusinessApprovalApiPresenter;
 use Kumwe\App\Delivery\Http\Api\ProblemDetailsResponseFactory;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -45,7 +45,7 @@ final class BusinessApprovalApiHandlerTest extends TestCase
             ->createServerRequest('GET', 'https://kumwe.test/api/v1/business/approvals?limit=1000')
             ->withQueryParams(['limit' => '1000'])
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         $response = $this->handler()->handle($request);
 

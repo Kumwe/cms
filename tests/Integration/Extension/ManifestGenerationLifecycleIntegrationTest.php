@@ -7,7 +7,6 @@ namespace Kumwe\App\Tests\Integration\Extension;
 use DateTimeImmutable;
 use FilesystemIterator;
 use Kumwe\App\Administrator\Http\Handler\AdministratorExtensionsHandler;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\JobHandlerRegistry;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
@@ -38,6 +37,7 @@ use ZipArchive;
 use Kumwe\App\Extension\Infrastructure\DoctrineExtensionManager;
 use Kumwe\App\Extension\Infrastructure\RedisLockedExtensionManager;
 use Kumwe\App\Extension\Contribution\CoreContributionRegistrar;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(CoreContributionRegistrar::class)]
 #[CoversClass(AdministratorExtensionsHandler::class)]
@@ -397,7 +397,7 @@ final class ManifestGenerationLifecycleIntegrationTest extends TestCase
         self::assertInstanceOf(AdministratorExtensionsHandler::class, $handler);
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/administrator/extensions')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, new AdministratorSession(
                 '018f22e2-7c8b-7ab0-8f3a-88e8026bb399',
                 $principal,

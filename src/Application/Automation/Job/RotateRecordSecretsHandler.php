@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Application\Automation\Job;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\BusinessRecord\Application\RecordSecretRotation;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Queued driver for record-secret re-encryption, so a rotation finishes without an operator watching.

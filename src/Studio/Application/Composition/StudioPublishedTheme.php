@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Composition;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Extension\Runtime\ActiveExtensionSet;
 use Kumwe\App\Site\Application\SiteSettings;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 
 /**

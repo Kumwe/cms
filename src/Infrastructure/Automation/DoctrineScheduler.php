@@ -15,7 +15,7 @@ use JsonException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\AuthorizationResourceOwnershipUnknown;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
@@ -486,9 +486,9 @@ final readonly class DoctrineScheduler implements Scheduler, ScheduleRepository
      * all. Rolling back to the savepoint undoes only the refused insert, which is what makes the swallow
      * mean the same thing on all four supported engines.
      *
-     * @param   array<string, mixed>                               $row             Claimed schedule row.
-     * @param   ?\Kumwe\App\Application\Authorization\SiteContext  $site            Owner, null if global.
-     * @param   JobExecutionClass                                  $executionClass  Scope the job inherits.
+     * @param   array<string, mixed>               $row             Claimed schedule row.
+     * @param   ?\Kumwe\Context\Value\SiteContext  $site            Owner, null if global.
+     * @param   JobExecutionClass                  $executionClass  Scope the job inherits.
      *
      * @return  void
      *
@@ -500,7 +500,7 @@ final readonly class DoctrineScheduler implements Scheduler, ScheduleRepository
      */
     private function dispatch(
         array $row,
-        ?\Kumwe\App\Application\Authorization\SiteContext $site,
+        ?\Kumwe\Context\Value\SiteContext $site,
         JobExecutionClass $executionClass,
     ): void {
         $id = $this->requiredString($row, 'id');
@@ -887,13 +887,13 @@ final readonly class DoctrineScheduler implements Scheduler, ScheduleRepository
      * then be disabled or retired between this check and the job insert, so no occurrence is enqueued
      * for a site already on its way out.
      *
-     * @param   \Kumwe\App\Application\Authorization\SiteContext  $site  Site the schedule belongs to.
+     * @param   \Kumwe\Context\Value\SiteContext  $site  Site the schedule belongs to.
      *
      * @return  bool  True when the site exists and is enabled, false when it is missing or disabled.
      *
      * @since   2.0.0
      */
-    private function lockEnabledSite(\Kumwe\App\Application\Authorization\SiteContext $site): bool
+    private function lockEnabledSite(\Kumwe\Context\Value\SiteContext $site): bool
     {
         return $this->database->fetchOne(sprintf(
             'SELECT identifier FROM %s WHERE identifier = ? AND enabled = ? FOR UPDATE',

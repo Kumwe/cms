@@ -13,7 +13,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use JsonException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\BusinessSchema\Domain\PhysicalSchemaBlueprint;
 use Kumwe\App\Extension\Contribution\CanonicalManifestInterpreter;
 use Kumwe\App\Extension\Contribution\ContributionDefinitionChecksum;

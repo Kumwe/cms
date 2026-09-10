@@ -9,12 +9,12 @@ use Kumwe\App\Administrator\Http\Handler\AdministratorCreateContentHandler;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionService;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaService;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Application\Automation\AutomationManagementService;
@@ -54,6 +54,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use ReflectionClass;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorCreateContentHandler::class)]
 #[CoversClass(ManageContentCommand::class)]
@@ -75,7 +76,7 @@ final class AdapterAuthorizationParityTest extends TestCase
         $request = (new ServerRequestFactory())->createServerRequest('POST', '/administrator/content')
             ->withParsedBody(['title' => 'Denied', 'slug' => 'denied'])
             ->withAttribute(
-                ExecutionContext::REQUEST_ATTRIBUTE,
+                ExecutionContextAttribute::NAME,
                 $this->context('content.create', 'site', 'another-site'),
             );
 

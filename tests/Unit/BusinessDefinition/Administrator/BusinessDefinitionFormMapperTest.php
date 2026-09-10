@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\BusinessDefinition\Administrator;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Administrator\BusinessDefinitionFormMapper;
 use Kumwe\App\BusinessDefinition\Domain\InvalidBusinessDefinition;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

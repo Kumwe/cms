@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Unit\Studio\Application\Preview;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Infrastructure\Persistence\Migration\StudioPreviewGrantMigration;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Studio\Application\Composition\StudioCompositionThemeMismatch;

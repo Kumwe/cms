@@ -8,9 +8,7 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Application\Security\HighImpactAuthenticationRequired;
 use Kumwe\App\Application\Security\HighImpactCredentialGuard;
@@ -25,6 +23,8 @@ use Kumwe\App\Identity\Domain\EmailAddress;
 use Kumwe\App\Identity\Domain\UserStatus;
 use Kumwe\App\Shared\Domain\CanonicalJson;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -320,8 +320,8 @@ final class AccessControlServiceTest extends TestCase
                     'scope_identifier' => '018f22e2-7c8b-7ab0-8f3a-88e8026bb309',
                 ],
             ], self::ACTOR)->context(
-                \Kumwe\App\Application\Authorization\SiteContext::default(),
-                \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+                \Kumwe\Context\Value\SiteContext::default(),
+                \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
                 'delegation-ceiling-test',
             ),
             self::ROLE,
@@ -339,8 +339,8 @@ final class AccessControlServiceTest extends TestCase
             'scope_type' => 'site',
             'scope_identifier' => 'default',
         ]], self::ACTOR)->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'site-identity-escalation-test',
         );
 
@@ -475,8 +475,8 @@ final class AccessControlServiceTest extends TestCase
             'scope_type' => 'site',
             'scope_identifier' => 'default',
         ]], self::ACTOR)->context(
-            \Kumwe\App\Application\Authorization\SiteContext::default(),
-            \Kumwe\App\Application\Authorization\AuthenticationStrength::BearerToken,
+            \Kumwe\Context\Value\SiteContext::default(),
+            \Kumwe\Context\Value\AuthenticationStrength::BearerToken,
             'access-page-test',
         );
 

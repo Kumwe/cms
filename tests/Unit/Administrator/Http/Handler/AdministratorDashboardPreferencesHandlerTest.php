@@ -9,9 +9,8 @@ use Kumwe\App\Administrator\Http\Handler\AdministratorDashboardPreferencesHandle
 use Kumwe\App\Administrator\Navigation\AdministratorNavigationRegistry;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\Contribution\AdministratorNavigationDefinition;
 use Kumwe\Extension\Spi\Contribution\AdministratorWorkspaceDefinition;
 use Kumwe\Extension\Spi\Contribution\ContributionOwner;
@@ -34,6 +33,7 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Verifies administrator POST delivery derives a live catalog and exposes only closed redirect results.
@@ -250,7 +250,7 @@ final class AdministratorDashboardPreferencesHandlerTest extends TestCase
             ->withQueryParams($query)
             ->withParsedBody($form)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $principal->context(
+            ->withAttribute(ExecutionContextAttribute::NAME, $principal->context(
                 SiteContext::default(),
                 AuthenticationStrength::Password,
                 'test-dashboard-preferences',

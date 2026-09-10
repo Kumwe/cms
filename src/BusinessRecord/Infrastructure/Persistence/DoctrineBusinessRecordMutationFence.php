@@ -8,8 +8,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception as DbalException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordMutationFence;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordMutationGeneration;
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordDefinitionUnavailable;
@@ -17,6 +15,8 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordSchemaUnavailab
 use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordTemporarilyUnavailable;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Ramsey\Uuid\Uuid;
 
 /**

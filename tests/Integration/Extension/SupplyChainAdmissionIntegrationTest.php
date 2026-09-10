@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\Extension;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use FilesystemIterator;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Extension\Application\ExtensionManager;
 use Kumwe\App\Extension\Application\Package\NonConformingPackage;
 use Kumwe\Extension\Package\PackageBillOfMaterials;

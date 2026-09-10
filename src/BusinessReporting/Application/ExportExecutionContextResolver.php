@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessReporting\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessReporting\Domain\ExportArtifact;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Rehydrates current authority for the original accountable export actor.

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessDefinition\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldTypeDefinition;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Applies the business definitions an extension package declares to a site's definition catalog.

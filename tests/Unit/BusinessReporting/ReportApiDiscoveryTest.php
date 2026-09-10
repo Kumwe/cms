@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Unit\BusinessReporting;
 use DateTimeImmutable;
 use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordQueryPurpose;
 use Kumwe\App\BusinessRecord\Application\RecordBrowseResult;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordView;
@@ -29,6 +29,7 @@ use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(ReportApiHandler::class)]
 final class ReportApiDiscoveryTest extends TestCase
@@ -38,7 +39,7 @@ final class ReportApiDiscoveryTest extends TestCase
         $context = AuthorizationContext::human(['business.record.report', 'acme.reports.read']);
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/api/v1/business/reports')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(ReportApiHandler::OPERATION_ATTRIBUTE, 'report.list');
 
@@ -61,7 +62,7 @@ final class ReportApiDiscoveryTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/api/v1/business/reports/acme.open_items')
             ->withBody($streams->createStream('{}'))
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(ReportApiHandler::OPERATION_ATTRIBUTE, 'report.execute')
             ->withAttribute('report', 'acme.open_items');
@@ -81,7 +82,7 @@ final class ReportApiDiscoveryTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/api/v1/business/reports/acme.open_items')
             ->withBody((new StreamFactory())->createStream('{"parameters":'))
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(ReportApiHandler::OPERATION_ATTRIBUTE, 'report.execute')
             ->withAttribute('report', 'acme.open_items');
@@ -105,7 +106,7 @@ final class ReportApiDiscoveryTest extends TestCase
             ->withBody((new StreamFactory())->createStream(
                 '{"parameters":{"undeclared":"commercially-sensitive-value"}}',
             ))
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(ReportApiHandler::OPERATION_ATTRIBUTE, 'report.execute')
             ->withAttribute('report', 'acme.open_items');
@@ -123,7 +124,7 @@ final class ReportApiDiscoveryTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/api/v1/business/reports/acme.open_items')
             ->withBody((new StreamFactory())->createStream('{}'))
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(ReportApiHandler::OPERATION_ATTRIBUTE, 'report.execute')
             ->withAttribute('report', 'acme.open_items');
@@ -168,7 +169,7 @@ final class ReportApiDiscoveryTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://kumwe.test/api/v1/business/reports/acme.open_items')
             ->withBody((new StreamFactory())->createStream('{}'))
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
             ->withAttribute(ReportApiHandler::OPERATION_ATTRIBUTE, 'report.execute')
             ->withAttribute('report', 'acme.open_items');

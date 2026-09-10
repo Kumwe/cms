@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\OpenApi\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\InvalidBusinessDefinition;
 use Kumwe\App\OpenApi\Application\OpenApiComponentClaimAdmission;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

@@ -6,7 +6,7 @@ namespace Kumwe\App\Content\Domain;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * One published version of a site's content type: its handle, its schema, and the workflow it pins.

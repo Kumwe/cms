@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Demo\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\Demo\Application\DemoBusinessTemplateProjector;
 use Kumwe\App\Demo\Application\VdmBusinessManifestProjector;
 use Kumwe\App\Demo\Infrastructure\FilesystemDemoManifestCatalog;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

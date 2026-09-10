@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessIntegration\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext as HostExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessIntegration\Application\ValidatedContributedJobHandler;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext as HostExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Extension\Spi\Application\Automation\JobHandler;
 use Kumwe\Extension\Spi\Application\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\JobContributionDefinition;
@@ -70,7 +71,9 @@ final class ValidatedContributedJobHandlerTest extends TestCase
 
         $handler->handle(['site_identifier' => 'default'], $context);
 
-        self::assertSame([$definition, ['site_identifier' => 'default'], $context], $implementation->observed);
+        self::assertNotNull($implementation->observed);
+        self::assertSame([$definition, ['site_identifier' => 'default']], array_slice($implementation->observed, 0, 2));
+        self::assertSame($context, ExtensionExecutionContext::host($implementation->observed[2]));
     }
 
     /**

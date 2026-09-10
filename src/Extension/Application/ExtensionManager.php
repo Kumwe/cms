@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Extension\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Extension\Domain\ThemeSurface;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Application-facing contract for the extension lifecycle: what is installed, and what may change it.

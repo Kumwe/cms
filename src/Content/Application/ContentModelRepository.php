@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Content\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Domain\ContentTypeDefinition;
 use Kumwe\App\Workflow\Domain\WorkflowDefinition;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Persistence contract for the versioned content model: content type and workflow definitions.

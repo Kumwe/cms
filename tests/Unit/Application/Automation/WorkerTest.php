@@ -18,15 +18,16 @@ use Kumwe\App\Application\Automation\StoredJob;
 use Kumwe\App\Application\Automation\Worker;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\AuthorizationResourceOwnershipUnknown;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\OwnershipScope;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Throwable;
+use Kumwe\Context\Contract\SystemActor;
 
 #[CoversClass(Worker::class)]
 #[CoversClass(JobLeaseContext::class)]
@@ -309,7 +310,7 @@ final class RecordingJobQueue implements JobQueue
     public array $permanentFailures = [];
     /** @var list<Throwable> */
     public array $failures = [];
-    /** @var list<SystemIdentity|null> */
+    /** @var list<SystemActor|null> */
     public array $completionIdentities = [];
     public int $heartbeats = 0;
 
@@ -352,7 +353,7 @@ final class RecordingJobQueue implements JobQueue
     public function complete(ExecutionContext $context, StoredJob $job, string $workerId): void
     {
         $this->completed[] = $job->id;
-        $this->completionIdentities[] = $context->systemIdentity();
+        $this->completionIdentities[] = $context->systemActor();
     }
 
     public function fail(
@@ -447,7 +448,7 @@ final class MultiSiteCapturingHandler implements JobHandler
 
 final class IdentityCapturingHandler implements JobHandler
 {
-    public ?SystemIdentity $identity = null;
+    public ?SystemActor $identity = null;
 
     public function __construct(private string $jobType)
     {
@@ -460,7 +461,7 @@ final class IdentityCapturingHandler implements JobHandler
 
     public function handle(array $payload, ExecutionContext $context): void
     {
-        $this->identity = $context->systemIdentity();
+        $this->identity = $context->systemActor();
     }
 }
 

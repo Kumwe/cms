@@ -6,13 +6,13 @@ namespace Kumwe\App\Tests\Unit\Portal\Http;
 
 use Kumwe\App\Tests\Support\InterfaceTranslation;
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Identity\Domain\GrantScope;
@@ -37,6 +37,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(PortalSessionMiddleware::class)]
 #[CoversClass(PortalCsrfMiddleware::class)]
@@ -72,7 +73,7 @@ final class PortalSecurityBoundaryTest extends TestCase
             PortalSession::class,
             $handler->request?->getAttribute(PortalSession::REQUEST_ATTRIBUTE),
         );
-        $context = $handler->request?->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $handler->request?->getAttribute(ExecutionContextAttribute::NAME);
         self::assertInstanceOf(ExecutionContext::class, $context);
         self::assertSame(AuthenticatedSurface::Portal, $context->surface());
     }
@@ -127,7 +128,7 @@ final class PortalSecurityBoundaryTest extends TestCase
         $request = (new ServerRequest([], [], new Uri('https://example.test/portal/security'), 'GET'))
             ->withAttribute(RouteResult::class, RouteResult::fromRoute($route))
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         self::assertSame(200, (new PortalAuthorizationMiddleware($gateway))->process(
             $request,
@@ -154,7 +155,7 @@ final class PortalSecurityBoundaryTest extends TestCase
         $request = (new ServerRequest([], [], new Uri('https://example.test/portal/security'), 'GET'))
             ->withAttribute(RouteResult::class, RouteResult::fromRoute($route))
             ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
 
         self::assertSame(403, (new PortalAuthorizationMiddleware(
             new AllowingPortalAuthorization(false),

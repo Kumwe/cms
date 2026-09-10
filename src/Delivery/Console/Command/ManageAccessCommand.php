@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Console\Command;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Identity\Application\Administration\AccessControlService;
 use Kumwe\App\Identity\Application\Administration\AdministratorIdentityGateway;
 use Kumwe\App\Identity\Domain\UserStatus;
+use Kumwe\Context\Value\ExecutionContext;
 use Throwable;
 
 /**

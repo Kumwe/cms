@@ -11,10 +11,10 @@ use Kumwe\App\Application\Authorization\AuthorizationResourceOwnershipUnknown;
 use Kumwe\App\Application\Authorization\OwnershipScope;
 use Kumwe\App\Application\Authorization\OwnershipScopeLevel;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SiteGroupRegistry;
 use Kumwe\App\Application\Authorization\SiteGroupUnknown;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Read side of the resource-to-scope registry, answered from the prefixed `resource_site_ownership` table.

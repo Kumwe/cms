@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessDefinition\Administrator;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionOwner;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionStatus;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
+use Kumwe\Context\Value\SiteContext;
 use Ramsey\Uuid\Uuid;
 
 /**

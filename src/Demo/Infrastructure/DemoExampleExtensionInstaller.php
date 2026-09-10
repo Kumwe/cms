@@ -6,7 +6,7 @@ namespace Kumwe\App\Demo\Infrastructure;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Extension\Application\ExtensionManager;
 use Kumwe\App\Extension\Contribution\ExtensionContributionSummary;
 use Kumwe\App\Extension\Application\Trust\TrustStore;

@@ -6,11 +6,11 @@ namespace Kumwe\App\Infrastructure\Authorization;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SiteGroup;
 use Kumwe\App\Application\Authorization\SiteGroupUnknown;
 use Kumwe\App\Application\Authorization\SiteGroupWriter;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\Context\Value\SiteContext;
 use Psr\Clock\ClockInterface;
 
 /**

@@ -69,7 +69,7 @@ final class CapabilityIndexGateTest extends TestCase
         $check = GovernanceFixture::run(['--check']);
 
         self::assertSame(0, $check['status'], $check['output']);
-        self::assertStringContainsString('Capability index verified (6 packages; digest sha256:', $check['output']);
+        self::assertStringContainsString('Capability index verified (7 packages; digest sha256:', $check['output']);
 
         $digest = GovernanceFixture::run(['--digest']);
         self::assertSame(0, $digest['status'], $digest['output']);
@@ -185,9 +185,9 @@ final class CapabilityIndexGateTest extends TestCase
 
     /**
      * Two pre-Version-2 packages remain legacy-unmanifested transitional entries that cannot satisfy a release
-     * gate, while `kumwe/canonical-json`, `kumwe/producer` and `kumwe/sequence` are indexed from their Version 2
-     * manifests and the ledger records adopting their handoffs, and the sequence adoption's four removed symbols
-     * are the index's removed-symbol table.
+     * gate, while `kumwe/access-context`, `kumwe/canonical-json`, `kumwe/producer` and `kumwe/sequence` are
+     * indexed from their Version 2 manifests and the ledger records adopting their handoffs, and the twelve symbols
+     * the access-context and sequence adoptions removed are the index's removed-symbol table.
      *
      * @return  void
      *
@@ -201,6 +201,7 @@ final class CapabilityIndexGateTest extends TestCase
 
         self::assertSame(
             [
+                'kumwe/access-context',
                 'kumwe/canonical-json',
                 'kumwe/computation',
                 'kumwe/conversion',
@@ -210,7 +211,7 @@ final class CapabilityIndexGateTest extends TestCase
             ],
             array_column($packages, 'package'),
         );
-        foreach ([$packages[2], $packages[3]] as $package) {
+        foreach ([$packages[3], $packages[4]] as $package) {
             self::assertSame('legacy-unmanifested', $package['manifest_status'], (string) $package['package']);
             self::assertFalse($package['release_gate_eligible'], (string) $package['package']);
             self::assertIsArray($package['legacy']);
@@ -219,7 +220,16 @@ final class CapabilityIndexGateTest extends TestCase
             self::assertNull($package['handoff']);
             self::assertNotEmpty($package['public_symbols']);
         }
-        $canonical = $packages[0];
+        $access = $packages[0];
+        self::assertSame('v2-manifested', $access['manifest_status']);
+        self::assertTrue($access['release_gate_eligible']);
+        self::assertNull($access['legacy']);
+        self::assertIsArray($access['handoff']);
+        self::assertSame('KUMWE-MIG-2026-004', $access['handoff']['migration_id']);
+        self::assertSame('KUMWE-CS-2026-004', $access['handoff']['change_set']);
+        self::assertSame('vendor/kumwe/access-context/MIGRATION-HANDOFF.md', $access['handoff']['path']);
+        self::assertContains('Kumwe\\Context\\Value\\ExecutionContext', $access['public_symbols']);
+        $canonical = $packages[1];
         self::assertSame('v2-manifested', $canonical['manifest_status']);
         self::assertTrue($canonical['release_gate_eligible']);
         self::assertNull($canonical['legacy']);
@@ -228,7 +238,7 @@ final class CapabilityIndexGateTest extends TestCase
         self::assertSame('KUMWE-CS-2026-007', $canonical['handoff']['change_set']);
         self::assertSame('vendor/kumwe/canonical-json/MIGRATION-HANDOFF.md', $canonical['handoff']['path']);
         self::assertContains('Kumwe\\CanonicalJson\\Profile', $canonical['public_symbols']);
-        $producer = $packages[4];
+        $producer = $packages[5];
         self::assertSame('v2-manifested', $producer['manifest_status']);
         self::assertTrue($producer['release_gate_eligible']);
         self::assertNull($producer['legacy']);
@@ -238,12 +248,13 @@ final class CapabilityIndexGateTest extends TestCase
         self::assertSame('vendor/kumwe/producer/MIGRATION-HANDOFF.md', $producer['handoff']['path']);
         self::assertContains('Kumwe\\Producer\\Deployment\\StudioDeploymentEmitter', $producer['public_symbols']);
         $sources = array_column($packages, 'public_symbols_source', 'package');
+        self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/access-context']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/canonical-json']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/conversion']);
         self::assertSame('source-scan', $sources['kumwe/extension-sdk']);
         self::assertSame('manifest:resources/public-api/v1.json', $sources['kumwe/producer']);
         self::assertSame(
-            ['v0.1.1', 'v0.3.3', 'v0.1.2', 'v0.2.4', 'v0.3.0', 'v0.2.1'],
+            ['v0.1.2', 'v0.1.1', 'v0.3.3', 'v0.1.2', 'v0.2.4', 'v0.3.0', 'v0.2.1'],
             array_column($packages, 'installed_version'),
         );
         self::assertSame([], $document['extracted_namespaces']);
@@ -251,6 +262,14 @@ final class CapabilityIndexGateTest extends TestCase
         $removed = $document['removed_symbols'];
         self::assertSame(
             [
+                'Kumwe\\App\\Application\\Authorization\\AuthenticatedSurface',
+                'Kumwe\\App\\Application\\Authorization\\AuthenticationStrength',
+                'Kumwe\\App\\Application\\Authorization\\ExecutionContext',
+                'Kumwe\\App\\Application\\Authorization\\MembershipContext',
+                'Kumwe\\App\\Application\\Authorization\\OrganizationContext',
+                'Kumwe\\App\\Application\\Authorization\\SiteContext',
+                'Kumwe\\App\\Application\\Authorization\\StepUpProof',
+                'Kumwe\\App\\Application\\Authorization\\WorkspaceContext',
                 'Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceFormat',
                 'Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceReset',
                 'Kumwe\\App\\BusinessDefinition\\Domain\\NumberSequenceScope',
@@ -258,9 +277,15 @@ final class CapabilityIndexGateTest extends TestCase
             ],
             array_column($removed, 'old_fqcn'),
         );
-        self::assertSame(['KUMWE-MIG-2026-002'], array_values(array_unique(array_column($removed, 'migration_id'))));
-        self::assertSame(['kumwe/sequence'], array_values(array_unique(array_column($removed, 'package'))));
-        self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[3]['legacy']['retired_app_namespaces']);
+        self::assertSame(
+            ['KUMWE-MIG-2026-004', 'KUMWE-MIG-2026-002'],
+            array_values(array_unique(array_column($removed, 'migration_id'))),
+        );
+        self::assertSame(
+            ['kumwe/access-context', 'kumwe/sequence'],
+            array_values(array_unique(array_column($removed, 'package'))),
+        );
+        self::assertContains('Kumwe\\App\\BusinessRecord\\Query\\', $packages[4]['legacy']['retired_app_namespaces']);
     }
 
     /**

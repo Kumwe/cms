@@ -8,7 +8,6 @@ use Kumwe\Extension\Spi\Http\ExtensionRequest;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Http\Middleware\RequestIdMiddleware;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
@@ -21,6 +20,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Exchanges only the portal cookie for a live portal session and portal-surface execution context.
@@ -97,8 +98,8 @@ final readonly class PortalSessionMiddleware implements MiddlewareInterface
             $request
                 ->withAttribute(PortalSession::REQUEST_ATTRIBUTE, $session)
                 ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $session->identity->principal)
-                ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
-                ->withAttribute(ExtensionRequest::CONTEXT, $context)
+                ->withAttribute(ExecutionContextAttribute::NAME, $context)
+                ->withAttribute(ExtensionRequest::CONTEXT, ExtensionExecutionContext::of($context))
                 ->withAttribute(ExtensionRequest::CSRF_TOKEN, $session->csrfToken),
         );
     }

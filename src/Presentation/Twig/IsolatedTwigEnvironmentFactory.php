@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Presentation\Twig;
 
 use Kumwe\App\Extension\Runtime\ActiveExtensionSet;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Localization\Presentation\TranslationTwigExtension;
 use Kumwe\App\Extension\Domain\ThemeSurface;
 use Twig\Environment;

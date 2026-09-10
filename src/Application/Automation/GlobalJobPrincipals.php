@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Application\Automation;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use LogicException;
 
 /**

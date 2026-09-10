@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Console\Command;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Application\Automation\AutomationManagementService;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
+use Kumwe\Context\Value\ExecutionContext;
 use Throwable;
 
 /**

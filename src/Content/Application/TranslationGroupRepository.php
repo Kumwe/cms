@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Content\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Domain\TranslationGroup;
 use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Persistence contract for the translation group behind one logical item.

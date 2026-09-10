@@ -6,7 +6,6 @@ namespace Kumwe\App\Tests\Unit\Support;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessDefinition\Application\DefinitionVersionRecord;
@@ -23,6 +22,7 @@ use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use Kumwe\App\Tests\Support\TransientBusinessDefinitionFixtureScope;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;

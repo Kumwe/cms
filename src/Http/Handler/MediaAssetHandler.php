@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Http\Handler;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Application\MediaStorage;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\Response\EmptyResponse;
 use Psr\Http\Message\ResponseInterface;

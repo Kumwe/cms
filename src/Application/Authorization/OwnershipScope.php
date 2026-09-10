@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Authorization;
 
+use Kumwe\Context\Value\SiteContext;
+
 /**
  * The single owner of a resource, held at a site, a declared group of sites, or the installation.
  *

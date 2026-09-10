@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\Portal\Http;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Portal\Application\PortalSession;
+use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -76,7 +77,7 @@ final class PortalRequest
      */
     public static function context(ServerRequestInterface $request): ExecutionContext
     {
-        $context = $request->getAttribute(ExecutionContext::REQUEST_ATTRIBUTE);
+        $context = $request->getAttribute(ExecutionContextAttribute::NAME);
         if (!$context instanceof ExecutionContext) {
             throw new InvalidArgumentException('A portal execution context is required.');
         }

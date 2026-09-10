@@ -6,7 +6,6 @@ namespace Kumwe\App\Studio\Application\Authoring;
 
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationDenied;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Content\Application\ContentModelNotFound;
 use Kumwe\App\Content\Application\ContentModelService;
 use Kumwe\App\Content\Application\ContentNotFound;
@@ -28,6 +27,7 @@ use Kumwe\App\Studio\Application\Projection\StudioProjectionRejected;
 use Kumwe\App\Studio\Domain\Authoring\StudioAuthoringIntent;
 use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Workflow\Domain\WorkflowDefinition;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Producer\Canonical\CanonicalJson;
 use Kumwe\Producer\Schema\StudioDocumentSchemaRegistry;
 use stdClass;

@@ -160,8 +160,8 @@ final readonly class ManageBusinessSchemaCommand implements Command
      * proposed and under which checksum, and after an interrupted execution, to see how far the
      * journal got before deciding between `execute` and `recover`.
      *
-     * @param   \Kumwe\App\Application\Authorization\ExecutionContext  $context  Authorized actor and site.
-     * @param   string                                                 $planId   UUID of the plan to read.
+     * @param   \Kumwe\Context\Value\ExecutionContext  $context  Authorized actor and site.
+     * @param   string                                 $planId   UUID of the plan to read.
      *
      * @return  array<string, mixed>  The plan row with a `steps` list, in ordinal order, appended.
      *
@@ -171,7 +171,7 @@ final readonly class ManageBusinessSchemaCommand implements Command
      * @since   2.0.0
      */
     private function planWithJournal(
-        \Kumwe\App\Application\Authorization\ExecutionContext $context,
+        \Kumwe\Context\Value\ExecutionContext $context,
         string $planId,
     ): array {
         return [

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Preview;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Application\Projection\StudioContentProjectionService;
 use Kumwe\App\Studio\Application\Projection\StudioProjectionRejected;
 use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewDraft;
+use Kumwe\Context\Value\ExecutionContext;
 use stdClass;
 
 /**

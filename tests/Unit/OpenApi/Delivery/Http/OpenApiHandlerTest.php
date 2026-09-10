@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\OpenApi\Delivery\Http;
 
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Delivery\Http\Api\ProblemDetailsResponseFactory;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\OpenApi\Application\CompiledOpenApiContract;
@@ -14,6 +12,9 @@ use Kumwe\App\OpenApi\Application\OpenApiContractProvider;
 use Kumwe\App\OpenApi\Application\OpenApiContractUnavailable;
 use Kumwe\App\OpenApi\Delivery\Http\OpenApiHandler;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -145,6 +146,6 @@ final class OpenApiHandlerTest extends TestCase
         return (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://kumwe.test/api/v1/openapi.json')
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
     }
 }

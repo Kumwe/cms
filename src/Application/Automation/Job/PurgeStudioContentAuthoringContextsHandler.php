@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Automation\JobHandler;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringContextPurger;
 

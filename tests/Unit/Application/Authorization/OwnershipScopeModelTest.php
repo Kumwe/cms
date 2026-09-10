@@ -13,8 +13,8 @@ use Kumwe\App\Application\Authorization\OwnershipScopeNotSiteBound;
 use Kumwe\App\Application\Authorization\OwnershipScopeRule;
 use Kumwe\App\Application\Authorization\ResourceOwnership;
 use Kumwe\App\Application\Authorization\ResourceOwnershipScopePolicy;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Application\Authorization\SiteGroup;
+use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Support;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\MembershipContext;
+use Kumwe\Context\Value\MembershipContext;
 use Kumwe\App\Application\Authorization\MembershipContextValidator;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Presentation\Dashboard\DashboardPreferenceService;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroup;
 use Kumwe\App\Application\Presentation\Preference\PresentationPreferenceManager;

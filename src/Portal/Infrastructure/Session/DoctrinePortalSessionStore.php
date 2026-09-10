@@ -13,7 +13,7 @@ use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\Identity\Application\StepUp\StepUpRejected;
 use Kumwe\App\Identity\Application\StepUp\StepUpSessionRotator;

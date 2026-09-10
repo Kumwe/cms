@@ -12,7 +12,7 @@ use Kumwe\App\Application\Authorization\OwnershipScopeLevel;
 use Kumwe\App\Application\Authorization\ResourceOwnership;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipConflict;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 
 /**

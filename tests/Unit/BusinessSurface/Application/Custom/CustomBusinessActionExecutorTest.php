@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessSurface\Application\Custom;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
+use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Persistence\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordCustomActionGuard;
@@ -49,6 +49,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use ReflectionClass;
+use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 
 #[CoversClass(CustomBusinessActionExecutor::class)]
 #[CoversClass(CustomBusinessActionLedgerResult::class)]
@@ -262,7 +263,7 @@ final class CustomBusinessActionExecutorTest extends TestCase
             ),
         );
         $command = new CustomBusinessActionCommand(
-            $context,
+            ExtensionExecutionContext::of($context),
             $definition->handle,
             '018f4f24-98d8-7ad4-8f3f-38c909178b70',
             2,

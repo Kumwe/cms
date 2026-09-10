@@ -6,10 +6,10 @@ namespace Kumwe\App\Tests\Unit\BusinessReporting;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessReporting\Domain\ExportArtifact;
 use Kumwe\App\BusinessReporting\Domain\ExportArtifactStatus;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -9,7 +9,6 @@ use Kumwe\App\Administrator\Http\Middleware\AdministratorAuthorizationMiddleware
 use Kumwe\App\Administrator\Navigation\AdministratorNavigationRegistry;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
@@ -39,6 +38,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 #[CoversClass(AdministratorAuthorizationMiddleware::class)]
 #[UsesClass(AuthenticatedPrincipal::class)]
@@ -139,7 +139,7 @@ final class AdministratorAuthorizationMiddlewareTest extends TestCase
         $terminal = $this->neverHandler();
         $request = $this->request(['navigation.manage'], $principal)
             ->withHeader('Accept', 'text/html')
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context)
+            ->withAttribute(ExecutionContextAttribute::NAME, $context)
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $this->session($principal));
 
         try {

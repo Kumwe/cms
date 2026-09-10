@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Presentation;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Content\Application\ContentModelRepository;
 use Kumwe\App\Content\Application\ContentRecord;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Chooses the public site template a published record renders through, by its content type.

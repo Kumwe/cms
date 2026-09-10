@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessIntegration\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\Extension\Spi\BusinessIntegration\Domain\IntegrationContractValidator;
 use Kumwe\App\BusinessIntegration\Domain\ProcessWorkKind;

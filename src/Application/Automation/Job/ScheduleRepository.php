@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Application\Automation\Job;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Contract for the store the recurring automation schedules are kept in.

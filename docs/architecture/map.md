@@ -66,8 +66,9 @@ longest-prefix rule. Rules that surprise people:
 - `Kumwe\App\InterfaceStandard` → domain
 - `Kumwe\App\Extension\{Contribution,Runtime,Development}` → application
 - `Kumwe\App\BusinessSecurity\Policy` → domain
-- `SiteContext` and `AuthenticatedSurface` → shared (classified in place per ADR 0012: a
-  published migration freezes the one name and the SPI fixture the other)
+- `Kumwe\Context\{Contract,Exception,Value}` → shared (`kumwe/access-context` owns the site,
+  organization, workspace, membership, surface, strength, step-up and execution-context values the
+  ADR 0012 in-place classification of `SiteContext` and `AuthenticatedSurface` anticipated)
 - `ContributionOwner` and `ContributionDefinition` → domain (ADR 0012);
   `ContributionDefinitionChecksum` explicitly stays application
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Application\Security;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port that demands a fresh proof of the acting operator's password before an irreversible operation.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Audit\Application;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Port that writes a protected, redacted archive of an audit trail range for preservation.

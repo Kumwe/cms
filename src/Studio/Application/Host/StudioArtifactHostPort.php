@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Host;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Studio\Domain\Artifact\StoredStudioArtifact;
 use Kumwe\App\Studio\Domain\Artifact\StudioArtifactReference;
 use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Host\StudioSessionMode;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\Producer\Canonical\CanonicalJson;
 use Kumwe\Producer\Error\HostRefusal;
 use Kumwe\Producer\Wire\HostResult;

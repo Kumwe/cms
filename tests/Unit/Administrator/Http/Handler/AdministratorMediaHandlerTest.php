@@ -8,8 +8,7 @@ use DateTimeImmutable;
 use Kumwe\App\Administrator\Http\Handler\AdministratorMediaHandler;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
 use Kumwe\App\Administrator\Presentation\RecoveryAdministratorRenderer;
-use Kumwe\App\Application\Authorization\ExecutionContext;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
@@ -25,6 +24,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use Twig\Loader\ArrayLoader;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 
 /**
  * Pins the one media refusal an operator reads in place, rather than as a redirect.
@@ -60,10 +60,10 @@ final class AdministratorMediaHandlerTest extends TestCase
             ->createServerRequest('POST', 'https://kumwe.test/administrator/media')
             ->withAttribute(AdministratorSession::REQUEST_ATTRIBUTE, $this->session())
             ->withAttribute(
-                ExecutionContext::REQUEST_ATTRIBUTE,
+                ExecutionContextAttribute::NAME,
                 AuthorizationContext::principal(['content.read', 'content.update'])->context(
                     SiteContext::default(),
-                    \Kumwe\App\Application\Authorization\AuthenticationStrength::Password,
+                    \Kumwe\Context\Value\AuthenticationStrength::Password,
                     'media-refusal',
                 ),
             )

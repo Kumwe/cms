@@ -9,7 +9,7 @@ use Kumwe\App\Application\Authorization\DenyByDefaultAuthorizationGateway;
 use Kumwe\App\Application\Authorization\MembershipContextValidator;
 use Kumwe\App\Application\Authorization\OwnershipScope;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
-use Kumwe\App\Application\Authorization\SiteContext;
+use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\StructuredLogAuthorizationDecisionRecorder;
 use Kumwe\App\Extension\Contribution\ExtensionContributionRegistrySet;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;

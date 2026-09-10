@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessReporting\Delivery\Api;
 
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
 use Kumwe\App\BusinessReporting\Application\ReportExecutionResult;
 use Kumwe\App\BusinessReporting\Domain\ExportArtifact;
 use Kumwe\App\BusinessReporting\Domain\ReportDefinition;
 use Kumwe\App\BusinessReporting\Domain\ReportParameterDefinition;
+use Kumwe\Context\Value\AuthenticatedSurface;
 
 /**
  * Stable omission-safe REST representation of reports and export status.

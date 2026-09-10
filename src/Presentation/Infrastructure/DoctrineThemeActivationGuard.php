@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Presentation\Infrastructure;
 
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Identity\Application\Administration\AuthenticationRateLimiter;
 use Kumwe\App\Identity\Application\Security\PasswordHasher;
 use Kumwe\App\Infrastructure\Persistence\TableNames;

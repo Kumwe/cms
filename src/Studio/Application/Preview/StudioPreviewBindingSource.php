@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Preview;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewDraft;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Authority-preserving boundary that supplies values referenced by Blueprint bindings.

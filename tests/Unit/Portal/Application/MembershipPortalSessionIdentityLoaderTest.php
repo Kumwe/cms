@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Portal\Application;
 
-use Kumwe\App\Application\Authorization\MembershipContext;
-use Kumwe\App\Application\Authorization\OrganizationContext;
-use Kumwe\App\Application\Authorization\SiteContext;
-use Kumwe\App\Application\Authorization\WorkspaceContext;
 use Kumwe\App\BusinessSecurity\Application\MembershipDirectory;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Portal\Application\MembershipPortalSessionIdentityLoader;
 use Kumwe\App\Portal\Application\PortalPasswordIdentity;
 use Kumwe\App\Portal\Application\PortalPrincipalLoader;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Context\Value\MembershipContext;
+use Kumwe\Context\Value\OrganizationContext;
+use Kumwe\Context\Value\SiteContext;
+use Kumwe\Context\Value\WorkspaceContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

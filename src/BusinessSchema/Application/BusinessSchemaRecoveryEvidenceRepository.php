@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSchema\Application;
 
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\BusinessSchema\Domain\SchemaRecoveryEvidence;
+use Kumwe\Context\Value\SiteContext;
 
 /**
  * Store of the tested-restore evidence a high-risk schema plan must be approved and executed against.

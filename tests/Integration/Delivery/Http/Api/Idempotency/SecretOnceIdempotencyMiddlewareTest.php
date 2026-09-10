@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\Delivery\Http\Api\Idempotency;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Delivery\Http\Api\Idempotency\IdempotencyKey;
 use Kumwe\App\Delivery\Http\Api\Idempotency\RequireIdempotencyKeyMiddleware;
 use Kumwe\App\Delivery\Http\Api\Idempotency\SecretOnceIdempotencyMiddleware;
@@ -16,6 +16,7 @@ use Kumwe\App\Infrastructure\Persistence\DoctrineSecretOnceIdempotencyLedger;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\TestKernelFactory;
+use Kumwe\Context\Value\ExecutionContext;
 use Laminas\Diactoros\Response\JsonResponse;
 use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -321,7 +322,7 @@ final class SecretOnceIdempotencyMiddlewareTest extends TestCase
             ->withHeader('Content-Type', 'application/json')
             ->withAttribute(RequireIdempotencyKeyMiddleware::ATTRIBUTE, IdempotencyKey::fromHeader($key))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $principal)
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         $request->getBody()->write(json_encode([
             'email' => 'integration-administrator@example.test',
             'capabilities' => ['users.manage'],

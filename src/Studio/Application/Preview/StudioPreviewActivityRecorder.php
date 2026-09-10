@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Preview;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\Studio\Application\Host\StudioHostSessionSnapshot;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Security-observability boundary for ephemeral preview staging activity.

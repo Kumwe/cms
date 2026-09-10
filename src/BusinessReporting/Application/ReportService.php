@@ -6,10 +6,10 @@ namespace Kumwe\App\BusinessReporting\Application;
 
 use DateTimeInterface;
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticatedSurface;
+use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessDefinition\Domain\DecimalValue;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordView;

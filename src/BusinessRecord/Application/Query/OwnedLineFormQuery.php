@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessRecord\Application\Query;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
 use Kumwe\App\BusinessRecord\Application\RecordRequestGuard;
+use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Request for the policy-authorized create fields of one owned-line relationship.

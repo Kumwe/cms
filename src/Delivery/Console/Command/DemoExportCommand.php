@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Kumwe\App\Delivery\Console\Command;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Authorization\AuthenticationStrength;
-use Kumwe\App\Application\Authorization\SiteContext;
 use Kumwe\App\Delivery\Console\Command;
 use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Demo\Infrastructure\DemoBusinessProfileExporter;
@@ -14,6 +12,8 @@ use Kumwe\App\Demo\Infrastructure\DemoProfileExporter;
 use Kumwe\App\Demo\Infrastructure\FilesystemDemoManifestCatalog;
 use Kumwe\App\Identity\Application\Administration\AdministratorIdentityGateway;
 use Kumwe\App\Kernel\Configuration\ApplicationConfiguration;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 use Throwable;
 

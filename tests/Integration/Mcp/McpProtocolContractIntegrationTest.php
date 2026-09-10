@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Integration\Mcp;
 
-use Kumwe\App\Application\Authorization\ExecutionContext;
+use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Delivery\Http\Mcp\McpHttpHandler;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Infrastructure\Mcp\KumweMcpServerFactory;
@@ -15,6 +15,7 @@ use Kumwe\App\Infrastructure\Mcp\McpToolErrorMapper;
 use Kumwe\App\Infrastructure\Mcp\McpToolReferenceHandler;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\McpHandlersFixture;
+use Kumwe\Context\Value\ExecutionContext;
 use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\StreamFactory;
@@ -315,7 +316,7 @@ final class McpProtocolContractIntegrationTest extends TestCase
             ->withHeader('Accept', 'application/json, text/event-stream')
             ->withBody($streams->createStream(json_encode($message, JSON_THROW_ON_ERROR)))
             ->withAttribute(AuthenticatedPrincipal::REQUEST_ATTRIBUTE, $context->principal())
-            ->withAttribute(ExecutionContext::REQUEST_ATTRIBUTE, $context);
+            ->withAttribute(ExecutionContextAttribute::NAME, $context);
         if ($session !== null) {
             $request = $request
                 ->withHeader(StreamableHttpTransport::SESSION_HEADER, $session)
