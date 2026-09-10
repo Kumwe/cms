@@ -1,0 +1,65 @@
+schema: "kumwe-change-set/v2"
+change_set: "KUMWE-CS-2026-008"
+migration_id: "KUMWE-MIG-2026-008"
+roadmap_source:
+  title: "Kumwe ERP-Extensibility Foundation Roadmap"
+  sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
+roadmap_refs: []
+state: "app-pr-ready"
+phase_1:
+  source_repository: "kumwe/app"
+  source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
+  target_repository: "kumwe/computation"
+  package_pr: "https://github.com/kumwe/computation/pull/17"
+  tested_sha: "76ad7a507dbf36fdc8613e9b96a1be6ba9700c18"
+  public_api_digest: "c56fc71c10bf8873bdf611fbc0f08c672666df9b5fb315e269f5c706e24a6a9f"
+  capability_digest: "4f674158de34356fabcbf52c55cbc8fb436e320e66574f74d59ab6d9e86f03bb"
+  service_map_digest: "0c78df81249bde363bcacf7aa14c8d1a8223692bc879f91a65f08c2112dd278d"
+  handoff_digest: "5e6a70f3054ee4f30d4ec87bef37927a9f08b0555d494c6ee9a817cee77e12b1"
+release:
+  version: "0.3.3"
+  source_sha: "76ad7a507dbf36fdc8613e9b96a1be6ba9700c18"
+  artifact_digest: "0f942c8f4a88d0b1cfcc48e171cfbf4779129cb7eaa3ea8f9a405100dd8220e0"
+  clean_consumer_evidence:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-008/RELEASE-ATTESTATION.yaml"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/140"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/computation 0.3.3"
+  composer_lock_digest: "72bf64e62f36990fc24d24a6efce601eb4740225cb720d3bf5d2ec3ba66904af"
+  removed_app_symbols: []
+  moved_unit_tests: []
+  retained_app_tests:
+    - "tests/Unit/Kernel/NativeComputationFactoryTest.php"
+    - "tests/Unit/Kernel/ContainerTest.php"
+    - "tests/Architecture/ProductionArtifactsTest.php"
+evidence:
+  package:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-008/RELEASE-ATTESTATION.yaml"
+  app_composition:
+    - "tests/Unit/Kernel/NativeComputationFactoryTest.php"
+    - "tests/Unit/Kernel/ContainerTest.php"
+    - "tests/Architecture/ProductionArtifactsTest.php"
+  database_matrix: []
+  concurrency: []
+  authorization_security: []
+  lifecycle_recovery: []
+  delivery_browser: []
+  deployment_backup_restore:
+    - "docker/php/Dockerfile"
+    - "docker/dev/Dockerfile"
+  native_parity_abi:
+    - "tools/install-native-engine.sh"
+    - "tests/Unit/Kernel/NativeComputationFactoryTest.php"
+  performance_capacity: []
+compatibility: "Native provisioning prerequisite: canonical, compiler and executor services are shared; existing calculation consumers remain until their package adoption."
+migration_recovery: null
+security_impact: "Pinned digest-verified native source and independently recorded deployment tuple; missing or mismatched runtime identity refuses boot."
+performance_claim: null
+rollback: "Revert the App PR and rebuild the previous images; no persisted data format changes."
+known_gaps:
+  - "Legacy calculation evaluator removal follows the business package consumer adoption."
+  - "The final App head must pass all required hosted checks before merge."
+completion_claim: false
+accepted_by: null

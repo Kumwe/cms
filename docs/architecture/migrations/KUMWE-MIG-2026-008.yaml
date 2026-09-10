@@ -1,0 +1,56 @@
+schema: "kumwe-migration-ledger/v1"
+migration_id: "KUMWE-MIG-2026-008"
+change_set: "KUMWE-CS-2026-008"
+package: "kumwe/computation"
+version: "0.3.3"
+artifact_digest: "0f942c8f4a88d0b1cfcc48e171cfbf4779129cb7eaa3ea8f9a405100dd8220e0"
+handoff_path: "vendor/kumwe/computation/MIGRATION-HANDOFF.md"
+handoff_sha256: "5e6a70f3054ee4f30d4ec87bef37927a9f08b0555d494c6ee9a817cee77e12b1"
+release_attestation: "docs/architecture/migrations/evidence/KUMWE-MIG-2026-008/RELEASE-ATTESTATION.yaml"
+old_namespace_roots: []
+symbols: []
+removed_paths: []
+removed_tests: []
+retained_tests:
+  - "tests/Unit/Kernel/NativeComputationFactoryTest.php"
+  - "tests/Unit/Kernel/ContainerTest.php"
+  - "tests/Architecture/ProductionArtifactsTest.php"
+di_changes:
+  -
+    service: "Kumwe\\Computation\\NativeCompatibility"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "Read the independently provisioned expected tuple; package compatibility checks own admission."
+  -
+    service: "Kumwe\\Engine\\Runtime"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "One shared native runtime instance serves the admitted package services."
+  -
+    service: "Kumwe\\Computation\\NativeAdapter"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "Shared package adapter receives the admitted runtime and expected compatibility."
+  -
+    service: "Kumwe\\Computation\\Compiler"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "Alias to the shared package NativeAdapter."
+  -
+    service: "Kumwe\\Computation\\Executor"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "Alias to the shared package NativeAdapter."
+  -
+    service: "Kumwe\\Computation\\NativeCanonicalEncoder"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "Shared package encoder receives the admitted runtime and expected compatibility."
+  -
+    service: "Kumwe\\CanonicalJson\\CanonicalEncoder"
+    factory: "Kumwe\\App\\Kernel\\NativeComputationFactory"
+    note: "Alias to the shared package NativeCanonicalEncoder; exposed through the extension provider contract."
+capability_index_entries:
+  - "kumwe/computation"
+release_evidence:
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-008/RELEASE-ATTESTATION.yaml"
+app_pull_request: "https://github.com/kumwe/app/pull/140"
+roadmap_refs: []
+non_roadmap_refs:
+  - "NRM-2026-016"
+conflicts:
+  - "KUMWE-CONFLICT-2026-001"
