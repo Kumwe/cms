@@ -35,6 +35,7 @@
     "ext-sodium": "*",
     "ext-zip": "*",
     "doctrine/dbal": "^4.4",
+    "kumwe/canonical-json": "0.1.1",
     "kumwe/conversion": "0.1.2",
     "kumwe/extension-sdk": "0.2.4",
     "kumwe/producer": "0.3.0 as 0.2.99",
