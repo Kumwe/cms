@@ -431,12 +431,13 @@ jobs:
           composer assets:direction
 
       - name: Generate coding-standard normalization evidence
+        id: coding-standard-evidence
         run: |
           composer cs:fix || true
           git diff --binary > phpcbf.patch
 
       - name: Upload coding-standard normalization evidence
-        if: always()
+        if: ${{ !cancelled() && steps.coding-standard-evidence.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: phpcbf-patch
