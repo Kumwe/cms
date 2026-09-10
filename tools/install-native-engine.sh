@@ -21,7 +21,7 @@ native_tmp="$(mktemp -d)"
 trap 'rm -rf -- "$native_tmp"' EXIT
 readarray -t native_coordinates < <(php -n -r '
     $record = json_decode(file_get_contents($argv[1]), true, 64, JSON_THROW_ON_ERROR);
-    foreach (["url", "sha256"] as $field) { echo $record["binding"][$field], "\n"; }
+    foreach (["url", "sha256", "version"] as $field) { echo $record["binding"][$field], "\n"; }
 ' "$native_manifest")
 if [ -n "${2:-}" ]; then
     # An offline release cache is allowed only under the same mandatory, reviewed SHA-256 check.
@@ -69,4 +69,5 @@ php -n -d "extension=$native_prefix/kumwe_engine.so" -r '
         throw new RuntimeException("The installed native capabilities differ from the independent build record.");
     }
 ' "$native_prefix/native-expected-tuple.json"
-printf 'Installed native Engine 1.0.1; independent tuple: %s/native-expected-tuple.json\n' "$native_prefix"
+printf 'Installed native Engine %s; independent tuple: %s/native-expected-tuple.json\n' \
+    "${native_coordinates[2]}" "$native_prefix"
