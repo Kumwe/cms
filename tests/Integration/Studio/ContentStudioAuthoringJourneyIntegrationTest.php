@@ -763,30 +763,32 @@ final class ContentStudioAuthoringJourneyIntegrationTest extends TestCase
         self::assertStringStartsWith('studio-9-lives-', $definition->handle);
         $schema = $definition->schema();
         $properties = $schema['properties'] ?? [];
-        self::assertSame(
+        self::assertEquals(
             ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'title' => 'Count'],
             $properties['count'] ?? null,
         );
-        self::assertSame(['type' => 'number', 'minimum' => 0.5, 'title' => 'Ratio'], $properties['ratio'] ?? null);
-        self::assertSame(['type' => 'boolean', 'title' => 'Featured'], $properties['featured'] ?? null);
-        self::assertSame(['type' => 'string', 'format' => 'date', 'title' => 'Starts'], $properties['starts'] ?? null);
-        self::assertSame(
+        $ratio = ['type' => 'number', 'minimum' => 0.5, 'title' => 'Ratio'];
+        self::assertEquals($ratio, $properties['ratio'] ?? null);
+        self::assertEquals(['type' => 'boolean', 'title' => 'Featured'], $properties['featured'] ?? null);
+        $starts = ['type' => 'string', 'format' => 'date', 'title' => 'Starts'];
+        self::assertEquals($starts, $properties['starts'] ?? null);
+        self::assertEquals(
             ['type' => 'string', 'format' => 'date-time', 'title' => 'Published'],
             $properties['published'] ?? null,
         );
-        self::assertSame(
+        self::assertEquals(
             ['type' => 'string', 'x-kumwe-field' => 'media', 'title' => 'Hero'],
             $properties['hero'] ?? null,
         );
-        self::assertSame(
+        self::assertEquals(
             ['type' => 'string', 'enum' => ['staff', 'public'], 'title' => 'Audience'],
             $properties['audience'] ?? null,
         );
-        self::assertSame(
+        self::assertEquals(
             ['type' => 'array', 'items' => ['type' => 'string', 'maxLength' => 40], 'title' => 'Tags'],
             $properties['tags'] ?? null,
         );
-        self::assertSame(['type' => 'string', 'minLength' => 1, 'title' => 'Digest'], $properties['digest'] ?? null);
+        self::assertEquals(['type' => 'string', 'minLength' => 1, 'title' => 'Digest'], $properties['digest'] ?? null);
         self::assertContains('digest', $schema['required'] ?? []);
 
         // The session now follows the new type; the same label again takes the next free handle.
