@@ -164,13 +164,15 @@ final class PackageManifestsTest extends TestCase
     public function testProductionJsonCannotOverwriteObjectMembers(): void
     {
         $path = 'vendor/kumwe/example-v2/docs/release-record.md';
-        foreach ([
-            '{"key":1,"key":2}',
-            '{"key":1,"\u006bey":2}',
-            '{"items":[{"key":1,"key":2}]}',
-            '{"key":{"nested":1},"key":null}',
-            '{"key": invalid}',
-        ] as $json) {
+        foreach (
+            [
+                '{"key":1,"key":2}',
+                '{"key":1,"\u006bey":2}',
+                '{"items":[{"key":1,"key":2}]}',
+                '{"key":{"nested":1},"key":null}',
+                '{"key": invalid}',
+            ] as $json
+        ) {
             try {
                 PackageManifests::parseReleaseRecord("---\n" . $json . "\n---\n", $path);
                 self::fail('Malformed or duplicated JSON must be refused.');

@@ -502,8 +502,8 @@ final readonly class PackageManifests
         if (!is_string($bytes)) {
             throw GovernanceViolation::at(
                 $relative,
-                sprintf('%s claims Version 2 governance but ships no MIGRATION-HANDOFF.md', $name),
-                'ship the handoff committed by Phase 1 (Kumwe-v2-08)',
+                sprintf('%s claims Version 2 governance but its %s cannot be read', $name, $recordPath),
+                'ship the complete package release record in the installed archive',
             );
         }
         $parsed = self::parseReleaseRecord($bytes, $relative);
@@ -587,7 +587,7 @@ final readonly class PackageManifests
                     $relative,
                     sprintf('documentation.%s names %s, which the installed package does not ship', $field, $document),
                     'a Version 2 release archive must ship CHARTER.md, README.md, docs/, resources/ and '
-                    . 'MIGRATION-HANDOFF.md (no export-ignore); a release that omits them fails this gate at adoption',
+                    . $recordPath . ' (no export-ignore); a release that omits them fails this gate at adoption',
                 );
             }
         }
@@ -598,7 +598,7 @@ final readonly class PackageManifests
                 throw GovernanceViolation::at(
                     $relative,
                     sprintf('the narrative section "## %s" is missing', $section),
-                    'write the eight narrative sections of Kumwe-v2-08 as H2 headings in that order',
+                    'write the eight narrative sections required by the selected record format as H2 headings',
                 );
             }
         }

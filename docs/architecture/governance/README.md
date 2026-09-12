@@ -373,8 +373,9 @@ observed evidence; a green PR is not a release, a release is not adoption, adopt
 | `objective-verified` | A roadmap objective has executable App proof | criterion evidence against a released tuple |
 | `gate-accepted` | Every criterion in a gate verified and accepted | all gate evidence, gaps and risks, approver |
 
-Phase 1 cannot advance beyond `package-implemented`. Only `release-verified` permits dependent publication
-or Phase 2. Only `objective-verified` permits a roadmap objective claim. The Kumwe-v2-04 ten-state machine
+Package implementation alone cannot advance beyond `package-implemented`. Core adoption requires
+`release-verified`; dependent packages enforce their own published dependency identity and consumer checks.
+Only `objective-verified` permits a roadmap objective claim. The historical Kumwe-v2-04 ten-state machine
 maps onto the canonical enum; use the canonical name in every record:
 
 | Kumwe-v2-04 state | Canonical state |
@@ -441,7 +442,7 @@ Step notes:
 
 The governance records enter App with the Phase 2 PR; Phase 1 leaves App unchanged. The identifier pair is
 allocated at Phase 1 start against the App `master` directories and cited in the handoff and package PR.
-The bootstrap PR (`NRM-2026-001`) must be merged before any Phase 2 begins (Kumwe-v2-10).
+The governance tooling is installed; every new adoption must satisfy the checks and evidence requirements above.
 
 ### Test ownership applies to every package
 
