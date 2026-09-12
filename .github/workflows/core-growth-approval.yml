@@ -1,7 +1,7 @@
 name: Core growth approval
 
-# D-GOV-9 makes a human reviewer the authority over a Core Growth Record. This workflow turns that
-# reviewer's approving pull-request review into the record: when a collaborator with write access
+# The standing maintainer mandate also permits evidenced agent reviews recorded manually (see AGENTS.md).
+# This workflow implements the human review route: when a collaborator with write access
 # approves a same-repository pull request, every `decision: pending` record that names this pull
 # request is set to `approved` with that reviewer's login, the core-growth baseline is re-recorded,
 # and the result is committed to the pull-request branch under the reviewer's own identity. A pull

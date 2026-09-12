@@ -8,6 +8,36 @@ Coding rules live in [`docs/coding-standard.md`](docs/coding-standard.md). Progr
 contracts live in [`docs/roadmap/`](docs/roadmap/README.md). This file does not replace
 them. It is the checklist that makes a change survive the gates they enforce.
 
+## Standing maintainer mandate — 2026-09-12
+
+Kumwe is an autonomous AI-driven development project. Its objective is a capable, reliable CMS and
+extensible application foundation that lets people and agents build large applications quickly.
+The technology constraints are PHP, C++, and JavaScript for the frontend. Judge architectural
+choices by working behavior, security, correctness, maintainability and measured performance; use established
+patterns where they fit, and avoid abstractions or paperwork that do not improve the product.
+
+Within an assigned objective, the maintainer delegates architectural decisions, implementation, dependency
+adoption, removal of superseded code, necessary tests, records, conflict resolution, commits and PR updates
+to agents. This includes deciding which responsibilities belong in packages and which are inherently
+App-owned after the Capability Reuse Review. Do not ask for renewed human permission for these routine
+decisions. Record the evidence and the actual decision maker and reviewer; an independent agent may perform
+the review. An agent review must never be represented as a human GitHub approval.
+
+The maintainer also authorizes agents to rebase-merge work in the assigned scope once the required checks
+pass, then verify the resulting master CI and release workflows. Use the supported GitHub integration and
+respect branch protection, access controls, immutable releases and package release gates. This mandate does
+not waive a failed check or authorize bypassing an external permission requirement.
+
+Finish the current PR before starting the next unless the maintainer explicitly requests parallel delivery.
+Use parallel agents for independent work that helps that PR land. Push reviewable progress promptly and
+continue through validation and delivery; a prepared patch, documentation claim or green subset is not
+completion. Keep product issues outside the assigned scope separate.
+
+Resolve technical uncertainty through source inspection, focused experiments and independent review. Ask
+the maintainer only when a material product decision remains unresolved, the requested scope or technology
+constraints must change, or an action needs authority the maintainer has not delegated. This standing
+mandate supersedes older human-only approval and merge wording for work inside the assigned scope.
+
 ---
 
 ## 0. Environment bootstrap
@@ -453,16 +483,17 @@ npm run test:browser                            # public HTML behaviour
     review.
     ```
 
-12. **Phase discipline and human merge authority.** Every agent that migrates, adopts or integrates a
-    package works under this clause, verbatim from the Version 2 Parallel Migration Protocol:
+12. **Phase discipline and delegated delivery authority.** Every agent that migrates, adopts or integrates
+    a package preserves the Version 2 release discipline under the standing maintainer mandate above:
 
     ```text
     Read the repository-specific Version 2 brief and the parallel migration protocol before changing code. Determine
     the phase and do not cross its release gate. Investigate existing package APIs before adding App implementation.
     Preserve all concurrent objectives when synchronizing; never resolve a conflicted file wholesale with ours/theirs
     and never hand-edit generated dependency state. Record nontrivial conflicts and tests proving both objectives
-    survived. You may prepare and update branches and PRs, but human maintainers retain protected-branch merge and
-    release authority.
+    survived. Agents may prepare and update branches and PRs, rebase-merge verified work in the assigned scope,
+    and verify the resulting release workflows under the standing maintainer mandate. Required checks, branch
+    protection, external access controls and immutable-release boundaries remain in force.
     ```
 
 A fixture, a route, a command, and a changelog sentence are all load-bearing. The
