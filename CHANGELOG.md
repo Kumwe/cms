@@ -17,6 +17,11 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
+- Disable unused PCOV instrumentation in the integration suite's collection, repeat and reverse-order
+  subprocesses. The full database suite still produces the coverage report and the coverage ratchet still
+  checks it; both repeated passes and their complete-report checks remain required. This addresses the
+  MariaDB repeat-job overrun that prevented the post-merge CI from reaching continuous release (#141).
+
 - Provision pinned Engine/binding 1.0.3 and adopt `kumwe/computation` 0.3.3 for shared native canonical,
   compiler and executor services. The deployment independently records and admits its exact PHP/build
   tuple; missing or mismatched runtime metadata refuses boot. PHP Docker images use pinned glibc-based

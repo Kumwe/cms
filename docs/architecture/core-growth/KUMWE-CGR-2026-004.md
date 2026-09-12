@@ -8,7 +8,7 @@ symbols:
   - Kumwe\App\Application\Authorization\ExecutionContextAttribute
   - Kumwe\App\Extension\Runtime\ExtensionExecutionContext
 layer: application
-capability_index_sha256: "aa9524c9573b2cceaa458498b97d050a19317dc64d302c0400391fe0b8d03ea4"
+capability_index_sha256: "e41df6fb5673d5af3df2ae91ac5eec7b2b0cd28f28bfa3d78c180e0df74a572b"
 packages_reviewed:
   - package: kumwe/access-context
     version: 0.1.2
@@ -121,6 +121,13 @@ any other implementation.
   `tests/Integration/Extension/AssetInspectionCustomViewIntegrationTest.php` pin the boundary on the real database.
 
 ## Decision
+
+Codex's technical review on 2026-09-12 rechecked the four retained classes against `kumwe/access-context`
+0.1.2 and `kumwe/extension-sdk` 0.2.4 and supports App ownership. The package's neutral actor ports cannot
+grant App authority: the host rejects foreign principal and system-actor implementations. The SDK adapter
+exposes only its seven context coordinates and recovers only the exact host context it wrapped. The request
+attribute remains host pipeline wiring. The capability-index digest above identifies the seven-package
+index after the rebase onto #140. This technical review does not record a human approving review.
 
 Pending the reviewer's approving review on the App pull request that adopts `kumwe/access-context` 0.1.2
 (`KUMWE-MIG-2026-004`); the `Core growth approval` workflow records the reviewer and the date and re-records

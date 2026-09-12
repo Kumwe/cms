@@ -690,6 +690,8 @@ jobs:
       # The repeat and reverse-order passes re-run the whole integration suite twice more. They are
       # merge-lane evidence: every push to master still proves them on all three engines, while a
       # pull-request push keeps the complete single pass above and gets its verdict in half the time.
+      # The tool disables PCOV hooks only in its collection and repeat subprocesses: the full-suite
+      # coverage report above remains the canonical measurement and feeds the unchanged ratchet below.
       - name: Prove three integration passes and reverse class order on one database
         if: github.event_name != 'pull_request'
         run: composer test:idempotency -- --engine=${{ matrix.database.driver }}
