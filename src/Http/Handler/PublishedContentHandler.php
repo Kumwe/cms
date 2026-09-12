@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Http\Handler;
 
 use Kumwe\App\Content\Presentation\TranslationGroupPresenter;
-use Kumwe\App\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\ActiveLocale;
 use Kumwe\App\Presentation\ContentPageRenderService;
 use Kumwe\App\Presentation\ContentLayoutCatalog;
 use Kumwe\App\Presentation\ContentPresenter;

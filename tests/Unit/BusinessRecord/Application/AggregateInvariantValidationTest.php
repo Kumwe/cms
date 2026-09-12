@@ -9,7 +9,8 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordValidationFaile
 use Kumwe\App\BusinessRecord\Application\RecordRuleValidator;
 use Kumwe\App\BusinessRecord\Application\RecordValueCodec;
 use Kumwe\App\BusinessRecord\Application\ValidationViolation;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\KeyMaterial;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -305,10 +306,10 @@ final class AggregateInvariantValidationTest extends TestCase
      */
     private static function rules(): RecordRuleValidator
     {
-        $cipher = new SodiumSecretCipher(
+        $cipher = new SodiumEnvelopeCipher(new KeyMaterial(
             'aggregate-invariant-key-v1',
             str_repeat("\x11", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        );
+        ));
 
         return new RecordRuleValidator(new RecordValueCodec($cipher));
     }

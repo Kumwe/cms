@@ -17,7 +17,8 @@ use Kumwe\Conversion\Value\MoneyExchangeRate;
 use Kumwe\Conversion\Value\MoneyRoundingMode;
 use Kumwe\Conversion\Value\MoneyValue;
 use Kumwe\App\BusinessRecord\Domain\RecordValueGuard;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\KeyMaterial;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -73,10 +74,10 @@ final class MoneyConversionBoundaryTest extends TestCase
     public function testNoWritePathAcceptsAConvertedAmountWhereStoredMoneyIsExpected(): void
     {
         $converted = self::converted();
-        $codec = new RecordValueCodec(new SodiumSecretCipher(
+        $codec = new RecordValueCodec(new SodiumEnvelopeCipher(new KeyMaterial(
             'unit-key-v1',
             str_repeat("\x5a", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        ));
+        )));
 
         try {
             RecordValueGuard::assertValue($converted);

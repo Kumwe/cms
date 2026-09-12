@@ -1,0 +1,30 @@
+schema: "kumwe-non-roadmap-record/v1"
+id: "NRM-2026-006"
+nrm_ref: "NRM-2026-006"
+roadmap_impact: "None"
+rationale: "Adopt the independently verified kumwe/localization release and remove its duplicate App implementation; no roadmap objective is claimed."
+repositories:
+  - "kumwe/app"
+  - "kumwe/localization"
+behavior_before: "App owned locale values, negotiation, message catalogue composition and ICU formatting."
+behavior_after: "Package owns portable localization; App retains locale settings, authorized wording changes, persistence, file loading, middleware, Twig and Studio host integration."
+public_api_impact: "Internal App symbols move to the package namespaces listed in the migration ledger; extension-facing contracts and application workflows retain their existing owners."
+dependency_impact: "Adds exact runtime dependency kumwe/localization 0.1.1."
+compatibility: "Released localization executable bodies match the extracted App behavior after namespace and default-provider substitution; host settings, persisted locale strings and catalogue serialization remain."
+data_migration: null
+security_impact: "Site and organization translation scope, authorized overrides and delivery escaping remain in host adapters."
+performance:
+  claim: "None"
+  evidence: []
+operations_deployment: "Install the committed Composer lock on PHP8.5; existing host configuration and storage remain."
+recovery_rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
+artifacts_evidence:
+  - "docs/architecture/migrations/KUMWE-MIG-2026-005.yaml"
+  - "docs/architecture/migrations/change-sets/KUMWE-CS-2026-005.yaml"
+  - "docs/architecture/migrations/trains/KUMWE-TRAIN-2026-004.yaml"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/RELEASE-ATTESTATION.yaml"
+  - "https://github.com/kumwe/app/pull/142"
+known_gaps:
+  - "Hosted App database/browser checks and merged-target verification remain pending."
+owner: "Platform architecture"
+status: "in-progress"

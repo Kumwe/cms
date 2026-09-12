@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Kumwe\App\Localization\Infrastructure;
 
 use InvalidArgumentException;
-use Kumwe\App\Localization\Application\MessageCatalogueRepository;
-use Kumwe\App\Localization\Domain\LocaleTag;
-use Kumwe\App\Localization\Domain\MessageCatalogue;
-use Kumwe\App\Localization\Domain\MessageCatalogueLayer;
+use Kumwe\Localization\Application\MessageCatalogueRepository;
+use Kumwe\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\MessageCatalogue;
+use Kumwe\Localization\Domain\MessageCatalogueLayer;
 use RuntimeException;
 
 /**

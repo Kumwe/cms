@@ -5,25 +5,18 @@ declare(strict_types=1);
 namespace Kumwe\App\Tests\Unit\BusinessRecord\Infrastructure;
 
 use InvalidArgumentException;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyMaterial;
 use Kumwe\App\BusinessRecord\Domain\SecretKeyPurpose;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyRing;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyUnavailable;
 use Kumwe\App\BusinessRecord\Infrastructure\Security\ConfiguredSecretKeyRings;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretCipher;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretKeyProvider;
+use Kumwe\Secret\Cipher\KeyRingEnvelopeCipher;
+use Kumwe\Secret\Exception\KeyUnavailable;
+use Kumwe\Secret\Provider\KeyRingKeyProvider;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-#[CoversClass(SecretKeyRing::class)]
-#[CoversClass(SecretKeyMaterial::class)]
 #[CoversClass(SecretKeyPurpose::class)]
-#[CoversClass(SecretKeyUnavailable::class)]
 #[CoversClass(ConfiguredSecretKeyRings::class)]
-#[CoversClass(KeyRingSecretCipher::class)]
-#[CoversClass(KeyRingSecretKeyProvider::class)]
 /**
  * Proves the record key ring rotates without stranding anything it has already sealed.
  *
@@ -107,7 +100,7 @@ final class SecretKeyLifecycleTest extends TestCase
      */
     public function testEnvelopesSealedUnderTheApplicationSecretStillOpenAfterDedicatedKeysAreAdopted(): void
     {
-        $before = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $before = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(self::applicationSecret()))->records(),
         ));
         $binding = 'business-record-secret-v1' . "\n" . 'default/definition/record/credential';
@@ -115,7 +108,7 @@ final class SecretKeyLifecycleTest extends TestCase
 
         self::assertSame('application-secret-v1', $stored['key_id']);
 
-        $after = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $after = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(
                 self::applicationSecret(),
                 null,
@@ -143,12 +136,12 @@ final class SecretKeyLifecycleTest extends TestCase
     public function testARotatedApplicationSecretDoesNotStrandEnvelopesWhenTheOldOneIsRetained(): void
     {
         $binding = 'business-record-secret-v1' . "\n" . 'default/definition/record/credential';
-        $original = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $original = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(self::applicationSecret()))->records(),
         ));
         $stored = $original->encrypt('sealed-before-the-incident', $binding)->toStorage();
 
-        $rotatedSecretOnly = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $rotatedSecretOnly = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(self::fixtureSecret('rotated-fixture')))->records(),
         ));
         try {
@@ -158,7 +151,7 @@ final class SecretKeyLifecycleTest extends TestCase
             self::assertStringNotContainsString('sealed-before-the-incident', $exception->getMessage());
         }
 
-        $rotatedWithLegacyRetained = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $rotatedWithLegacyRetained = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(
                 self::fixtureSecret('rotated-fixture'),
                 self::applicationSecret(),
@@ -183,7 +176,7 @@ final class SecretKeyLifecycleTest extends TestCase
     public function testARetiredDedicatedKeyStillOpensWhatItSealed(): void
     {
         $binding = 'business-record-secret-v1' . "\n" . 'default/definition/record/credential';
-        $first = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $first = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(
                 self::applicationSecret(),
                 null,
@@ -200,7 +193,7 @@ final class SecretKeyLifecycleTest extends TestCase
             self::fixtureSecret('second-fixture'),
             ['record-v1' => self::recordSecret()],
         ))->records();
-        $second = new KeyRingSecretCipher(new KeyRingSecretKeyProvider($ring));
+        $second = new KeyRingEnvelopeCipher(new KeyRingKeyProvider($ring));
 
         self::assertSame(
             ['record-v2', 'application-secret-v1', 'record-v1'],
@@ -223,7 +216,7 @@ final class SecretKeyLifecycleTest extends TestCase
     public function testARevokedOrForeignKeyFailsClosedWithoutDisclosingAnything(): void
     {
         $binding = 'business-record-secret-v1' . "\n" . 'default/definition/record/credential';
-        $retired = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $retired = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(
                 self::applicationSecret(),
                 null,
@@ -233,7 +226,7 @@ final class SecretKeyLifecycleTest extends TestCase
         ));
         $stored = $retired->encrypt('should-stay-sealed', $binding)->toStorage();
 
-        $withoutTheKey = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
+        $withoutTheKey = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(
             (new ConfiguredSecretKeyRings(
                 self::applicationSecret(),
                 null,
@@ -245,32 +238,12 @@ final class SecretKeyLifecycleTest extends TestCase
         try {
             $withoutTheKey->decrypt(EncryptedEnvelope::fromStorage($stored), $binding);
             self::fail('An envelope opened under a key the ring does not hold.');
-        } catch (SecretKeyUnavailable $exception) {
+        } catch (KeyUnavailable $exception) {
             self::assertStringContainsString('"record-v1" is unavailable', $exception->getMessage());
             self::assertStringNotContainsString('should-stay-sealed', $exception->getMessage());
             self::assertStringNotContainsString(self::recordSecret(), $exception->getMessage());
             self::assertStringNotContainsString('record-v2', $exception->getMessage());
         }
-    }
-
-    /**
-     * Prove a stored row naming a weaker construction is refused by the ring cipher itself.
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function testADowngradedAlgorithmIsRefusedBeforeAKeyIsResolved(): void
-    {
-        $cipher = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(
-            (new ConfiguredSecretKeyRings(self::applicationSecret()))->records(),
-        ));
-        $stored = $cipher->encrypt('sealed', 'binding')->toStorage();
-        $stored['algorithm'] = 'chacha20';
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('algorithm is unsupported');
-        EncryptedEnvelope::fromStorage($stored);
     }
 
     /**
@@ -295,11 +268,11 @@ final class SecretKeyLifecycleTest extends TestCase
         self::assertNotSame($records->active->material(), $plans->active->material());
         self::assertSame(['mutation-plan-v1'], $plans->keyIds());
 
-        $planCipher = new KeyRingSecretCipher(new KeyRingSecretKeyProvider($plans));
-        $recordCipher = new KeyRingSecretCipher(new KeyRingSecretKeyProvider($records));
+        $planCipher = new KeyRingEnvelopeCipher(new KeyRingKeyProvider($plans));
+        $recordCipher = new KeyRingEnvelopeCipher(new KeyRingKeyProvider($records));
         $planToken = $planCipher->encrypt('plan-document', 'kumwe:business-mutation-plan:v2');
 
-        $this->expectException(SecretKeyUnavailable::class);
+        $this->expectException(KeyUnavailable::class);
         $recordCipher->decrypt($planToken, 'kumwe:business-mutation-plan:v2');
     }
 
@@ -323,24 +296,6 @@ final class SecretKeyLifecycleTest extends TestCase
 
         self::assertSame($before->active->keyId, $after->active->keyId);
         self::assertSame($before->active->material(), $after->active->material());
-    }
-
-    /**
-     * Prove key material never reaches a debug dump, a stack trace, or a validation message.
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function testKeyMaterialIsRedactedFromDebugOutput(): void
-    {
-        $key = new SecretKeyMaterial('record-v1', str_repeat("\x5a", 32));
-        $dump = print_r($key, true);
-
-        self::assertStringContainsString('record-v1', $dump);
-        self::assertStringContainsString('[redacted]', $dump);
-        self::assertStringNotContainsString(str_repeat("\x5a", 32), $dump);
-        self::assertStringNotContainsString(str_repeat("\x5a", 8), $dump);
     }
 
     /**
@@ -379,21 +334,5 @@ final class SecretKeyLifecycleTest extends TestCase
                 self::assertStringNotContainsString(self::applicationSecret(), $exception->getMessage());
             }
         }
-    }
-
-    /**
-     * Prove the ring refuses to hold one identifier twice, whichever way the collision arrives.
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function testARingRefusesToHoldOneIdentifierTwice(): void
-    {
-        $active = new SecretKeyMaterial('record-v1', str_repeat("\x01", 32));
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('cannot hold one identifier twice');
-        new SecretKeyRing($active, [new SecretKeyMaterial('record-v1', str_repeat("\x02", 32))]);
     }
 }

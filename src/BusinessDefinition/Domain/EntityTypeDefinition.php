@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessDefinition\Domain;
 
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -384,7 +384,7 @@ final readonly class EntityTypeDefinition
      *
      * @return  string  The closest translation the entity carries, otherwise the declared singular label.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
+     * @throws  \Kumwe\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
      *
      * @since   2.0.0
      */
@@ -405,7 +405,7 @@ final readonly class EntityTypeDefinition
      *
      * @return  string  The closest translation the entity carries, otherwise the declared plural label.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
+     * @throws  \Kumwe\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
      *
      * @since   2.0.0
      */

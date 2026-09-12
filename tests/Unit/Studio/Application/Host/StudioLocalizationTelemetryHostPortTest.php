@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Studio\Application\Host;
 
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\SupportedLocales;
-use Kumwe\App\Localization\Application\TranslationScope;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Application\TranslationScope;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Localization\Infrastructure\ArrayMessageOverrideRepository;
 use Kumwe\App\Localization\Infrastructure\CompiledMessageCatalogueRepository;
 use Kumwe\App\Studio\Application\Host\StudioLocalizationHostPort;

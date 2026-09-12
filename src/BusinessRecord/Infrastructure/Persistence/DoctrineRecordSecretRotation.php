@@ -8,7 +8,8 @@ use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
@@ -18,15 +19,15 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordSchemaUnavailab
 use Kumwe\App\BusinessRecord\Application\RecordSecretRotation;
 use Kumwe\App\BusinessRecord\Application\RecordSecretRotationReport;
 use Kumwe\App\BusinessRecord\Application\SecretAssociatedData;
-use Kumwe\App\BusinessRecord\Application\SecretCipher;
-use Kumwe\App\BusinessRecord\Application\SecretKeyProvider;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaInstallationRepository;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallation;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
-use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
+use Kumwe\Secret\Contract\EnvelopeCipher;
+use Kumwe\Secret\Contract\KeyProvider;
+use Kumwe\Secret\Exception\KeyUnavailable;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 use Psr\Clock\ClockInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -83,9 +84,9 @@ final readonly class DoctrineRecordSecretRotation implements RecordSecretRotatio
      *         fence so the columns written are the columns the lock is holding.
      * @param  BusinessRecordMutationFence           $fence          Holds an installation still for the
      *         length of one chunk, so no schema plan moves the table underneath it.
-     * @param  SecretCipher                          $cipher         Key-ring cipher: opens by the envelope's
+     * @param  EnvelopeCipher                        $cipher         Key-ring cipher: opens by the envelope's
      *         identifier, seals under the active key.
-     * @param  SecretKeyProvider                     $keys           Names the active key the pass is moving
+     * @param  KeyProvider                           $keys           Names the active key the pass is moving
      *         rows onto.
      * @param  TransactionManager                    $transactions   Commits each chunk with its audit entry.
      * @param  AuditRecorder                         $audit          Trail each chunk's work is recorded in.
@@ -99,8 +100,8 @@ final readonly class DoctrineRecordSecretRotation implements RecordSecretRotatio
         private BusinessDefinitionRepository $definitions,
         private BusinessSchemaInstallationRepository $installations,
         private BusinessRecordMutationFence $fence,
-        private SecretCipher $cipher,
-        private SecretKeyProvider $keys,
+        private EnvelopeCipher $cipher,
+        private KeyProvider $keys,
         private TransactionManager $transactions,
         private AuditRecorder $audit,
         private AuthorizationGateway $authorization,
@@ -118,7 +119,7 @@ final readonly class DoctrineRecordSecretRotation implements RecordSecretRotatio
      *
      * @throws  InvalidArgumentException  When the batch size falls outside its range.
      * @throws  \Kumwe\App\Application\Authorization\AuthorizationDenied  When the actor may not re-key.
-     * @throws  \Kumwe\App\BusinessRecord\Domain\SecretKeyUnavailable  When a stored envelope names a key
+     * @throws  KeyUnavailable  When a stored envelope names a key
      *          this deployment does not hold.
      * @throws  \RuntimeException  When a stored envelope fails authenticated decryption.
      * @throws  \Doctrine\DBAL\Exception  When the driver rejects a chunk read or one of its updates.
@@ -357,7 +358,7 @@ final readonly class DoctrineRecordSecretRotation implements RecordSecretRotatio
      *
      * @throws  BusinessRecordSchemaUnavailable  When the fenced installation no longer describes the
      *          table this chunk was asked to rotate.
-     * @throws  \Kumwe\App\BusinessRecord\Domain\SecretKeyUnavailable  When a row names a key that is not
+     * @throws  KeyUnavailable  When a row names a key that is not
      *          held; the pass stops rather than looping on a row it can never advance.
      * @throws  \RuntimeException  When a stored envelope fails authenticated decryption.
      *

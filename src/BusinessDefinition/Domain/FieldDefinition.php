@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessDefinition\Domain;
 
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 
 /**
  * One field of a business entity's contract, validated the moment it is constructed.
@@ -377,7 +377,7 @@ final readonly class FieldDefinition
      *
      * @return  string  The closest translation the field carries, otherwise the declared label.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
+     * @throws  \Kumwe\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
      *
      * @since   2.0.0
      */
@@ -394,7 +394,7 @@ final readonly class FieldDefinition
      * @return  string  The closest translation the field carries, otherwise the declared description,
      *          which is the empty string when the field declares none.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
+     * @throws  \Kumwe\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
      *
      * @since   2.0.0
      */
@@ -411,7 +411,7 @@ final readonly class FieldDefinition
      * @return  string  The closest translation the field carries, otherwise the declared help text, which
      *          is the empty string when the field declares none.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
+     * @throws  \Kumwe\Localization\Domain\InvalidLocaleTag  When the locale is a malformed tag.
      *
      * @since   2.0.0
      */

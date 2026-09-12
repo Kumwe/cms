@@ -1,0 +1,30 @@
+schema: "kumwe-non-roadmap-record/v1"
+id: "NRM-2026-002"
+nrm_ref: "NRM-2026-002"
+roadmap_impact: "None"
+rationale: "Adopt the independently verified kumwe/transaction release and remove its duplicate App implementation; no roadmap objective is claimed."
+repositories:
+  - "kumwe/app"
+  - "kumwe/transaction"
+behavior_before: "App owned transaction contracts and its immediate transaction test double."
+behavior_after: "App consumers use package contracts and the package test double; Doctrine transaction adapters retain commit, rollback and callback behavior."
+public_api_impact: "Internal App symbols move to the package namespaces listed in the migration ledger; extension-facing contracts and application workflows retain their existing owners."
+dependency_impact: "Adds exact runtime dependency kumwe/transaction 0.1.2."
+compatibility: "Contract method signatures and callback semantics are preserved; the existing database transaction implementation remains in App."
+data_migration: null
+security_impact: "Authorization, audit persistence and transaction ownership remain host responsibilities."
+performance:
+  claim: "None"
+  evidence: []
+operations_deployment: "Install the committed Composer lock on PHP8.5; existing host configuration and storage remain."
+recovery_rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
+artifacts_evidence:
+  - "docs/architecture/migrations/KUMWE-MIG-2026-001.yaml"
+  - "docs/architecture/migrations/change-sets/KUMWE-CS-2026-001.yaml"
+  - "docs/architecture/migrations/trains/KUMWE-TRAIN-2026-004.yaml"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/RELEASE-ATTESTATION.yaml"
+  - "https://github.com/kumwe/app/pull/142"
+known_gaps:
+  - "Hosted App database/browser checks and merged-target verification remain pending."
+owner: "Platform architecture"
+status: "in-progress"

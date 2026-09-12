@@ -13,7 +13,6 @@ use Kumwe\App\BusinessDefinition\Domain\ComputationMode;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
 use Kumwe\App\BusinessDefinition\Domain\IdentityStrategy;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
 use Kumwe\App\BusinessRecord\Domain\RecordValueGuard;
 use Kumwe\App\BusinessSchema\Domain\PhysicalColumnBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
@@ -21,6 +20,8 @@ use Kumwe\Conversion\Decimal\ExactDecimal;
 use Kumwe\Conversion\Value\MoneyValue;
 use Kumwe\Conversion\Value\QuantityValue;
 use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
+use Kumwe\Secret\Contract\EnvelopeCipher;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 use Kumwe\Sequence\Value\NumberSequenceFormat;
 use Normalizer;
 use Ramsey\Uuid\Uuid;
@@ -34,7 +35,7 @@ use Throwable;
  * physical columns a `PhysicalTableBlueprint` installed, and `decodeColumns()` rebuilds field values from
  * a fetched row. The guarantees are representational rather than policy: a PHP float is refused outright
  * so decimal, money, and quantity fields keep every digit they promised, lengths and formats are bounded
- * before a value reaches a driver, and a secret is sealed through `SecretCipher` on the way in and handed
+ * before a value reaches a driver, and a secret is sealed through `EnvelopeCipher` on the way in and handed
  * back still sealed on the way out, so neither plaintext nor key ever reaches persistence. Required,
  * immutable, and read-only rules belong to `RecordRuleValidator`; identity resolution and the keyset
  * cursor conversions live here because both are the same field-type-to-column question.
@@ -54,13 +55,13 @@ final readonly class RecordValueCodec
     /**
      * Wire the codec to the cipher guarding secret fields and the registry of known field types.
      *
-     * @param  SecretCipher        $secrets     Cipher sealing every `core.secret` value before storage.
+     * @param  EnvelopeCipher      $secrets     Cipher sealing every `core.secret` value before storage.
      * @param  ?FieldTypeRegistry  $fieldTypes  Registry resolving contributed field types; null builds one
      *         seeded with the core built-ins.
      *
      * @since  2.0.0
      */
-    public function __construct(private SecretCipher $secrets, ?FieldTypeRegistry $fieldTypes = null)
+    public function __construct(private EnvelopeCipher $secrets, ?FieldTypeRegistry $fieldTypes = null)
     {
         $this->fieldTypes = $fieldTypes ?? new FieldTypeRegistry();
     }

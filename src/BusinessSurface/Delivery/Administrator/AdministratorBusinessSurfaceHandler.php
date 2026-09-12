@@ -18,7 +18,7 @@ use Kumwe\App\BusinessSurface\Delivery\Browser\BusinessBrowserResult;
 use Kumwe\App\BusinessSurface\Delivery\Browser\GeneratedBusinessBrowserController;
 use Kumwe\App\BusinessSurface\Delivery\Browser\GeneratedBusinessConfirmationQuery;
 use Kumwe\App\Http\Middleware\TrustedProxyMiddleware;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Identity\Application\Administration\AuthenticationThrottled;
 use Kumwe\App\Identity\Application\StepUp\AdministratorStepUpProvider;
 use Kumwe\App\Identity\Application\StepUp\StepUpRejected;

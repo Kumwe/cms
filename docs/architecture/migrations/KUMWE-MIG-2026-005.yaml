@@ -1,0 +1,143 @@
+schema: "kumwe-migration-ledger/v1"
+migration_id: "KUMWE-MIG-2026-005"
+change_set: "KUMWE-CS-2026-005"
+package: "kumwe/localization"
+version: "0.1.1"
+artifact_digest: "d0c3341f2e6126c83499a07d3aeb9490799228f55019b265d1c8c5e765dadcae"
+handoff_path: "vendor/kumwe/localization/MIGRATION-HANDOFF.md"
+handoff_sha256: "6b1279c0292ea5b8baac07f8a997e6406fa0a9e2cc33cc1cc29a9830a99579ac"
+release_attestation: "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/RELEASE-ATTESTATION.yaml"
+old_namespace_roots:
+  - "Kumwe\\App\\Localization\\Domain\\"
+symbols:
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\ActiveLocale"
+    new_fqcn: "Kumwe\\Localization\\Application\\ActiveLocale"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\CatalogueTranslator"
+    new_fqcn: "Kumwe\\Localization\\Application\\CatalogueTranslator"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\LocaleNegotiator"
+    new_fqcn: "Kumwe\\Localization\\Application\\LocaleNegotiator"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessageCatalogueRepository"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessageCatalogueRepository"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessageFormattingFailed"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessageFormattingFailed"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessageOverrideRecord"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessageOverrideRecord"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessageOverrideRepository"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessageOverrideRepository"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessageOverrideStore"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessageOverrideStore"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessagePatternFormatter"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessagePatternFormatter"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\MessagePatternValidator"
+    new_fqcn: "Kumwe\\Localization\\Application\\MessagePatternValidator"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\SupportedLocales"
+    new_fqcn: "Kumwe\\Localization\\Application\\SupportedLocales"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\TranslationScope"
+    new_fqcn: "Kumwe\\Localization\\Application\\TranslationScope"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Application\\Translator"
+    new_fqcn: "Kumwe\\Localization\\Application\\Translator"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\InvalidLocaleTag"
+    new_fqcn: "Kumwe\\Localization\\Domain\\InvalidLocaleTag"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\InvalidMessageIdentifier"
+    new_fqcn: "Kumwe\\Localization\\Domain\\InvalidMessageIdentifier"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\LocaleTag"
+    new_fqcn: "Kumwe\\Localization\\Domain\\LocaleTag"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\MessageCatalogue"
+    new_fqcn: "Kumwe\\Localization\\Domain\\MessageCatalogue"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\MessageCatalogueChain"
+    new_fqcn: "Kumwe\\Localization\\Domain\\MessageCatalogueChain"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\MessageCatalogueLayer"
+    new_fqcn: "Kumwe\\Localization\\Domain\\MessageCatalogueLayer"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\MessageIdentifier"
+    new_fqcn: "Kumwe\\Localization\\Domain\\MessageIdentifier"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Domain\\TextDirection"
+    new_fqcn: "Kumwe\\Localization\\Domain\\TextDirection"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Infrastructure\\IntlExtensionMissing"
+    new_fqcn: "Kumwe\\Localization\\Infrastructure\\IntlExtensionMissing"
+  -
+    old_fqcn: "Kumwe\\App\\Localization\\Infrastructure\\IntlMessagePatternFormatter"
+    new_fqcn: "Kumwe\\Localization\\Infrastructure\\IntlMessagePatternFormatter"
+removed_paths:
+  - "src/Localization/Application/ActiveLocale.php"
+  - "src/Localization/Application/CatalogueTranslator.php"
+  - "src/Localization/Application/LocaleNegotiator.php"
+  - "src/Localization/Application/MessageCatalogueRepository.php"
+  - "src/Localization/Application/MessageFormattingFailed.php"
+  - "src/Localization/Application/MessageOverrideRecord.php"
+  - "src/Localization/Application/MessageOverrideRepository.php"
+  - "src/Localization/Application/MessageOverrideStore.php"
+  - "src/Localization/Application/MessagePatternFormatter.php"
+  - "src/Localization/Application/MessagePatternValidator.php"
+  - "src/Localization/Application/SupportedLocales.php"
+  - "src/Localization/Application/TranslationScope.php"
+  - "src/Localization/Application/Translator.php"
+  - "src/Localization/Domain/InvalidLocaleTag.php"
+  - "src/Localization/Domain/InvalidMessageIdentifier.php"
+  - "src/Localization/Domain/LocaleTag.php"
+  - "src/Localization/Domain/MessageCatalogue.php"
+  - "src/Localization/Domain/MessageCatalogueChain.php"
+  - "src/Localization/Domain/MessageCatalogueLayer.php"
+  - "src/Localization/Domain/MessageIdentifier.php"
+  - "src/Localization/Domain/TextDirection.php"
+  - "src/Localization/Infrastructure/IntlExtensionMissing.php"
+  - "src/Localization/Infrastructure/IntlMessagePatternFormatter.php"
+removed_tests:
+  - "tests/Unit/Localization/Domain/LocaleTagTest.php"
+  - "tests/Unit/Localization/Domain/MessageIdentifierTest.php"
+  - "tests/Unit/Localization/Application/CatalogueTranslatorTest.php"
+  - "tests/Unit/Localization/Infrastructure/IntlMessagePatternFormatterTest.php"
+retained_tests:
+  - "tests/Unit/Kernel/ContainerTest.php"
+  - "tests/Functional/Localization/ConsoleWordingTest.php"
+  - "tests/Functional/Localization/ResolvedLocaleRenderingTest.php"
+  - "tests/Integration/Localization/AdministratorWordingValidationIntegrationTest.php"
+  - "tests/Integration/Localization/MessageOverrideIntegrationTest.php"
+  - "tests/Unit/Localization/Application/LocaleNegotiationTest.php"
+  - "tests/Unit/Localization/Application/MessageOverrideServiceTest.php"
+  - "tests/Unit/Localization/Http/LocaleNegotiationMiddlewareTest.php"
+  - "tests/Unit/Localization/Http/TranslationScopeMiddlewareTest.php"
+  - "tests/Unit/Localization/Infrastructure/MessageCatalogueCompilerTest.php"
+  - "tests/Unit/Localization/Presentation/TranslationTwigExtensionTest.php"
+di_changes:
+  -
+    service: "Kumwe\\Localization\\Application\\Translator"
+    factory: "Kumwe\\Localization\\Container\\CatalogueTranslatorFactory"
+    note: "Register package ConfigProvider; supply host catalogues, overrides, formatter and operation locale; preserve canonical alias and non-shared lifetime."
+  -
+    service: "Kumwe\\Localization\\Application\\LocaleNegotiator"
+    factory: "Kumwe\\Localization\\Container\\LocaleNegotiatorFactory"
+    note: "Use the package factory; bind retained SiteDefaultLocale under DefaultLocaleProvider without changing settings, fallback or cache behavior."
+capability_index_entries:
+  - "kumwe/localization"
+release_evidence:
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/RELEASE-ATTESTATION.yaml"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/consumer-verification.json"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/archive-verification.json"
+app_pull_request: "https://github.com/kumwe/app/pull/142"
+roadmap_refs: []
+non_roadmap_refs:
+  - "NRM-2026-006"
+conflicts:
+  - "KUMWE-CONFLICT-2026-002"

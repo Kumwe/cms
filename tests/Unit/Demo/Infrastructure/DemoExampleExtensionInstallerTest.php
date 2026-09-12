@@ -6,7 +6,7 @@ namespace Kumwe\App\Tests\Unit\Demo\Infrastructure;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Demo\Infrastructure\DemoExampleExtensionInstaller;
 use Kumwe\App\Extension\Application\ExtensionManager;

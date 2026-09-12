@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Administrator\Automation;
 
 use InvalidArgumentException;
-use Kumwe\App\Localization\Application\Translator;
-use Kumwe\App\Localization\Domain\MessageIdentifier;
+use Kumwe\Localization\Application\Translator;
+use Kumwe\Localization\Domain\MessageIdentifier;
 
 /**
  * Catalogue of the payload forms the administrator automation screen offers, one per job type.

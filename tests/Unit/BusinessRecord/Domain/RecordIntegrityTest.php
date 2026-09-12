@@ -10,8 +10,8 @@ use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordRevisionView;
 use Kumwe\App\BusinessRecord\Application\RecordFingerprint;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordRevision;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

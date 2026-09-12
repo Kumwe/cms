@@ -10,7 +10,7 @@ use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Application\Automation\JitterSource;
 use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\Application\Automation\RetryPolicy;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\JobQueueProcessWorkHandler;
 use Kumwe\App\BusinessIntegration\Application\ProcessManagerStore;
 use Kumwe\App\BusinessIntegration\Application\ProcessWorkDispatcher;

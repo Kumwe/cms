@@ -1,0 +1,77 @@
+schema: "kumwe-change-set/v2"
+change_set: "KUMWE-CS-2026-003"
+migration_id: "KUMWE-MIG-2026-003"
+roadmap_source:
+  title: "Kumwe ERP-Extensibility Foundation Roadmap"
+  sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
+roadmap_refs: []
+state: "release-verified"
+phase_1:
+  source_repository: "kumwe/app"
+  source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
+  target_repository: "kumwe/secret-envelope"
+  package_pr: "https://github.com/kumwe/secret-envelope/pull/2"
+  tested_sha: null
+  public_api_digest: "21bed5fdd15b8e205f3881df1e41bd13df5b969ea13307ef645112b6fd56dd65"
+  capability_digest: "fb927883d0cfaef771eb02b83fe771b1344349ad2ae5737ec2cdc327f2e8f38e"
+  service_map_digest: "742e7619b6fd94dbea2595794b9d81cf5e270030ad732b6affa96d3e11a8e2bf"
+  handoff_digest: "d959b1464dddace1889b18230cfaf09b18d5a9e2ec81440fe9763dc1f81694cb"
+release:
+  version: "0.1.1"
+  source_sha: "3bf2d66d4090da697bf148c9eb866a9839f1af45"
+  artifact_digest: "37539b5263f8af299d87c731f43db1cafb8df9320478e292fe4f06f767afcea7"
+  clean_consumer_evidence:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/RELEASE-ATTESTATION.yaml"
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/consumer-verification.json"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/142"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/secret-envelope 0.1.1"
+  composer_lock_digest: "45ea6a550528a7cc03393c37d5610e4f0505ec1ccf347fbad7c40d5ef0794e28"
+  removed_app_symbols:
+    - "Kumwe\\App\\BusinessRecord\\Domain\\EncryptedEnvelope"
+    - "Kumwe\\App\\BusinessRecord\\Domain\\SecretKeyMaterial"
+    - "Kumwe\\App\\BusinessRecord\\Domain\\SecretKeyRing"
+    - "Kumwe\\App\\BusinessRecord\\Domain\\SecretKeyUnavailable"
+    - "Kumwe\\App\\BusinessRecord\\Application\\SecretCipher"
+    - "Kumwe\\App\\BusinessRecord\\Application\\SecretKeyProvider"
+    - "Kumwe\\App\\BusinessRecord\\Infrastructure\\Security\\SodiumSecretCipher"
+    - "Kumwe\\App\\BusinessRecord\\Infrastructure\\Security\\KeyRingSecretCipher"
+    - "Kumwe\\App\\BusinessRecord\\Infrastructure\\Security\\KeyRingSecretKeyProvider"
+  moved_unit_tests:
+    - "tests/Unit/BusinessRecord/Domain/EncryptedEnvelopeTest.php"
+    - "tests/Unit/BusinessRecord/Infrastructure/SodiumSecretCipherTest.php"
+  retained_app_tests:
+    - "tests/Unit/BusinessRecord/Infrastructure/SecretKeyLifecycleTest.php"
+    - "tests/Integration/BusinessRecord/RecordSecretRotationIntegrationTest.php"
+    - "tests/Unit/BusinessRecord/Domain/ExactValueCodecTest.php"
+    - "tests/Unit/BusinessSurface/Application/BusinessMutationPlanServiceTest.php"
+    - "tests/Deployment/record-key-rotation-strand.php"
+evidence:
+  package:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/RELEASE-ATTESTATION.yaml"
+    - "https://github.com/kumwe/secret-envelope/actions/runs/34155210827; success at source 3bf2d66d4090da697bf148c9eb866a9839f1af45"
+  app_composition:
+    - "tests/Unit/BusinessRecord/Infrastructure/SecretKeyLifecycleTest.php"
+    - "tests/Integration/BusinessRecord/RecordSecretRotationIntegrationTest.php"
+    - "tests/Unit/BusinessRecord/Domain/ExactValueCodecTest.php"
+    - "tests/Unit/BusinessSurface/Application/BusinessMutationPlanServiceTest.php"
+    - "tests/Deployment/record-key-rotation-strand.php"
+  database_matrix: []
+  concurrency: []
+  authorization_security: []
+  lifecycle_recovery: []
+  delivery_browser: []
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Stored ciphertext, nonce, key_id and algorithm serialization, legacy key derivation and associated-data bytes are preserved. Single-key construction now accepts KeyMaterial; package validation refuses malformed ciphertext shorter than its authentication tag."
+migration_recovery: null
+security_impact: "Host custody, legacy-key reads, purpose separation, record authorization and rotation audit remain; package keys refuse unsafe serialization."
+performance_claim: null
+rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
+known_gaps:
+  - "Rebased hosted App database, coverage, browser and merged-target checks remain pending."
+completion_claim: false
+accepted_by: null

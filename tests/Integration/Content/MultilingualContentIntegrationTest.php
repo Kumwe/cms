@@ -33,7 +33,7 @@ use Kumwe\App\Infrastructure\Persistence\Migration\TranslationGroupSiteOwnership
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Kernel\Configuration\ApplicationConfiguration;
 use Kumwe\App\Kernel\ContainerFactory;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Site\Application\SiteSettings;
 use Kumwe\App\Tests\Support\TestKernelFactory;

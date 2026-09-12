@@ -1,0 +1,105 @@
+schema: "kumwe-change-set/v2"
+change_set: "KUMWE-CS-2026-005"
+migration_id: "KUMWE-MIG-2026-005"
+roadmap_source:
+  title: "Kumwe ERP-Extensibility Foundation Roadmap"
+  sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
+roadmap_refs: []
+state: "release-verified"
+phase_1:
+  source_repository: "kumwe/app"
+  source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
+  target_repository: "kumwe/localization"
+  package_pr: "https://github.com/kumwe/localization/pull/2"
+  tested_sha: null
+  public_api_digest: "645454cdf3893932af21fba20fc8a1b6652619ca1ef7b91f05a5f23a5b9c5bbc"
+  capability_digest: "e5ffa4984b444276f5135bb541026734e5a85354d112642bdb244d08972a8697"
+  service_map_digest: "c7e70a8b5e5ea7bfd70d19cccbb17f111357f7f0f61fcabc7bd14cf5437eca3e"
+  handoff_digest: "6b1279c0292ea5b8baac07f8a997e6406fa0a9e2cc33cc1cc29a9830a99579ac"
+release:
+  version: "0.1.1"
+  source_sha: "8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb"
+  artifact_digest: "d0c3341f2e6126c83499a07d3aeb9490799228f55019b265d1c8c5e765dadcae"
+  clean_consumer_evidence:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/RELEASE-ATTESTATION.yaml"
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/consumer-verification.json"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/142"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/localization 0.1.1"
+  composer_lock_digest: "45ea6a550528a7cc03393c37d5610e4f0505ec1ccf347fbad7c40d5ef0794e28"
+  removed_app_symbols:
+    - "Kumwe\\App\\Localization\\Application\\ActiveLocale"
+    - "Kumwe\\App\\Localization\\Application\\CatalogueTranslator"
+    - "Kumwe\\App\\Localization\\Application\\LocaleNegotiator"
+    - "Kumwe\\App\\Localization\\Application\\MessageCatalogueRepository"
+    - "Kumwe\\App\\Localization\\Application\\MessageFormattingFailed"
+    - "Kumwe\\App\\Localization\\Application\\MessageOverrideRecord"
+    - "Kumwe\\App\\Localization\\Application\\MessageOverrideRepository"
+    - "Kumwe\\App\\Localization\\Application\\MessageOverrideStore"
+    - "Kumwe\\App\\Localization\\Application\\MessagePatternFormatter"
+    - "Kumwe\\App\\Localization\\Application\\MessagePatternValidator"
+    - "Kumwe\\App\\Localization\\Application\\SupportedLocales"
+    - "Kumwe\\App\\Localization\\Application\\TranslationScope"
+    - "Kumwe\\App\\Localization\\Application\\Translator"
+    - "Kumwe\\App\\Localization\\Domain\\InvalidLocaleTag"
+    - "Kumwe\\App\\Localization\\Domain\\InvalidMessageIdentifier"
+    - "Kumwe\\App\\Localization\\Domain\\LocaleTag"
+    - "Kumwe\\App\\Localization\\Domain\\MessageCatalogue"
+    - "Kumwe\\App\\Localization\\Domain\\MessageCatalogueChain"
+    - "Kumwe\\App\\Localization\\Domain\\MessageCatalogueLayer"
+    - "Kumwe\\App\\Localization\\Domain\\MessageIdentifier"
+    - "Kumwe\\App\\Localization\\Domain\\TextDirection"
+    - "Kumwe\\App\\Localization\\Infrastructure\\IntlExtensionMissing"
+    - "Kumwe\\App\\Localization\\Infrastructure\\IntlMessagePatternFormatter"
+  moved_unit_tests:
+    - "tests/Unit/Localization/Domain/LocaleTagTest.php"
+    - "tests/Unit/Localization/Domain/MessageIdentifierTest.php"
+    - "tests/Unit/Localization/Application/CatalogueTranslatorTest.php"
+    - "tests/Unit/Localization/Infrastructure/IntlMessagePatternFormatterTest.php"
+  retained_app_tests:
+    - "tests/Unit/Kernel/ContainerTest.php"
+    - "tests/Functional/Localization/ConsoleWordingTest.php"
+    - "tests/Functional/Localization/ResolvedLocaleRenderingTest.php"
+    - "tests/Integration/Localization/AdministratorWordingValidationIntegrationTest.php"
+    - "tests/Integration/Localization/MessageOverrideIntegrationTest.php"
+    - "tests/Unit/Localization/Application/LocaleNegotiationTest.php"
+    - "tests/Unit/Localization/Application/MessageOverrideServiceTest.php"
+    - "tests/Unit/Localization/Http/LocaleNegotiationMiddlewareTest.php"
+    - "tests/Unit/Localization/Http/TranslationScopeMiddlewareTest.php"
+    - "tests/Unit/Localization/Infrastructure/MessageCatalogueCompilerTest.php"
+    - "tests/Unit/Localization/Presentation/TranslationTwigExtensionTest.php"
+evidence:
+  package:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-005/RELEASE-ATTESTATION.yaml"
+    - "https://github.com/kumwe/localization/actions/runs/34155314875; success at source 8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb"
+  app_composition:
+    - "tests/Unit/Kernel/ContainerTest.php"
+    - "tests/Functional/Localization/ConsoleWordingTest.php"
+    - "tests/Functional/Localization/ResolvedLocaleRenderingTest.php"
+    - "tests/Integration/Localization/AdministratorWordingValidationIntegrationTest.php"
+    - "tests/Integration/Localization/MessageOverrideIntegrationTest.php"
+    - "tests/Unit/Localization/Application/LocaleNegotiationTest.php"
+    - "tests/Unit/Localization/Application/MessageOverrideServiceTest.php"
+    - "tests/Unit/Localization/Http/LocaleNegotiationMiddlewareTest.php"
+    - "tests/Unit/Localization/Http/TranslationScopeMiddlewareTest.php"
+    - "tests/Unit/Localization/Infrastructure/MessageCatalogueCompilerTest.php"
+    - "tests/Unit/Localization/Presentation/TranslationTwigExtensionTest.php"
+  database_matrix: []
+  concurrency: []
+  authorization_security: []
+  lifecycle_recovery: []
+  delivery_browser: []
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Released localization executable bodies match the extracted App behavior after namespace and default-provider substitution; host settings, persisted locale strings and catalogue serialization remain."
+migration_recovery: null
+security_impact: "Site and organization translation scope, authorized overrides and delivery escaping remain in host adapters."
+performance_claim: null
+rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
+known_gaps:
+  - "Rebased hosted App database, coverage, browser and merged-target checks remain pending."
+completion_claim: false
+accepted_by: null

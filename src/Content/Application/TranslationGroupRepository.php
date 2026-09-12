@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Content\Application;
 
 use Kumwe\App\Content\Domain\TranslationGroup;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\Context\Value\SiteContext;
 
 /**

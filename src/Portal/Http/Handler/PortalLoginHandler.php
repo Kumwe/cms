@@ -6,7 +6,7 @@ namespace Kumwe\App\Portal\Http\Handler;
 
 use Kumwe\App\Http\Middleware\TrustedProxyMiddleware;
 use Kumwe\App\Identity\Application\Administration\AuthenticationThrottled;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Portal\Application\PortalAuthenticator;
 use Kumwe\App\Portal\Application\PortalContextResolver;
 use Kumwe\App\Portal\Application\PortalPasswordIdentity;

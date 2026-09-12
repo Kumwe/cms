@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Administrator\Http\Middleware;
 
 use Kumwe\App\Administrator\Http\AdministratorRequest;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\Translator;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

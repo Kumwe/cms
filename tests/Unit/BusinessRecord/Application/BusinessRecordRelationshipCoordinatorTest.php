@@ -10,7 +10,6 @@ use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
-use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
 use Kumwe\App\BusinessDefinition\Domain\DeleteBehavior;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
@@ -41,9 +40,7 @@ use Kumwe\App\BusinessRecord\Application\ResolvedBusinessDefinition;
 use Kumwe\App\BusinessRecord\Application\StoredOwnedLine;
 use Kumwe\App\BusinessRecord\Application\StoredRecordIdentity;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecord;
-use Kumwe\Conversion\Decimal\ExactDecimal;
 use Kumwe\App\BusinessRecord\Domain\RecordScope;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
 use Kumwe\App\BusinessSchema\Domain\PhysicalColumnBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalSchemaBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
@@ -51,13 +48,17 @@ use Kumwe\App\BusinessSchema\Domain\PhysicalTableKind;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallation;
 use Kumwe\App\BusinessSchema\Domain\SchemaInstallationStatus;
 use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessPlan;
-use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldAccessUsage;
-use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldDisclosurePlan;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicyConstant;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicySchema;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicySet;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
+use Kumwe\Conversion\Decimal\ExactDecimal;
+use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
+use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldAccessUsage;
+use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldDisclosurePlan;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\KeyMaterial;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -1340,9 +1341,9 @@ final class BusinessRecordRelationshipCoordinatorTest extends TestCase
     /**
      * Pair one definition with the minimum real physical schema this coordinator reads.
      *
-     * @param   EntityTypeDefinition  $definition     Published definition to install.
-     * @param   ?int                  $lineVersion    Pinned target version for an owner line table.
-     * @param   bool                  $includePin     Whether the line table carries its required target pin.
+     * @param   EntityTypeDefinition  $definition   Published definition to install.
+     * @param   ?int                  $lineVersion  Pinned target version for an owner line table.
+     * @param   bool                  $includePin   Whether the line table carries its required target pin.
      *
      * @return  ResolvedBusinessDefinition  Valid definition and active installation pair.
      *
@@ -1388,9 +1389,9 @@ final class BusinessRecordRelationshipCoordinatorTest extends TestCase
     /**
      * Build the extracted coordinator over mocks while keeping value normalization real.
      *
-     * @param   BusinessRecordReadRepository  $reads  Read behavior selected by the current case.
-     * @param   ResolvedBusinessDefinition    $line   Pinned line definition every target lookup returns.
-     * @param   ?ResolvedBusinessDefinition   $target Optional entity-reference target returned for live lookup.
+     * @param   BusinessRecordReadRepository  $reads   Read behavior selected by the current case.
+     * @param   ResolvedBusinessDefinition    $line    Pinned line definition every target lookup returns.
+     * @param   ?ResolvedBusinessDefinition   $target  Optional entity-reference target returned for live lookup.
      *
      * @return  BusinessRecordRelationshipCoordinator  Independently testable relationship seam.
      *
@@ -1411,10 +1412,10 @@ final class BusinessRecordRelationshipCoordinatorTest extends TestCase
         $definitions = $this->createStub(BusinessRecordDefinitionResolver::class);
         $definitions->method('pinned')->willReturn($line);
         $definitions->method('forCreate')->willReturn($target ?? $line);
-        $codec = new RecordValueCodec(new SodiumSecretCipher(
+        $codec = new RecordValueCodec(new SodiumEnvelopeCipher(new KeyMaterial(
             'relationship-coordinator-key-v1',
             str_repeat("\x21", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        ));
+        )));
 
         return new BusinessRecordRelationshipCoordinator(
             $reads,
@@ -1452,10 +1453,10 @@ final class BusinessRecordRelationshipCoordinatorTest extends TestCase
     /**
      * Build a header plan carrying the exact nested line plan used by relationship writes.
      *
-     * @param   EntityTypeDefinition  $owner      Header definition protected by the outer plan.
-     * @param   EntityTypeDefinition  $line       Line definition protected by the nested plan.
-     * @param   bool                  $allowRows  Whether line row policy admits the collection.
-     * @param   array<string, BusinessRecordAccessPlan>  $related  Entity-reference decisions for the line.
+     * @param   EntityTypeDefinition                     $owner      Header definition protected by the outer plan.
+     * @param   EntityTypeDefinition                     $line       Line definition protected by the nested plan.
+     * @param   bool                                     $allowRows  Whether line row policy admits the collection.
+     * @param   array<string, BusinessRecordAccessPlan>  $related    Entity-reference decisions for the line.
      *
      * @return  BusinessRecordAccessPlan  Header plan with one `lines` child.
      *
@@ -1480,9 +1481,9 @@ final class BusinessRecordRelationshipCoordinatorTest extends TestCase
     /**
      * Build one nested line plan with selectable row visibility and full writable fields.
      *
-     * @param   EntityTypeDefinition  $line       Line definition protected by the plan.
-     * @param   bool                  $allowRows  Whether the line row predicate admits values.
-     * @param   array<string, BusinessRecordAccessPlan>  $related  Nested entity-reference decisions by handle.
+     * @param   EntityTypeDefinition                     $line       Line definition protected by the plan.
+     * @param   bool                                     $allowRows  Whether the line row predicate admits values.
+     * @param   array<string, BusinessRecordAccessPlan>  $related    Nested entity-reference decisions by handle.
      *
      * @return  BusinessRecordAccessPlan  Exact line target plan.
      *

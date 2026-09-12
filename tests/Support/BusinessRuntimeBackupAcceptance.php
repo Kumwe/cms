@@ -7,7 +7,6 @@ namespace Kumwe\App\Tests\Support;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Kernel\Container;
 use JsonException;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
@@ -17,12 +16,6 @@ use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\Command\UpdateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\Query\ReadRecordQuery;
 use Kumwe\App\BusinessRecord\Application\SecretAssociatedData;
-use Kumwe\App\BusinessRecord\Application\SecretCipher;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
-use Kumwe\Conversion\Decimal\ExactDecimal;
-use Kumwe\Conversion\Value\MoneyValue;
-use Kumwe\Conversion\Value\QuantityValue;
-use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaEnvironment;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaService;
 use Kumwe\App\BusinessSchema\Application\PhysicalSchemaGateway;
@@ -30,7 +23,14 @@ use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableKind;
 use Kumwe\App\BusinessSchema\Domain\SchemaRecoveryEvidence;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
+use Kumwe\App\Kernel\Container;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
+use Kumwe\Conversion\Decimal\ExactDecimal;
+use Kumwe\Conversion\Value\MoneyValue;
+use Kumwe\Conversion\Value\QuantityValue;
+use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
+use Kumwe\Secret\Contract\EnvelopeCipher;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use Throwable;
@@ -430,7 +430,7 @@ final class BusinessRuntimeBackupAcceptance
     }
 
     /**
-     * @return array{0: array<string, mixed>, 1: array<string, mixed>}
+     * @return  array{0: array<string, mixed>, 1: array<string, mixed>}
      */
     private static function installedState(
         Connection $database,
@@ -664,8 +664,8 @@ final class BusinessRuntimeBackupAcceptance
         string $definitionId,
         string $recordKey,
     ): string {
-        $cipher = $container->get(SecretCipher::class);
-        if (!$cipher instanceof SecretCipher) {
+        $cipher = $container->get(EnvelopeCipher::class);
+        if (!$cipher instanceof EnvelopeCipher) {
             throw new RuntimeException('The business-record secret cipher is unavailable.');
         }
         $plaintext = $cipher->decrypt(
@@ -805,8 +805,8 @@ final class BusinessRuntimeBackupAcceptance
     }
 
     /**
-     * @param array<string, mixed> $generated
-     * @param array<string, mixed> $control
+     * @param  array<string, mixed>  $generated
+     * @param  array<string, mixed>  $control
      */
     private static function assertCoverage(array $generated, array $control): void
     {
@@ -845,8 +845,9 @@ final class BusinessRuntimeBackupAcceptance
     }
 
     /**
-     * @param list<mixed> $parameters
-     * @return array{row_count: int, rows_checksum: string}
+     * @param   list<mixed>  $parameters
+     *
+     * @return  array{row_count: int, rows_checksum: string}
      */
     private static function tableDigest(
         Connection $database,

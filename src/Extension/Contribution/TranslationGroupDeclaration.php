@@ -7,8 +7,8 @@ namespace Kumwe\App\Extension\Contribution;
 use Kumwe\Extension\Spi\Contribution\ContributionDefinition;
 use InvalidArgumentException;
 use Kumwe\App\Content\Domain\TranslationGroup;
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 
 /**
  * What a package declares before any of its content is allowed to carry locale variants.

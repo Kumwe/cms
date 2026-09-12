@@ -49,7 +49,7 @@ use Kumwe\App\Delivery\Console\Command\SignExtensionCommand;
 use Kumwe\App\Delivery\Console\Command\UninstallExtensionCommand;
 use Kumwe\App\Delivery\Console\Command\VerifyAuditTrailCommand;
 use Kumwe\App\Delivery\Console\Command\WatchExtensionRuntimeCommand;
-use Kumwe\App\Localization\Domain\MessageIdentifier;
+use Kumwe\Localization\Domain\MessageIdentifier;
 use Kumwe\App\Tests\Support\InterfaceTranslation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

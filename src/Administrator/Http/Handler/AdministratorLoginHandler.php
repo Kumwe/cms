@@ -14,7 +14,7 @@ use Kumwe\App\Identity\Application\Administration\AdministratorIdentityGateway;
 use Kumwe\App\Identity\Application\Administration\AdministratorSessionStore;
 use Kumwe\App\Identity\Application\Administration\AuthenticationThrottled;
 use Kumwe\App\Http\Middleware\TrustedProxyMiddleware;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Http\Middleware\RequestIdMiddleware;
 use InvalidArgumentException;
 use Laminas\Diactoros\Response\HtmlResponse;

@@ -14,7 +14,7 @@ use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\Application\Automation\RetryPolicy;
 use Kumwe\App\Application\Automation\Worker;
 use Kumwe\Context\Value\ExecutionContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\EventContractRegistry;
 use Kumwe\App\BusinessIntegration\Application\InboxDisposition;
 use Kumwe\App\BusinessIntegration\Application\IntegrationEventConsumerDispatcher;

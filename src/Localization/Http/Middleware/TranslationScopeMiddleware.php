@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Localization\Http\Middleware;
 
 use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\TranslationScope;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\TranslationScope;
 use Kumwe\Context\Value\ExecutionContext;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -26,7 +26,7 @@ use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;
 use Kumwe\App\Application\Automation\ScheduleOccurrenceKey;
 use Kumwe\App\Application\Automation\Scheduler;
 use Kumwe\App\Application\Automation\Job\ScheduleRepository;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\ScheduleRuntimeSynchronizer;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
 use Kumwe\App\Infrastructure\Persistence\TableNames;

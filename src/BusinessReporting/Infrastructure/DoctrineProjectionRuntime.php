@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessReporting\Infrastructure;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\TrustedRuntimeGenerationGuard;
 use Kumwe\App\BusinessReporting\Application\ProjectionRebuildResult;
 use Kumwe\App\BusinessReporting\Application\ProjectionRebuildService;

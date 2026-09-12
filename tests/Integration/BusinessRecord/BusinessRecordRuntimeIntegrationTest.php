@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DbalException;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeRegistry;
 use Kumwe\App\BusinessDefinition\Application\PackageDefinitionSynchronizer;
 use Kumwe\App\BusinessDefinition\Domain\DefinitionOwner;

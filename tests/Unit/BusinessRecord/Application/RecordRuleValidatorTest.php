@@ -9,10 +9,11 @@ use Kumwe\App\BusinessRecord\Application\Exception\BusinessRecordValidationFaile
 use Kumwe\App\BusinessRecord\Application\RecordRuleValidator;
 use Kumwe\App\BusinessRecord\Application\RecordValueCodec;
 use Kumwe\App\BusinessRecord\Application\ValidationViolation;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
-use Kumwe\Conversion\Decimal\ExactDecimal;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
+use Kumwe\Conversion\Decimal\ExactDecimal;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\EncryptedEnvelope;
+use Kumwe\Secret\Value\KeyMaterial;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -418,10 +419,10 @@ final class RecordRuleValidatorTest extends TestCase
 
     private static function rules(): RecordRuleValidator
     {
-        $cipher = new SodiumSecretCipher(
+        $cipher = new SodiumEnvelopeCipher(new KeyMaterial(
             'validation-key-v1',
             str_repeat("\x42", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        );
+        ));
 
         return new RecordRuleValidator(new RecordValueCodec($cipher));
     }

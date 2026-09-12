@@ -25,8 +25,8 @@ use Kumwe\App\BusinessSurface\Delivery\Browser\GeneratedBusinessBrowserControlle
 use Kumwe\App\Extension\Contribution\ExtensionContributionRegistrySet;
 use Kumwe\App\Identity\Application\Administration\AdministratorSession;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use Kumwe\App\Tests\Support\TestKernelFactory;

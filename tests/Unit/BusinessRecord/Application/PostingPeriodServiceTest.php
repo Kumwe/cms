@@ -15,7 +15,7 @@ use Kumwe\App\BusinessRecord\Application\PostingPeriodService;
 use Kumwe\App\BusinessRecord\Domain\PostingPeriod;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\InMemoryPostingPeriodRepository;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;

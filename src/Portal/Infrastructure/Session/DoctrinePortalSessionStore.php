@@ -14,7 +14,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
 use Kumwe\Context\Value\SiteContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Identity\Application\StepUp\StepUpRejected;
 use Kumwe\App\Identity\Application\StepUp\StepUpSessionRotator;
 use Kumwe\App\Identity\Domain\StepUp\RotatedStepUpSession;

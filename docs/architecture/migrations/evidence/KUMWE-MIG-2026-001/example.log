@@ -1,0 +1,4 @@
+posted INV-1
+refused: The entry INV-0 was refused.
+write INV-1
+notify INV-1

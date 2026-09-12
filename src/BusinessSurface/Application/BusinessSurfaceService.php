@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessSurface\Application;
 use InvalidArgumentException;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\FieldDefinition;
@@ -42,7 +42,7 @@ use Kumwe\App\BusinessSurface\Application\Custom\CustomBusinessSurfaceDispatcher
 use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessActionCommand;
 use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessSchema;
 use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessViewQuery;
-use Kumwe\App\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\ActiveLocale;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Application\MediaService;
 use Ramsey\Uuid\Uuid;

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSurface\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
+use Kumwe\Context\Value\AuthenticationStrength;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Identity\Application\StepUp\AuthorizationStepUpProofAdapter;
 use Kumwe\App\Identity\Application\StepUp\StepUpProvider;
 use Kumwe\App\Identity\Domain\StepUp\StepUpIntent;
 use Kumwe\App\Identity\Domain\StepUp\StepUpVerification;
-use Kumwe\Context\Value\AuthenticationStrength;
-use Kumwe\Context\Value\ExecutionContext;
 
 /**
  * Coordinates fresh generated-action proof issuance and execution inside one application transaction.

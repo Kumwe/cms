@@ -1,0 +1,70 @@
+schema: "kumwe-change-set/v2"
+change_set: "KUMWE-CS-2026-001"
+migration_id: "KUMWE-MIG-2026-001"
+roadmap_source:
+  title: "Kumwe ERP-Extensibility Foundation Roadmap"
+  sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
+roadmap_refs: []
+state: "release-verified"
+phase_1:
+  source_repository: "kumwe/app"
+  source_sha: "6f9e42cb59a84ba3ca523a70475cf4d7263c68e7"
+  target_repository: "kumwe/transaction"
+  package_pr: "https://github.com/kumwe/transaction/pull/4"
+  tested_sha: null
+  public_api_digest: "f9589717354cc969ecb87e18d27c3e7f9e501f551bce80cadb698c3989cf2b75"
+  capability_digest: "4e3fc6c4f014183eafad06b39e5c34a10c5e889c305ae09836f813d67cf5795c"
+  service_map_digest: "ec72f2fbda46e326380795664c62c4d7cf38ec557c7e2a9bac40a905ee62d5f5"
+  handoff_digest: "32dce75a78252d88cb297d3f57b3620577b63f012c3d3962697bc4964c8e9a1f"
+release:
+  version: "0.1.2"
+  source_sha: "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+  artifact_digest: "e6a769da5aeb7a8257e4f75e69c7b55939265bc806b9e987eb125b2dc4f97256"
+  clean_consumer_evidence:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/RELEASE-ATTESTATION.yaml"
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/consumer-verification.json"
+phase_2:
+  app_pr: "https://github.com/kumwe/app/pull/142"
+  tested_sha: null
+  merged_sha: null
+  exact_dependency: "kumwe/transaction 0.1.2"
+  composer_lock_digest: "45ea6a550528a7cc03393c37d5610e4f0505ec1ccf347fbad7c40d5ef0794e28"
+  removed_app_symbols:
+    - "Kumwe\\App\\Application\\Persistence\\TransactionManager"
+    - "Kumwe\\App\\Application\\Persistence\\TransactionState"
+    - "Kumwe\\App\\Tests\\Support\\ImmediateTransactionManager"
+  moved_unit_tests:
+    - "tests/Support/ImmediateTransactionManager.php"
+  retained_app_tests:
+    - "tests/Integration/Persistence/DoctrineTransactionManagerTest.php"
+    - "tests/Integration/Persistence/TransactionBoundaryEngineIntegrationTest.php"
+    - "tests/Unit/Infrastructure/Persistence/DoctrineTransactionStateTest.php"
+    - "tests/Architecture/TransactionSeamBoundaryTest.php"
+    - "tests/Unit/Application/Automation/PurgeBusinessRecordIdempotencyHandlerTest.php"
+evidence:
+  package:
+    - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/RELEASE-ATTESTATION.yaml"
+    - "https://github.com/kumwe/transaction/actions/runs/34154321176; success at source 56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+  app_composition:
+    - "tests/Integration/Persistence/DoctrineTransactionManagerTest.php"
+    - "tests/Integration/Persistence/TransactionBoundaryEngineIntegrationTest.php"
+    - "tests/Unit/Infrastructure/Persistence/DoctrineTransactionStateTest.php"
+    - "tests/Architecture/TransactionSeamBoundaryTest.php"
+    - "tests/Unit/Application/Automation/PurgeBusinessRecordIdempotencyHandlerTest.php"
+  database_matrix: []
+  concurrency: []
+  authorization_security: []
+  lifecycle_recovery: []
+  delivery_browser: []
+  deployment_backup_restore: []
+  native_parity_abi: []
+  performance_capacity: []
+compatibility: "Contract method signatures and callback semantics are preserved; the existing database transaction implementation remains in App."
+migration_recovery: null
+security_impact: "Authorization, audit persistence and transaction ownership remain host responsibilities."
+performance_claim: null
+rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
+known_gaps:
+  - "Rebased hosted App database, coverage, browser and merged-target checks remain pending."
+completion_claim: false
+accepted_by: null

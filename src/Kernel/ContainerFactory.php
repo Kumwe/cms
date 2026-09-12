@@ -54,8 +54,8 @@ use Kumwe\App\Application\Authorization\SiteGroupWriter;
 use Kumwe\App\Application\Authorization\StructuredLogAuthorizationDecisionRecorder;
 use Kumwe\App\Application\Authorization\SystemIdentity;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
-use Kumwe\App\Application\Persistence\TransactionManager;
-use Kumwe\App\Application\Persistence\TransactionState;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionState;
 use Kumwe\App\Application\Presentation\Preference\PresentationAccessGroupRepository;
 use Kumwe\App\Application\Security\HighImpactCredentialGuard;
 use Kumwe\App\Application\Operations\ExpiredMigrationLockRecovery;
@@ -158,8 +158,8 @@ use Kumwe\App\BusinessRecord\Application\RecordFingerprint;
 use Kumwe\App\BusinessRecord\Application\RecordRuleValidator;
 use Kumwe\App\BusinessRecord\Application\RecordValueCodec;
 use Kumwe\App\BusinessRecord\Application\RecordSecretRotation;
-use Kumwe\App\BusinessRecord\Application\SecretCipher;
-use Kumwe\App\BusinessRecord\Application\SecretKeyProvider;
+use Kumwe\Secret\Contract\EnvelopeCipher;
+use Kumwe\Secret\Contract\KeyProvider;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineBusinessNumberSequenceAllocator;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineBusinessRecordIdempotencyRepository;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineBusinessRecordMutationFence;
@@ -171,8 +171,8 @@ use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineBusinessSchemaRe
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrinePostingPeriodRepository;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineRecordSecretRotation;
 use Kumwe\App\BusinessRecord\Infrastructure\Security\ConfiguredSecretKeyRings;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretCipher;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretKeyProvider;
+use Kumwe\Secret\ConfigProvider as SecretConfigProvider;
+use Kumwe\Secret\Provider\KeyRingKeyProvider;
 use Kumwe\App\BusinessIntegration\Application\BusinessRecordMutationEventPublisher;
 use Kumwe\App\BusinessIntegration\Application\DurableOutboundAdapterDispatcher;
 use Kumwe\App\BusinessIntegration\Application\EventContractRegistry;
@@ -777,24 +777,26 @@ use Kumwe\App\Portal\Infrastructure\Identity\DoctrinePortalPrincipalLoader;
 use Kumwe\App\Portal\Infrastructure\Session\DoctrinePortalSessionStore;
 use Kumwe\App\Portal\Presentation\PortalRenderer;
 use Kumwe\App\Portal\Presentation\Twig\PortalTwigEnvironmentFactory;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\CatalogueTranslator;
-use Kumwe\App\Localization\Application\LocaleNegotiator;
-use Kumwe\App\Localization\Application\MessageCatalogueRepository;
-use Kumwe\App\Localization\Application\MessageOverrideRepository;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\ConfigProvider as LocalizationConfigProvider;
+use Kumwe\Localization\Application\CatalogueTranslator;
+use Kumwe\Localization\Application\DefaultLocaleProvider;
+use Kumwe\Localization\Application\LocaleNegotiator;
+use Kumwe\Localization\Application\MessageCatalogueRepository;
+use Kumwe\Localization\Application\MessageOverrideRepository;
 use Kumwe\App\Localization\Application\MessageOverrideService;
-use Kumwe\App\Localization\Application\MessageOverrideStore;
-use Kumwe\App\Localization\Application\MessagePatternFormatter;
-use Kumwe\App\Localization\Application\MessagePatternValidator;
+use Kumwe\Localization\Application\MessageOverrideStore;
+use Kumwe\Localization\Application\MessagePatternFormatter;
+use Kumwe\Localization\Application\MessagePatternValidator;
 use Kumwe\App\Localization\Application\SiteDefaultLocale;
-use Kumwe\App\Localization\Application\SupportedLocales;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Localization\Http\Middleware\LocaleNegotiationMiddleware;
 use Kumwe\App\Localization\Http\Middleware\TranslationScopeMiddleware;
 use Kumwe\App\Localization\Infrastructure\ArrayMessageOverrideRepository;
 use Kumwe\App\Localization\Infrastructure\CompiledMessageCatalogueRepository;
 use Kumwe\App\Localization\Infrastructure\DoctrineMessageOverrideRepository;
-use Kumwe\App\Localization\Infrastructure\IntlMessagePatternFormatter;
+use Kumwe\Localization\Infrastructure\IntlMessagePatternFormatter;
 use Kumwe\App\Localization\Presentation\TranslationTwigExtension;
 use Kumwe\App\Workflow\Domain\Workflow;
 use Laminas\Diactoros\ResponseFactory;
@@ -2428,6 +2430,7 @@ final class ContainerFactory
         ApplicationConfiguration $configuration,
         string $root,
     ): void {
+        $container->configure((new LocalizationConfigProvider())()['dependencies']);
         $container->share(SupportedLocales::class, new SupportedLocales(), true);
         $container->share(MessagePatternFormatter::class, new IntlMessagePatternFormatter(), true);
         $container->alias(MessagePatternValidator::class, MessagePatternFormatter::class);
@@ -2465,19 +2468,7 @@ final class ContainerFactory
                 self::service($container, SiteSettings::class),
                 self::service($container, SupportedLocales::class),
             ), true);
-        $container->share(LocaleNegotiator::class, static fn (Container $container): LocaleNegotiator =>
-            new LocaleNegotiator(
-                self::service($container, SupportedLocales::class),
-                self::service($container, SiteDefaultLocale::class),
-            ), true);
-        $container->share(Translator::class, static fn (Container $container): Translator =>
-            new CatalogueTranslator(
-                self::service($container, MessageCatalogueRepository::class),
-                self::service($container, MessageOverrideRepository::class),
-                self::service($container, MessagePatternFormatter::class),
-                self::service($container, ActiveLocale::class),
-                self::service($container, SupportedLocales::class),
-            ), true);
+        $container->alias(DefaultLocaleProvider::class, SiteDefaultLocale::class);
         $container->share(TranslationTwigExtension::class, static fn (
             Container $container,
         ): TranslationTwigExtension => new TranslationTwigExtension(
@@ -3078,15 +3069,11 @@ final class ContainerFactory
             $configuration->secret,
             true,
         );
-        $container->share(SecretKeyProvider::class, new KeyRingSecretKeyProvider($keyRings->records()), true);
-        $container->share(SecretCipher::class, static fn (
-            Container $container,
-        ): SecretCipher => new KeyRingSecretCipher(
-            self::service($container, SecretKeyProvider::class),
-        ), true);
+        $container->share(KeyProvider::class, new KeyRingKeyProvider($keyRings->records()), true);
+        $container->configure((new SecretConfigProvider())->getDependencies());
         $container->share(
             MutationPlanCipher::class,
-            new KeyRingMutationPlanCipher(new KeyRingSecretKeyProvider($keyRings->mutationPlans())),
+            new KeyRingMutationPlanCipher(new KeyRingKeyProvider($keyRings->mutationPlans())),
             true,
         );
         $container->share(RecordFingerprint::class, new RecordFingerprint($recordFingerprintKey), true);
@@ -3094,7 +3081,7 @@ final class ContainerFactory
         $container->share(RecordValueCodec::class, static fn (
             Container $container,
         ): RecordValueCodec => new RecordValueCodec(
-            self::service($container, SecretCipher::class),
+            self::service($container, EnvelopeCipher::class),
             self::service($container, FieldTypeRegistry::class),
         ), true);
         $container->share(RecordRuleValidator::class, static fn (
@@ -3173,8 +3160,8 @@ final class ContainerFactory
             self::service($container, BusinessDefinitionRepository::class),
             self::service($container, BusinessSchemaInstallationRepository::class),
             self::service($container, BusinessRecordMutationFence::class),
-            self::service($container, SecretCipher::class),
-            self::service($container, SecretKeyProvider::class),
+            self::service($container, EnvelopeCipher::class),
+            self::service($container, KeyProvider::class),
             self::service($container, TransactionManager::class),
             self::service($container, AuditRecorder::class),
             self::service($container, AuthorizationGateway::class),

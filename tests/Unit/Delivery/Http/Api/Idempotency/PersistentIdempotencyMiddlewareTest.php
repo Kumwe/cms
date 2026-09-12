@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\Context\Value\SiteContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Delivery\Http\Api\Idempotency\HttpMutationPreauthorizer;
 use Kumwe\App\Delivery\Http\Api\Idempotency\IdempotencyKey;

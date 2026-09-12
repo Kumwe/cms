@@ -14,7 +14,7 @@ use Kumwe\App\BusinessDefinition\Domain\InvalidBusinessDefinition;
 use Kumwe\App\BusinessDefinition\Domain\LocalizedDefinitionText;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;
 use Kumwe\App\BusinessDefinition\Domain\StorageMode;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,6 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(DefinitionOwner::class)]
 #[UsesClass(EntityTypeDefinition::class)]
 #[UsesClass(FieldDefinition::class)]
-#[UsesClass(LocaleTag::class)]
 /**
  * Pins the locale dimension on business-definition wording, and the byte stability it was shaped around.
  *

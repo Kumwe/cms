@@ -22,7 +22,7 @@ use Kumwe\App\BusinessReporting\Application\RecordExportReportProvider;
 use Kumwe\App\BusinessReporting\Application\ReportService;
 use Kumwe\App\BusinessReporting\Application\ReportUnavailable;
 use Kumwe\App\BusinessSurface\Application\Custom\CustomBusinessHandlerFailed;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Ramsey\Uuid\Uuid;
 
 /**

@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSurface\Infrastructure\Security;
 
-use Kumwe\App\BusinessRecord\Application\SecretKeyProvider;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretCipher;
 use Kumwe\App\BusinessSurface\Application\MutationPlanCipher;
+use Kumwe\Secret\Cipher\KeyRingEnvelopeCipher;
+use Kumwe\Secret\Contract\KeyProvider;
+use Kumwe\Secret\Exception\KeyUnavailable;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 
 /**
  * `MutationPlanCipher` over a key ring of the mutation-plan purpose alone.
  *
  * The sealing itself is the same authenticated encryption record secrets use, so this holds a
- * `KeyRingSecretCipher` rather than repeating it; what the class contributes is the type. Binding the
+ * `KeyRingEnvelopeCipher` rather than repeating it; what the class contributes is the type. Binding the
  * plan service to `MutationPlanCipher` and this implementation to the plan-purpose ring is what makes the
  * separation structural: there is no wiring in which the plan service ends up holding record key
  * material, and no rotation of one ring reaches the other.
@@ -25,21 +26,21 @@ final readonly class KeyRingMutationPlanCipher implements MutationPlanCipher
     /**
      * Cipher bound to the plan-purpose ring, doing the actual sealing.
      *
-     * @var    KeyRingSecretCipher
+     * @var    KeyRingEnvelopeCipher
      * @since  2.0.0
      */
-    private KeyRingSecretCipher $cipher;
+    private KeyRingEnvelopeCipher $cipher;
 
     /**
      * Bind the cipher to the provider holding mutation-plan key material.
      *
-     * @param  SecretKeyProvider  $keys  Provider for the plan purpose, never the record purpose.
+     * @param  KeyProvider  $keys  Provider for the plan purpose, never the record purpose.
      *
      * @since  2.0.0
      */
-    public function __construct(SecretKeyProvider $keys)
+    public function __construct(KeyProvider $keys)
     {
-        $this->cipher = new KeyRingSecretCipher($keys);
+        $this->cipher = new KeyRingEnvelopeCipher($keys);
     }
 
     /**
@@ -75,7 +76,7 @@ final readonly class KeyRingMutationPlanCipher implements MutationPlanCipher
      *
      * @throws  \RuntimeException  When the envelope names an unsupported construction or fails
      *          authentication.
-     * @throws  \Kumwe\App\BusinessRecord\Domain\SecretKeyUnavailable  When the token names a key this
+     * @throws  KeyUnavailable  When the token names a key this
      *          ring does not hold.
      *
      * @since   2.0.0

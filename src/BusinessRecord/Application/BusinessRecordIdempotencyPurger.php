@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessRecord\Application;
 
 use InvalidArgumentException;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Psr\Clock\ClockInterface;
 
 /**

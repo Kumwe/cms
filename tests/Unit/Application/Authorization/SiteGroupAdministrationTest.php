@@ -14,7 +14,7 @@ use Kumwe\App\Application\Authorization\SiteGroupUnknown;
 use Kumwe\App\Application\Authorization\SiteGroupWriter;
 use Kumwe\App\Tests\Support\AllowingAuditAuthorization;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

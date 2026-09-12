@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessSurface\Delivery\Browser;
 
 use InvalidArgumentException;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 
 /**
  * Converts contract-validated custom view data into a bounded markup-free browser projection.

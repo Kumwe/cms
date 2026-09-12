@@ -1,0 +1,48 @@
+schema: "kumwe-release-attestation/v2"
+artifact_kind: "framework_php"
+migration_id: "KUMWE-MIG-2026-001"
+change_set: "KUMWE-CS-2026-001"
+repository: "https://github.com/kumwe/transaction"
+merge_commit: "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+version: "0.1.2"
+tag: "v0.1.2"
+source_archive:
+  url: "https://api.github.com/repos/kumwe/transaction/zipball/56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+  sha256: "e6a769da5aeb7a8257e4f75e69c7b55939265bc806b9e987eb125b2dc4f97256"
+artifacts:
+  -
+    identity: "kumwe/transaction:0.1.2"
+    url: "https://api.github.com/repos/kumwe/transaction/zipball/56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+    sha256: "e6a769da5aeb7a8257e4f75e69c7b55939265bc806b9e987eb125b2dc4f97256"
+manifests_and_corpora:
+  -
+    path: "MIGRATION-HANDOFF.md"
+    sha256: "32dce75a78252d88cb297d3f57b3620577b63f012c3d3962697bc4964c8e9a1f"
+  -
+    path: "resources/capabilities/v1.json"
+    sha256: "4e3fc6c4f014183eafad06b39e5c34a10c5e889c305ae09836f813d67cf5795c"
+  -
+    path: "resources/public-api/v1.json"
+    sha256: "f9589717354cc969ecb87e18d27c3e7f9e501f551bce80cadb698c3989cf2b75"
+  -
+    path: "resources/service-map/v1.json"
+    sha256: "ec72f2fbda46e326380795664c62c4d7cf38ec557c7e2a9bac40a905ee62d5f5"
+abi_and_capabilities: null
+sbom:
+  url: "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068421292#source.spdx.json"
+  sha256: "b5b43de7eb32e77897c071efaa4cb7fd945fd1939db0a1000220bf9acf564836"
+provenance: "Independent verification, not publisher build provenance: https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068421292#verification-provenance.json; sha256=1347d41e2b7213fe4a4d6d403029a945d7a35ea295e5438c24d2da976f13e09c"
+release_workflow: "https://github.com/kumwe/transaction/actions/runs/34154321176; success at source 56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+registry_or_pie_verification:
+  - "https://repo.packagist.org/p2/kumwe/transaction.json; source/dist=56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03; evidence=https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068421292#github-evidence.json"
+  - "Independent refresh on 2026-09-10 using GitHub authenticated API: release 384275019 is published, stable and not a draft; v0.1.2 tag resolves to 56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03. Exact-source release workflow and all four jobs report success. GitHub immutable=false is an observed optional platform setting, not a failure under the released package-release-standard.md."
+  - "Fresh no-dev consumer Composer lock selects kumwe/transaction v0.1.2 from the Packagist registry cache, with source and dist reference 56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03. Cached Composer dist SHA-256 e6a769da5aeb7a8257e4f75e69c7b55939265bc806b9e987eb125b2dc4f97256 equals the independently published source.zip evidence from extension-sdk run34257007329. No path repository, package override or source fallback was used."
+  - "Tag checkout git export and freshly installed Composer archive match all 23 file paths and bytes. All three canonical manifests and complete released handoff pass the current App SchemaValidator; migration and change-set identifiers match this attestation."
+clean_consumer_or_build_verification:
+  - "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068421292#consumer-verification.json; sha256=8a14f26abcb63c9104cd9e73f0610a8cb56e2b226e9b41528028e79a2c0e8c5b; no-dev=true; classmap-authoritative=true; fresh-offline-reinstall=true; runtime-types=3"
+  - "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068421292#canonical-schema-verification.json; all three canonical manifests and complete handoff schema passed"
+  - "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068421292#archive-inventory-verification.json; complete git export path/byte inventory matched; canonical API exports=3"
+  - "Independent consumer refresh: native PHP8.5.10 and Composer2.10.3; new standalone consumer requires this exact version only. COMPOSER_DISABLE_NETWORK=1 composer install --no-dev --prefer-dist --no-plugins --no-scripts --classmap-authoritative --no-interaction --no-progress succeeded using the verified registry/dist cache. packages-dev is empty. No PHP platform override or ignored platform requirement was used. composer check-platform-reqs --no-dev, the installed public API autoload smoke and shipped example all passed. Supporting files in this directory record registry identity, archive inventory, schemas and the actual command outputs."
+verified_at: "2026-09-10T12:04:23Z"
+verified_by: "Independent adoption review session /root/foundation_group/review_foundations; prior independent extension-sdk verification retained and current publication, archive and clean-consumer facts rechecked"
+status: "verified"

@@ -13,19 +13,19 @@ use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
-use Kumwe\App\Localization\Application\MessageCatalogueRepository;
-use Kumwe\App\Localization\Application\MessageFormattingFailed;
-use Kumwe\App\Localization\Application\MessageOverrideRecord;
+use Kumwe\Localization\Application\MessageCatalogueRepository;
+use Kumwe\Localization\Application\MessageFormattingFailed;
+use Kumwe\Localization\Application\MessageOverrideRecord;
 use Kumwe\App\Localization\Application\MessageOverrideService;
-use Kumwe\App\Localization\Application\MessageOverrideStore;
-use Kumwe\App\Localization\Application\SupportedLocales;
-use Kumwe\App\Localization\Domain\InvalidMessageIdentifier;
-use Kumwe\App\Localization\Domain\LocaleTag;
-use Kumwe\App\Localization\Domain\MessageCatalogue;
-use Kumwe\App\Localization\Domain\MessageCatalogueLayer;
-use Kumwe\App\Localization\Infrastructure\IntlMessagePatternFormatter;
+use Kumwe\Localization\Application\MessageOverrideStore;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Domain\InvalidMessageIdentifier;
+use Kumwe\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\MessageCatalogue;
+use Kumwe\Localization\Domain\MessageCatalogueLayer;
+use Kumwe\Localization\Infrastructure\IntlMessagePatternFormatter;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
@@ -40,7 +40,6 @@ use Psr\Clock\ClockInterface;
  * @since  2.0.0
  */
 #[CoversClass(MessageOverrideService::class)]
-#[CoversClass(MessageOverrideRecord::class)]
 final class MessageOverrideServiceTest extends TestCase
 {
     /**
@@ -597,15 +596,15 @@ final class MessageOverrideServiceTest extends TestCase
     /**
      * A store that keeps overrides in memory and satisfies both faces of the contract.
      *
-     * @return  MessageOverrideStore&\Kumwe\App\Localization\Application\MessageOverrideRepository  The store.
+     * @return  MessageOverrideStore&\Kumwe\Localization\Application\MessageOverrideRepository  The store.
      *
      * @since   2.0.0
      */
-    private function store(): MessageOverrideStore&\Kumwe\App\Localization\Application\MessageOverrideRepository
+    private function store(): MessageOverrideStore&\Kumwe\Localization\Application\MessageOverrideRepository
     {
         return new class implements
             MessageOverrideStore,
-            \Kumwe\App\Localization\Application\MessageOverrideRepository
+            \Kumwe\Localization\Application\MessageOverrideRepository
         {
             /**
              * Stored overrides, keyed by the identity the store enforces uniqueness on.

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Content\Domain;
 
 use DateTimeImmutable;
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Ramsey\Uuid\Uuid;
 
 /**

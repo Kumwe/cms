@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "332afd522b45c82c3bf3dfaa1fea9090",
+    "content-hash": "fadc681de73e17786cf1a1c57655026c",
     "packages": [
         {
             "name": "brick/math",
@@ -545,6 +545,52 @@
             "time": "2026-09-02T02:53:19+00:00"
         },
         {
+            "name": "kumwe/localization",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/localization.git",
+                "reference": "8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/localization/zipball/8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb",
+                "reference": "8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "php": "^8.5",
+                "psr/container": "^2.0"
+            },
+            "require-dev": {
+                "ext-zip": "*",
+                "laminas/laminas-servicemanager": "^4.0",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^12.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\Localization\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Portable locale negotiation, layered message catalogues and ICU formatting.",
+            "homepage": "https://github.com/kumwe/localization",
+            "support": {
+                "issues": "https://github.com/kumwe/localization/issues",
+                "source": "https://github.com/kumwe/localization"
+            },
+            "time": "2026-09-07T19:22:10+00:00"
+        },
+        {
             "name": "kumwe/producer",
             "version": "v0.3.0",
             "source": {
@@ -586,6 +632,50 @@
             "time": "2026-09-09T13:50:26+00:00"
         },
         {
+            "name": "kumwe/secret-envelope",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/secret-envelope.git",
+                "reference": "3bf2d66d4090da697bf148c9eb866a9839f1af45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/secret-envelope/zipball/3bf2d66d4090da697bf148c9eb866a9839f1af45",
+                "reference": "3bf2d66d4090da697bf148c9eb866a9839f1af45",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sodium": "*",
+                "php": "^8.5",
+                "psr/container": "^2.0"
+            },
+            "require-dev": {
+                "laminas/laminas-servicemanager": "^4.5",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\Secret\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Portable authenticated encrypted-envelope contracts for the Kumwe family: the versioned envelope value, key identifiers, key material and key-ring values, purpose separation, the cipher and key-provider ports, and the libsodium XChaCha20-Poly1305 implementation. Key custody, rotation and audit stay with the host.",
+            "homepage": "https://github.com/kumwe/secret-envelope",
+            "support": {
+                "issues": "https://github.com/kumwe/secret-envelope/issues",
+                "source": "https://github.com/kumwe/secret-envelope"
+            },
+            "time": "2026-09-07T19:20:30+00:00"
+        },
+        {
             "name": "kumwe/sequence",
             "version": "v0.2.1",
             "source": {
@@ -625,6 +715,47 @@
                 "source": "https://github.com/kumwe/sequence"
             },
             "time": "2026-09-07T19:22:33+00:00"
+        },
+        {
+            "name": "kumwe/transaction",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kumwe/transaction.git",
+                "reference": "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kumwe/transaction/zipball/56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03",
+                "reference": "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "squizlabs/php_codesniffer": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Kumwe\\Transaction\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "The storage-neutral transaction port of the Kumwe family; hosts bind their own adapter.",
+            "homepage": "https://github.com/kumwe/transaction",
+            "support": {
+                "issues": "https://github.com/kumwe/transaction/issues",
+                "source": "https://github.com/kumwe/transaction"
+            },
+            "time": "2026-09-07T19:06:48+00:00"
         },
         {
             "name": "laminas/laminas-authentication",
@@ -6047,5 +6178,5 @@
         "ext-zip": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

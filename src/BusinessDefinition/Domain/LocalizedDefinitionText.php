@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessDefinition\Domain;
 
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 
 /**
  * The locale dimension on a business definition's operator-facing wording, and the rules it obeys.

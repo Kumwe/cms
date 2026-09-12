@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Content\Domain;
 
 use DateTimeImmutable;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 
 /**
  * One locale's entry inside a translation group: its own slug, its own publication state, its own window.

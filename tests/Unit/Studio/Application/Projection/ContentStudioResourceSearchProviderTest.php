@@ -19,7 +19,7 @@ use Kumwe\App\Studio\Application\Host\StudioResourceSearchItem;
 use Kumwe\App\Studio\Application\Host\StudioResourceSearchPage;
 use Kumwe\App\Studio\Application\Projection\ContentStudioResourceSearchProvider;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

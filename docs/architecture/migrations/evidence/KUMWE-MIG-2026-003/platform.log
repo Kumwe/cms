@@ -1,0 +1,7 @@
+Composer plugins have been disabled for safety in this non-interactive session.
+Set COMPOSER_ALLOW_SUPERUSER=1 if you want to allow plugins to run as root/super user.
+Do not run Composer as root/super user! See https://getcomposer.org/root for details
+Composer could not detect the root package (consumer/verify-secret-envelope) version, defaulting to '1.0.0'. See https://getcomposer.org/root-version
+Checking non-dev platform requirements for packages in the vendor dir
+ext-sodium 8.5.10   success
+php        8.5.10   success

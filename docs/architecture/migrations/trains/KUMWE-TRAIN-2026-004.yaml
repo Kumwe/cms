@@ -1,26 +1,46 @@
-schema: kumwe-integration-train/v1
-train: KUMWE-TRAIN-2026-004
+# This ID was allocated independently for access-context and foundation adoption.
+# Preserve both scopes and master ownership; review: KUMWE-CONFLICT-2026-002.
+# PR #141 retains its historical access-context step; PR #142 follows it.
+schema: "kumwe-integration-train/v1"
+train: "KUMWE-TRAIN-2026-004"
 packages:
-  - package: kumwe/access-context
-    version: 0.1.2
+  -
+    package: "kumwe/access-context"
+    version: "0.1.2"
+  -
+    package: "kumwe/transaction"
+    version: "0.1.2"
+  -
+    package: "kumwe/secret-envelope"
+    version: "0.1.1"
+  -
+    package: "kumwe/localization"
+    version: "0.1.1"
 merge_order:
+  - "https://github.com/kumwe/app/pull/139"
+  - "https://github.com/kumwe/app/pull/140"
   - "https://github.com/kumwe/app/pull/141"
-custodian: "Platform architecture"
+  - "https://github.com/kumwe/app/pull/142"
+custodian: "Platform architecture; PR #142 foundation adoption coordinator"
 hotspots:
-  - composer.json
-  - composer.lock
-  - src/Kernel/ContainerFactory.php
-  - src/Identity/Application/Authentication/AuthenticatedPrincipal.php
-  - src/Application/Authorization/SystemIdentity.php
-  - src/Application/Authorization/DenyByDefaultAuthorizationGateway.php
-  - docs/architecture/layers.json
-  - docs/architecture/capability-index.md
-  - docs/architecture/governance/core-growth-baseline.json
-  - docs/quality/baseline.json
-  - CHANGELOG.md
+  - "composer.json"
+  - "composer.lock"
+  - "src/Kernel/ContainerFactory.php"
+  - "src/Identity/Application/Authentication/AuthenticatedPrincipal.php"
+  - "src/Application/Authorization/SystemIdentity.php"
+  - "src/Application/Authorization/DenyByDefaultAuthorizationGateway.php"
+  - "docs/architecture/layers.json"
+  - "docs/architecture/capability-index.md"
+  - "docs/architecture/governance/core-growth-baseline.json"
+  - "docs/architecture/core-growth/KUMWE-CGR-2026-004.md"
+  - "docs/quality/baseline.json"
+  - "CHANGELOG.md"
 commands:
-  - "composer install"
+  - "composer install --no-interaction --prefer-dist"
   - "composer kumwe:capability-index"
+  - "composer kumwe:core-growth-record"
+  - "composer baseline:record"
   - "composer qa"
-conflict_ledger: docs/architecture/migrations/conflicts
-serialized_by: "eWɘyn"
+  - "composer test:integration"
+conflict_ledger: "docs/architecture/migrations/conflicts"
+serialized_by: "eWɘyn; delegated PR #142 agent follows the recorded order and required checks"

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Host;
 
-use Kumwe\App\Application\Persistence\TransactionManager;
-use Kumwe\App\Application\Persistence\TransactionState;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionState;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\Studio\Application\Media\StudioMediaOperations;

@@ -7,7 +7,7 @@ namespace Kumwe\App\Administrator\Http\Handler;
 use InvalidArgumentException;
 use Kumwe\App\Administrator\Http\AdministratorRequest;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Media\Application\MediaAsset;
 use Kumwe\App\Media\Application\MediaService;
 use Laminas\Diactoros\Response\HtmlResponse;

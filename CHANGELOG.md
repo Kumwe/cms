@@ -25,6 +25,11 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
   alongside immutable legacy handoffs in the capability and adoption gates, preserving manifest identity,
   digest binding and Core consumer obligations while removing obsolete package process requirements.
 
+- Reconcile the grouped transaction, localization and secret-envelope adoption with the native-computation
+  and access-context integrations. Preserve current authority adapters and migration recovery, combine
+  the shared governance records, regenerate the dependency graph, and remove stale App coverage metadata
+  for package-owned locale values so the MariaDB coverage suite can run without invalid targets (#142).
+
 - Record the maintainer's standing mandate for autonomous architectural decisions and delivery within
   assigned objectives. Agents may complete evidenced ownership reviews and rebase-merge verified work;
   package boundaries, required checks and external access controls remain enforced. Superseded PR nightly
@@ -1412,6 +1417,13 @@ development programme, from the architecture decision that opened it to the curr
   (`cb5f482`, `b539161`, `e4aa755`)
 
 ### Changed
+
+- **Foundation library adoption.** Core now consumes `kumwe/transaction 0.1.2`,
+  `kumwe/localization 0.1.1` and `kumwe/secret-envelope 0.1.1` through Composer. Removed the
+  extracted contracts, translation runtime and cryptographic values/implementations together
+  with their duplicate unit tests; retained transaction adapters, site wording policy, key
+  custody, purpose-specific rotation and application integration tests. Package service
+  providers now supply canonical factories, aliases and lifetimes to the host container.
 
 - **NRM-2026-014 — Package test ownership at adoption.** Migration governance now rejects duplicate
   package tests still present in App, missing retained host test files, contradictory ownership and

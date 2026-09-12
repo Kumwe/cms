@@ -22,13 +22,13 @@
 declare(strict_types=1);
 
 use Kumwe\App\BusinessRecord\Application\SecretAssociatedData;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyMaterial;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyRing;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyUnavailable;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretCipher;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretKeyProvider;
 use Kumwe\App\Tests\Deployment\CaseReport;
+use Kumwe\Secret\Cipher\KeyRingEnvelopeCipher;
+use Kumwe\Secret\Exception\KeyUnavailable;
+use Kumwe\Secret\Provider\KeyRingKeyProvider;
+use Kumwe\Secret\Value\EncryptedEnvelope;
+use Kumwe\Secret\Value\KeyMaterial;
+use Kumwe\Secret\Value\KeyRing;
 
 require __DIR__ . '/../Support/deployment-drill-autoload.php';
 
@@ -37,8 +37,8 @@ $detail = [];
 
 try {
     // Derived from readable stems so the material is unmistakably synthetic and carries no entropy.
-    $outgoing = new SecretKeyMaterial('artifact-lane-outgoing', hash('sha256', 'kumwe-artifact-outgoing', true));
-    $incoming = new SecretKeyMaterial('artifact-lane-incoming', hash('sha256', 'kumwe-artifact-incoming', true));
+    $outgoing = new KeyMaterial('artifact-lane-outgoing', hash('sha256', 'kumwe-artifact-outgoing', true));
+    $incoming = new KeyMaterial('artifact-lane-incoming', hash('sha256', 'kumwe-artifact-incoming', true));
 
     $binding = SecretAssociatedData::for(
         'artifact-lane-site',
@@ -48,15 +48,15 @@ try {
     );
     $plaintext = 'the value a rotation must never make unreadable';
 
-    $beforeRotation = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(new SecretKeyRing($outgoing)));
+    $beforeRotation = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(new KeyRing($outgoing)));
     $sealed = $beforeRotation->encrypt($plaintext, $binding);
     if ($sealed->keyId !== $outgoing->keyId) {
         throw new RuntimeException('The envelope does not name the key that sealed it.');
     }
 
     // The rotation: a new active key, the old one retired but still held.
-    $afterRotation = new KeyRingSecretCipher(
-        new KeyRingSecretKeyProvider(new SecretKeyRing($incoming, [$outgoing])),
+    $afterRotation = new KeyRingEnvelopeCipher(
+        new KeyRingKeyProvider(new KeyRing($incoming, [$outgoing])),
     );
     if ($afterRotation->decrypt($sealed, $binding) !== $plaintext) {
         throw new RuntimeException(
@@ -67,17 +67,17 @@ try {
     $detail['retired_key_opens'] = true;
 
     // The strand: the retired key's material is gone, which is what a drill holding it in-process caused.
-    $stranded = new KeyRingSecretCipher(new KeyRingSecretKeyProvider(new SecretKeyRing($incoming)));
+    $stranded = new KeyRingEnvelopeCipher(new KeyRingKeyProvider(new KeyRing($incoming)));
     $refusal = null;
     try {
         $stranded->decrypt($sealed, $binding);
-    } catch (SecretKeyUnavailable $unavailable) {
+    } catch (KeyUnavailable $unavailable) {
         $refusal = $unavailable->getMessage();
     }
     if ($refusal === null) {
         throw new RuntimeException('A ring without the sealing key opened the envelope anyway.');
     }
-    $detail['stranded_refusal'] = 'SecretKeyUnavailable';
+    $detail['stranded_refusal'] = 'KeyUnavailable';
 
     // Why nothing noticed: the stranded envelope is byte-identical to the readable one.
     $storedBefore = $sealed->toStorage();
@@ -94,8 +94,8 @@ try {
     if ($reEncrypted->keyId !== $incoming->keyId) {
         throw new RuntimeException('Re-encryption did not move the envelope onto the active key.');
     }
-    $rolledBack = new KeyRingSecretCipher(
-        new KeyRingSecretKeyProvider(new SecretKeyRing($outgoing, [$incoming])),
+    $rolledBack = new KeyRingEnvelopeCipher(
+        new KeyRingKeyProvider(new KeyRing($outgoing, [$incoming])),
     );
     if ($rolledBack->decrypt($reEncrypted, $binding) !== $plaintext) {
         throw new RuntimeException(

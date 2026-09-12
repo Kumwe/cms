@@ -12,7 +12,7 @@ use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\BuiltInFieldTypes;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
@@ -21,27 +21,28 @@ use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
 use Kumwe\App\BusinessRecord\Application\RecordFingerprint;
 use Kumwe\App\BusinessRecord\Application\ResolvedBusinessDefinition;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyMaterial;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyRing;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretKeyProvider;
-use Kumwe\App\BusinessSurface\Infrastructure\Security\KeyRingMutationPlanCipher;
 use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessController;
 use Kumwe\App\BusinessSecurity\Application\BusinessRecordAccessPlan;
-use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldDisclosurePlan;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicyConstant;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicySchema;
 use Kumwe\App\BusinessSecurity\Policy\RecordPolicySet;
 use Kumwe\App\BusinessSurface\Application\BusinessMutationPlanService;
 use Kumwe\App\BusinessSurface\Application\BusinessSurface;
 use Kumwe\App\BusinessSurface\Application\BusinessSurfaceCatalog;
+use Kumwe\App\BusinessSurface\Infrastructure\Security\KeyRingMutationPlanCipher;
 use Kumwe\App\Extension\Runtime\RuntimeMaterializationState;
 use Kumwe\App\Tests\Support\AuthorizationContext;
+use Kumwe\Extension\Spi\BusinessSecurity\Application\FieldDisclosurePlan;
+use Kumwe\Secret\Provider\KeyRingKeyProvider;
+use Kumwe\Secret\Value\KeyMaterial;
+use Kumwe\Secret\Value\KeyRing;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Clock\ClockInterface;
 use ReflectionClass;
 
 #[CoversClass(BusinessMutationPlanService::class)]
+#[CoversClass(KeyRingMutationPlanCipher::class)]
 /**
  * Proves MCP mutation plans are sealed, bounded, short-lived, and context bound.
  *
@@ -255,8 +256,8 @@ final class BusinessMutationPlanServiceTest extends TestCase
             $this->createStub(BusinessRecordDefinitionResolver::class),
             $this->createStub(BusinessRecordAccessController::class),
             new RecordFingerprint(str_repeat('k', 32)),
-            new KeyRingMutationPlanCipher(new KeyRingSecretKeyProvider(new SecretKeyRing(
-                new SecretKeyMaterial('mutation-plan-test', str_repeat('s', 32)),
+            new KeyRingMutationPlanCipher(new KeyRingKeyProvider(new KeyRing(
+                new KeyMaterial('mutation-plan-test', str_repeat('s', 32)),
             ))),
             $this->createStub(TransactionManager::class),
             new class implements ClockInterface {
@@ -334,8 +335,8 @@ final class BusinessMutationPlanServiceTest extends TestCase
             $definitions,
             $access,
             new RecordFingerprint(str_repeat('k', 32)),
-            new KeyRingMutationPlanCipher(new KeyRingSecretKeyProvider(new SecretKeyRing(
-                new SecretKeyMaterial('mutation-plan-test', str_repeat('s', 32)),
+            new KeyRingMutationPlanCipher(new KeyRingKeyProvider(new KeyRing(
+                new KeyMaterial('mutation-plan-test', str_repeat('s', 32)),
             ))),
             $transactions,
             $this->clock('2026-08-10T13:00:00+00:00'),

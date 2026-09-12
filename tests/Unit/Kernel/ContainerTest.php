@@ -52,6 +52,43 @@ final class ContainerTest extends TestCase
     }
 
     /**
+     * Package definitions keep canonical aliases and non-shared service lifetimes in the host container.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testPackageDefinitionsPreserveFactoriesAliasesAndLifetimes(): void
+    {
+        $container = new Container();
+        $container->configure((new \Kumwe\Localization\ConfigProvider())()['dependencies']);
+        $supported = new \Kumwe\Localization\Application\SupportedLocales();
+        $container->share(\Kumwe\Localization\Application\SupportedLocales::class, $supported);
+        $container->share(
+            \Kumwe\Localization\Application\DefaultLocaleProvider::class,
+            new class implements \Kumwe\Localization\Application\DefaultLocaleProvider {
+                /**
+                 * Supply the host-selected default for this operation.
+                 *
+                 * @return  \Kumwe\Localization\Domain\LocaleTag  The carried Afrikaans locale.
+                 *
+                 * @since   2.0.0
+                 */
+                public function locale(): \Kumwe\Localization\Domain\LocaleTag
+                {
+                    return \Kumwe\Localization\Domain\LocaleTag::fromString('af');
+                }
+            },
+        );
+
+        $first = $container->get(\Kumwe\Localization\Application\LocaleNegotiator::class);
+        self::assertInstanceOf(\Kumwe\Localization\Application\LocaleNegotiator::class, $first);
+        self::assertSame('af', $first->negotiate(null, '')->toString());
+        self::assertNotSame($first, $container->get(\Kumwe\Localization\Application\LocaleNegotiator::class));
+        self::assertTrue($container->has(\Kumwe\Localization\Application\Translator::class));
+    }
+
+    /**
      * A ready instance registered under an identifier is served back as that very instance.
      *
      * @return  void

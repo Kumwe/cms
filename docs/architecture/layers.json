@@ -61,7 +61,10 @@
     "Kumwe\\Sequence",
     "Kumwe\\CanonicalJson",
     "Kumwe\\Computation",
-    "Kumwe\\Engine"
+    "Kumwe\\Engine",
+    "Kumwe\\Transaction",
+    "Kumwe\\Localization",
+    "Kumwe\\Secret"
   ],
   "namespace_segments": {
     "Shared": "shared",
@@ -155,6 +158,20 @@
     "Kumwe\\Computation\\NativeCanonicalEncoder": "infrastructure",
     "Kumwe\\Computation\\NativeCanonicalEncoderFactory": "infrastructure",
     "Kumwe\\Computation\\NativeCompatibility": "infrastructure",
-    "Kumwe\\Engine": "infrastructure"
+    "Kumwe\\Engine": "infrastructure",
+    "Kumwe\\Transaction\\Contract": "shared",
+    "Kumwe\\Transaction\\Testing": "infrastructure",
+    "Kumwe\\Localization\\Application": "application",
+    "Kumwe\\Localization\\Domain": "domain",
+    "Kumwe\\Localization\\Infrastructure": "infrastructure",
+    "Kumwe\\Localization\\Container": "kernel",
+    "Kumwe\\Localization\\ConfigProvider": "kernel",
+    "Kumwe\\Secret\\Value": "shared",
+    "Kumwe\\Secret\\Exception": "shared",
+    "Kumwe\\Secret\\Contract": "shared",
+    "Kumwe\\Secret\\Cipher": "infrastructure",
+    "Kumwe\\Secret\\Provider": "infrastructure",
+    "Kumwe\\Secret\\Container": "kernel",
+    "Kumwe\\Secret\\ConfigProvider": "kernel"
   }
 }

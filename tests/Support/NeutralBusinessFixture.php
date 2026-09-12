@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Kumwe\App\Kernel\Container;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionService;
 use Kumwe\App\BusinessDefinition\Application\PackageDefinitionSynchronizer;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;

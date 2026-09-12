@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessSurface\Delivery\Browser;
 use InvalidArgumentException;
 use JsonException;
 use Kumwe\Extension\Spi\BusinessSurface\Application\Custom\CustomBusinessSchema;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 
 /**
  * Builds and decodes a no-JavaScript editor for the closed custom-business schema subset.

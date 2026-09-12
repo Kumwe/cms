@@ -171,7 +171,12 @@ final class CanonicalJsonSemanticIdentityGateTest extends TestCase
         self::assertSame([], $injection['aliases']);
         self::assertIsString($injection['provider_absence_reason']);
         self::assertNotSame('', $injection['provider_absence_reason']);
-        self::assertSame([], $document['extracted_namespaces']);
+        /** @var list<array{package: string}> $extracted */
+        $extracted = $document['extracted_namespaces'];
+        self::assertSame([], array_values(array_filter(
+            $extracted,
+            static fn (array $entry): bool => $entry['package'] === 'kumwe/canonical-json',
+        )));
     }
 
     /**

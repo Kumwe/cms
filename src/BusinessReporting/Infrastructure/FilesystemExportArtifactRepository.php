@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessReporting\Infrastructure;
 
 use JsonException;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessReporting\Application\ExportArtifactRepository;
 use Kumwe\App\BusinessReporting\Application\ExportVersionConflict;

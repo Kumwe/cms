@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Demo\Infrastructure;
 
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessSecurity\Application\Administration\BusinessSecurityAdministrationRepository;
 use Kumwe\App\Identity\Application\Administration\AccessControlRepository;
 use Kumwe\App\Identity\Application\Administration\AccessControlService;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
-use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 use Ramsey\Uuid\Uuid;
 use RuntimeException;

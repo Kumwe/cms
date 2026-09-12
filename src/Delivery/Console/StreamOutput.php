@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Delivery\Console;
 
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 
 /**
  * `Output` implementation that writes each line to a pair of already-open stream resources.

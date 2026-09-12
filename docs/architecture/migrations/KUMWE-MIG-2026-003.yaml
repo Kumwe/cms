@@ -1,0 +1,78 @@
+schema: "kumwe-migration-ledger/v1"
+migration_id: "KUMWE-MIG-2026-003"
+change_set: "KUMWE-CS-2026-003"
+package: "kumwe/secret-envelope"
+version: "0.1.1"
+artifact_digest: "37539b5263f8af299d87c731f43db1cafb8df9320478e292fe4f06f767afcea7"
+handoff_path: "vendor/kumwe/secret-envelope/MIGRATION-HANDOFF.md"
+handoff_sha256: "d959b1464dddace1889b18230cfaf09b18d5a9e2ec81440fe9763dc1f81694cb"
+release_attestation: "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/RELEASE-ATTESTATION.yaml"
+old_namespace_roots: []
+symbols:
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Domain\\EncryptedEnvelope"
+    new_fqcn: "Kumwe\\Secret\\Value\\EncryptedEnvelope"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Domain\\SecretKeyMaterial"
+    new_fqcn: "Kumwe\\Secret\\Value\\KeyMaterial"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Domain\\SecretKeyRing"
+    new_fqcn: "Kumwe\\Secret\\Value\\KeyRing"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Domain\\SecretKeyUnavailable"
+    new_fqcn: "Kumwe\\Secret\\Exception\\KeyUnavailable"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Application\\SecretCipher"
+    new_fqcn: "Kumwe\\Secret\\Contract\\EnvelopeCipher"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Application\\SecretKeyProvider"
+    new_fqcn: "Kumwe\\Secret\\Contract\\KeyProvider"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Infrastructure\\Security\\SodiumSecretCipher"
+    new_fqcn: "Kumwe\\Secret\\Cipher\\SodiumEnvelopeCipher"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Infrastructure\\Security\\KeyRingSecretCipher"
+    new_fqcn: "Kumwe\\Secret\\Cipher\\KeyRingEnvelopeCipher"
+  -
+    old_fqcn: "Kumwe\\App\\BusinessRecord\\Infrastructure\\Security\\KeyRingSecretKeyProvider"
+    new_fqcn: "Kumwe\\Secret\\Provider\\KeyRingKeyProvider"
+removed_paths:
+  - "src/BusinessRecord/Domain/EncryptedEnvelope.php"
+  - "src/BusinessRecord/Domain/SecretKeyMaterial.php"
+  - "src/BusinessRecord/Domain/SecretKeyRing.php"
+  - "src/BusinessRecord/Domain/SecretKeyUnavailable.php"
+  - "src/BusinessRecord/Application/SecretCipher.php"
+  - "src/BusinessRecord/Application/SecretKeyProvider.php"
+  - "src/BusinessRecord/Infrastructure/Security/SodiumSecretCipher.php"
+  - "src/BusinessRecord/Infrastructure/Security/KeyRingSecretCipher.php"
+  - "src/BusinessRecord/Infrastructure/Security/KeyRingSecretKeyProvider.php"
+removed_tests:
+  - "tests/Unit/BusinessRecord/Domain/EncryptedEnvelopeTest.php"
+  - "tests/Unit/BusinessRecord/Infrastructure/SodiumSecretCipherTest.php"
+retained_tests:
+  - "tests/Unit/BusinessRecord/Infrastructure/SecretKeyLifecycleTest.php"
+  - "tests/Integration/BusinessRecord/RecordSecretRotationIntegrationTest.php"
+  - "tests/Unit/BusinessRecord/Domain/ExactValueCodecTest.php"
+  - "tests/Unit/BusinessSurface/Application/BusinessMutationPlanServiceTest.php"
+  - "tests/Deployment/record-key-rotation-strand.php"
+di_changes:
+  -
+    service: "Kumwe\\Secret\\Contract\\KeyProvider"
+    factory: "Kumwe\\App\\Kernel\\ContainerFactory"
+    note: "Construct the package provider from the host-configured records key ring; custody and derivation stay in App."
+  -
+    service: "Kumwe\\Secret\\Contract\\EnvelopeCipher"
+    factory: "Kumwe\\Secret\\Container\\KeyRingEnvelopeCipherFactory"
+    note: "Register package ConfigProvider explicitly; keep MutationPlanCipher on its separate purpose-specific key ring."
+capability_index_entries:
+  - "kumwe/secret-envelope"
+release_evidence:
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/RELEASE-ATTESTATION.yaml"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/consumer-verification.json"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/archive-verification.json"
+app_pull_request: "https://github.com/kumwe/app/pull/142"
+roadmap_refs: []
+non_roadmap_refs:
+  - "NRM-2026-004"
+conflicts:
+  - "KUMWE-CONFLICT-2026-002"

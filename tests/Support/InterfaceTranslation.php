@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Support;
 
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\CatalogueTranslator;
-use Kumwe\App\Localization\Application\MessageOverrideRepository;
-use Kumwe\App\Localization\Application\SupportedLocales;
-use Kumwe\App\Localization\Application\TranslationScope;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\CatalogueTranslator;
+use Kumwe\Localization\Application\MessageOverrideRepository;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Application\TranslationScope;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Localization\Infrastructure\ArrayMessageOverrideRepository;
 use Kumwe\App\Localization\Infrastructure\CompiledMessageCatalogueRepository;
-use Kumwe\App\Localization\Infrastructure\IntlMessagePatternFormatter;
+use Kumwe\Localization\Infrastructure\IntlMessagePatternFormatter;
 use Kumwe\App\Localization\Presentation\TranslationTwigExtension;
 
 /** Builds a translator over the repository's own compiled catalogues, as the container does. */

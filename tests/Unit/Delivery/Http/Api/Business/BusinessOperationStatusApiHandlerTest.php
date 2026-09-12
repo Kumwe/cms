@@ -10,7 +10,7 @@ use Kumwe\App\Application\Authorization\AuthorizationDecision;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\BuiltInFieldTypes;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;

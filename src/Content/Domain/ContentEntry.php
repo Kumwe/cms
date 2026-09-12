@@ -6,8 +6,8 @@ namespace Kumwe\App\Content\Domain;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Workflow\Domain\Workflow;
 use Ramsey\Uuid\Uuid;
 

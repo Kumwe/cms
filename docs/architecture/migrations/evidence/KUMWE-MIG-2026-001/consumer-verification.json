@@ -1,0 +1,35 @@
+{
+  "require": {
+    "kumwe/transaction": "0.1.2"
+  },
+  "source": {
+    "type": "git",
+    "url": "https://github.com/kumwe/transaction.git",
+    "reference": "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03"
+  },
+  "dist": {
+    "type": "zip",
+    "url": "https://api.github.com/repos/kumwe/transaction/zipball/56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03",
+    "reference": "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03",
+    "shasum": ""
+  },
+  "packages": [
+    {
+      "name": "kumwe/transaction",
+      "version": "v0.1.2"
+    }
+  ],
+  "packages-dev": [],
+  "classmap_authoritative": true,
+  "platform_override": null,
+  "network": "verified Composer registry and dist cache",
+  "install_flags": [
+    "--no-dev",
+    "--prefer-dist",
+    "--no-plugins",
+    "--no-scripts",
+    "--classmap-authoritative",
+    "--no-interaction",
+    "--no-progress"
+  ]
+}

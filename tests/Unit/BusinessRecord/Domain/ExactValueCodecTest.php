@@ -12,26 +12,25 @@ use Kumwe\App\BusinessRecord\Application\PlannedFieldEncoding;
 use Kumwe\App\BusinessRecord\Application\RecordColumnEncodingPlan;
 use Kumwe\App\BusinessRecord\Application\RecordValueCodec;
 use Kumwe\App\BusinessRecord\Application\SecretAssociatedData;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
-use Kumwe\Conversion\Decimal\ExactDecimal;
-use Kumwe\Conversion\Value\MoneyValue;
-use Kumwe\Conversion\Value\QuantityValue;
-use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
 use Kumwe\App\BusinessSchema\Domain\PhysicalColumnBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableBlueprint;
 use Kumwe\App\BusinessSchema\Domain\PhysicalTableKind;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
+use Kumwe\Conversion\Decimal\ExactDecimal;
+use Kumwe\Conversion\Value\MoneyValue;
+use Kumwe\Conversion\Value\QuantityValue;
+use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\EncryptedEnvelope;
+use Kumwe\Secret\Value\KeyMaterial;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-#[CoversClass(EncryptedEnvelope::class)]
 #[CoversClass(PlannedFieldEncoding::class)]
 #[CoversClass(RecordColumnEncodingPlan::class)]
 #[CoversClass(RecordValueCodec::class)]
 #[CoversClass(SecretAssociatedData::class)]
-#[CoversClass(SodiumSecretCipher::class)]
 final class ExactValueCodecTest extends TestCase
 {
     public function testMaximumPrecisionAndScaleRemainExactAndFloatsAreRejected(): void
@@ -142,10 +141,17 @@ final class ExactValueCodecTest extends TestCase
         self::assertSame('2026-08-08T11:14:15.123456Z', $zoned->toArray()['instant']);
     }
 
+    /**
+     * Secret encoding binds the stored envelope to the host's exact site, definition, record and field.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
     public function testSecretEncryptionAuthenticatesCiphertextAndRecordContext(): void
     {
         $key = random_bytes(SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES);
-        $cipher = new SodiumSecretCipher('unit-key-v1', $key);
+        $cipher = new SodiumEnvelopeCipher(new KeyMaterial('unit-key-v1', $key));
         $codec = new RecordValueCodec($cipher);
         $associatedData = SecretAssociatedData::for(
             'default',
@@ -165,20 +171,40 @@ final class ExactValueCodecTest extends TestCase
         self::assertStringNotContainsString('plaintext-must-not-survive', $envelope->ciphertext);
         self::assertSame('plaintext-must-not-survive', $cipher->decrypt($envelope, $associatedData));
 
-        $tampered = new EncryptedEnvelope(
-            chr(ord($envelope->ciphertext[0]) ^ 1) . substr($envelope->ciphertext, 1),
-            $envelope->nonce,
-            $envelope->keyId,
+        self::assertSame(
+            implode("\n", [
+                'business-record-secret-v1',
+                'default',
+                NeutralBusinessFixture::DEFINITION_ID,
+                NeutralBusinessFixture::RECORD_ID,
+                'credential',
+            ]),
+            $associatedData,
         );
-        try {
-            $cipher->decrypt($tampered, $associatedData);
-            self::fail('Authenticated encryption must reject changed ciphertext.');
-        } catch (RuntimeException $exception) {
-            self::assertStringContainsString('authenticated decryption', $exception->getMessage());
+        $coordinates = [
+            'default',
+            NeutralBusinessFixture::DEFINITION_ID,
+            NeutralBusinessFixture::RECORD_ID,
+            'credential',
+        ];
+        foreach (array_keys($coordinates) as $coordinate) {
+            $otherCell = $coordinates;
+            $otherCell[$coordinate] .= '-other';
+            try {
+                $cipher->decrypt($envelope, SecretAssociatedData::for(...$otherCell));
+                self::fail('A stored secret authenticated under another cell coordinate.');
+            } catch (RuntimeException $exception) {
+                self::assertStringNotContainsString('plaintext-must-not-survive', $exception->getMessage());
+            }
         }
 
-        $this->expectException(RuntimeException::class);
-        $cipher->decrypt($envelope, $associatedData . "\nchanged-record");
+        $this->expectException(InvalidArgumentException::class);
+        SecretAssociatedData::for(
+            'default',
+            NeutralBusinessFixture::DEFINITION_ID,
+            "row\ninjected-field",
+            'credential',
+        );
     }
 
     public function testIntegerCodecUsesThePortableSignedDatabaseRange(): void
@@ -291,10 +317,10 @@ final class ExactValueCodecTest extends TestCase
 
     private static function codec(): RecordValueCodec
     {
-        return new RecordValueCodec(new SodiumSecretCipher(
+        return new RecordValueCodec(new SodiumEnvelopeCipher(new KeyMaterial(
             'unit-key-v1',
             str_repeat("\x5a", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        ));
+        )));
     }
 
     private static function field(string $handle): FieldDefinition
