@@ -104,6 +104,36 @@ final class CapabilityIndexBuilderTest extends TestCase
     }
 
     /**
+     * A production record changes only the record coordinate within the existing index handoff field.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testProductionRecordsKeepTheExistingIndexShape(): void
+    {
+        $root = GovernanceFixture::copy();
+        try {
+            $before = (new CapabilityIndexBuilder($root))->build();
+            GovernanceFixture::useProductionRecord($root, true);
+            $after = (new CapabilityIndexBuilder($root))->build();
+            foreach ($after['packages'] as $offset => $package) {
+                if ($package['package'] === 'kumwe/example-v2') {
+                    self::assertSame('vendor/kumwe/example-v2/docs/release-record.md', $package['handoff']['path']);
+                    self::assertSame(
+                        GovernanceFixture::digest($root, 'vendor/kumwe/example-v2/docs/release-record.md'),
+                        $package['handoff']['sha256'],
+                    );
+                    $before['packages'][$offset]['handoff'] = $package['handoff'];
+                }
+            }
+            self::assertSame($before, $after);
+        } finally {
+            GovernanceFixture::remove($root);
+        }
+    }
+
+    /**
      * Two builds of one tree produce identical bytes, and the lock's package order does not change them.
      *
      * @return  void

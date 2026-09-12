@@ -8,7 +8,7 @@ namespace Kumwe\App\Tools\Governance;
  * Reads one installed Kumwe package and decides whether it is Version 2 manifested or a legacy release.
  *
  * A package claims Version 2 governance as soon as it ships any of `resources/capabilities/v1.json`,
- * `resources/service-map/v1.json`, `MIGRATION-HANDOFF.md`, or a `resources/public-api/v1.json` carrying the
+ * `resources/service-map/v1.json`, `docs/release-record.md`, `MIGRATION-HANDOFF.md`, or a public API carrying the
  * Version 2 schema string. A claim is all-or-nothing: every manifest and the handoff must then exist, validate
  * against its schema and agree with the others, or the package is refused rather than downgraded to legacy.
  * A package that ships none of them is `legacy-unmanifested`; its public symbols come from the pre-Version-2
@@ -39,6 +39,23 @@ final readonly class PackageManifests
         'Next-task execution notes',
         'Drift check',
         'Validation recipe and observed local results',
+    ];
+
+    /**
+     * Production release-record narrative sections, in order.
+     *
+     * @var    list<string>
+     * @since  2.0.0
+     */
+    public const RELEASE_RECORD_SECTIONS = [
+        'Package contract',
+        'Public API and responsibility',
+        'Dependencies and semantic inputs',
+        'Consumer contract',
+        'Test ownership',
+        'Consumer verification',
+        'Compatibility and drift',
+        'Validation',
     ];
 
     /**
@@ -166,6 +183,7 @@ final readonly class PackageManifests
         $claimsVersion2 = is_file($packageRoot . '/' . self::MANIFEST_PATHS['capabilities'])
             || is_file($packageRoot . '/' . self::MANIFEST_PATHS['service_map'])
             || is_file($packageRoot . '/MIGRATION-HANDOFF.md')
+            || is_file($packageRoot . '/docs/release-record.md')
             || ($publicApiRaw !== null && ($publicApiRaw['schema'] ?? null) === 'kumwe-package-public-api/v1');
 
         if ($claimsVersion2) {
@@ -477,8 +495,9 @@ final readonly class PackageManifests
         SchemaValidator $validator,
         string $schemaDirectory,
     ): array {
-        $path = $packageRoot . '/MIGRATION-HANDOFF.md';
-        $relative = $display . '/MIGRATION-HANDOFF.md';
+        $recordPath = self::releaseRecordPath($packageRoot, $display);
+        $path = $packageRoot . '/' . $recordPath;
+        $relative = $display . '/' . $recordPath;
         $bytes = is_file($path) ? file_get_contents($path) : false;
         if (!is_string($bytes)) {
             throw GovernanceViolation::at(
@@ -487,9 +506,11 @@ final readonly class PackageManifests
                 'ship the handoff committed by Phase 1 (Kumwe-v2-08)',
             );
         }
-        $parsed = StrictYaml::parseFrontMatter($bytes, $relative);
+        $parsed = self::parseReleaseRecord($bytes, $relative);
         $front = $parsed['front_matter'];
-        self::assertValid($validator, $front, $schemaDirectory . '/migration-handoff.v2.schema.json', $relative);
+        $schema = $recordPath === 'docs/release-record.md'
+            ? 'package-release-record.v1.schema.json' : 'migration-handoff.v2.schema.json';
+        self::assertValid($validator, $front, $schemaDirectory . '/' . $schema, $relative);
         if (($front['artifact_kind'] ?? null) !== 'framework_php') {
             throw GovernanceViolation::at(
                 $relative,
@@ -570,7 +591,9 @@ final readonly class PackageManifests
                 );
             }
         }
-        foreach (self::HANDOFF_SECTIONS as $section) {
+        $sections = $recordPath === 'docs/release-record.md'
+            ? self::RELEASE_RECORD_SECTIONS : self::HANDOFF_SECTIONS;
+        foreach ($sections as $section) {
             if (preg_match('/^##\s+(?:[0-9]+\.\s+)?' . preg_quote($section, '/') . '\s*$/m', $parsed['body']) !== 1) {
                 throw GovernanceViolation::at(
                     $relative,
@@ -586,6 +609,81 @@ final readonly class PackageManifests
             'front_matter' => $front,
             'body' => $parsed['body'],
         ];
+    }
+
+    /**
+     * Select exactly one installed production record or immutable legacy handoff.
+     *
+     * @param   string  $packageRoot  Absolute installed package root.
+     * @param   string  $display      Package path for diagnostics.
+     *
+     * @return  string  The recognized package-relative record path.
+     *
+     * @throws  GovernanceViolation  When neither or both records are present.
+     *
+     * @since   2.0.0
+     */
+    public static function releaseRecordPath(string $packageRoot, string $display): string
+    {
+        $paths = array_values(array_filter(
+            ['docs/release-record.md', 'MIGRATION-HANDOFF.md'],
+            static fn (string $path): bool => is_file($packageRoot . '/' . $path),
+        ));
+        if (count($paths) !== 1) {
+            throw GovernanceViolation::at(
+                $display,
+                $paths === [] ? 'ships no MIGRATION-HANDOFF.md or docs/release-record.md'
+                    : 'ships both a production release record and a legacy handoff',
+                'ship exactly one recognized record; do not allow ambiguous package contracts',
+            );
+        }
+
+        return $paths[0];
+    }
+
+    /**
+     * Parse a current record as block YAML or JSON-compatible YAML, preserving strict duplicate-key refusal.
+     *
+     * Legacy records retain the existing StrictYaml subset. JSON is accepted only for the production path.
+     * Counting object-member tokens before and after decoding rejects overwritten duplicate keys, including
+     * escaped spellings and duplicates inside nested objects. Quoted value contents are consumed as one token.
+     *
+     * @param   string  $bytes     Complete markdown record.
+     * @param   string  $relative  Installed record path for diagnostics and format selection.
+     *
+     * @return  array{front_matter: array<string, mixed>, body: string}  Parsed contract and prose.
+     *
+     * @throws  GovernanceViolation  When JSON is malformed, duplicated or not an object.
+     *
+     * @since   2.0.0
+     */
+    public static function parseReleaseRecord(string $bytes, string $relative): array
+    {
+        if (
+            !str_ends_with($relative, '/docs/release-record.md')
+            || preg_match('/\A---\r?\n(\{[\s\S]*?)\r?\n---(?:\r?\n|\z)/', $bytes, $match) !== 1
+        ) {
+            return StrictYaml::parseFrontMatter($bytes, $relative);
+        }
+        try {
+            $object = json_decode($match[1], false, 512, JSON_THROW_ON_ERROR);
+            if (!$object instanceof \stdClass) {
+                throw new \JsonException('the JSON front matter must be an object');
+            }
+            $encoded = json_encode($object, JSON_THROW_ON_ERROR);
+            $pattern = '/"(?:[^"\\\\]|\\\\.)*"\s*(:)?/s';
+            preg_match_all($pattern, $match[1], $originalTokens);
+            preg_match_all($pattern, $encoded, $decodedTokens);
+            if (count(array_filter($originalTokens[1])) !== count(array_filter($decodedTokens[1]))) {
+                throw new \JsonException('duplicate object keys in JSON front matter');
+            }
+            /** @var array<string, mixed> $front */
+            $front = json_decode($match[1], true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw GovernanceViolation::at($relative, $exception->getMessage(), 'write unambiguous JSON front matter');
+        }
+
+        return ['front_matter' => $front, 'body' => substr($bytes, strlen($match[0]))];
     }
 
     /**

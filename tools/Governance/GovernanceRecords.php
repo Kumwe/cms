@@ -264,7 +264,11 @@ final readonly class GovernanceRecords
             );
         }
         $short = substr($package, strlen('kumwe/'));
-        $expectedHandoff = 'vendor/kumwe/' . $short . '/MIGRATION-HANDOFF.md';
+        $packagePath = 'vendor/kumwe/' . $short;
+        $expectedHandoff = $packagePath . '/' . PackageManifests::releaseRecordPath(
+            $root . '/' . $packagePath,
+            $packagePath,
+        );
         if ($record['handoff_path'] !== $expectedHandoff) {
             throw GovernanceViolation::at(
                 $path,
@@ -404,9 +408,10 @@ final readonly class GovernanceRecords
         $handoffBytes = is_file($root . '/' . $expectedHandoff)
             ? file_get_contents($root . '/' . $expectedHandoff) : false;
         if (is_string($handoffBytes)) {
-            $front = StrictYaml::parseFrontMatter($handoffBytes, $expectedHandoff)['front_matter'];
+            $front = PackageManifests::parseReleaseRecord($handoffBytes, $expectedHandoff)['front_matter'];
             /** @var array<string, mixed> $next */
-            $next = $front['next_task'];
+            $next = $front[str_ends_with($expectedHandoff, '/docs/release-record.md')
+                ? 'consumer_contract' : 'next_task'];
             $consumer = rtrim(self::string($next['consumer_repository'] ?? null), '/');
             if (in_array($consumer, ['kumwe/app', 'https://github.com/kumwe/app'], true)) {
                 /** @var list<string> $releasedRemovals */

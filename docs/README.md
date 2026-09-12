@@ -1,8 +1,7 @@
 # Kumwe documentation
 
 The [Kumwe Interface Standard 1.0](interface-standard/README.md) is the normative contract for all
-administrator, portal, generated, extension, and installable-template graphical surfaces. Its programme
-ledger records the bounded Phase 0–6 migration and qualification state.
+administrator, portal, generated, extension, and installable-template graphical surfaces.
 
 Use this index to install, operate, administer, integrate, extend, or evolve Kumwe.
 
@@ -38,8 +37,8 @@ Use this index to install, operate, administer, integrate, extend, or evolve Kum
 - [REST API](rest-api.md): authentication, content, navigation, identity, optimistic concurrency, and retry safety.
 - [MCP](mcp.md): stdio and Streamable HTTP transports, capabilities, tools, resources, and safe writes.
 - [Studio authoring in Kumwe App](studio-composition-authoring.md): the single App-side mapping from Studio's
-  canonical product contract to the contextual Content workflow, current Blueprint-only gap, PHP authority,
-  zero-production-Node rule, extension targets, and one-PR implementation ladder. See also the
+  canonical product contract to Content authoring, PHP authority, production runtime requirements, extension
+  targets, and integration qualification. See also the
   [artifact/recovery boundary](studio-artifact-persistence.md) and [media host adapter](studio-media-host.md).
 - [Studio content projection](studio-content-projection.md): read-only Content models and entries,
   Blueprint bindings, composition overrides, lossless mappings, and fail-closed diagnostics.

@@ -17,6 +17,10 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
+- Add live package/build badges and current repository entry points. Accept strict package release records
+  alongside immutable legacy handoffs in the capability and adoption gates, preserving manifest identity,
+  digest binding and Core consumer obligations while removing obsolete package process requirements.
+
 - Record the maintainer's standing mandate for autonomous architectural decisions and delivery within
   assigned objectives. Agents may complete evidenced ownership reviews and rebase-merge verified work;
   package boundaries, required checks and external access controls remain enforced. Superseded PR nightly

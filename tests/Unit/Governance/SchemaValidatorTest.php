@@ -217,7 +217,7 @@ final class SchemaValidatorTest extends TestCase
     {
         $schemas = glob(GovernanceFixture::schemaDirectory() . '/*.schema.json') ?: [];
 
-        self::assertCount(16, $schemas);
+        self::assertCount(17, $schemas);
         foreach ($schemas as $schema) {
             $decoded = SchemaValidator::loadSchema($schema);
             self::assertSame('https://json-schema.org/draft/2020-12/schema', $decoded['$schema'], $schema);

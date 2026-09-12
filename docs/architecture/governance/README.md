@@ -27,14 +27,15 @@ the installed packages and never edited by hand. It is the answer to "does a pac
 1. `composer.lock` — the locked `kumwe/*` packages, the only packages indexed: version, source and dist
    references, licence, PSR-4 roots.
 2. `vendor/kumwe/<name>/` — `composer.json`; `CHARTER.md` (the first paragraph after the H1 is the
-   responsibility summary); `README.md`; `MIGRATION-HANDOFF.md`; and the three manifests
+   responsibility summary); `README.md`; `docs/release-record.md` (or the legacy `MIGRATION-HANDOFF.md`);
+   and the three manifests
    `resources/public-api/v1.json`, `resources/capabilities/v1.json` and `resources/service-map/v1.json`.
    A locked package whose vendor directory is missing fails the build: install locked dependencies first.
    The index reads only what a release archive is guaranteed to ship, so a git checkout and a dist
    zipball of the same lock produce the same digest: for a legacy entry that is `composer.json`,
    `resources/` and `src/` alone (its responsibility comes from the registry, its `documentation`
    records `charter: null` and `readme: null`); for a Version 2 package the charter, README, `docs/`,
-   `resources/` and `MIGRATION-HANDOFF.md` are required, so a Version 2 release archive must ship them
+   `resources/` and the selected package release record are required, so a Version 2 release archive must ship them
    and must not `export-ignore` them — one that omits them fails this gate at adoption.
 3. [`legacy-packages.json`](legacy-packages.json) — the legacy registry (section 1.6).
 4. `docs/architecture/migrations/KUMWE-MIG-*.yaml` — the migration ledger: retired namespaces, removed
@@ -79,7 +80,7 @@ named as the `package` of a migration ledger record. Every failure line starts w
 
 ### Package status
 
-A package is `v2-manifested` when the three manifests and `MIGRATION-HANDOFF.md` all exist and validate
+A package is `v2-manifested` when the three manifests and its package release record all exist and validate
 against the schemas in section 3. Its `release_gate_eligible` is `true`; it may be the `package` of a
 migration ledger record. Anything else is `legacy-unmanifested`.
 
@@ -233,7 +234,9 @@ unique; year-sequence ids match `^[A-Z-]+-[0-9]{4}-[0-9]{3}$`.
 - Written by Phase 2: old and new symbols, removed paths and tests, retained tests, DI changes,
   capability-index entries, release evidence, the App PR, roadmap and non-roadmap references, conflicts.
   `package` must be a locked `v2-manifested` package; `handoff_sha256` must equal the sha256 of the
-  installed `vendor/kumwe/<name>/MIGRATION-HANDOFF.md`. The record feeds the "Extracted namespaces" and
+  installed package release record selected by the manifest reader. The ledger retains its `handoff_path`
+  and `handoff_sha256` fields for compatibility and binds the exact current or legacy document bytes.
+  The record feeds the "Extracted namespaces" and
   "Removed App symbols" tables of the index and rules 3, 4 and 8 of the growth gate.
 
 ### 3.4 Change set
@@ -297,14 +300,20 @@ unique; year-sequence ids match `^[A-Z-]+-[0-9]{4}-[0-9]{3}$`.
 - Only for an immutable pre-Version-2 upstream dependency, after explicit human approval. It never replaces
   the handoff or release attestation of the package currently being adopted.
 
-### 3.11 Migration handoff (consumed from the package)
+### 3.11 Package release record (consumed from the package)
 
-- Path: `vendor/kumwe/<name>/MIGRATION-HANDOFF.md` — written in the package repository by Phase 1 after the
-  draft PR is opened (`state: draft_pr_open`), shipped in the release, read by App.
-- Schema: [`schemas/migration-handoff.v2.schema.json`](schemas/migration-handoff.v2.schema.json) — the
-  common front matter plus `oneOf` on `artifact_kind` (`framework_php`, `native_cpp`, `php_extension`).
-- Example: [`examples/migration-handoff.v2.example.md`](examples/migration-handoff.v2.example.md).
-- Phase 2 executes its `next_task` block; the ledger record pins its digest.
+- Current path: `vendor/kumwe/<name>/docs/release-record.md`.
+- Current schema: [`schemas/package-release-record.v1.schema.json`](schemas/package-release-record.v1.schema.json).
+- The record binds public API, capability and service manifests, test ownership, source provenance,
+  compatibility and the `consumer_contract`. It contains no draft-PR state, temporary branch assignment
+  or next-agent instructions. Core ownership and consumer obligations remain independently verifiable.
+- Already published packages may instead ship `MIGRATION-HANDOFF.md`, validated against the unchanged
+  [`migration-handoff.v2.schema.json`](schemas/migration-handoff.v2.schema.json). Its `next_task` remains
+  readable for those immutable releases. Existing release artifacts and attestations are not rewritten.
+- The selected record must agree with the package manifests and the adoption ledger must pin its actual
+  path and SHA-256. A malformed current record must fail validation, never fall back to legacy metadata.
+- The [legacy example](examples/migration-handoff.v2.example.md) remains a compatibility fixture for
+  published releases, not an instruction to add migration prose to new package documentation.
 
 ### 3.12 Package manifests (consumed from the package)
 
@@ -395,7 +404,7 @@ gates. Package repositories release from `main`; App merges to `master` (D-GOV-5
 
 | # | Step | Where | Who | May write | Must not |
 |---|---|---|---|---|---|
-| 1 | Phase 1 | package repository | agent | package source, tests, docs, manifests, handoff | anything in App |
+| 1 | Phase 1 | package repository | agent | package source, tests, docs, manifests, release record | anything in App |
 | 2 | Verified merge | package repository | maintainer or delegated agent | the merge to `main` | bypass checks or branch protection |
 | 3 | Release on record | package repository | automation | tag, artifact, registry publication | a hand-made tag |
 | 4 | Verification | outside both trees | fresh session | the attestation file | package or App source |
@@ -406,9 +415,8 @@ Step notes:
 
 1. **Phase 1** extracts one responsibility into its package: canonical namespace, tests moved upstream,
    `CHARTER.md`, `README.md`, the three manifests, the newest `## X.Y.Z` heading in the package CHANGELOG
-   (that heading chooses the release version, D-GOV-6) and `MIGRATION-HANDOFF.md`, committed after the
-   draft PR exists so it can cite the PR URL. It records the App baseline commit, the capability index
-   digest it inspected and the exact `next_task` for Phase 2. It does not edit App, predict a tag, or mark
+   (that heading chooses the release version, D-GOV-6) and `docs/release-record.md`. The record preserves
+   source provenance, manifest identities, test ownership and the exact `consumer_contract` for adoption. It does not edit App, predict a tag, or mark
    the change set beyond `package-implemented`.
 2. **Verified merge** to the package's protected `main`, by the maintainer or an agent with delegated
    authority for that package objective. Honor its required checks and release policy.
