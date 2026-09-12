@@ -16,11 +16,13 @@ ENV KUMWE_NATIVE_EXPECTED_TUPLE=/usr/local/etc/kumwe/native-expected-tuple.json
 
 # Preserve the former Alpine www-data identity so existing storage volumes remain writable.
 # Install runtime libraries explicitly; remove PHP/native compiler dependencies after building.
+# Refresh inherited Debian packages before compiling against the pinned PHP image.
 RUN set -eux; \
     test "$(dpkg --print-architecture)" = amd64; \
     groupmod --gid 82 www-data; \
     usermod --uid 82 --gid 82 www-data; \
     apt-get update; \
+    apt-get upgrade -y --no-install-recommends; \
     apt-get install -y --no-install-recommends \
         bash ca-certificates curl gosu libicu76 libonig5 libpq5 libstdc++6 libzip5 tzdata; \
     apt-get install -y --no-install-recommends \

@@ -8,11 +8,13 @@ ENV KUMWE_NATIVE_EXPECTED_TUPLE=/usr/local/etc/kumwe/native-expected-tuple.json
 
 # Keep the former image's www-data identity; Compose may still select the developer's host UID.
 # Runtime libraries remain installed after the temporary PHP/native build dependencies are purged.
+# Refresh inherited Debian packages before compiling against the pinned PHP image.
 RUN set -eux; \
     test "$(dpkg --print-architecture)" = amd64; \
     groupmod --gid 82 www-data; \
     usermod --uid 82 --gid 82 www-data; \
     apt-get update; \
+    apt-get upgrade -y --no-install-recommends; \
     apt-get install -y --no-install-recommends \
         bash ca-certificates curl git libicu76 libonig5 libpq5 libstdc++6 libzip5; \
     apt-get install -y --no-install-recommends \
