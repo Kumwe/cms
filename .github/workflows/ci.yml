@@ -479,11 +479,11 @@ jobs:
     name: PHP 8.5 / ${{ matrix.database.name }}
     needs: preflight
     runs-on: ubuntu-24.04
-    # The MariaDB leg alone carries coverage collection, two complete idempotency passes against a
-    # reused database and the backup drill on top of the suite. The 3,080-test suite reached its
-    # reverse-order pass at minute 29 and GitHub killed it at the former 40-minute ceiling. Keep a
-    # bounded budget, with enough margin for all declared evidence on slower hosted runners.
-    timeout-minutes: 75
+    # The MariaDB leg collects coverage for the 3,820-test suite, then runs both integration repeats
+    # and the signed recovery drill. A green master run took 71 minutes; PR #142's merged run passed
+    # the tests and coverage gates but exhausted 75 minutes during recovery verification. Reserve
+    # bounded headroom for the complete evidence set and hosted-runner variation.
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
