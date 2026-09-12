@@ -17,6 +17,11 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
+- Record the maintainer's standing mandate for autonomous architectural decisions and delivery within
+  assigned objectives. Agents may complete evidenced ownership reviews and rebase-merge verified work;
+  package boundaries, required checks and external access controls remain enforced. Superseded PR nightly
+  runs are cancelled so the current head can be validated without waiting for stale evidence (#141).
+
 - Disable unused PCOV instrumentation in the integration suite's collection, repeat and reverse-order
   subprocesses. The full database suite still produces the coverage report and the coverage ratchet still
   checks it; both repeated passes and their complete-report checks remain required. This addresses the

@@ -123,7 +123,15 @@ Seven H2 headings, in this order, all required:
 
 ### How a record is approved
 
-The reviewer's approving pull-request review is the approval. The `Core growth approval` workflow
+The [standing maintainer mandate](../../../AGENTS.md#standing-maintainer-mandate--2026-09-12) delegates
+routine ownership decisions within an assigned objective to agents. Complete the Capability Reuse Review
+and obtain a reasoned review of the package boundary; an independent agent may provide that review. When
+the evidence supports App ownership, record `decision: approved`, name the actual decision maker and
+reviewer, set the decision date, and re-record the baseline. State that the decision uses the standing
+mandate. Do not invent a human review event or use a human's identity for an agent's review. Keep a record
+pending when the technical ownership question remains unresolved; the mandate does not waive the gate.
+
+A human collaborator can also approve through a pull-request review. The `Core growth approval` workflow
 (`.github/workflows/core-growth-approval.yml`) runs on every submitted review: when a human collaborator
 with write access approves a same-repository pull request, every `decision: pending` record whose
 `pull_request` names that pull request is set to `approved` with the reviewer's login and the review date,
@@ -135,10 +143,10 @@ three fields, re-record, and commit them together.
 ### After writing it
 
 ```
-[ ] composer kumwe:core-growth-check        # names the FQCN if the record does not cover it
-[ ] composer kumwe:core-growth-record       # writes growth.record into the baseline
+[ ] record the completed ownership review under the standing mandate, or leave pending if unresolved
+[ ] composer kumwe:core-growth-record       # writes growth.record into the baseline after approval
+[ ] composer kumwe:core-growth-check        # confirms the completed inventory and approved ownership
 [ ] commit the record, the baseline and the PR "Capability reuse review" section together
-[ ] leave decision: pending with pull_request set; the reviewer's approving review records the rest
 ```
 
 ## A worked example, in prose

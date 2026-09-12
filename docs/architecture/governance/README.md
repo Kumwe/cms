@@ -218,8 +218,11 @@ unique; year-sequence ids match `^[A-Z-]+-[0-9]{4}-[0-9]{3}$`.
 - Schema: [`schemas/core-growth-record.v1.schema.json`](schemas/core-growth-record.v1.schema.json).
 - Example: [`examples/core-growth-record.v1.example.md`](examples/core-growth-record.v1.example.md).
 - Written by the agent that adds portable growth; `decision: approved` requires a non-empty `reviewer`.
-  The reviewer's approving pull-request review sets it: the `Core growth approval` workflow approves every
-  pending record naming that pull request, re-records the baseline and commits as the reviewer.
+  The standing maintainer mandate in `AGENTS.md` authorizes agents to record completed, evidenced ownership
+  reviews within the assigned scope, naming the actual decision maker and reviewer. An independent agent
+  review is valid and must not be attributed to a human. The human pull-request review route also remains:
+  the `Core growth approval` workflow approves pending records naming that pull request, re-records the
+  baseline and commits as the human reviewer. Neither route waives ownership or validation requirements.
   Guide: [`../core-growth/README.md`](../core-growth/README.md).
 
 ### 3.3 Migration ledger record
@@ -384,17 +387,20 @@ The handoff's own `state: draft_pr_open` is a handoff field, not a migration sta
 ## 6. The two-phase lifecycle
 
 One migration is one package PR, one release, one verification and one App PR. Agents prepare and update
-branches and PRs; the maintainer merges, tags, publishes and accepts (D-GOV-9). Package repositories release
-from `main`; App merges to `master` (D-GOV-5).
+branches and PRs. The maintainer or an agent delegated within the assigned scope merges verified work;
+release automation tags and publishes; acceptance remains subject to the recorded gate criteria and assigned
+authority. The standing mandate
+in `AGENTS.md` updates the older human-only merge rule in D-GOV-9 without changing release or verification
+gates. Package repositories release from `main`; App merges to `master` (D-GOV-5).
 
 | # | Step | Where | Who | May write | Must not |
 |---|---|---|---|---|---|
 | 1 | Phase 1 | package repository | agent | package source, tests, docs, manifests, handoff | anything in App |
-| 2 | Human merge | package repository | maintainer | the merge to `main` | — |
+| 2 | Verified merge | package repository | maintainer or delegated agent | the merge to `main` | bypass checks or branch protection |
 | 3 | Release on record | package repository | automation | tag, artifact, registry publication | a hand-made tag |
 | 4 | Verification | outside both trees | fresh session | the attestation file | package or App source |
-| 5 | Phase 2 | `kumwe/app` | agent | dependency, code, tests, records, evidence | `vendor/`, `composer.lock` |
-| 6 | Human merge | `kumwe/app` | maintainer | the merge to `master` | — |
+| 5 | Phase 2 | `kumwe/app` | agent | dependency, code, tests, records, evidence | `vendor/`, hand-edited `composer.lock` |
+| 6 | Verified merge | `kumwe/app` | maintainer or delegated agent | the merge to `master` | bypass checks or branch protection |
 
 Step notes:
 
@@ -404,7 +410,8 @@ Step notes:
    draft PR exists so it can cite the PR URL. It records the App baseline commit, the capability index
    digest it inspected and the exact `next_task` for Phase 2. It does not edit App, predict a tag, or mark
    the change set beyond `package-implemented`.
-2. **Human merge** to the package's protected `main`.
+2. **Verified merge** to the package's protected `main`, by the maintainer or an agent with delegated
+   authority for that package objective. Honor its required checks and release policy.
 3. **Release on record** builds from the merged SHA and publishes the immutable coordinate. Publication
    advances the change set only to `package-released`; it permits no consumption.
 4. **Verification** is a fresh session with no prior context (D-GOV-11). It verifies the public artifact,
@@ -421,8 +428,8 @@ Step notes:
    integration (D-GOV-7); a newer App implementation is never deleted because an older snapshot was
    extracted. Phase 2 never edits `vendor/`, adds an alias or fallback for the old namespace, or claims a
    roadmap objective.
-6. **Human merge** to `master`, rebase-merged. Green merged-target evidence then advances the change set to
-   `core-integrated`, recorded in a follow-up record change.
+6. **Verified merge** to `master`, rebase-merged by the maintainer or delegated agent. Green merged-target
+   evidence then advances the change set to `core-integrated`, recorded in a follow-up record change.
 
 The governance records enter App with the Phase 2 PR; Phase 1 leaves App unchanged. The identifier pair is
 allocated at Phase 1 start against the App `master` directories and cited in the handoff and package PR.
