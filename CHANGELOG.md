@@ -17,6 +17,10 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
+- Upgrade inherited Debian packages in the PHP runtime and development images before building extensions,
+  applying available distribution fixes while retaining the pinned PHP 8.5.10 images and Engine/binding
+  1.0.3 sources. Native compatibility verification and production image security scans remain required (#143).
+
 - Add live package/build badges and current repository entry points. Accept strict package release records
   alongside immutable legacy handoffs in the capability and adoption gates, preserving manifest identity,
   digest binding and Core consumer obligations while removing obsolete package process requirements.
