@@ -11,14 +11,13 @@ use Kumwe\Extension\Spi\Contribution\ContributionOwner;
 use Kumwe\App\Extension\Contribution\ExtensionContributionRegistrySet;
 use Kumwe\Extension\Manifest\ExtensionIdentifier;
 use Kumwe\Extension\Manifest\ManifestContributions;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TranslationGroupDeclaration::class)]
 #[UsesClass(ExtensionContributionRegistrySet::class)]
-#[UsesClass(LocaleTag::class)]
 /**
  * Pins content translation as an extension contract, not a core-content feature.
  *

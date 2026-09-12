@@ -6,7 +6,7 @@ namespace Kumwe\App\BusinessReporting\Application;
 
 use DateTimeImmutable;
 use Kumwe\Context\Value\ExecutionContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\Extension\Spi\BusinessRecord\Application\BusinessRecordQueryPurpose;

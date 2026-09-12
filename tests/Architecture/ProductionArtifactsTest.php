@@ -196,7 +196,7 @@ final class ProductionArtifactsTest extends TestCase
         $security = $this->contents('tests/Support/RestoreSecurityAcceptance.php');
         $work = $this->contents('tests/Support/RestoredWork.php');
 
-        self::assertStringContainsString('SecretCipher::class', $acceptance);
+        self::assertStringContainsString('EnvelopeCipher::class', $acceptance);
         self::assertStringContainsString('$cipher->decrypt(', $acceptance);
         self::assertStringContainsString('SecretAssociatedData::for(', $acceptance);
         self::assertStringContainsString('recovered_plaintext_digest', $acceptance);

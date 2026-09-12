@@ -15,7 +15,7 @@ use Kumwe\App\Content\Domain\ContentStatus;
 use Kumwe\App\Content\Domain\ExpectedVersion;
 use Kumwe\App\Content\Infrastructure\Persistence\DoctrineContentRepository;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\Context\Value\SiteContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

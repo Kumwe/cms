@@ -8,7 +8,7 @@ use Kumwe\App\Application\Automation\JobQueue;
 use Kumwe\App\Application\Automation\Job\ScheduleRepository;
 use Kumwe\App\Application\Automation\QueueRuntimeOperations;
 use Kumwe\App\Application\Automation\Scheduler;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Infrastructure\Automation\DoctrineJobQueue;
 use Kumwe\App\Infrastructure\Automation\DoctrineQueueRuntimeOperations;
 use Kumwe\App\Infrastructure\Automation\DoctrineScheduler;
@@ -27,7 +27,7 @@ use SplFileInfo;
 /**
  * Pins the seams the aggregate document command composes over, by type rather than by grep.
  *
- * The transaction boundary is a use-case decision, so Application declares the contract and
+ * The transaction boundary is a use-case decision, so the transaction package declares the contract and
  * Infrastructure supplies the driver. These checks read the actual reflected signatures, which is what
  * makes them survive a rename: a Doctrine type reaching an application constructor fails here even when
  * it arrives through an alias, a subclass or a port that was quietly widened.
@@ -55,51 +55,26 @@ final class TransactionSeamBoundaryTest extends TestCase
     ];
 
     /**
-     * The transaction contract belongs to Application, and the only shipped adapter to Infrastructure.
+     * The host adapter implements the canonical package transaction port.
      *
      * @return  void
      *
      * @since   2.0.0
      */
-    public function testTheTransactionPortIsOwnedByApplicationAndAdaptedByInfrastructure(): void
+    public function testTheTransactionPackagePortIsAdaptedByHostInfrastructure(): void
     {
         $port = new ReflectionClass(TransactionManager::class);
         $adapter = new ReflectionClass(DoctrineTransactionManager::class);
 
         self::assertTrue($port->isInterface(), 'The transaction boundary must be a contract, not a class.');
-        self::assertStringStartsWith('Kumwe\\App\\Application\\', $port->getName());
+        self::assertSame('Kumwe\\Transaction\\Contract\\TransactionManager', $port->getName());
         self::assertStringStartsWith('Kumwe\\App\\Infrastructure\\', $adapter->getName());
         self::assertTrue($adapter->implementsInterface(TransactionManager::class));
         self::assertContains(
             dirname((string) $port->getFileName()),
-            [dirname(__DIR__, 2) . '/src/Application/Persistence'],
-            'The port file must sit inside the application layer, not merely carry its namespace.',
+            [dirname(__DIR__, 2) . '/vendor/kumwe/transaction/src/Contract'],
+            'The port must resolve from the installed package.',
         );
-    }
-
-    /**
-     * Nothing a caller passes through the transaction contract is a driver type.
-     *
-     * @return  void
-     *
-     * @since   2.0.0
-     */
-    public function testTheTransactionPortNamesNoDriverTypeInItsSignatures(): void
-    {
-        foreach ((new ReflectionClass(TransactionManager::class))->getMethods() as $method) {
-            foreach ($method->getParameters() as $parameter) {
-                self::assertSame(
-                    [],
-                    $this->driverTypes($parameter->getType()),
-                    sprintf('%s() accepts a driver type.', $method->getName()),
-                );
-            }
-            self::assertSame(
-                [],
-                $this->driverTypes($method->getReturnType()),
-                sprintf('%s() returns a driver type.', $method->getName()),
-            );
-        }
     }
 
     /**

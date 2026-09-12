@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessRecord\Infrastructure\Security;
 
 use InvalidArgumentException;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyMaterial;
 use Kumwe\App\BusinessRecord\Domain\SecretKeyPurpose;
-use Kumwe\App\BusinessRecord\Domain\SecretKeyRing;
+use Kumwe\Secret\Value\KeyMaterial;
+use Kumwe\Secret\Value\KeyRing;
 use SensitiveParameter;
 
 /**
@@ -115,24 +115,24 @@ final readonly class ConfiguredSecretKeyRings
      * The legacy key is present in every ring this returns — active when no dedicated material is
      * configured, retired otherwise — which is the whole of the backward-compatibility guarantee.
      *
-     * @return  SecretKeyRing  Active record key plus the legacy key and every configured retired key.
+     * @return  KeyRing  Active record key plus the legacy key and every configured retired key.
      *
      * @throws  InvalidArgumentException  When two configured identifiers collide inside the ring.
      *
      * @since   2.0.0
      */
-    public function records(): SecretKeyRing
+    public function records(): KeyRing
     {
-        $legacy = new SecretKeyMaterial(
+        $legacy = new KeyMaterial(
             self::LEGACY_KEY_ID,
             hash_hmac('sha256', self::LEGACY_LABEL, $this->legacySecret ?? $this->applicationSecret, true),
         );
         if ($this->activeKey === null) {
-            return new SecretKeyRing($legacy, $this->retired());
+            return new KeyRing($legacy, $this->retired());
         }
 
-        return new SecretKeyRing(
-            new SecretKeyMaterial(
+        return new KeyRing(
+            new KeyMaterial(
                 $this->activeKeyId ?? SecretKeyPurpose::Record->defaultKeyId(),
                 $this->derive($this->activeKey),
             ),
@@ -148,13 +148,13 @@ final readonly class ConfiguredSecretKeyRings
      * would keep expired tokens openable for no benefit. Because the ring is separate, a record-key
      * rotation neither invalidates a plan token nor is delayed by one.
      *
-     * @return  SecretKeyRing  Single-key ring for `SecretKeyPurpose::MutationPlan`.
+     * @return  KeyRing  Single-key ring for `SecretKeyPurpose::MutationPlan`.
      *
      * @since   2.0.0
      */
-    public function mutationPlans(): SecretKeyRing
+    public function mutationPlans(): KeyRing
     {
-        return new SecretKeyRing(new SecretKeyMaterial(
+        return new KeyRing(new KeyMaterial(
             SecretKeyPurpose::MutationPlan->defaultKeyId(),
             hash_hkdf(
                 'sha256',
@@ -168,7 +168,7 @@ final readonly class ConfiguredSecretKeyRings
     /**
      * Derive the retired dedicated record keys, in configuration order.
      *
-     * @return  list<SecretKeyMaterial>  Retired keys; empty when the deployment configures none.
+     * @return  list<KeyMaterial>  Retired keys; empty when the deployment configures none.
      *
      * @throws  InvalidArgumentException  When a retired identifier is malformed.
      *
@@ -178,7 +178,7 @@ final readonly class ConfiguredSecretKeyRings
     {
         $keys = [];
         foreach ($this->previousKeys as $keyId => $key) {
-            $keys[] = new SecretKeyMaterial($keyId, $this->derive($key));
+            $keys[] = new KeyMaterial($keyId, $this->derive($key));
         }
 
         return $keys;

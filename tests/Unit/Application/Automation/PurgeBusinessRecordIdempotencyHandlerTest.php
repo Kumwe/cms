@@ -11,7 +11,7 @@ use Kumwe\App\Application\Authorization\AuthorizationDenied;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemIdentity;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordIdempotencyPurger;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordIdempotencyRepository;
 use Kumwe\App\BusinessRecord\Domain\BusinessRecordIdempotency;
@@ -145,23 +145,6 @@ final class CountingBusinessRecordIdempotencyRepository implements BusinessRecor
         $this->limits[] = $limit;
 
         return $this->results[$this->calls++] ?? 0;
-    }
-}
-
-final class ImmediateTransactionManager implements TransactionManager
-{
-    public function transactional(callable $operation): mixed
-    {
-        return $operation();
-    }
-
-    public function afterCommit(callable $operation): void
-    {
-        $operation();
-    }
-
-    public function afterRollback(callable $operation): void
-    {
     }
 }
 

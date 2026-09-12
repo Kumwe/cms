@@ -50,8 +50,11 @@ final class ComposerLockTest extends TestCase
                 'kumwe/computation',
                 'kumwe/conversion',
                 'kumwe/extension-sdk',
+                'kumwe/localization',
                 'kumwe/producer',
+                'kumwe/secret-envelope',
                 'kumwe/sequence',
+                'kumwe/transaction',
             ],
             array_keys($lock->packages()),
         );

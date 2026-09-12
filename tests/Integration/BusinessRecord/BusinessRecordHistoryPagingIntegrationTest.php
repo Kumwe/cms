@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Integration\BusinessRecord;
 
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordDefinitionResolver;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordRevisionCursor;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordRevisionRepository;

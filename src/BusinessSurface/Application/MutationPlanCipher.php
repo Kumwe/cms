@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Kumwe\App\BusinessSurface\Application;
 
-use Kumwe\App\BusinessRecord\Application\SecretCipher;
+use Kumwe\Secret\Contract\EnvelopeCipher;
 
 /**
  * The cipher mutation-plan tokens are sealed with, deliberately not the one record secrets use.
  *
  * Plan tokens and record secrets need the same primitive and nothing else in common. A token is opaque,
  * handed to a browser, and dead within five minutes; a record secret is written once and expected to open
- * years later. While both went through one shared `SecretCipher` instance they also shared a key and a key
+ * years later. While both went through one shared `EnvelopeCipher` instance they also shared a key and a key
  * identifier, which meant a record-key rotation would have re-keyed live plan tokens and a move to a
  * managed KMS would have dragged plan tokens into it.
  *
@@ -22,6 +22,6 @@ use Kumwe\App\BusinessRecord\Application\SecretCipher;
  *
  * @since  2.0.0
  */
-interface MutationPlanCipher extends SecretCipher
+interface MutationPlanCipher extends EnvelopeCipher
 {
 }

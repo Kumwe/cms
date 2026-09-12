@@ -10,6 +10,7 @@ use Kumwe\Conversion\Decimal\ExactDecimal;
 use Kumwe\Conversion\Value\MoneyValue;
 use Kumwe\Conversion\Value\QuantityValue;
 use Kumwe\Extension\Spi\BusinessRecord\Value\ZonedDateTimeValue;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 
 /**
  * Gatekeeper for what may appear inside a business-record value, and how it is spelled for storage.

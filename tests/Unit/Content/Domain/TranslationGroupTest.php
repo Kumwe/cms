@@ -13,7 +13,7 @@ use Kumwe\App\Content\Domain\InvalidTranslationGroup;
 use Kumwe\App\Content\Domain\PublicationWindow;
 use Kumwe\App\Content\Domain\TranslationGroup;
 use Kumwe\App\Content\Domain\TranslationGroupMember;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +23,6 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(InvalidTranslationGroup::class)]
 #[CoversClass(ContentEntry::class)]
 #[UsesClass(ExpectedVersion::class)]
-#[UsesClass(LocaleTag::class)]
 #[UsesClass(PublicationWindow::class)]
 /**
  * Pins the content half of decision D12: one item, one entry per locale, published one locale at a time.

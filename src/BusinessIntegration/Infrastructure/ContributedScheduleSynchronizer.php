@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Kumwe\App\Automation\Domain\CronExpression;
 use Kumwe\App\Application\Automation\JobExecutionClass;
 use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\CanonicalDefinitionJson;
 use Kumwe\App\BusinessIntegration\Application\PayloadSchemaValidator;
 use Kumwe\App\BusinessIntegration\Application\ScheduleRuntimeSynchronizer;

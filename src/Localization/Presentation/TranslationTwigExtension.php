@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Kumwe\App\Localization\Presentation;
 
 use DateTimeInterface;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\Translator;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -66,7 +66,7 @@ final class TranslationTwigExtension extends AbstractExtension
      *
      * @return  string  The formatted message, or the identifier when no catalogue carries it.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidMessageIdentifier  When the template used source
+     * @throws  \Kumwe\Localization\Domain\InvalidMessageIdentifier  When the template used source
      *          text, or an otherwise malformed identifier, as the lookup key.
      *
      * @since   2.0.0
@@ -94,7 +94,7 @@ final class TranslationTwigExtension extends AbstractExtension
      *
      * @return  string  The formatted message, safe to emit as HTML.
      *
-     * @throws  \Kumwe\App\Localization\Domain\InvalidMessageIdentifier  When the template used source
+     * @throws  \Kumwe\Localization\Domain\InvalidMessageIdentifier  When the template used source
      *          text, or an otherwise malformed identifier, as the lookup key.
      *
      * @since   2.0.0

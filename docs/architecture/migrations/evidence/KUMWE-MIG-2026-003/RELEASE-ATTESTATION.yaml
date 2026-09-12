@@ -1,0 +1,51 @@
+schema: "kumwe-release-attestation/v2"
+artifact_kind: "framework_php"
+migration_id: "KUMWE-MIG-2026-003"
+change_set: "KUMWE-CS-2026-003"
+repository: "https://github.com/kumwe/secret-envelope"
+merge_commit: "3bf2d66d4090da697bf148c9eb866a9839f1af45"
+version: "0.1.1"
+tag: "v0.1.1"
+source_archive:
+  url: "https://api.github.com/repos/kumwe/secret-envelope/zipball/3bf2d66d4090da697bf148c9eb866a9839f1af45"
+  sha256: "37539b5263f8af299d87c731f43db1cafb8df9320478e292fe4f06f767afcea7"
+artifacts:
+  -
+    identity: "kumwe/secret-envelope:0.1.1"
+    url: "https://api.github.com/repos/kumwe/secret-envelope/zipball/3bf2d66d4090da697bf148c9eb866a9839f1af45"
+    sha256: "37539b5263f8af299d87c731f43db1cafb8df9320478e292fe4f06f767afcea7"
+manifests_and_corpora:
+  -
+    path: "MIGRATION-HANDOFF.md"
+    sha256: "d959b1464dddace1889b18230cfaf09b18d5a9e2ec81440fe9763dc1f81694cb"
+  -
+    path: "resources/capabilities/v1.json"
+    sha256: "fb927883d0cfaef771eb02b83fe771b1344349ad2ae5737ec2cdc327f2e8f38e"
+  -
+    path: "resources/corpus/v1/envelopes.json"
+    sha256: "865deefd162de7557ad5dbb3c95b40ae54bcb64a3b139112f0364d417e4d7260"
+  -
+    path: "resources/public-api/v1.json"
+    sha256: "21bed5fdd15b8e205f3881df1e41bd13df5b969ea13307ef645112b6fd56dd65"
+  -
+    path: "resources/service-map/v1.json"
+    sha256: "742e7619b6fd94dbea2595794b9d81cf5e270030ad732b6affa96d3e11a8e2bf"
+abi_and_capabilities: null
+sbom:
+  url: "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068521111#source.spdx.json"
+  sha256: "f881c3cf788445088531029646356a173855e0a57617447e87b8e648dcec9d92"
+provenance: "Independent verification, not publisher build provenance: https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068521111#verification-provenance.json; sha256=4add0335cd47edf4ac7e8c950aa0e38e9ea97b04511f847bcb5d33188cfba3a8"
+release_workflow: "https://github.com/kumwe/secret-envelope/actions/runs/34155210827; success at source 3bf2d66d4090da697bf148c9eb866a9839f1af45"
+registry_or_pie_verification:
+  - "https://repo.packagist.org/p2/kumwe/secret-envelope.json; source/dist=3bf2d66d4090da697bf148c9eb866a9839f1af45; evidence=https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068521111#github-evidence.json"
+  - "Independent refresh on 2026-09-10 using GitHub authenticated API: release 384280086 is published, stable and not a draft; v0.1.1 tag resolves to 3bf2d66d4090da697bf148c9eb866a9839f1af45. Exact-source release workflow and all four jobs report success. GitHub immutable=false is an observed optional platform setting, not a failure under the released package-release-standard.md."
+  - "Fresh no-dev consumer Composer lock selects kumwe/secret-envelope v0.1.1 from the Packagist registry cache, with source and dist reference 3bf2d66d4090da697bf148c9eb866a9839f1af45. Cached Composer dist SHA-256 37539b5263f8af299d87c731f43db1cafb8df9320478e292fe4f06f767afcea7 equals the independently published source.zip evidence from extension-sdk run34257007329. No path repository, package override or source fallback was used."
+  - "Tag checkout git export and freshly installed Composer archive match all 46 file paths and bytes. All three canonical manifests and complete released handoff pass the current App SchemaValidator; migration and change-set identifiers match this attestation."
+clean_consumer_or_build_verification:
+  - "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068521111#consumer-verification.json; sha256=861fa938fa3a7c7d1a89deb64aff651df7f077cf778c782e81dc3d5e873d718e; no-dev=true; classmap-authoritative=true; fresh-offline-reinstall=true; runtime-types=22"
+  - "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068521111#canonical-schema-verification.json; all three canonical manifests and complete handoff schema passed"
+  - "https://github.com/kumwe/extension-sdk/actions/runs/34257007329/artifacts/10068521111#archive-inventory-verification.json; complete git export path/byte inventory matched; canonical API exports=22"
+  - "Independent consumer refresh: native PHP8.5.10 and Composer2.10.3; new standalone consumer requires this exact version only. COMPOSER_DISABLE_NETWORK=1 composer install --no-dev --prefer-dist --no-plugins --no-scripts --classmap-authoritative --no-interaction --no-progress succeeded using the verified registry/dist cache. packages-dev is empty. No PHP platform override or ignored platform requirement was used. composer check-platform-reqs --no-dev, the installed public API autoload smoke and shipped example all passed. Supporting files in this directory record registry identity, archive inventory, schemas and the actual command outputs."
+verified_at: "2026-09-10T12:04:23Z"
+verified_by: "Independent adoption review session /root/foundation_group/review_foundations; prior independent extension-sdk verification retained and current publication, archive and clean-consumer facts rechecked"
+status: "verified"

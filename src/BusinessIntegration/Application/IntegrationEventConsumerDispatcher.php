@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessIntegration\Application;
 use InvalidArgumentException;
 use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;
 use Kumwe\App\Application\Automation\RetryPolicy;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Extension\Runtime\ExtensionExecutionContext;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\BusinessIntegration\Application\IntegrationEventHandler;

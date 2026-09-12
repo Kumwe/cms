@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\Context\Value\ExecutionContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\FieldTypeDefinitionResolver;
 use Kumwe\App\BusinessDefinition\Domain\ActionDefinition;
 use Kumwe\App\BusinessDefinition\Domain\DocumentViewDefinition;
@@ -32,8 +32,8 @@ use Kumwe\App\BusinessSecurity\Policy\RecordPolicyConstant;
 use Kumwe\App\BusinessSurface\Application\Custom\CustomBusinessSurfaceDispatcher;
 use Kumwe\App\Extension\Runtime\RuntimeMaterializationState;
 use Kumwe\Extension\Spi\Identity\Domain\Capability;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\SupportedLocales;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -843,12 +843,12 @@ final readonly class BusinessSurfaceCatalog implements BusinessApprovalExposureC
     /**
      * Return the locale user-facing definition text is projected in.
      *
-     * @return  string|\Kumwe\App\Localization\Domain\LocaleTag  Active locale, or the source tag when this
+     * @return  string|\Kumwe\Localization\Domain\LocaleTag  Active locale, or the source tag when this
      *          catalog is used outside a locale unit of work.
      *
      * @since   2.0.0
      */
-    private function locale(): string|\Kumwe\App\Localization\Domain\LocaleTag
+    private function locale(): string|\Kumwe\Localization\Domain\LocaleTag
     {
         return $this->active?->locale() ?? SupportedLocales::SOURCE;
     }

@@ -11,21 +11,19 @@ use Kumwe\App\Kernel\Container;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
-use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\BusinessRecordService;
+use Kumwe\App\BusinessRecord\Application\Command\CreateRecordCommand;
 use Kumwe\App\BusinessRecord\Application\RecordSecretRotation;
 use Kumwe\App\BusinessRecord\Application\SecretAssociatedData;
-use Kumwe\App\BusinessRecord\Application\SecretCipher;
-use Kumwe\App\BusinessRecord\Application\SecretKeyProvider;
-use Kumwe\App\BusinessRecord\Domain\EncryptedEnvelope;
 use Kumwe\App\BusinessRecord\Infrastructure\Persistence\DoctrineRecordSecretRotation;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretCipher;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\KeyRingSecretKeyProvider;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaInstallationRepository;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use Kumwe\App\Tests\Support\TestKernelFactory;
+use Kumwe\Secret\Contract\EnvelopeCipher;
+use Kumwe\Secret\Contract\KeyProvider;
+use Kumwe\Secret\Value\EncryptedEnvelope;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -37,8 +35,6 @@ use RuntimeException;
  * @since  2.0.0
  */
 #[CoversClass(DoctrineRecordSecretRotation::class)]
-#[CoversClass(KeyRingSecretCipher::class)]
-#[CoversClass(KeyRingSecretKeyProvider::class)]
 final class RecordSecretRotationIntegrationTest extends TestCase
 {
     /**
@@ -180,8 +176,8 @@ final class RecordSecretRotationIntegrationTest extends TestCase
 
         $rotated = $this->rotatedContainer();
         $rotatedContext = $this->rotationContext($rotated);
-        $provider = $rotated->get(SecretKeyProvider::class);
-        self::assertInstanceOf(SecretKeyProvider::class, $provider);
+        $provider = $rotated->get(KeyProvider::class);
+        self::assertInstanceOf(KeyProvider::class, $provider);
         self::assertSame(self::ROTATED_KEY_ID, $provider->activeKeyId());
         self::assertContains('application-secret-v1', $provider->knownKeyIds());
         self::assertSame(
@@ -519,8 +515,8 @@ final class RecordSecretRotationIntegrationTest extends TestCase
         EntityTypeDefinition $definition,
         string $recordKey,
     ): string {
-        $cipher = $container->get(SecretCipher::class);
-        if (!$cipher instanceof SecretCipher) {
+        $cipher = $container->get(EnvelopeCipher::class);
+        if (!$cipher instanceof EnvelopeCipher) {
             throw new RuntimeException('The record secret cipher is unavailable.');
         }
 

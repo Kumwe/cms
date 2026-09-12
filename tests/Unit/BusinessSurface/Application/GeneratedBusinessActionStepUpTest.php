@@ -9,7 +9,7 @@ use Kumwe\App\BusinessSurface\Application\GeneratedBusinessStepUpInputRejected;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Identity\Application\StepUp\AuthorizationStepUpProofAdapter;
 use Kumwe\App\Tests\Support\GeneratedActionCapturingStepUpProvider;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\Context\Value\ExecutionContext;

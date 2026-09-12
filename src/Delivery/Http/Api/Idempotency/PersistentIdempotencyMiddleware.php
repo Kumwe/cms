@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use JsonException;
 use Kumwe\App\Application\Authorization\ExecutionContextAttribute;
 use Kumwe\App\Application\Idempotency\IdempotencyLedger;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Delivery\Http\Api\ProblemDetailsResponseFactory;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\Context\Value\ExecutionContext;

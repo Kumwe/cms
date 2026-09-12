@@ -13,7 +13,7 @@ use Doctrine\DBAL\Types\Types;
 use InvalidArgumentException;
 use JsonException;
 use Kumwe\App\Application\Automation\FailureClassification;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\ProcessManagerStore;
 use Kumwe\App\BusinessIntegration\Application\ProcessWorkLease;
 use Kumwe\App\BusinessIntegration\Domain\ProcessInstance;

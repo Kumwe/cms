@@ -15,7 +15,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Automation\FailureClassification;
 use Kumwe\App\Application\Automation\QueueRuntimePolicy;
 use Kumwe\App\Application\Automation\QueueRuntimePolicyCatalog;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\EventContractRegistry;
 use Kumwe\App\BusinessIntegration\Application\InboxClaimResult;
 use Kumwe\App\BusinessIntegration\Application\InboxDisposition;

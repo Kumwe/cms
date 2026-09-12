@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Authoring;
 
-use Kumwe\App\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Site\Application\SiteSettings;
 use Kumwe\App\Studio\Application\Composition\StudioPublishedTheme;
 use Kumwe\App\Studio\Application\Host\StudioHostAccessRefused;
@@ -12,7 +13,6 @@ use Kumwe\App\Studio\Application\Host\StudioHostSessionAuthority;
 use Kumwe\App\Studio\Domain\Authoring\StudioAuthoringIntent;
 use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Host\StudioSessionMode;
-use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Producer\Deployment\DeploymentException;
 use Kumwe\Producer\Deployment\StudioBrowserAssetLocator;
 use Kumwe\Producer\Deployment\StudioDeploymentEmitter;

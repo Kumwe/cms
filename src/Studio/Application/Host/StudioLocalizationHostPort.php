@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Host;
 
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\MessageCatalogueRepository;
-use Kumwe\App\Localization\Application\MessageOverrideRepository;
-use Kumwe\App\Localization\Application\SupportedLocales;
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
-use Kumwe\App\Localization\Domain\MessageCatalogue;
-use Kumwe\App\Localization\Domain\MessageCatalogueChain;
-use Kumwe\App\Localization\Domain\MessageCatalogueLayer;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\MessageCatalogueRepository;
+use Kumwe\Localization\Application\MessageOverrideRepository;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\MessageCatalogue;
+use Kumwe\Localization\Domain\MessageCatalogueChain;
+use Kumwe\Localization\Domain\MessageCatalogueLayer;
 use Kumwe\Producer\Wire\HostResult;
 use Kumwe\Producer\Wire\Port\LocalizationPortInterface;
 use Kumwe\Producer\Wire\RequestContext;

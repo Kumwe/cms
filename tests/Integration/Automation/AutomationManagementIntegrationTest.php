@@ -24,7 +24,7 @@ use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnership;
 use Kumwe\App\Application\Authorization\ResourceSiteOwnershipWriter;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Tests\Support\TestKernelFactory;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;

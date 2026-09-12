@@ -30,7 +30,7 @@ use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringTargetResolver;
 use Kumwe\App\Studio\Application\Host\StudioResourceContextKeyFactory;
 use Kumwe\App\Studio\Domain\Authoring\StudioAuthoringIntent;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
 use Kumwe\Context\Value\AuthenticatedSurface;
 use Kumwe\Context\Value\AuthenticationStrength;

@@ -1,0 +1,11 @@
+Composer could not detect the root package (consumer/verify-transaction) version, defaulting to '1.0.0'. See https://getcomposer.org/root-version
+No composer.lock file present. Updating dependencies to latest instead of installing from lock file. See https://getcomposer.org/install for more information.
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 1 install, 0 updates, 0 removals
+  - Locking kumwe/transaction (v0.1.2)
+Writing lock file
+Installing dependencies from lock file
+Package operations: 1 install, 0 updates, 0 removals
+  - Installing kumwe/transaction (v0.1.2): Extracting archive
+Generating optimized autoload files

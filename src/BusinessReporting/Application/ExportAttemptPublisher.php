@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\BusinessReporting\Application;
 
 use DateTimeImmutable;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessReporting\Domain\ExportArtifact;
 use Kumwe\App\BusinessReporting\Domain\ExportArtifactStatus;
 use Throwable;

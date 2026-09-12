@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Localization\Application;
 
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Application\DefaultLocaleProvider;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Site\Application\SiteSettings;
 use Throwable;
 
@@ -28,7 +30,7 @@ use Throwable;
  *
  * @since  2.0.0
  */
-final class SiteDefaultLocale
+final class SiteDefaultLocale implements DefaultLocaleProvider
 {
     /**
      * The resolved default, or null until the first read.

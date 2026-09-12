@@ -1,0 +1,12 @@
+{
+  "source": "56c8eb14a70bd3f1ed7eaeae7196a07d6627bf03",
+  "git_export_files": 23,
+  "installed_files": 23,
+  "full_path_and_byte_inventory_equal": true,
+  "manifest_sha256": {
+    "MIGRATION-HANDOFF.md": "32dce75a78252d88cb297d3f57b3620577b63f012c3d3962697bc4964c8e9a1f",
+    "resources/capabilities/v1.json": "4e3fc6c4f014183eafad06b39e5c34a10c5e889c305ae09836f813d67cf5795c",
+    "resources/public-api/v1.json": "f9589717354cc969ecb87e18d27c3e7f9e501f551bce80cadb698c3989cf2b75",
+    "resources/service-map/v1.json": "ec72f2fbda46e326380795664c62c4d7cf38ec557c7e2a9bac40a905ee62d5f5"
+  }
+}

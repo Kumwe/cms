@@ -21,6 +21,8 @@ use Psr\Container\ContainerInterface;
  * materialized entry throws, which is how the ServiceManager expresses the protected registrations the
  * composition root has always demanded.
  *
+ * @phpstan-import-type FactoryCallable from ServiceManager
+ *
  * @since  2.0.0
  */
 final class Container implements ContainerInterface
@@ -41,6 +43,22 @@ final class Container implements ContainerInterface
     public function __construct()
     {
         $this->services = new ServiceManager([], $this);
+    }
+
+    /**
+     * Apply an explicitly selected package provider's service definitions to the host container.
+     *
+     * @param   array{factories: array<class-string, class-string<object&FactoryCallable>>,
+     *          aliases: array<class-string, class-string>,
+     *          shared: array<class-string, bool>}  $dependencies  Canonical factory, alias and lifetime bindings.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function configure(array $dependencies): void
+    {
+        $this->services->configure($dependencies);
     }
 
     /**

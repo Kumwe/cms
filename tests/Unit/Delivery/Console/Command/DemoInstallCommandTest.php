@@ -8,7 +8,7 @@ use Kumwe\App\Tests\Support\TranslatesConsoleOutput;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Application\Security\HighImpactCredentialGuard;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\BusinessSecurity\Application\Administration\BusinessSecurityAdministrationRepository;

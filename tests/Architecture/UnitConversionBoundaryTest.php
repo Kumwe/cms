@@ -19,7 +19,8 @@ use Kumwe\Conversion\Value\QuantityValue;
 use Kumwe\App\BusinessRecord\Domain\RecordValueGuard;
 use Kumwe\Conversion\Value\UnitConversionFactor;
 use Kumwe\Conversion\Contract\UnitConversionRequest;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\KeyMaterial;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
@@ -78,10 +79,10 @@ final class UnitConversionBoundaryTest extends TestCase
     public function testNoWritePathAcceptsAConvertedQuantityWhereStoredQuantityIsExpected(): void
     {
         $converted = self::converted();
-        $codec = new RecordValueCodec(new SodiumSecretCipher(
+        $codec = new RecordValueCodec(new SodiumEnvelopeCipher(new KeyMaterial(
             'unit-key-v1',
             str_repeat("\x5a", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        ));
+        )));
 
         try {
             RecordValueGuard::assertValue($converted);

@@ -6,7 +6,8 @@ namespace Kumwe\App\Studio\Application\Media;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\Media\Application\MediaAsset;
@@ -17,7 +18,6 @@ use Kumwe\App\Studio\Domain\Media\StudioMediaUploadPolicy;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadRequest;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadSession;
 use Kumwe\App\Studio\Domain\Media\StudioMediaUploadState;
-use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Message\StreamInterface;
 use Ramsey\Uuid\Uuid;

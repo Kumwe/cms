@@ -15,8 +15,8 @@ use Kumwe\App\Content\Domain\PublicationWindow;
 use Kumwe\App\Content\Domain\TranslationGroup;
 use Kumwe\App\Content\Domain\TranslationGroupMember;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
-use Kumwe\App\Localization\Domain\InvalidLocaleTag;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\InvalidLocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\Context\Value\SiteContext;
 use RuntimeException;
 

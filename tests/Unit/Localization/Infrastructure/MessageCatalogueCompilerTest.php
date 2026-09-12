@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Tests\Unit\Localization\Infrastructure;
 
-use Kumwe\App\Localization\Application\MessageFormattingFailed;
-use Kumwe\App\Localization\Application\MessagePatternValidator;
-use Kumwe\App\Localization\Domain\LocaleTag;
-use Kumwe\App\Localization\Domain\MessageCatalogueLayer;
+use Kumwe\Localization\Application\MessageFormattingFailed;
+use Kumwe\Localization\Application\MessagePatternValidator;
+use Kumwe\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\MessageCatalogueLayer;
 use Kumwe\App\Localization\Infrastructure\CompiledMessageCatalogueRepository;
 use Kumwe\App\Localization\Infrastructure\MessageCatalogueCompiler;
 use Kumwe\App\Localization\Infrastructure\XliffCatalogue;

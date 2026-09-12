@@ -1,0 +1,39 @@
+{
+  "require": {
+    "kumwe/localization": "0.1.1"
+  },
+  "source": {
+    "type": "git",
+    "url": "https://github.com/kumwe/localization.git",
+    "reference": "8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb"
+  },
+  "dist": {
+    "type": "zip",
+    "url": "https://api.github.com/repos/kumwe/localization/zipball/8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb",
+    "reference": "8571ab575b9b9f2dc1b8a25b3c902d9cf44093cb",
+    "shasum": ""
+  },
+  "packages": [
+    {
+      "name": "kumwe/localization",
+      "version": "v0.1.1"
+    },
+    {
+      "name": "psr/container",
+      "version": "2.0.2"
+    }
+  ],
+  "packages-dev": [],
+  "classmap_authoritative": true,
+  "platform_override": null,
+  "network": "verified Composer registry and dist cache",
+  "install_flags": [
+    "--no-dev",
+    "--prefer-dist",
+    "--no-plugins",
+    "--no-scripts",
+    "--classmap-authoritative",
+    "--no-interaction",
+    "--no-progress"
+  ]
+}

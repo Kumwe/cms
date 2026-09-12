@@ -6,6 +6,7 @@ namespace Kumwe\App\BusinessRecord\Application;
 
 use InvalidArgumentException;
 use Kumwe\Context\Value\ExecutionContext;
+use Kumwe\Secret\Exception\KeyUnavailable;
 
 /**
  * Port that moves stored record secrets onto the active key, one bounded pass at a time.
@@ -50,7 +51,7 @@ interface RecordSecretRotation
      * @throws  InvalidArgumentException  When the batch size falls outside its range.
      * @throws  \Kumwe\App\Application\Authorization\AuthorizationDenied  When the actor may not re-key
      *          business-record secrets on this site.
-     * @throws  \Kumwe\App\BusinessRecord\Domain\SecretKeyUnavailable  When a stored envelope names a key
+     * @throws  KeyUnavailable  When a stored envelope names a key
      *          this deployment does not hold; the pass stops rather than skipping the row, because a row
      *          it cannot open is a row it would otherwise spin on forever.
      * @throws  \RuntimeException  When a stored envelope fails authentication, which is a data-integrity

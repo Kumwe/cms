@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\BusinessSchema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionService;
 use Kumwe\App\BusinessDefinition\Application\PackageDefinitionSynchronizer;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;

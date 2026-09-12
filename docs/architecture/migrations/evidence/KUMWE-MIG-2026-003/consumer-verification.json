@@ -1,0 +1,39 @@
+{
+  "require": {
+    "kumwe/secret-envelope": "0.1.1"
+  },
+  "source": {
+    "type": "git",
+    "url": "https://github.com/kumwe/secret-envelope.git",
+    "reference": "3bf2d66d4090da697bf148c9eb866a9839f1af45"
+  },
+  "dist": {
+    "type": "zip",
+    "url": "https://api.github.com/repos/kumwe/secret-envelope/zipball/3bf2d66d4090da697bf148c9eb866a9839f1af45",
+    "reference": "3bf2d66d4090da697bf148c9eb866a9839f1af45",
+    "shasum": ""
+  },
+  "packages": [
+    {
+      "name": "kumwe/secret-envelope",
+      "version": "v0.1.1"
+    },
+    {
+      "name": "psr/container",
+      "version": "2.0.2"
+    }
+  ],
+  "packages-dev": [],
+  "classmap_authoritative": true,
+  "platform_override": null,
+  "network": "verified Composer registry and dist cache",
+  "install_flags": [
+    "--no-dev",
+    "--prefer-dist",
+    "--no-plugins",
+    "--no-scripts",
+    "--classmap-authoritative",
+    "--no-interaction",
+    "--no-progress"
+  ]
+}

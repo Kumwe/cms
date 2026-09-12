@@ -17,10 +17,10 @@ use Kumwe\App\Content\Domain\PublicationWindow;
 use Kumwe\App\Content\Domain\TranslationGroup;
 use Kumwe\App\Content\Domain\TranslationGroupMember;
 use Kumwe\App\Content\Presentation\TranslationGroupPresenter;
-use Kumwe\App\Application\Persistence\TransactionManager;
-use Kumwe\App\Localization\Application\ActiveLocale;
-use Kumwe\App\Localization\Application\SupportedLocales;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\SupportedLocales;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Navigation\Application\NavigationRepository;
 use Kumwe\App\Navigation\Application\PublicNavigation;
 use Kumwe\App\Site\Application\PublicPageLocator;
@@ -36,7 +36,6 @@ use Psr\Clock\ClockInterface;
 #[UsesClass(ContentEntry::class)]
 #[UsesClass(ContentRecord::class)]
 #[UsesClass(ContentService::class)]
-#[UsesClass(LocaleTag::class)]
 #[UsesClass(PublicNavigation::class)]
 #[UsesClass(PublicPageLocator::class)]
 #[UsesClass(TranslationGroup::class)]

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Administrator\Presentation;
 
 use InvalidArgumentException;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Presentation\Application\SitePresentation;
 
 /**

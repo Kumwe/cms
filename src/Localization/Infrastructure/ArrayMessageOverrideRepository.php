@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Localization\Infrastructure;
 
-use Kumwe\App\Localization\Application\MessageOverrideRepository;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Application\MessageOverrideRepository;
+use Kumwe\Localization\Domain\LocaleTag;
 
 /**
  * Serves the administered override layers from a map held in memory.

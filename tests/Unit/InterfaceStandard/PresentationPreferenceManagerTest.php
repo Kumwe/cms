@@ -33,7 +33,7 @@ use Kumwe\App\InterfaceStandard\SurfaceId;
 use Kumwe\App\Presentation\Application\Preference\PresentationPreferenceContext;
 use Kumwe\App\Presentation\Application\Preference\PresentationPreferenceResolver;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Tests\Support\InMemoryPresentationAccessGroupRepository;
 use Kumwe\App\Tests\Support\InMemoryPresentationPreferenceRepository;
 use PHPUnit\Framework\Attributes\CoversClass;

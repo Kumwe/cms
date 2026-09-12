@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Kumwe\App\Studio\Application\Host;
 
-use Kumwe\App\Application\Persistence\TransactionManager;
-use Kumwe\App\Application\Persistence\TransactionState;
+use Kumwe\Transaction\Contract\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionState;
+use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Studio\Application\Media\StudioMediaHostPort;
 use Kumwe\App\Studio\Application\Media\StudioMediaOperations;
 use Kumwe\App\Studio\Application\Preview\StudioPreviewHostPort;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewTransport;
-use Kumwe\Context\Value\ExecutionContext;
 use Psr\Clock\ClockInterface;
 
 /**

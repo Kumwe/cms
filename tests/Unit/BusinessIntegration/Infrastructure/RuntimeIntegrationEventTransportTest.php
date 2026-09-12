@@ -10,7 +10,7 @@ use Kumwe\App\Application\Authorization\SystemPrincipal;
 use Kumwe\App\Application\Automation\JitterSource;
 use Kumwe\App\Application\Automation\PermanentFailure;
 use Kumwe\App\Application\Automation\RetryPolicy;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessIntegration\Application\DurableOutboundAdapterDispatcher;
 use Kumwe\App\BusinessIntegration\Application\EventContractRegistry;
 use Kumwe\App\BusinessIntegration\Application\InboxClaimResult;

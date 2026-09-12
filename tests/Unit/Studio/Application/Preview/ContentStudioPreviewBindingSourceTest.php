@@ -25,7 +25,7 @@ use Kumwe\App\Studio\Domain\Host\StudioResourceKind;
 use Kumwe\App\Studio\Domain\Host\StudioSessionMode;
 use Kumwe\App\Studio\Domain\Preview\StudioPreviewDraft;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;

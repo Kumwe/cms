@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Kumwe\App\Application\Authorization\AuthorizationGateway;
 use Kumwe\App\Application\Authorization\AuthorizationResource;
 use Kumwe\Context\Value\ExecutionContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Audit\Application\AuditArchiveStorage;
 use Kumwe\App\Audit\Application\AuditMetadataRedactor;
 use Kumwe\App\Audit\Application\AuditRecorder;

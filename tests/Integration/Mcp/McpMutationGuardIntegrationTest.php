@@ -7,7 +7,7 @@ namespace Kumwe\App\Tests\Integration\Mcp;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Infrastructure\Mcp\McpMutationGuard;
 use Kumwe\App\Infrastructure\Persistence\TableNames;
 use Kumwe\App\Shared\Infrastructure\Configuration\Environment;

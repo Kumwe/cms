@@ -12,7 +12,7 @@ use Kumwe\App\Identity\Domain\StepUp\RotatedStepUpSession;
 use Kumwe\App\Identity\Domain\StepUp\StepUpIntent;
 use Kumwe\App\Portal\Application\PortalSession;
 use Kumwe\App\Portal\Http\Middleware\PortalSessionMiddleware;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\Portal\Http\PortalRequest;
 use Kumwe\App\Portal\Presentation\PortalRenderer;
 use Laminas\Diactoros\Response\HtmlResponse;

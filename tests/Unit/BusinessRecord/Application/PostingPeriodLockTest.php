@@ -15,9 +15,10 @@ use Kumwe\App\BusinessRecord\Domain\BusinessRecord;
 use Kumwe\App\BusinessRecord\Domain\PostingPeriod;
 use Kumwe\App\BusinessRecord\Domain\PostingPeriodStatus;
 use Kumwe\App\BusinessRecord\Domain\RecordScope;
-use Kumwe\App\BusinessRecord\Infrastructure\Security\SodiumSecretCipher;
 use Kumwe\App\Tests\Support\NeutralBusinessFixture;
 use Kumwe\Context\Value\SiteContext;
+use Kumwe\Secret\Cipher\SodiumEnvelopeCipher;
+use Kumwe\Secret\Value\KeyMaterial;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -447,9 +448,9 @@ final class PostingPeriodLockTest extends TestCase
      */
     private function codec(): RecordValueCodec
     {
-        return new RecordValueCodec(new SodiumSecretCipher(
+        return new RecordValueCodec(new SodiumEnvelopeCipher(new KeyMaterial(
             'unit-key-v1',
             str_repeat("\x5a", SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES),
-        ));
+        )));
     }
 }

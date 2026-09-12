@@ -22,9 +22,9 @@ use Kumwe\Extension\Spi\Contribution\ContributionOwner;
 use Kumwe\App\Extension\Contribution\OwnedRuntimeContributionRegistry;
 use Kumwe\App\Extension\Contribution\TranslationGroupDeclaration;
 use Kumwe\Extension\Spi\Contribution\TranslationSetItemAssociation;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
 use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -38,7 +38,6 @@ use Psr\Clock\ClockInterface;
 #[UsesClass(ContentRecord::class)]
 #[UsesClass(ContentRevision::class)]
 #[UsesClass(AuditEvent::class)]
-#[UsesClass(LocaleTag::class)]
 #[UsesClass(Workflow::class)]
 #[UsesClass(OwnedRuntimeContributionRegistry::class)]
 #[UsesClass(TranslationGroupDeclaration::class)]

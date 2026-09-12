@@ -37,7 +37,7 @@ use Kumwe\App\Presentation\Twig\AdministratorTwigEnvironment;
 use Kumwe\App\Presentation\Twig\RecoveryAdministratorTwigEnvironment;
 use Kumwe\App\Tests\Support\AuthorizationContext;
 use Kumwe\App\Tests\Support\DashboardPreferenceTestRuntime;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Tests\Support\InMemoryPresentationAccessGroupRepository;
 use Kumwe\App\Tests\Support\InMemoryPresentationPreferenceRepository;
 use Laminas\Diactoros\ServerRequestFactory;

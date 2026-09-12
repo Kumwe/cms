@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kumwe\App\Infrastructure\Persistence;
 
 use Doctrine\DBAL\Connection;
-use Kumwe\App\Application\Persistence\TransactionState;
+use Kumwe\Transaction\Contract\TransactionState;
 
 /**
  * DBAL implementation of `TransactionState`, reading the connection's own transaction nesting.

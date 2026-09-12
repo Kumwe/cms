@@ -7,7 +7,7 @@ namespace Kumwe\App\BusinessSchema\Delivery\Administrator;
 use DateInterval;
 use Kumwe\App\Administrator\Http\AdministratorRequest;
 use Kumwe\App\Administrator\Presentation\AdministratorRenderer;
-use Kumwe\App\Localization\Application\Translator;
+use Kumwe\Localization\Application\Translator;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaEnvironment;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaService;
 use Kumwe\App\BusinessSchema\Domain\SchemaPlan;

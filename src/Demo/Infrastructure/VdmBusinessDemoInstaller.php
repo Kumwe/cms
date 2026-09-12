@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use JsonException;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Extension\Spi\Application\Automation\IdempotencyKey;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Audit\Application\AuditRecorder;
 use Kumwe\App\Audit\Domain\AuditEvent;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionNotFound;

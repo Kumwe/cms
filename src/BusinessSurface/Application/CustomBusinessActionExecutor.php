@@ -8,7 +8,7 @@ use DateInterval;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use Kumwe\Context\Value\ExecutionContext;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Domain\ActionDefinition;
 use Kumwe\App\BusinessDefinition\Domain\EntityTypeDefinition;
 use Kumwe\App\BusinessDefinition\Domain\ScopeMode;

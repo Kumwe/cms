@@ -35,7 +35,7 @@ use Kumwe\App\Studio\Application\Authoring\ContentStudioAuthoringTargetResolver;
 use Kumwe\App\Studio\Application\Authoring\UnavailableStudioContextualAuthoringConfigurationProvider;
 use Kumwe\App\Studio\Infrastructure\Release\PinnedStudioContextualAuthoringAvailability;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
 use Kumwe\App\Workflow\Domain\WorkflowDefinition;
 use Kumwe\App\Workflow\Domain\WorkflowStateDefinition;

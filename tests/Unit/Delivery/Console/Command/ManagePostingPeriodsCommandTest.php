@@ -15,7 +15,7 @@ use Kumwe\App\Delivery\Console\Output;
 use Kumwe\App\Identity\Application\Authentication\AccessTokenVerifier;
 use Kumwe\App\Identity\Application\Authentication\AuthenticatedPrincipal;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Tests\Support\InMemoryPostingPeriodRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

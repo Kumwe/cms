@@ -1,0 +1,3 @@
+Authenticated envelope round trip passed.
+Rotation retains old reads and uses the new key for writes.
+All public symbols and runtime-only examples passed.

@@ -16,9 +16,9 @@ use Kumwe\App\Content\Domain\ContentEntry;
 use Kumwe\App\Content\Domain\ContentRevision;
 use Kumwe\App\Content\Domain\ContentStatus;
 use Kumwe\App\Content\Domain\VersionConflict;
-use Kumwe\App\Localization\Domain\LocaleTag;
+use Kumwe\Localization\Domain\LocaleTag;
 use Kumwe\App\Tests\Support\AuthorizationContext;
-use Kumwe\App\Tests\Support\ImmediateTransactionManager;
+use Kumwe\Transaction\Testing\ImmediateTransactionManager;
 use Kumwe\App\Workflow\Domain\Workflow;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
@@ -34,7 +34,6 @@ use Psr\Clock\ClockInterface;
 #[UsesClass(ContentRecord::class)]
 #[UsesClass(ContentRevision::class)]
 #[UsesClass(AuditEvent::class)]
-#[UsesClass(LocaleTag::class)]
 #[UsesClass(Workflow::class)]
 /**
  * Pins the use case that brings a translation into being: declaring what language an entry is in.

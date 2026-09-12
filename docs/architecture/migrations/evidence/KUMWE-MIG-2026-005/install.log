@@ -1,0 +1,13 @@
+Composer could not detect the root package (consumer/verify-localization) version, defaulting to '1.0.0'. See https://getcomposer.org/root-version
+No composer.lock file present. Updating dependencies to latest instead of installing from lock file. See https://getcomposer.org/install for more information.
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 2 installs, 0 updates, 0 removals
+  - Locking kumwe/localization (v0.1.1)
+  - Locking psr/container (2.0.2)
+Writing lock file
+Installing dependencies from lock file
+Package operations: 2 installs, 0 updates, 0 removals
+  - Installing psr/container (2.0.2): Extracting archive
+  - Installing kumwe/localization (v0.1.1): Extracting archive
+Generating optimized autoload files

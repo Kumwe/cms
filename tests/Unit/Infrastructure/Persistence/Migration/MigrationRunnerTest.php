@@ -9,7 +9,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Kumwe\App\Application\Authorization\SystemIdentity;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\Infrastructure\Persistence\Migration\Migration;
 use Kumwe\App\Infrastructure\Persistence\Migration\MigrationLock;
 use Kumwe\App\Infrastructure\Persistence\Migration\MigrationPlan;

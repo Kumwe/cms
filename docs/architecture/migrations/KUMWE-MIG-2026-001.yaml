@@ -1,0 +1,54 @@
+schema: "kumwe-migration-ledger/v1"
+migration_id: "KUMWE-MIG-2026-001"
+change_set: "KUMWE-CS-2026-001"
+package: "kumwe/transaction"
+version: "0.1.2"
+artifact_digest: "e6a769da5aeb7a8257e4f75e69c7b55939265bc806b9e987eb125b2dc4f97256"
+handoff_path: "vendor/kumwe/transaction/MIGRATION-HANDOFF.md"
+handoff_sha256: "32dce75a78252d88cb297d3f57b3620577b63f012c3d3962697bc4964c8e9a1f"
+release_attestation: "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/RELEASE-ATTESTATION.yaml"
+old_namespace_roots:
+  - "Kumwe\\App\\Application\\Persistence\\"
+symbols:
+  -
+    old_fqcn: "Kumwe\\App\\Application\\Persistence\\TransactionManager"
+    new_fqcn: "Kumwe\\Transaction\\Contract\\TransactionManager"
+  -
+    old_fqcn: "Kumwe\\App\\Application\\Persistence\\TransactionState"
+    new_fqcn: "Kumwe\\Transaction\\Contract\\TransactionState"
+  -
+    old_fqcn: "Kumwe\\App\\Tests\\Support\\ImmediateTransactionManager"
+    new_fqcn: "Kumwe\\Transaction\\Testing\\ImmediateTransactionManager"
+removed_paths:
+  - "src/Application/Persistence/TransactionManager.php"
+  - "src/Application/Persistence/TransactionState.php"
+  - "tests/Support/ImmediateTransactionManager.php"
+removed_tests:
+  - "tests/Support/ImmediateTransactionManager.php"
+retained_tests:
+  - "tests/Integration/Persistence/DoctrineTransactionManagerTest.php"
+  - "tests/Integration/Persistence/TransactionBoundaryEngineIntegrationTest.php"
+  - "tests/Unit/Infrastructure/Persistence/DoctrineTransactionStateTest.php"
+  - "tests/Architecture/TransactionSeamBoundaryTest.php"
+  - "tests/Unit/Application/Automation/PurgeBusinessRecordIdempotencyHandlerTest.php"
+di_changes:
+  -
+    service: "Kumwe\\Transaction\\Contract\\TransactionManager"
+    factory: "Kumwe\\App\\Kernel\\ContainerFactory"
+    note: "Bind the existing DoctrineTransactionManager to the package contract and the same connection; no provider or fallback."
+  -
+    service: "Kumwe\\Transaction\\Contract\\TransactionState"
+    factory: "Kumwe\\App\\Kernel\\ContainerFactory"
+    note: "Bind the existing DoctrineTransactionState to the package contract; callbacks and transaction ownership stay in App."
+capability_index_entries:
+  - "kumwe/transaction"
+release_evidence:
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/RELEASE-ATTESTATION.yaml"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/consumer-verification.json"
+  - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-001/archive-verification.json"
+app_pull_request: "https://github.com/kumwe/app/pull/142"
+roadmap_refs: []
+non_roadmap_refs:
+  - "NRM-2026-002"
+conflicts:
+  - "KUMWE-CONFLICT-2026-002"

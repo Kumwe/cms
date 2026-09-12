@@ -9,7 +9,7 @@ use Kumwe\App\Content\Application\ContentService;
 use Kumwe\App\Content\Application\TranslationGroupRepository;
 use Kumwe\App\Content\Domain\TranslationGroup;
 use Kumwe\App\Content\Domain\TranslationGroupMember;
-use Kumwe\App\Localization\Application\ActiveLocale;
+use Kumwe\Localization\Application\ActiveLocale;
 use Kumwe\App\Site\Application\PublicPageLocator;
 use Kumwe\Context\Value\SiteContext;
 use Locale;
