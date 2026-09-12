@@ -265,10 +265,11 @@ final readonly class GovernanceRecords
         }
         $short = substr($package, strlen('kumwe/'));
         $packagePath = 'vendor/kumwe/' . $short;
-        $expectedHandoff = $packagePath . '/' . PackageManifests::releaseRecordPath(
-            $root . '/' . $packagePath,
-            $packagePath,
-        );
+        // Preserve the legacy ledger coordinate until the package's manifest status is validated.
+        $recordPath = is_file($root . '/' . $packagePath . '/docs/release-record.md')
+            ? PackageManifests::releaseRecordPath($root . '/' . $packagePath, $packagePath)
+            : 'MIGRATION-HANDOFF.md';
+        $expectedHandoff = $packagePath . '/' . $recordPath;
         if ($record['handoff_path'] !== $expectedHandoff) {
             throw GovernanceViolation::at(
                 $path,
