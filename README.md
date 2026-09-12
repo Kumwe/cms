@@ -1,6 +1,12 @@
 # Kumwe App
 
-Kumwe is a modern CMS, built with disciplined engineering and AI acceleration. It is two platforms
+[![Packagist version][version-badge]][package-url]
+[![CI][ci-badge]][ci-url]
+[![Nightly][nightly-badge]][nightly-url]
+[![PHP][php-badge]][requirements-url]
+[![License][license-badge]][license-url]
+
+Kumwe is a modern CMS, built around explicit application contracts and shared libraries. It is two platforms
 behind one set of rules: a content-management system — managed pages, media, nested menus, and
 governed publishing workflows in a graphical administrator — and a business application platform — a
 typed business definition and record runtime with policies, approvals, reports, and an isolated
@@ -145,15 +151,13 @@ docker compose -f compose.production.yaml --profile automation up -d worker sche
 
 ## Studio content authoring
 
-Studio is the target contextual page builder and editor for Kumwe content: creating or editing content should open
-the same Studio workspace for layout, blocks, typed fields, and values, inline or expanded, without first visiting a
-separate Studio or Blueprint catalogue. Extensions can contribute governed Studio blocks and fields to authorized
-targets through the same host integration.
+Studio provides contextual composition authoring through `kumwe/producer`. App owns resource context,
+authentication, authorization, persistence and delivery; Studio owns its product and serialized composition
+contracts. Extensions contribute only through admitted, host-authorized targets.
 
-That unified journey is not yet complete in App. The current integration opens a Blueprint-only composition route
-from an already-created Content-type version; Content model and entry writes still use separate forms. The single
-App-side statement of the target, exact current gap, PHP host boundary, and small-goal implementation sequence is
-[Studio authoring in Kumwe App](docs/studio-composition-authoring.md).
+[Studio authoring in Kumwe App](docs/studio-composition-authoring.md) records the product requirements,
+host boundary, implementation state and qualification gaps. Package publication alone does not establish
+the integrated authoring journey.
 
 Studio's browser code is compiled before deployment. Kumwe's server authority is PHP, and an installed production
 App never requires Node.js, npm, a JavaScript development server, or a server-side JavaScript process to start,
@@ -200,6 +204,17 @@ select one per installation with `DB_DRIVER` and `KUMWE_DATABASE_IMAGE` and re-r
 - Report problems and propose changes on [GitHub issues](https://github.com/kumwe/app/issues) and
   [discussions](https://github.com/kumwe/app/discussions).
 
+## Package and Core responsibilities
+
+Core is the application composition root. The installed Kumwe libraries own their portable contracts and
+behavior; Core supplies authority, persistence, adapters, orchestration and delivery. The exact installed
+versions are recorded in `composer.lock`, with their APIs and ownership in the generated
+[capability index](docs/architecture/capability-index.md).
+
+Use a tagged release and the [production installation guide](docs/operations/install.md) for deployment.
+The default branch can contain changes newer than the release badge. [Release verification](docs/operations/release-verification.md) describes artifact and provenance checks;
+[CHANGELOG.md](CHANGELOG.md) records changes and compatibility information.
+
 ## Supported runtime
 
 | Layer | Supported choice |
@@ -225,3 +240,14 @@ commercial products and proprietary extensions are welcome. If you build on it, 
 hear from you, and patches are always appreciated; the license requires neither. The software is
 provided as-is, without warranty or liability, and the Kumwe name and logos are not part of the
 code license.
+
+[version-badge]: https://img.shields.io/packagist/v/kumwe/app
+[package-url]: https://packagist.org/packages/kumwe/app
+[ci-badge]: https://github.com/kumwe/app/actions/workflows/ci.yml/badge.svg?branch=master
+[ci-url]: https://github.com/kumwe/app/actions/workflows/ci.yml
+[nightly-badge]: https://github.com/kumwe/app/actions/workflows/nightly.yml/badge.svg?branch=master
+[nightly-url]: https://github.com/kumwe/app/actions/workflows/nightly.yml
+[php-badge]: https://img.shields.io/packagist/dependency-v/kumwe/app/php
+[requirements-url]: composer.json
+[license-badge]: https://img.shields.io/packagist/l/kumwe/app
+[license-url]: LICENSE

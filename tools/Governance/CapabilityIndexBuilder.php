@@ -321,7 +321,8 @@ final readonly class CapabilityIndexBuilder
                     $display . '/' . $file,
                     sprintf('%s ships no %s', $name, $file),
                     'a Version 2 release archive must ship CHARTER.md, README.md, docs/, resources/ and '
-                    . 'MIGRATION-HANDOFF.md (no export-ignore); a release that omits them fails this gate at adoption',
+                    . basename($handoff['path'])
+                    . ' (no export-ignore); a release that omits them fails this gate at adoption',
                 );
             }
         }

@@ -75,6 +75,119 @@ final class PackageManifestsTest extends TestCase
     }
 
     /**
+     * Current YAML and JSON records preserve package identity, strict schema and manifest digest checks.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testProductionReleaseRecordsPreserveAllPackageChecks(): void
+    {
+        foreach ([false, true] as $json) {
+            $root = GovernanceFixture::copy();
+            try {
+                GovernanceFixture::useProductionRecord($root, $json);
+                $manifests = self::read($root, 'example-v2');
+                self::assertSame('v2-manifested', $manifests->manifestStatus());
+                $record = $manifests->handoff();
+                self::assertNotNull($record);
+                self::assertSame('vendor/kumwe/example-v2/docs/release-record.md', $record['path']);
+                self::assertSame('kumwe-package-release-record/v1', $record['front_matter']['schema']);
+                self::assertArrayHasKey('consumer_contract', $record['front_matter']);
+                self::assertArrayNotHasKey('next_task', $record['front_matter']);
+                GovernanceFixture::replace(
+                    $root,
+                    'vendor/kumwe/example-v2/resources/service-map/v1.json',
+                    '"description": "Marker prepended to every description."',
+                    '"description": "Marker prepended to each description."',
+                );
+                try {
+                    self::read($root, 'example-v2');
+                    self::fail('A new record must still bind the complete manifest bytes.');
+                } catch (GovernanceViolation $violation) {
+                    self::assertStringContainsString('has digest', $violation->getMessage());
+                }
+            } finally {
+                GovernanceFixture::remove($root);
+            }
+        }
+    }
+
+    /**
+     * Production records cannot use a legacy schema, omit required sections or shadow another record.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testProductionRecordAmbiguityAndSchemaDriftAreRefused(): void
+    {
+        $cases = [
+            ['kumwe-package-release-record/v1', 'kumwe-migration-handoff/v2', 'fails package-release-record'],
+            ['## Consumer contract', '## Missing section', 'narrative section'],
+            ['consumer_contract:', 'next_task:', 'fails package-release-record'],
+        ];
+        foreach ($cases as [$search, $replace, $rule]) {
+            $root = GovernanceFixture::copy();
+            try {
+                GovernanceFixture::useProductionRecord($root);
+                GovernanceFixture::replace($root, 'vendor/kumwe/example-v2/docs/release-record.md', $search, $replace);
+                try {
+                    self::read($root, 'example-v2');
+                    self::fail('A current record must be complete and use its assigned schema.');
+                } catch (GovernanceViolation $violation) {
+                    self::assertStringContainsString($rule, $violation->getMessage());
+                }
+            } finally {
+                GovernanceFixture::remove($root);
+            }
+        }
+        $root = GovernanceFixture::copy();
+        try {
+            GovernanceFixture::useProductionRecord($root);
+            GovernanceFixture::write($root, 'vendor/kumwe/example-v2/MIGRATION-HANDOFF.md', 'second record');
+            $this->expectException(GovernanceViolation::class);
+            $this->expectExceptionMessage('ships both');
+            self::read($root, 'example-v2');
+        } finally {
+            GovernanceFixture::remove($root);
+        }
+    }
+
+    /**
+     * JSON front matter refuses duplicate keys, including escaped names and objects nested inside arrays.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testProductionJsonCannotOverwriteObjectMembers(): void
+    {
+        $path = 'vendor/kumwe/example-v2/docs/release-record.md';
+        foreach ([
+            '{"key":1,"key":2}',
+            '{"key":1,"\u006bey":2}',
+            '{"items":[{"key":1,"key":2}]}',
+            '{"key":{"nested":1},"key":null}',
+            '{"key": invalid}',
+        ] as $json) {
+            try {
+                PackageManifests::parseReleaseRecord("---\n" . $json . "\n---\n", $path);
+                self::fail('Malformed or duplicated JSON must be refused.');
+            } catch (GovernanceViolation $violation) {
+                self::assertStringContainsString('Fix:', $violation->getMessage());
+            }
+        }
+        $accepted = json_encode(
+            ['key' => 'quoted "key": remains value text', 'items' => [['key' => 1], ['key' => 2]]],
+            JSON_THROW_ON_ERROR,
+        );
+        $parsed = PackageManifests::parseReleaseRecord("---\n" . $accepted . "\n---\nBody", $path);
+        self::assertSame(json_decode($accepted, true, flags: JSON_THROW_ON_ERROR), $parsed['front_matter']);
+        self::assertSame('Body', $parsed['body']);
+    }
+
+    /**
      * A legacy package without any manifest is scanned, and `@internal` declarations are not exported.
      *
      * @return  void

@@ -323,6 +323,38 @@ final readonly class GovernanceFixture
     }
 
     /**
+     * Replace the fixture package's legacy handoff with a production record and update its adoption digest.
+     *
+     * @param   string  $root  Scratch root.
+     * @param   bool    $json  Whether to encode the contract as JSON-compatible YAML.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public static function useProductionRecord(string $root, bool $json = false): void
+    {
+        $package = 'vendor/kumwe/example-v2/';
+        $path = $package . 'docs/release-record.md';
+        $bytes = self::read(self::repositoryRoot(), 'tests/Fixtures/Governance/package-release-record.v1.example.md');
+        if ($json) {
+            $parsed = \Kumwe\App\Tools\Governance\StrictYaml::parseFrontMatter($bytes);
+            $bytes = "---\n" . json_encode($parsed['front_matter'], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR)
+                . "\n---\n" . $parsed['body'];
+        }
+        self::write($root, $path, $bytes);
+        self::delete($root, $package . 'MIGRATION-HANDOFF.md');
+        $ledger = 'docs/architecture/migrations/KUMWE-MIG-2026-001.yaml';
+        self::replace($root, $ledger, $package . 'MIGRATION-HANDOFF.md', $path);
+        $record = (string) preg_replace(
+            '/handoff_sha256: "[a-f0-9]{64}"/',
+            'handoff_sha256: "' . self::digest($root, $path) . '"',
+            self::read($root, $ledger),
+        );
+        self::write($root, $ledger, $record);
+    }
+
+    /**
      * Add a second Version 2 package, `kumwe/example-v3`, cloned from `kumwe/example-v2` with its own namespace.
      *
      * The clone keeps the same capability id and configuration key as the original so a test can prove the

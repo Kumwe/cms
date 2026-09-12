@@ -59,6 +59,64 @@ final class GovernanceRecordsTest extends TestCase
     }
 
     /**
+     * A production record keeps exact adoption path, digest and consumer test-removal obligations.
+     *
+     * @return  void
+     *
+     * @since   2.0.0
+     */
+    public function testProductionRecordsBindTheLedgerAndConsumerContract(): void
+    {
+        foreach (['valid', 'wrong-path', 'wrong-digest', 'missing-removal'] as $mode) {
+            $root = GovernanceFixture::copy();
+            $ledger = 'docs/architecture/migrations/KUMWE-MIG-2026-001.yaml';
+            $recordPath = 'vendor/kumwe/example-v2/docs/release-record.md';
+            try {
+                GovernanceFixture::useProductionRecord($root, true);
+                $rule = '';
+                if ($mode === 'wrong-path') {
+                    GovernanceFixture::replace(
+                        $root,
+                        $ledger,
+                        $recordPath,
+                        'vendor/kumwe/example-v2/MIGRATION-HANDOFF.md',
+                    );
+                    $rule = 'handoff_path must be';
+                } elseif ($mode === 'wrong-digest') {
+                    GovernanceFixture::replace(
+                        $root,
+                        $ledger,
+                        GovernanceFixture::digest($root, $recordPath),
+                        hash('sha256', 'wrong production record digest'),
+                    );
+                    $rule = 'differs from the installed handoff digest';
+                } elseif ($mode === 'missing-removal') {
+                    GovernanceFixture::replace(
+                        $root,
+                        $ledger,
+                        "removed_tests:\n  - tests/Unit/Example/Describing/DescriberTest.php",
+                        'removed_tests: []',
+                    );
+                    $rule = 'released handoff test removal';
+                }
+                try {
+                    $records = self::load($root);
+                    self::assertSame('valid', $mode, 'The changed adoption record must be refused.');
+                    self::assertSame(
+                        $recordPath,
+                        $records->migrations()['KUMWE-MIG-2026-001']['record']['handoff_path'],
+                    );
+                } catch (GovernanceViolation $violation) {
+                    self::assertNotSame('valid', $mode, $violation->getMessage());
+                    self::assertStringContainsString($rule, $violation->getMessage());
+                }
+            } finally {
+                GovernanceFixture::remove($root);
+            }
+        }
+    }
+
+    /**
      * A retained host test cannot resolve through a symlink to evidence outside its recorded path.
      *
      * @return  void
