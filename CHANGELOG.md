@@ -17,6 +17,11 @@ Entries cite the commits that carried them. Version 2.0.0 is not released, so ev
 
 ## [Unreleased]
 
+- Allow 90 minutes for the complete database CI lane after PR #142's merged workload passed all tests
+  and coverage gates but exhausted the former 75-minute limit during signed recovery verification.
+  Keep the complete suite, repeated and reversed integration passes, coverage ratchets and recovery
+  checks required; the additional runtime allowance lets the final recovery checks finish (#142).
+
 - Upgrade inherited Debian packages in the PHP runtime and development images before building extensions,
   applying available distribution fixes while retaining the pinned PHP 8.5.10 images and Engine/binding
   1.0.3 sources. Native compatibility verification and production image security scans remain required (#143).
