@@ -5,7 +5,7 @@ roadmap_source:
   title: "Kumwe ERP-Extensibility Foundation Roadmap"
   sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
 roadmap_refs: []
-state: "release-verified"
+state: "app-pr-ready"
 phase_1:
   source_repository: "kumwe/app"
   source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
@@ -25,7 +25,7 @@ release:
     - "docs/architecture/migrations/evidence/KUMWE-MIG-2026-003/consumer-verification.json"
 phase_2:
   app_pr: "https://github.com/kumwe/app/pull/142"
-  tested_sha: null
+  tested_sha: "67b99f7a46cdc9460bd123edd31ce3247a5f3524"
   merged_sha: null
   exact_dependency: "kumwe/secret-envelope 0.1.1"
   composer_lock_digest: "45ea6a550528a7cc03393c37d5610e4f0505ec1ccf347fbad7c40d5ef0794e28"
@@ -58,20 +58,37 @@ evidence:
     - "tests/Unit/BusinessRecord/Domain/ExactValueCodecTest.php"
     - "tests/Unit/BusinessSurface/Application/BusinessMutationPlanServiceTest.php"
     - "tests/Deployment/record-key-rotation-strand.php"
-  database_matrix: []
-  concurrency: []
-  authorization_security: []
-  lifecycle_recovery: []
-  delivery_browser: []
-  deployment_backup_restore: []
-  native_parity_abi: []
-  performance_capacity: []
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621108705; PHP quality and unit/architecture suites at 67b99f7a46cdc9460bd123edd31ce3247a5f3524"
+  database_matrix:
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361098"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361229"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361136"
+  concurrency:
+    - "tests/Integration/BusinessRecord/AggregateDocumentConcurrencyIntegrationTest.php; executed in the three passing database_matrix jobs"
+  authorization_security:
+    - "https://github.com/kumwe/app/actions/runs/34718945772/job/103621107928"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361098; full App authorization, key lifecycle and host-boundary suites"
+  lifecycle_recovery:
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361098; full integration suite, including transaction boundaries, schema recovery, worker recovery and record key rotation"
+  delivery_browser:
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361143"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361108"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361171"
+    - "https://github.com/kumwe/app/actions/runs/34718945793/job/103621108187"
+  deployment_backup_restore:
+    - "https://github.com/kumwe/app/actions/runs/34718945792/job/103621108203; fresh Compose installation, readiness and assets"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361157; deployed-artifact regression; merged-target backup/restore and production deployment still pending"
+  native_parity_abi:
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621108813; admitted native runtime provisioning and contract checks"
+  performance_capacity:
+    - "https://github.com/kumwe/app/actions/runs/34718945793/job/103621108002; nightly quality contract and two performance-breakpoint passes stayed within budget; no improvement claim"
 compatibility: "Stored ciphertext, nonce, key_id and algorithm serialization, legacy key derivation and associated-data bytes are preserved. Single-key construction now accepts KeyMaterial; package validation refuses malformed ciphertext shorter than its authentication tag."
 migration_recovery: null
 security_impact: "Host custody, legacy-key reads, purpose separation, record authorization and rotation audit remain; package keys refuse unsafe serialization."
 performance_claim: null
 rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
 known_gaps:
-  - "Rebased hosted App database, coverage, browser and merged-target checks remain pending."
+  - "Merged-target CI, integration repeat/reverse-order checks, backup/restore drills and production deployment acceptance remain pending."
+  - "Automated App release and published artifact verification remain pending."
 completion_claim: false
 accepted_by: null
