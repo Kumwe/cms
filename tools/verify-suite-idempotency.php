@@ -384,7 +384,9 @@ function engineList(array $entry, string $field): array
  * Run every selected pass and collect the tests that failed in each.
  *
  * Every enforced pass runs by default, and `--pass` narrows an investigative execution to one of them. Every
- * selected pass runs even after an earlier one fails so the resulting evidence is complete.
+ * selected pass runs even after an earlier one fails so the resulting evidence is complete. The preceding
+ * full suite owns coverage; these passes disable PCOV's executor hooks as well as coverage reporting so
+ * an enabled coverage extension does not instrument repeated database work whose coverage is not consumed.
  *
  * @param   string        $root    Repository root.
  * @param   list<string>  $passes  Declared pass names.
@@ -406,8 +408,10 @@ function executePasses(string $root, array $passes): array
             $configuration = $generated = reversedClassOrderConfiguration($root);
         }
         $command = sprintf(
-            'cd %s && vendor/bin/phpunit --testsuite integration --colors=never --log-junit %s%s',
+            'cd %s && %s -d pcov.enabled=0 vendor/bin/phpunit --no-coverage '
+            . '--testsuite integration --colors=never --log-junit %s%s',
             escapeshellarg($root),
+            escapeshellarg(PHP_BINARY),
             escapeshellarg($log),
             $configuration === null ? '' : ' --configuration ' . escapeshellarg($configuration),
         );
@@ -450,8 +454,10 @@ function executePasses(string $root, array $passes): array
 function expectedIntegrationTestCount(string $root): int
 {
     $command = sprintf(
-        'cd %s && vendor/bin/phpunit --testsuite integration --list-tests --colors=never',
+        'cd %s && %s -d pcov.enabled=0 vendor/bin/phpunit --no-coverage '
+        . '--testsuite integration --list-tests --colors=never',
         escapeshellarg($root),
+        escapeshellarg(PHP_BINARY),
     );
     $lines = [];
     $status = 0;
