@@ -55,10 +55,10 @@ consumers:
   - src/BusinessIntegration/Application/IntegrationEventConsumerDispatcher.php
   - src/BusinessIntegration/Application/JobQueueIntegrationEventHandler.php
 overlap_reviewed: []
-decision: pending
+decision: approved
 decided_by: "eWɘyn"
-reviewer: null
-decided_on: "2026-09-10"
+reviewer: "Llewellynvdm"
+decided_on: "2026-09-12"
 pull_request: "https://github.com/kumwe/app/pull/141"
 ---
 
@@ -127,9 +127,14 @@ Codex's technical review on 2026-09-12 rechecked the four retained classes again
 grant App authority: the host rejects foreign principal and system-actor implementations. The SDK adapter
 exposes only its seven context coordinates and recovers only the exact host context it wrapped. The request
 attribute remains host pipeline wiring. The capability-index digest above identifies the seven-package
-index after the rebase onto #140. This technical review does not record a human approving review.
+index after the rebase onto #140.
 
-Pending the reviewer's approving review on the App pull request that adopts `kumwe/access-context` 0.1.2
-(`KUMWE-MIG-2026-004`); the `Core growth approval` workflow records the reviewer and the date and re-records
-the baseline. Revisit when `kumwe/access-context` ships a host-facing request or SDK adapter of its own, or when
-the extension SDK consumes the package ports directly.
+The project maintainer, `Llewellynvdm`, approved retaining these four classes in the task conversation on 2026-09-12,
+conditional on this being the correct architectural boundary and introducing no duplicate implementation.
+The published handoff explicitly excludes these host responsibilities; the identities implement the package
+ports, and the SDK adapter forwards to the same package context object rather than copying its behavior.
+The technical review and the focused host-boundary tests establish those conditions. This approval is
+recorded manually from that conversation, not attributed to a GitHub review event.
+
+Revisit when `kumwe/access-context` ships a host-facing request or SDK adapter of its own, or when the
+extension SDK consumes the package ports directly.
