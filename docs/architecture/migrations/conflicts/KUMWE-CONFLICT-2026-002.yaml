@@ -54,7 +54,7 @@ combined_tests:
   - "Local full QA cannot complete: default PHP memory is 128 MB and no database/Redis servers are available."
   - "Unit and architecture rerun with 1 GB passes; hosted database, coverage, browser and deployment checks remain required."
   - "After synchronization to ab3b870c: all 24 pre-test gates pass; unit and architecture: 3343 tests / 68796 assertions; focused mutation-plan/governance: 162 tests / 1211 assertions."
-  - "These final local results apply to complete candidate e932172e. Published source afdf81649ea5f56656cd5aff81485fd6fdef2446 differs only in tests/Support/TestKernelFactory.php: automatic approval review blocked its import correction because of an unchanged synthetic fixture. Hosted qualification remains pending that correction and CI."
+  - "These final local results apply to complete candidate e932172e. Initial published source afdf81649ea5f56656cd5aff81485fd6fdef2446 omitted only the tests/Support/TestKernelFactory.php import correction because automatic approval review blocked an unchanged synthetic fixture. The maintainer explicitly authorized that fixture in the task conversation; the correction is now included. Hosted qualification remains pending CI."
 ownership_review: "Compatible scopes retain stable IDs and prior human approval; new review is explicitly agent-owned."
 resolved_by: "Codex PR #142 team; semantic rebase onto master ab3b870c completed"
 reviewed_by: "Codex /root/integration_scope: release, ownership and master preservation; /root/ci_failure: tests"
