@@ -304,6 +304,8 @@ unique; year-sequence ids match `^[A-Z-]+-[0-9]{4}-[0-9]{3}$`.
 
 - Current path: `vendor/kumwe/<name>/docs/release-record.md`.
 - Current schema: [`schemas/package-release-record.v1.schema.json`](schemas/package-release-record.v1.schema.json).
+- Current front matter accepts the block YAML subset below or a JSON object. Duplicate JSON members,
+  including escaped or nested duplicates, are refused. JSON support applies only to this current record path.
 - The record binds public API, capability and service manifests, test ownership, source provenance,
   compatibility and the `consumer_contract`. It contains no draft-PR state, temporary branch assignment
   or next-agent instructions. Core ownership and consumer obligations remain independently verifiable.
@@ -491,13 +493,14 @@ docs/architecture/migrations/
 
 ## 8. The YAML subset
 
-Every YAML record is parsed by a strict reader that accepts exactly this and refuses everything else with
+Core YAML records and legacy package front matter use a strict reader that accepts this subset and refuses deviations with
 the offending line: UTF-8; two-space indentation, no tabs; `#` comments; block mappings `key: value` with
 keys `[A-Za-z0-9_./-]+`; block sequences `- value` and `- key: value`; scalars `null`/`~`/empty, `true`,
 `false`, integers, plain strings, double-quoted strings with `\"`, `\\` and `\n`, single-quoted strings with
 `''`; empty flow collections `[]` and `{}`. No multi-line scalars (`|`, `>`), anchors, aliases, tags, flow
 collections with content or multiple documents. Front matter is `---`, YAML, `---`, body. A value longer
-than a 120-column line must be shortened, not folded.
+than a 120-column line must be shortened, not folded. Current package release records additionally support
+the JSON object front matter described in section 3.11; Core ledger formats are unchanged.
 
 ---
 
