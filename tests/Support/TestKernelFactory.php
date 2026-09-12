@@ -10,7 +10,7 @@ use Kumwe\Context\Value\AuthenticationStrength;
 use Kumwe\Context\Value\ExecutionContext;
 use Kumwe\Context\Value\SiteContext;
 use Kumwe\App\Application\Authorization\SystemPrincipal;
-use Kumwe\App\Application\Persistence\TransactionManager;
+use Kumwe\Transaction\Contract\TransactionManager;
 use Kumwe\App\BusinessDefinition\Application\BusinessDefinitionRepository;
 use Kumwe\App\BusinessSchema\Application\BusinessSchemaInstallationRepository;
 use Kumwe\App\Delivery\Console\Command\CreateAdministratorCommand;
