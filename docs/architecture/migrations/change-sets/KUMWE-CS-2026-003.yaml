@@ -5,7 +5,7 @@ roadmap_source:
   title: "Kumwe ERP-Extensibility Foundation Roadmap"
   sha256: "a202155ef1a65f5ab293d4f8397ebf4ac430db7f1e877c776bbe7851e6fe18d8"
 roadmap_refs: []
-state: "app-pr-ready"
+state: "core-integrated"
 phase_1:
   source_repository: "kumwe/app"
   source_sha: "960ce8ec00cf724a7cae03e5ba09c4852c9ab54e"
@@ -26,7 +26,7 @@ release:
 phase_2:
   app_pr: "https://github.com/kumwe/app/pull/142"
   tested_sha: "67b99f7a46cdc9460bd123edd31ce3247a5f3524"
-  merged_sha: null
+  merged_sha: "c43eb482242b09205d5a899625b68ab75790c490"
   exact_dependency: "kumwe/secret-envelope 0.1.1"
   composer_lock_digest: "45ea6a550528a7cc03393c37d5610e4f0505ec1ccf347fbad7c40d5ef0794e28"
   removed_app_symbols:
@@ -59,25 +59,54 @@ evidence:
     - "tests/Unit/BusinessSurface/Application/BusinessMutationPlanServiceTest.php"
     - "tests/Deployment/record-key-rotation-strand.php"
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621108705; PHP quality and unit/architecture suites at 67b99f7a46cdc9460bd123edd31ce3247a5f3524"
+    - "https://github.com/kumwe/app/commit/c43eb482242b09205d5a899625b68ab75790c490"
+    - "https://github.com/kumwe/app/commit/5540ed86e8522d0d60d3f2e106177d15070390c6"
+    - "PR #144's timeout repair changed no application code after the PR #142 adoption."
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642078619"
   database_matrix:
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361098"
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361229"
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361136"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216614"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216581"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216578"
   concurrency:
     - "tests/Integration/BusinessRecord/AggregateDocumentConcurrencyIntegrationTest.php; executed in the three passing database_matrix jobs"
   authorization_security:
     - "https://github.com/kumwe/app/actions/runs/34718945772/job/103621107928"
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361098; full App authorization, key lifecycle and host-boundary suites"
+    - "https://github.com/kumwe/app/actions/runs/34726745218"
   lifecycle_recovery:
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361098; full integration suite, including transaction boundaries, schema recovery, worker recovery and record key rotation"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216614"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216581"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216578"
+    - "All three engines passed repeat/reverse integration with zero non-idempotent tests."
+    - "Each engine passed signed backup/restore and all 16 tamper refusals."
   delivery_browser:
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361143"
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361108"
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361171"
     - "https://github.com/kumwe/app/actions/runs/34718945793/job/103621108187"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216575"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216568"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103642216570"
   deployment_backup_restore:
     - "https://github.com/kumwe/app/actions/runs/34718945792/job/103621108203; fresh Compose installation, readiness and assets"
-    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361157; deployed-artifact regression; merged-target backup/restore and production deployment still pending"
+    - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621361157; deployed-artifact regression"
+    - "https://github.com/kumwe/app/actions/runs/34726745264"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103651093200"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103651093244"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103651093235"
+    - "https://github.com/kumwe/app/actions/runs/34726745312/job/103651093270"
+    - "Composer/ZIP installation and complete production deployment acceptance passed on all three engines."
+    - "https://github.com/kumwe/app/releases/tag/v2.0.0-alpha.18"
+    - "https://github.com/kumwe/app/actions/runs/34730392540"
+    - "App v2.0.0-alpha.18 points to green master 5540ed86e8522d0d60d3f2e106177d15070390c6."
+    - "Release deployment, quality, archive budget and image scans passed."
+    - "Image/SBOM/checksum signing and provenance publication succeeded."
+    - "Publication metadata contains all seven expected assets with nonzero sizes and SHA256 digests."
+    - "Published ZIP SHA256: b489737ae1ce524374307a3938da6ecc80e9bfa02f8b5e7a75d1b411ab69f554"
   native_parity_abi:
     - "https://github.com/kumwe/app/actions/runs/34718945933/job/103621108813; admitted native runtime provisioning and contract checks"
   performance_capacity:
@@ -87,8 +116,6 @@ migration_recovery: null
 security_impact: "Host custody, legacy-key reads, purpose separation, record authorization and rotation audit remain; package keys refuse unsafe serialization."
 performance_claim: null
 rollback: "Revert the combined foundation adoption change and install its previous Composer lock; no persisted data migration is required."
-known_gaps:
-  - "Merged-target CI, integration repeat/reverse-order checks, backup/restore drills and production deployment acceptance remain pending."
-  - "Automated App release and published artifact verification remain pending."
+known_gaps: []
 completion_claim: false
 accepted_by: null
